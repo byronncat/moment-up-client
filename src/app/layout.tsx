@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+
+import clsx from "clsx";
+import { ThemeProvider } from "@/components/providers";
+import {
+  monoton,
+  montserrat,
+  sourceCodePro,
+  yesteryear,
+  abel,
+} from "@/styles/fonts";
 import "@/styles/globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: {
@@ -27,11 +26,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={clsx(
+          montserrat.variable,
+          sourceCodePro.variable,
+          yesteryear.variable,
+          abel.variable,
+          monoton.variable,
+          montserrat.className,
+          "antialiased",
+          "bg-background"
+        )}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
