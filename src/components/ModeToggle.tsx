@@ -13,7 +13,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function ModeToggle() {
+type ModeToggleProps = Readonly<{
+  className?: string;
+}>;
+
+export default function ModeToggle({ className }: ModeToggleProps) {
   const { theme, setTheme } = useTheme();
   const [isClient, setIsClient] = useState(false);
 
@@ -27,7 +31,11 @@ export default function ModeToggle() {
         <Button
           variant="ghost"
           size="icon"
-          className={clsx("size-9 rounded-full", "duration-200 ease-in-out")}
+          className={clsx(
+            "size-9 rounded-full",
+            "duration-200 ease-in-out",
+            className
+          )}
         >
           {isClient ? (
             <>

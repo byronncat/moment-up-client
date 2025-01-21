@@ -1,0 +1,86 @@
+import type { MomentUI } from "api";
+
+export const mockMoments: MomentUI[] = [
+  {
+    id: 1,
+    user_id: "1",
+    username: "alice",
+    caption: "Sweat Herta =w=",
+    files: [
+      "https://scontent-sin2-1.xx.fbcdn.net/v/t39.30808-6/473798204_122174025506270068_4840251831997055816_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_ohc=VpiRSKXmmmIQ7kNvgFQX3lY&_nc_zt=23&_nc_ht=scontent-sin2-1.xx&_nc_gid=Acy-VGD4cpjKJHA3imInljr&oh=00_AYCVfPmFa3-Nrz4xUPG_Bp19GHcu7DOQDIVe3pXhYzswTA&oe=67927A72",
+    ],
+    likes: 1234,
+    comments: 45,
+    created_at: new Date(),
+    isLiked: false,
+  },
+  {
+    id: 2,
+    user_id: "2",
+    username: "bob",
+    caption: "Shupogaki =w=",
+    files: [
+      "https://scontent-sin6-3.xx.fbcdn.net/v/t39.30808-6/473692734_122173194632270068_8649647960815991408_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=ZZYw0LSViuQQ7kNvgE6PnHF&_nc_zt=23&_nc_ht=scontent-sin6-3.xx&_nc_gid=A-nHfnPhBfZQ9JIqgllfhQ_&oh=00_AYD7d0ilKh4zZ0Rp2P0z67m62sWdxKi2J0by8dMc2XJcuw&oe=6792937F",
+      "https://scontent-sin11-1.xx.fbcdn.net/v/t39.30808-6/473422581_122173194668270068_4881117216651849754_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=127cfc&_nc_ohc=lH-lzflkuhkQ7kNvgELKCUG&_nc_zt=23&_nc_ht=scontent-sin11-1.xx&_nc_gid=AIwz7k8ZFDYarCt9QmLj6Gv&oh=00_AYD20SssTzwNlQlzIwcxoZ-24_LOXumErbKUsP8L7edylg&oe=67928ED8",
+    ],
+    likes: 2345,
+    comments: 67,
+    created_at: new Date(),
+    isLiked: false,
+  },
+  {
+    id: 3,
+    user_id: "3",
+    username: "charlie",
+    caption: "Sunset at the beach",
+    files: [
+      "https://scontent-sin2-1.xx.fbcdn.net/v/t39.30808-6/467731972_3929993883991907_5545603721683030501_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=100&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=Lbx0Lx9TZHMQ7kNvgGzjE8i&_nc_zt=23&_nc_ht=scontent-sin2-1.xx&_nc_gid=A0SgAPa9khf-gLyL1rlsKoR&oh=00_AYCUU8F3pwTBG4J7vLOoA2uwPTtNNESjLcANPekSXOkNXw&oe=67927C20",
+    ],
+    likes: 3456,
+    comments: 89,
+    created_at: new Date(),
+    isLiked: false,
+  },
+  {
+    id: 4,
+    user_id: "4",
+    username: "dave",
+    caption: "Sunset at the beach",
+    files: [
+      "https://scontent-sin6-4.xx.fbcdn.net/v/t39.30808-6/465909061_1133149088380764_8568786969892863981_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=00utxrhMic8Q7kNvgF7j-MY&_nc_zt=23&_nc_ht=scontent-sin6-4.xx&_nc_gid=A-CJfP8nwZY1jOAWOUIpphi&oh=00_AYBZNf6Owz0SNrvqsYEVBc7nd9ucrf-1R-xpntGlDLTN7Q&oe=6792886F",
+      "https://scontent-sin6-4.xx.fbcdn.net/v/t39.30808-6/466671414_609410168083005_8097825757341154155_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=8jtSYhZs-jwQ7kNvgFvA894&_nc_zt=23&_nc_ht=scontent-sin6-4.xx&_nc_gid=AdpBnWLhsQwiaMHJM-XxtrT&oh=00_AYBUWmsSJpuKt8bpePbnE8JBzqfG1aTruHSzzclzV3hFGA&oe=679283FE",
+      "https://scontent-sin6-2.xx.fbcdn.net/v/t39.30808-6/473190843_122184659582124704_7315315499555756655_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_ohc=aEP8i2CTOfgQ7kNvgEGz9YN&_nc_zt=23&_nc_ht=scontent-sin6-2.xx&_nc_gid=A9BpCX5GSRWdJPecjKqOwPk&oh=00_AYCogkiPRkEr61VMl2OYNG2RSu8sdEvjh3-JECKzG_nSjw&oe=6792ABBA",
+      "https://scontent-sin6-2.xx.fbcdn.net/v/t39.30808-6/468330783_1117394349750398_6475201724260019785_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_ohc=dW5obvH-m5EQ7kNvgEGBjoO&_nc_zt=23&_nc_ht=scontent-sin6-2.xx&_nc_gid=AYSKtw_7DF9KNaP01a4vkoL&oh=00_AYBeElsQeaGNLm1v83j0MTcggCy4tZrFv4F-qAP8HRlAjw&oe=67928347",
+    ],
+    likes: 4567,
+    comments: 90,
+    created_at: new Date(),
+    isLiked: true,
+  },
+  {
+    id: 5,
+    user_id: "5",
+    username: "eve",
+    caption: "Ai wa doko kara yatte kuru no deshou~♪",
+    files: [
+      "https://scontent-sin11-1.xx.fbcdn.net/v/t39.30808-6/464555634_1127769138908512_7135609189352348596_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=127cfc&_nc_ohc=vJ18ks8nLrQQ7kNvgGxyZTW&_nc_zt=23&_nc_ht=scontent-sin11-1.xx&_nc_gid=Ag7I27Rk3tEWoiYzjX23vat&oh=00_AYBUs1CIFVRZkc5ZkwvUAzZyCncTddAKtXvEaLXs_jQl-g&oe=67928898",
+    ],
+    likes: 5678,
+    comments: 123,
+    created_at: new Date(),
+    isLiked: true,
+  },
+  {
+    id: 6,
+    user_id: "5",
+    username: "eve",
+    caption: "Kotone =w=",
+    files: [
+      "https://scontent-sin6-2.xx.fbcdn.net/v/t39.30808-6/473008497_122172874844270068_8603120227730500278_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_ohc=sHf691fheRIQ7kNvgFce0nx&_nc_zt=23&_nc_ht=scontent-sin6-2.xx&_nc_gid=ADPgEjLnFFz-2r6tGuZd9O1&oh=00_AYAnPlv66aFs6mK50KLZBW9bNJ6eBJVRlkbS0yFHiWjukQ&oe=6792B417",
+    ],
+    likes: 5678,
+    comments: 123,
+    created_at: new Date(),
+    isLiked: true,
+  },
+];

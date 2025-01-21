@@ -12,7 +12,13 @@ export default function ProtectedLayout({
       <main
         className={clsx("size-full lg:max-w-screen-md", "shrink-0", "relative")}
       >
-        <div className="flex justify-between items-center h-14 px-3 absolute top-0 left-0 right-0">
+        <div
+          className={clsx(
+            "flex justify-between items-center",
+            "h-14 px-3",
+            "absolute top-0 left-0 right-0"
+          )}
+        >
           <Brand className="h-9" />
           <ModeToggle />
         </div>

@@ -26,6 +26,7 @@ import {
   PasswordInput,
 } from "../_components";
 import { Divider } from "@/components";
+import { CircleInfo } from "@/components/icons";
 import { ROUTE } from "@/constants/serverConfig";
 
 export default function SignUpPage() {
@@ -54,13 +55,7 @@ export default function SignUpPage() {
         onClick={() => setShowDetails(!showDetails)}
         className="absolute top-7 right-3 "
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          className="fill-blue-500 dark:fill-blue-400"
-        >
-          <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
-        </svg>
+        <CircleInfo className="fill-blue-500 dark:fill-blue-400" />
       </Button>
 
       <Form {...form}>
