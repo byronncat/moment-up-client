@@ -2,12 +2,14 @@
 
 import type { z } from "zod";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { loginFormSchema } from "@/lib/zodSchema";
+import { useAuth } from "@/components/providers";
+import { ROUTE } from "@/constants/serverConfig";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -16,27 +18,30 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-
 import {
   GoogleButton,
   NavigationText,
   PageTitle,
   PasswordInput,
+  SubmitButton,
 } from "../_components";
 import { Divider } from "@/components";
-import { ROUTE } from "@/constants/serverConfig";
 
 export default function LoginPage() {
+  const { login } = useAuth();
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      identity: "",
-      password: "",
+      identity: "Byron",
+      password: "12345678",
     },
   });
 
-  function onLogin(values: z.infer<typeof loginFormSchema>) {
-    console.log(values);
+  const [loading, setLoading] = useState(false);
+  async function onLogin(values: z.infer<typeof loginFormSchema>) {
+    setLoading(true);
+    await login(values);
+    setLoading(false);
   }
 
   return (
@@ -54,6 +59,7 @@ export default function LoginPage() {
                     <Input
                       placeholder="Username or Email"
                       className="h-10 bg-card"
+                      autoComplete="username"
                       {...field}
                     />
                   </FormControl>
@@ -70,6 +76,7 @@ export default function LoginPage() {
                     <PasswordInput
                       placeholder="Pasword"
                       className="h-10 bg-card"
+                      autoComplete="current-password"
                       {...field}
                     />
                   </FormControl>
@@ -85,16 +92,7 @@ export default function LoginPage() {
               hyperlink="Forgot your password?"
               className="text-right mb-2"
             />
-            <Button
-              type="submit"
-              className={clsx(
-                "size-full h-10",
-                "text-white font-semibold",
-                "flex justify-center items-center"
-              )}
-            >
-              Login
-            </Button>
+            <SubmitButton loading={loading}>Login</SubmitButton>
           </div>
         </form>
       </Form>

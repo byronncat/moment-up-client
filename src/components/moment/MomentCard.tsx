@@ -55,22 +55,21 @@ export default function MomentCard({ data }: MomentCardProps) {
                 <div
                   className={cn(
                     "flex items-center justify-center",
-                    "w-full aspect-[4/5]"
+                    "w-full aspect-[4/5]",
+                    "flex items-center justify-center",
+                    "relative"
                   )}
                 >
-                  <div
-                    className={cn(
-                      "size-full",
-                      "bg-muted",
-                      "flex items-center justify-center"
-                    )}
-                  >
-                    <img
-                      src={file}
-                      alt="Post content"
-                      className={cn("object-cover", "block h-full w-auto")}
-                    />
-                  </div>
+                  <Image
+                    src={file}
+                    alt="Post content"
+                    className={cn("object-cover", "size-full")}
+                    fill
+                    sizes="(min-width: 640px) 640px, 100vw"
+                    quality={100}
+                    placeholder="blur"
+                    blurDataURL={file}
+                  />
                 </div>
               </CarouselItem>
             ))}

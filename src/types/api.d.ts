@@ -6,4 +6,10 @@ declare module "api" {
       comments: number;
       isLiked: boolean;
     };
+
+  type API<T = void> = {
+    success: boolean;
+    message: string;
+    data?: T;
+  };
 }

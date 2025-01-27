@@ -1,0 +1,130 @@
+.configure-border-1 {
+  animation: configure-xclockwise 5.6s ease-in-out 0s infinite;
+}
+
+.configure-border-2 {
+  animation: configure-clockwise 5.6s ease-in-out 0s infinite;
+}
+
+.configure-core {
+  box-shadow:
+    0 0 0.2rem #f73b77,
+    0 0 0.2rem #f73b77,
+    0 0 2rem #f73b77,
+    0 0 0.8rem #f73b77,
+    0 0 2.8rem #f73b77,
+    inset 0 0 1.3rem #f73b77;
+}
+
+:global(.dark) .configure-core {
+  box-shadow:
+    0 0 0.2rem #fc548f,
+    0 0 0.2rem #fc548f,
+    0 0 2rem #fc548f,
+    0 0 0.8rem #fc548f,
+    0 0 2.8rem #fc548f,
+    inset 0 0 1.3rem #fc548f;
+}
+
+@keyframes configure-clockwise {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes configure-xclockwise {
+  0% {
+    transform: rotate(45deg);
+  }
+  25% {
+    transform: rotate(-45deg);
+  }
+  50% {
+    transform: rotate(-135deg);
+  }
+  75% {
+    transform: rotate(-225deg);
+  }
+  100% {
+    transform: rotate(-315deg);
+  }
+}
+
+.waviy span {
+  font-weight: 700;
+  letter-spacing: 0.2rem;
+  position: relative;
+  display: inline-block;
+  animation: waviy 1.4s infinite;
+}
+
+.waviy span:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.waviy span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.waviy span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.waviy span:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.waviy span:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.waviy span:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.waviy span:nth-child(7) {
+  animation-delay: 0.7s;
+}
+
+.waviy span:nth-child(8) {
+  animation-delay: 0.8s;
+}
+
+.waviy span:nth-child(9) {
+  animation-delay: 0.9s;
+}
+
+.waviy span:nth-child(10) {
+  animation-delay: 1s;
+}
+
+.waviy span:nth-child(11) {
+  animation-delay: 1.1s;
+}
+
+.waviy span:nth-child(12) {
+  animation-delay: 1.2s;
+}
+
+@keyframes waviy {
+  0%,
+  40%,
+  100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-5px);
+  }
+}

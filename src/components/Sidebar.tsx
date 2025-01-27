@@ -1,6 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { useAuth } from "./providers";
+import { ROUTE } from "@/constants/serverConfig";
+
+import Logo from "./Logo";
 import { Compass, Home, SquarePlus, Search, Menu, User } from "lucide-react";
 import {
   Sidebar as SidebarUI,
@@ -14,9 +19,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import Logo from "./Logo";
-import { cn } from "@/lib/utils";
-import { ROUTE } from "@/constants/serverConfig";
 import { sourceCodePro } from "@/styles/fonts";
 
 const items = [
@@ -49,6 +51,7 @@ const items = [
 
 export default function Sidebar() {
   const { open } = useSidebar();
+  const { logout } = useAuth();
 
   return (
     <SidebarUI collapsible="icon">
@@ -95,6 +98,17 @@ export default function Sidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <button
+                onClick={() => {
+                  console.log("Logout");
+                  logout();
+                }}
+              >
+                <User />
+                <span>Logout</span>
+              </button>
+            </SidebarMenuButton>
             <SidebarMenuButton asChild>
               <Link href="#">
                 <Menu />

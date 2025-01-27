@@ -1,4 +1,6 @@
 import type { MomentUI } from "api";
+
+import Image from "next/image";
 import { Heart, Comment, Clone } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
@@ -13,12 +15,15 @@ export default function MomentCell({ data }: MomentCellProps) {
         className={cn(
           "aspect-square overflow-hidden",
           "bg-card",
-          "hover:cursor-pointer"
+          "hover:cursor-pointer",
+          "relative"
         )}
       >
-        <img
+        <Image
           src={data.files[0]}
-          alt={data.caption}
+          alt={data.caption || "Moment"}
+          fill
+          sizes="(min-width: 640px) 640px, 100vw"
           className="size-full object-cover object-top"
         />
 

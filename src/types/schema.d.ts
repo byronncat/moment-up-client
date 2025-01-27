@@ -3,7 +3,7 @@ declare module "schema" {
     readonly id: uuidv4;
     username: string;
     email: string;
-    password_hash: string;
+    password_hash?: string;
     bio?: string;
     profile_picture?: string;
     readonly created_at: Date;

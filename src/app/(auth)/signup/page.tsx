@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { signupFormSchema } from "@/lib/zodSchema";
+import { useAuth } from "@/components/providers";
+import { ROUTE } from "@/constants/serverConfig";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,26 +26,29 @@ import {
   NavigationText,
   PageTitle,
   PasswordInput,
+  SubmitButton,
 } from "../_components";
 import { Divider } from "@/components";
 import { CircleInfo } from "@/components/icons";
-import { ROUTE } from "@/constants/serverConfig";
 
 export default function SignUpPage() {
+  const { signup } = useAuth();
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
-      email: "",
-      username: "",
-      password: "",
+      email: "ByronAT445@gmail.com",
+      username: "Byron",
+      password: "12345678",
     },
   });
 
-  function onSignup(values: z.infer<typeof signupFormSchema>) {
-    console.log(values);
-  }
-
   const [showDetails, setShowDetails] = useState(false);
+  const [loading, setLoading] = useState(false);
+  async function onSignup(values: z.infer<typeof signupFormSchema>) {
+    setLoading(true);
+    await signup(values);
+    setLoading(false);
+  }
 
   return (
     <div className={clsx("w-96 rounded-lg", "px-5 pt-6 pb-5", "relative")}>
@@ -69,8 +74,9 @@ export default function SignUpPage() {
                   <FormControl>
                     <Input
                       placeholder="Email"
-                      {...field}
                       className="h-10 bg-card"
+                      autoComplete="email"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -85,14 +91,15 @@ export default function SignUpPage() {
                   <FormControl>
                     <Input
                       placeholder="Username"
-                      {...field}
                       className="h-10 bg-card"
+                      autoComplete="username"
+                      {...field}
                     />
                   </FormControl>
                   {showDetails && (
                     <FormDescription className="text-xs">
                       Only letters, numbers, dots, underscores, and hyphens are
-                      allowed.
+                      allowed and must be at least 2 characters.
                     </FormDescription>
                   )}
                   <FormMessage />
@@ -106,10 +113,10 @@ export default function SignUpPage() {
                 <FormItem>
                   <FormControl>
                     <PasswordInput
-                      type="password"
                       placeholder="Pasword"
-                      {...field}
                       className="h-10 bg-card"
+                      autoComplete="new-password"
+                      {...field}
                     />
                   </FormControl>
                   {showDetails && (
@@ -123,16 +130,7 @@ export default function SignUpPage() {
             />
           </div>
 
-          <Button
-            type="submit"
-            className={clsx(
-              "size-full h-10 mt-6",
-              "text-white font-semibold",
-              "flex justify-center items-center"
-            )}
-          >
-            Sign up
-          </Button>
+          <SubmitButton loading={loading}>Sign up</SubmitButton>
         </form>
       </Form>
 

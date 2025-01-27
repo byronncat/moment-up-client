@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import clsx from "clsx";
-import { ThemeProvider } from "@/components/providers";
+import { AuthProvider, ThemeProvider } from "@/components/providers";
+import { Toaster } from "@/components/ui/toaster";
 import {
   monoton,
   montserrat,
@@ -45,7 +46,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

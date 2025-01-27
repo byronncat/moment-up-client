@@ -1,11 +1,16 @@
 import Image from "next/image";
+import { cookies } from "next/headers";
 import clsx from "clsx";
 import { ModeToggle, Brand } from "@/components";
 import backgroundImg from "@/assets/imgs/night-neon.avif";
 
-export default function ProtectedLayout({
+export default async function AuthLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const cookieStore = await cookies();
+  const session = cookieStore.get("session");
+
+  if (session) return null;
   return (
     <div className={clsx("w-screen h-screen", "flex")}>
       <AsideBackground />
