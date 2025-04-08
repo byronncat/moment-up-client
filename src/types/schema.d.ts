@@ -12,8 +12,11 @@ declare module "schema" {
   export type Moment = {
     readonly id: serial;
     readonly user_id: User["id"];
-    caption?: string;
-    files: string[];
+    text?: string;
+    files?: {
+      type: "image" | "video";
+      url: string;
+    }[];
     readonly created_at: Date;
   };
 

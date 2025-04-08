@@ -46,10 +46,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>
-            {children}
-            <Toaster />
-          </AuthProvider>
+          {/* <AuthProvider> */}
+          {children}
+          <Toaster />
+          {/* </AuthProvider> */}
         </ThemeProvider>
       </body>
     </html>

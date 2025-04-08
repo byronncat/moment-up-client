@@ -5,7 +5,7 @@ import type { z } from "zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import clsx from "clsx";
+import { cn } from "@/lib/utils";
 import { signupFormSchema } from "@/lib/zodSchema";
 import { useAuth } from "@/components/providers";
 import { ROUTE } from "@/constants/serverConfig";
@@ -20,6 +20,12 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import {
   GoogleButton,
@@ -51,17 +57,34 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className={clsx("w-96 rounded-lg", "px-5 pt-6 pb-5", "relative")}>
+    <div className={cn("w-96 rounded-lg", "px-5 pt-6 pb-5", "relative")}>
       <PageTitle title="Sign up" />
 
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => setShowDetails(!showDetails)}
-        className="absolute top-7 right-3 "
-      >
-        <CircleInfo className="fill-blue-500 dark:fill-blue-400" />
-      </Button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowDetails(!showDetails)}
+              className="absolute top-7 right-3"
+            >
+              <CircleInfo className="fill-blue-500 dark:fill-blue-400" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent
+            className={cn(
+              "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
+              "text-xs",
+              "px-2 py-1 rounded-md",
+              "border-none shadow-md"
+            )}
+            sideOffset={6}
+          >
+            <p>Show details</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSignup)}>
@@ -130,11 +153,13 @@ export default function SignUpPage() {
             />
           </div>
 
-          <SubmitButton loading={loading}>Sign up</SubmitButton>
+          <SubmitButton loading={loading} className="mt-6">
+            Sign up
+          </SubmitButton>
         </form>
       </Form>
 
-      <Divider text="OR" className={clsx("my-2", "text-xs")} />
+      <Divider text="OR" className={cn("my-2", "text-xs")} />
 
       <div>
         <GoogleButton />
@@ -142,7 +167,7 @@ export default function SignUpPage() {
           text="Already have an account?"
           path={ROUTE.LOGIN}
           hyperlink="Login"
-          className={clsx("w-full mt-3", "text-center")}
+          className={cn("w-full mt-3", "text-center")}
         />
       </div>
     </div>

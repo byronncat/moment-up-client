@@ -5,7 +5,7 @@ import type { z } from "zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import clsx from "clsx";
+import { cn } from "@/lib/utils";
 import { loginFormSchema } from "@/lib/zodSchema";
 import { useAuth } from "@/components/providers";
 import { ROUTE } from "@/constants/serverConfig";
@@ -45,7 +45,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className={clsx("w-96 rounded-lg", "px-5 pt-6 pb-5")}>
+    <div className={cn("w-96 rounded-lg", "px-5 pt-6 pb-5")}>
       <PageTitle title="Login" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onLogin)}>
@@ -97,7 +97,7 @@ export default function LoginPage() {
         </form>
       </Form>
 
-      <Divider text="OR" className={clsx("my-2", "text-xs")} />
+      <Divider text="OR" className={cn("my-2", "text-xs")} />
 
       <div>
         <GoogleButton />
@@ -105,7 +105,7 @@ export default function LoginPage() {
           text="Don't have an account?"
           path={ROUTE.SIGNUP}
           hyperlink="Sign up"
-          className={clsx("w-full mt-3", "text-center")}
+          className={cn("w-full mt-3", "text-center")}
         />
       </div>
     </div>

@@ -1,17 +1,23 @@
 import { cookies } from "next/headers";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 import { Sidebar } from "@/components";
 import { ModeToggle } from "@/components";
-import { cn } from "@/lib/utils";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
-export default async function ProtectedLayout({
+export default async function Layout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  stories,
+  moments,
+}: Readonly<{
+  children: React.ReactNode;
+  stories: React.ReactNode;
+  moments: React.ReactNode;
+}>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar-state")?.value === "true";
   const session = cookieStore.get("session");
 
-  if (!session) return null;
+  // if (!session) return null;
   return (
     <div className="w-screen h-screen">
       <SidebarProvider defaultOpen={defaultOpen}>
@@ -28,7 +34,7 @@ export default async function ProtectedLayout({
               <SidebarTrigger className="mt-5 text-foreground" />
               <ModeToggle />
             </div>
-            <main className="-mt-14">{children}</main>
+            <div className="-mt-14">{children}</div>
           </div>
         </div>
       </SidebarProvider>

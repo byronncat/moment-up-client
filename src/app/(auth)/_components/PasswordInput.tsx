@@ -2,9 +2,8 @@ import type { InputProps } from "@/components/ui/input";
 
 import { forwardRef, useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import clsx from "clsx";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
   ({ className, ...props }, ref) => {
@@ -21,7 +20,8 @@ const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
         {props.value && props.value !== "" && !props.disabled && (
           <button
             type="button"
-            className={clsx(
+            className={cn(
+              "cursor-pointer",
               "absolute right-0 top-0",
               "h-full px-3 py-2",
               "text-card-foreground",

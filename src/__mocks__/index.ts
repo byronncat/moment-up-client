@@ -1,13 +1,192 @@
 import type { MomentUI } from "api";
 
+// Feeds mock data
+export const mockFeeds = [
+  {
+    id: 1,
+    name: "Renata Fan",
+    image: "https://pbs.twimg.com/media/Ey_iMF0VcAImHMn?format=jpg&name=4096x4096"
+  },
+  {
+    id: 2,
+    name: "Renata Saldanha",
+    image: "https://pbs.twimg.com/media/F5QLnHfbIAAdrzv?format=jpg&name=large"
+  },
+  {
+    id: 3,
+    name: "Renata Lo Prete",
+    image: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096"
+  },
+  {
+    id: 4,
+    name: "Renata Ceribelli",
+    image: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096"
+  },
+  {
+    id: 5,
+    name: "Renata Mathias",
+    image: "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096"
+  },
+  {
+    id: 6,
+    name: "Renata Barreto",
+    image: "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096"
+  },
+  {
+    id: 7,
+    name: "Renata Silveira",
+    image: "https://pbs.twimg.com/media/GOesRcMaUAAr4Fn?format=jpg&name=large"
+  },
+  {
+    id: 8,
+    name: "Renata Agostini",
+    image: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large"
+  },
+  {
+    id: 9,
+    name: "Renata Souza",
+    image: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large"
+  },
+  {
+    id: 10,
+    name: "Renata Vasconcellos",
+    image: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large"
+  },
+  {
+    id: 11,
+    name: "Renata Capucci",
+    image: "https://pbs.twimg.com/media/GDI8eMpboAAFxSg?format=jpg&name=medium"
+  },
+  {
+    id: 12,
+    name: "Renata Heilborn",
+    image: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large"
+  },
+  {
+    id: 13,
+    name: "Renata Mendonça",
+    image: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large"
+  },
+  {
+    id: 14,
+    name: "Renata Abreu",
+    image: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large"
+  },
+  {
+    id: 15,
+    name: "Renata Banhara",
+    image: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large"
+  },
+  {
+    id: 16,
+    name: "Renata Sorrah",
+    image: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large"
+  },
+  {
+    id: 17,
+    name: "Renata Castro",
+    image: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large"
+  },
+  {
+    id: 18,
+    name: "Renata Campos",
+    image: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large"
+  },
+  {
+    id: 19,
+    name: "Renata Flores",
+    image: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large"
+  },
+  {
+    id: 20,
+    name: "Renata Gomes",
+    image: "https://pbs.twimg.com/media/GDI8eMpboAAFxSg?format=jpg&name=medium"
+  },
+  {
+    id: 21,
+    name: "Renata Lima",
+    image: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large"
+  },
+  {
+    id: 22,
+    name: "Renata Martins",
+    image: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large"
+  },
+  {
+    id: 23,
+    name: "Renata Nunes",
+    image: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large"
+  },
+  {
+    id: 24,
+    name: "Renata Oliveira",
+    image: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large"
+  },
+  {
+    id: 25,
+    name: "Renata Pereira",
+    image: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large"
+  },
+  {
+    id: 26,
+    name: "Renata Quintana",
+    image: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large"
+  },
+  {
+    id: 27,
+    name: "Renata Ribeiro",
+    image: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large"
+  },
+  {
+    id: 28,
+    name: "Renata Santos",
+    image: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large"
+  },
+  {
+    id: 29,
+    name: "Renata Teixeira",
+    image: "https://pbs.twimg.com/media/GDI8eMpboAAFxSg?format=jpg&name=medium"
+  },
+  {
+    id: 30,
+    name: "Renata Vasconcelos",
+    image: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large"
+  }
+];
+
+// Footer links mock data
+export const mockFooterLinks = [
+  { text: "About", href: "#" },
+  { text: "Help", href: "#" },
+  { text: "Press", href: "#" },
+  { text: "API", href: "#" },
+  { text: "Jobs", href: "#" },
+  { text: "Privacy", href: "#" },
+  { text: "Terms", href: "#" },
+  { text: "Locations", href: "#" },
+  { text: "Language", href: "#" },
+  { text: "Meta Verified", href: "#" },
+];
+
+// Current user mock data
+export const mockCurrentUser = {
+  id: "me",
+  username: "current_user",
+  name: "Your Name",
+  avatar: "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
+};
+
 export const mockMoments: MomentUI[] = [
   {
     id: 1,
     user_id: "1",
     username: "alice",
-    caption: "Sweat Herta =w=",
+    text: "Beautiful day at the beach 🌊",
     files: [
-      "https://scontent-sin2-1.xx.fbcdn.net/v/t39.30808-6/473798204_122174025506270068_4840251831997055816_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_ohc=VpiRSKXmmmIQ7kNvgFQX3lY&_nc_zt=23&_nc_ht=scontent-sin2-1.xx&_nc_gid=Acy-VGD4cpjKJHA3imInljr&oh=00_AYCVfPmFa3-Nrz4xUPG_Bp19GHcu7DOQDIVe3pXhYzswTA&oe=67927A72",
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
+      },
     ],
     likes: 1234,
     comments: 45,
@@ -18,10 +197,16 @@ export const mockMoments: MomentUI[] = [
     id: 2,
     user_id: "2",
     username: "bob",
-    caption: "Shupogaki =w=",
+    text: "City lights and night vibes ✨",
     files: [
-      "https://scontent-sin6-3.xx.fbcdn.net/v/t39.30808-6/473692734_122173194632270068_8649647960815991408_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=ZZYw0LSViuQQ7kNvgE6PnHF&_nc_zt=23&_nc_ht=scontent-sin6-3.xx&_nc_gid=A-nHfnPhBfZQ9JIqgllfhQ_&oh=00_AYD7d0ilKh4zZ0Rp2P0z67m62sWdxKi2J0by8dMc2XJcuw&oe=6792937F",
-      "https://scontent-sin11-1.xx.fbcdn.net/v/t39.30808-6/473422581_122173194668270068_4881117216651849754_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=127cfc&_nc_ohc=lH-lzflkuhkQ7kNvgELKCUG&_nc_zt=23&_nc_ht=scontent-sin11-1.xx&_nc_gid=AIwz7k8ZFDYarCt9QmLj6Gv&oh=00_AYD20SssTzwNlQlzIwcxoZ-24_LOXumErbKUsP8L7edylg&oe=67928ED8",
+      {
+        type: "image",
+        url: "https://scontent-hkg1-2.cdninstagram.com/v/t51.2885-15/484396236_17855197362398163_2489887654681098974_n.jpg?stp=dst-jpg_e15_tt6&_nc_ht=scontent-hkg1-2.cdninstagram.com&_nc_oc=Q6cZ2QEM9pyT59uCPkJgav10bu7X4YHhfZZ6Wke-tbEg7x-Dcif_LsiPZCtM0rjbF9wqFH9OPz7_DcMSlad3bKluduzu&_nc_ohc=FV5wBT-BL2gQ7kNvwGBIKkK&_nc_gid=wC-T5Qg7SQVeyCR4ks-rQw&edm=AFY8k0kBAAAA&ig_cache_key=MzU4ODgwODAyNzQ2ODExMDY0Ng%3D%3D.3-ccb7-5&oh=00_AfFMfhWR9fOKtz_lSevQqHLOXJXot_Il-e8VjeJ0KVfnSg&oe=67F85377",
+      },
+      {
+        type: "image",
+        url: "https://scontent-hkg1-2.cdninstagram.com/v/t51.2885-15/484404902_17855197365398163_2363485767902053897_n.jpg?stp=dst-jpg_e15_tt6&_nc_ht=scontent-hkg1-2.cdninstagram.com&_nc_oc=Q6cZ2QFx6t5UobXCLdRI46Otf5-1UmnHHNTldyrIUm6QfyAleidD67Kqtwut12SEYoIXRTcQtKODkOFYYO1tB4oFZtI_&_nc_ohc=_zdtAxEjHW8Q7kNvwGpuj96&_nc_gid=zLaZBpCb04Aw2pUh3arCGA&edm=AFY8k0kBAAAA&ig_cache_key=MzU4ODgwODAyNzYwMjE2MzQ0OA%3D%3D.3-ccb7-5&oh=00_AfESJMSwCYiewGH09KDV6ZUeuas4-VT3xrUdAdYkm-s8Og&oe=67F882B6",
+      },
     ],
     likes: 2345,
     comments: 67,
@@ -32,9 +217,12 @@ export const mockMoments: MomentUI[] = [
     id: 3,
     user_id: "3",
     username: "charlie",
-    caption: "Sunset at the beach",
+    text: "Sunset vibes 🌅",
     files: [
-      "https://scontent-sin2-1.xx.fbcdn.net/v/t39.30808-6/467731972_3929993883991907_5545603721683030501_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=100&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=Lbx0Lx9TZHMQ7kNvgGzjE8i&_nc_zt=23&_nc_ht=scontent-sin2-1.xx&_nc_gid=A0SgAPa9khf-gLyL1rlsKoR&oh=00_AYCUU8F3pwTBG4J7vLOoA2uwPTtNNESjLcANPekSXOkNXw&oe=67927C20",
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
+      },
     ],
     likes: 3456,
     comments: 89,
@@ -45,12 +233,24 @@ export const mockMoments: MomentUI[] = [
     id: 4,
     user_id: "4",
     username: "dave",
-    caption: "Sunset at the beach",
+    text: "Exploring new places 🗺️",
     files: [
-      "https://scontent-sin6-4.xx.fbcdn.net/v/t39.30808-6/465909061_1133149088380764_8568786969892863981_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=00utxrhMic8Q7kNvgF7j-MY&_nc_zt=23&_nc_ht=scontent-sin6-4.xx&_nc_gid=A-CJfP8nwZY1jOAWOUIpphi&oh=00_AYBZNf6Owz0SNrvqsYEVBc7nd9ucrf-1R-xpntGlDLTN7Q&oe=6792886F",
-      "https://scontent-sin6-4.xx.fbcdn.net/v/t39.30808-6/466671414_609410168083005_8097825757341154155_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=8jtSYhZs-jwQ7kNvgFvA894&_nc_zt=23&_nc_ht=scontent-sin6-4.xx&_nc_gid=AdpBnWLhsQwiaMHJM-XxtrT&oh=00_AYBUWmsSJpuKt8bpePbnE8JBzqfG1aTruHSzzclzV3hFGA&oe=679283FE",
-      "https://scontent-sin6-2.xx.fbcdn.net/v/t39.30808-6/473190843_122184659582124704_7315315499555756655_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_ohc=aEP8i2CTOfgQ7kNvgEGz9YN&_nc_zt=23&_nc_ht=scontent-sin6-2.xx&_nc_gid=A9BpCX5GSRWdJPecjKqOwPk&oh=00_AYCogkiPRkEr61VMl2OYNG2RSu8sdEvjh3-JECKzG_nSjw&oe=6792ABBA",
-      "https://scontent-sin6-2.xx.fbcdn.net/v/t39.30808-6/468330783_1117394349750398_6475201724260019785_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_ohc=dW5obvH-m5EQ7kNvgEGBjoO&_nc_zt=23&_nc_ht=scontent-sin6-2.xx&_nc_gid=AYSKtw_7DF9KNaP01a4vkoL&oh=00_AYBeElsQeaGNLm1v83j0MTcggCy4tZrFv4F-qAP8HRlAjw&oe=67928347",
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/Ey_iMF0VcAImHMn?format=jpg&name=4096x4096",
+      },
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/F5QLnHfbIAAdrzv?format=jpg&name=large",
+      },
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
+      },
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
+      },
     ],
     likes: 4567,
     comments: 90,
@@ -61,9 +261,12 @@ export const mockMoments: MomentUI[] = [
     id: 5,
     user_id: "5",
     username: "eve",
-    caption: "Ai wa doko kara yatte kuru no deshou~♪",
+    text: "Coffee and good vibes ☕️",
     files: [
-      "https://scontent-sin11-1.xx.fbcdn.net/v/t39.30808-6/464555634_1127769138908512_7135609189352348596_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=127cfc&_nc_ohc=vJ18ks8nLrQQ7kNvgGxyZTW&_nc_zt=23&_nc_ht=scontent-sin11-1.xx&_nc_gid=Ag7I27Rk3tEWoiYzjX23vat&oh=00_AYBUs1CIFVRZkc5ZkwvUAzZyCncTddAKtXvEaLXs_jQl-g&oe=67928898",
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
+      },
     ],
     likes: 5678,
     comments: 123,
@@ -74,13 +277,200 @@ export const mockMoments: MomentUI[] = [
     id: 6,
     user_id: "5",
     username: "eve",
-    caption: "Kotone =w=",
+    text: "Weekend getaway 🏖️",
     files: [
-      "https://scontent.fsgn5-10.fna.fbcdn.net/v/t39.30808-6/474611329_1156939599129206_2421274037165678951_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_ohc=xSIbE0fKbfwQ7kNvgFlOLIW&_nc_zt=23&_nc_ht=scontent.fsgn5-10.fna&_nc_gid=AtZkOKoYMdAtICU85HsC2yb&oh=00_AYB6xyf3tXii6EIRDq6VoHAOstqLopXTk1YchzUJG4sgNQ&oe=679C0326",
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
+      },
     ],
     likes: 5678,
     comments: 123,
     created_at: new Date(),
     isLiked: true,
   },
+  {
+    id: 7,
+    user_id: "6",
+    username: "frank",
+    text: "Just sharing my thoughts for today... Life is beautiful when you appreciate the little things. Every moment counts, and I'm grateful for all the experiences that shape who I am. 🌟",
+    likes: 1234,
+    comments: 45,
+    created_at: new Date(),
+    isLiked: false,
+  },
+  {
+    id: 8,
+    user_id: "7",
+    username: "grace",
+    text: "Check out this amazing video! 🎥",
+    files: [
+      {
+        type: "video",
+        url: "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+      },
+    ],
+    likes: 2345,
+    comments: 67,
+    created_at: new Date(),
+    isLiked: false,
+  },
+  {
+    id: 9,
+    user_id: "8",
+    username: "henry",
+    text: "A beautiful day captured in both words and images 🌞",
+    files: [
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
+      },
+      {
+        type: "video",
+        url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      },
+    ],
+    likes: 3456,
+    comments: 89,
+    created_at: new Date(),
+    isLiked: false,
+  },
+];
+
+// Suggested users mock data
+export const mockSuggestedUsers = [
+  {
+    id: 1,
+    username: "johndoe",
+    name: "John Doe",
+    avatar: "https://pbs.twimg.com/media/F5QLnHfbIAAdrzv?format=jpg&name=large",
+    followedBy: "user123",
+  },
+  {
+    id: 2,
+    username: "janedoe",
+    name: "Jane Doe",
+    avatar: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
+    followedBy: "user456",
+  },
+  {
+    id: 3,
+    username: "alexsmith",
+    name: "Alex Smith",
+    avatar: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
+    followedBy: "user789",
+  },
+  {
+    id: 4,
+    username: "sarahjones",
+    name: "Sarah Jones",
+    avatar: "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
+    followedBy: "user101",
+  },
+  {
+    id: 5,
+    username: "mikebrown",
+    name: "Mike Brown",
+    avatar: "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
+    followedBy: "user202",
+  },
+];
+
+// Search history mock data
+export const mockRecentSearches = [
+  {
+    id: 1,
+    type: "user" as const,
+    username: "renata",
+    name: "Renata",
+    avatar: "https://pbs.twimg.com/media/GOesRcMaUAAr4Fn?format=jpg&name=large",
+    verified: false
+  },
+  {
+    id: 2,
+    type: "user" as const,
+    username: "renataSaldanha",
+    name: "Renata Saldanha",
+    avatar: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
+    verified: true
+  },
+  {
+    id: 3,
+    type: "user" as const,
+    username: "RenataFan",
+    name: "Renata Fan",
+    avatar: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large",
+    verified: true
+  },
+  {
+    id: 4,
+    type: "user" as const,
+    username: "renataloprete",
+    name: "Renata Lo Prete",
+    avatar: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large",
+    verified: true
+  },
+  {
+    id: 5,
+    type: "user" as const,
+    username: "renataceribelli",
+    name: "renata ceribelli",
+    avatar: "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
+    verified: false
+  },
+  {
+    id: 6,
+    type: "user" as const,
+    username: "renatamathias",
+    name: "Renata Mathias",
+    avatar: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
+    verified: false
+  },
+  {
+    id: 7,
+    type: "user" as const,
+    username: "renatabarreto",
+    name: "Renata Barreto",
+    avatar: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large",
+    verified: true
+  },
+  {
+    id: 8,
+    type: "user" as const,
+    username: "renataSilveira",
+    name: "Renata Silveira",
+    avatar: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
+    verified: false
+  },
+  {
+    id: 9,
+    type: "user" as const,
+    username: "renataagostini",
+    name: "Renata Agostini",
+    avatar: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
+    verified: false
+  },
+  {
+    id: 10,
+    type: "user" as const,
+    username: "renataSouza",
+    name: "Renata Souza",
+    avatar: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large",
+    verified: true
+  },
+  {
+    id: 11,
+    type: "search" as const,
+    query: "renata"
+  },
+  {
+    id: 12,
+    type: "search" as const,
+    query: "renata saldanha"
+  },
+  {
+    id: 13,
+    type: "search" as const,
+    query: "renata bbb"
+  }
 ];

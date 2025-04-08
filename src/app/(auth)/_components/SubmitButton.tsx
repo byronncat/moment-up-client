@@ -5,17 +5,23 @@ import { Button } from "@/components/ui/button";
 type SubmitButtonProps = Readonly<{
   loading?: boolean;
   children?: React.ReactNode;
+  className?: string;
 }>;
 
-export default function SubmitButton({ loading, children }: SubmitButtonProps) {
+export default function SubmitButton({
+  loading,
+  children,
+  className,
+}: SubmitButtonProps) {
   return (
     <Button
       type="submit"
       disabled={loading}
       className={cn(
-        "size-full h-10 mt-6",
+        "size-full h-10",
         "text-white font-semibold",
-        "flex justify-center items-center"
+        "flex justify-center items-center",
+        className
       )}
     >
       <span className="relative">

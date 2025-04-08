@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { useAuth } from "./providers";
+import { cn } from "@/lib/utils";
 import { ROUTE } from "@/constants/serverConfig";
 
 import Logo from "./Logo";
@@ -63,16 +63,18 @@ export default function Sidebar() {
               className="hover:bg-transparent active:bg-transparent"
             >
               {!open && <Logo />}
-              <div
-                className={cn(
-                  "text-primary",
-                  "font-bold text-2xl tracking-wide",
-                  !open && "hidden",
-                  sourceCodePro.className
-                )}
-              >
-                MomentUp
-              </div>
+              <Link href={ROUTE.HOME}>
+                <div
+                  className={cn(
+                    "text-primary",
+                    "font-bold text-2xl tracking-wide",
+                    !open && "hidden",
+                    sourceCodePro.className
+                  )}
+                >
+                  MomentUp
+                </div>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

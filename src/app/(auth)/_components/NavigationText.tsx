@@ -1,11 +1,11 @@
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import clsx from "clsx";
 
 type NavigationTextProps = Readonly<{
   text?: string;
   path: string;
   hyperlink: string;
-  className: string;
+  className?: string;
 }>;
 
 export default function NavigationText({
@@ -15,11 +15,11 @@ export default function NavigationText({
   className,
 }: NavigationTextProps) {
   return (
-    <p className={clsx(className, "text-sm")}>
-      {text && `${text} `}
+    <div className={cn("text-sm", className)}>
+      {text && <span className="text-muted-foreground">{text} </span>}
       <Link
         href={path}
-        className={clsx(
+        className={cn(
           "text-primary",
           "font-semibold",
           "hover:opacity-60 transition-opacity duration-150 ease-in-out"
@@ -27,6 +27,6 @@ export default function NavigationText({
       >
         {hyperlink}
       </Link>
-    </p>
+    </div>
   );
 }
