@@ -27,17 +27,26 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function HomePage() {
   return (
-    <div className={cn("size-full", "pt-5 pb-10", "px-3")}>
-      <div className={cn("max-w-[64rem] mx-auto", "flex gap-8")}>
+    <div className={cn("size-full", "pt-5 pb-10")}>
+      <div
+        className={cn("max-w-[64rem] mx-auto", "flex justify-center", "px-4")}
+      >
         <main className="max-w-[37.5rem] w-full">
-          <div className="space-y-4">
-            <Feeds />
+          <div className="flex flex-col">
+            <div className={cn("w-full self-center", "mb-4")}>
+              <Feeds />
+            </div>
             <Moments />
           </div>
         </main>
 
         <aside
-          className={cn("sticky top-5", "h-fit w-[20rem] ml-auto", "space-y-6")}
+          className={cn(
+            "sticky top-5",
+            "h-fit w-[20rem] px-3 ml-auto",
+            "space-y-6",
+            "hidden lg:block"
+          )}
         >
           <SearchBar />
           <SwitchAccount />
@@ -49,6 +58,7 @@ export default function HomePage() {
   );
 }
 
+import { Card } from "@/components/ui/card";
 function Feeds() {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -80,10 +90,13 @@ function Feeds() {
   };
 
   return (
-    <div className="relative py-4">
+    <Card
+      className={cn("pt-4 pb-2", "relative overflow-hidden", "w-full px-8")}
+    >
       <div
         ref={containerRef}
         className={cn(
+          "max-w-[32rem] mx-auto",
           "flex gap-4",
           "overflow-x-auto scrollbar-hide",
           "scroll-smooth",
@@ -114,7 +127,7 @@ function Feeds() {
           <span
             className={cn(
               "text-xs font-semibold",
-              "inline-block mt-2",
+              "inline-block",
               "max-w-16 truncate text-center",
               "transition-colors group-hover:text-primary"
             )}
@@ -139,7 +152,11 @@ function Feeds() {
                   )}
                 >
                   <Avatar className="size-14">
-                    <AvatarImage src={feed.image} alt={feed.name} className="object-cover" />
+                    <AvatarImage
+                      src={feed.image}
+                      alt={feed.name}
+                      className="object-cover"
+                    />
                     <AvatarFallback className="bg-primary">
                       <User className="size-6 fill-card" type="solid" />
                     </AvatarFallback>
@@ -149,7 +166,7 @@ function Feeds() {
               <span
                 className={cn(
                   "text-xs font-semibold",
-                  "inline-block mt-2",
+                  "inline-block",
                   "max-w-16 truncate text-center",
                   "transition-colors group-hover:text-primary"
                 )}
@@ -169,17 +186,15 @@ function Feeds() {
         onMouseLeave={stopScrolling}
         className={cn(
           "cursor-pointer",
-          "absolute left-0 top-8 -translate-x-[calc(100%+1rem)]",
-          "size-8 rounded-full bg-card dark:bg-white shadow-md",
-          "flex items-center justify-center",
-          "border border-border",
-          "transition-all duration-200",
-          "hover:scale-105 hover:bg-primary/10"
+          "w-8 h-full shrink-0",
+          "absolute left-0 top-0",
+          "transition-colors duration-200",
+          "hover:bg-accent/[.05]",
+          "border-r border-border"
         )}
       >
-        <ChevronLeft className="size-4 dark:text-background" />
+        <ChevronLeft className="size-8 -mt-3" />
       </button>
-
       <button
         type="button"
         onClick={() => scroll("right")}
@@ -188,27 +203,26 @@ function Feeds() {
         onMouseLeave={stopScrolling}
         className={cn(
           "cursor-pointer",
-          "absolute right-0 top-8 translate-x-[calc(100%+1rem)]",
-          "size-8 rounded-full bg-card dark:bg-white shadow-md",
-          "flex items-center justify-center",
-          "border border-border",
-          "transition-all duration-200",
-          "hover:scale-105 hover:bg-primary/10"
+          "w-8 h-full shrink-0",
+          "absolute right-0 top-0",
+          "transition-colors duration-200",
+          "hover:bg-accent/[.05]",
+          "border-l border-border"
         )}
       >
-        <ChevronRight className="size-4 dark:text-background" />
+        <ChevronRight className="size-8 -mt-3" />
       </button>
-    </div>
+    </Card>
   );
 }
 
 function Moments() {
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {mockMoments.map((moment) => (
         <MomentCard key={moment.id} data={moment} />
       ))}
-    </>
+    </div>
   );
 }
 
@@ -247,7 +261,7 @@ function SearchBar() {
     : mockRecentSearches;
 
   return (
-    <div className={cn("w-full mb-6", "hidden lg:block", "relative")}>
+    <div className={cn("w-full mb-6", "relative")}>
       <div
         className={cn(
           "relative",
@@ -310,7 +324,12 @@ function SearchBar() {
             <div className="py-4">
               {!query ? (
                 <>
-                  <div className={cn("flex items-center justify-between", "px-4 mb-4")}>
+                  <div
+                    className={cn(
+                      "flex items-center justify-between",
+                      "px-4 mb-4"
+                    )}
+                  >
                     <span className="text-sm font-semibold">Recent</span>
                     <button
                       className={cn(
@@ -342,7 +361,10 @@ function SearchBar() {
                                 className="object-cover"
                               />
                               <AvatarFallback className="bg-primary">
-                                <User className="size-6 fill-card" type="solid" />
+                                <User
+                                  className="size-6 fill-card"
+                                  type="solid"
+                                />
                               </AvatarFallback>
                             </Avatar>
                             <div className="flex flex-col">
@@ -402,7 +424,11 @@ function SearchBar() {
                       >
                         <div className="flex items-center gap-3">
                           <Avatar className="size-12">
-                            <AvatarImage src={item.avatar} alt={item.username} className="object-cover" />
+                            <AvatarImage
+                              src={item.avatar}
+                              alt={item.username}
+                              className="object-cover"
+                            />
                             <AvatarFallback className="bg-primary">
                               <User className="size-6 fill-card" type="solid" />
                             </AvatarFallback>
@@ -427,11 +453,17 @@ function SearchBar() {
                     ))}
                   </div>
                   <div className={cn(filteredItems.length > 0 && "mt-2")}>
-                    <div className={cn("flex items-center gap-2", "cursor-pointer", "px-4")}>
+                    <div
+                      className={cn(
+                        "flex items-center gap-2",
+                        "cursor-pointer",
+                        "px-4"
+                      )}
+                    >
                       <div
                         className={cn(
                           "size-10 mx-1 rounded-full",
-                          "flex items-center justify-center",
+                          "flex items-center justify-center"
                         )}
                       >
                         <MagnifyingGlass className="size-4 fill-muted-foreground" />
@@ -451,7 +483,7 @@ function SearchBar() {
 
 function SwitchAccount() {
   return (
-    <div className={cn("w-full", "hidden lg:block")}>
+    <div className="w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Avatar className="size-11">
@@ -496,7 +528,7 @@ function SwitchAccount() {
 
 function SuggestedUsers() {
   return (
-    <div className={cn("w-[20rem]", "hidden lg:block")}>
+    <div className="w-full">
       <div className="flex items-center justify-between mb-4">
         <span className="text-sm font-semibold text-muted-foreground">
           Suggested for you
@@ -522,7 +554,11 @@ function SuggestedUsers() {
             <div key={user.id} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Avatar className="size-8">
-                  <AvatarImage src={user.avatar} alt={user.username} className="object-cover" />
+                  <AvatarImage
+                    src={user.avatar}
+                    alt={user.username}
+                    className="object-cover"
+                  />
                   <AvatarFallback className="bg-primary">
                     <User className="size-4 fill-card" type="solid" />
                   </AvatarFallback>
@@ -562,7 +598,7 @@ function SuggestedUsers() {
 
 function Footer() {
   return (
-    <footer className={cn("space-y-4 w-full", "hidden lg:block")}>
+    <footer className="space-y-4 w-full">
       <nav className="flex flex-wrap gap-x-1 gap-y-2">
         {mockFooterLinks.map((link, index) => (
           <span key={link.text} className="flex items-center">

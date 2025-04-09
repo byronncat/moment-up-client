@@ -11,4 +11,4 @@ export default function Pause({ className }: Pick<IconProps, "className">) {
       />
     </svg>
   );
-} 
+}

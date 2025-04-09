@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { cookies } from "next/headers";
 import { cn } from "@/lib/utils";
-import { ModeToggle, Brand } from "@/components";
+import { ModeSelection, Brand } from "@/components";
 import backgroundImg from "@/assets/imgs/night-neon.avif";
 
 export default async function Layout({
@@ -29,7 +29,7 @@ export default async function Layout({
           )}
         >
           <Brand className="h-9 select-none" hyperlink={false} />
-          <ModeToggle />
+          <ModeSelection />
         </div>
         <div className={cn("h-full", "flex justify-center items-center")}>
           {children}

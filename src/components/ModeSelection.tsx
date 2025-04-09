@@ -18,11 +18,11 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 
-type ModeToggleProps = Readonly<{
+type ModeSelectionProps = Readonly<{
   className?: string;
 }>;
 
-export default function ModeToggle({ className }: ModeToggleProps) {
+export default function ModeSelection({ className }: ModeSelectionProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 

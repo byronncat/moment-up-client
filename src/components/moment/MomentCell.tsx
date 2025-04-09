@@ -9,6 +9,10 @@ type MomentCellProps = Readonly<{
 }>;
 
 export default function MomentCell({ data }: MomentCellProps) {
+  if (!data.files || data.files.length === 0) return null;
+
+  const firstFile = data.files[0];
+
   return (
     <div key={data.id} className="relative group shadow-lg">
       <div
@@ -19,13 +23,22 @@ export default function MomentCell({ data }: MomentCellProps) {
           "relative"
         )}
       >
-        <Image
-          src={data.files[0]}
-          alt={data.caption || "Moment"}
-          fill
-          sizes="(min-width: 640px) 640px, 100vw"
-          className="size-full object-cover object-top"
-        />
+        {firstFile.type === "image" ? (
+          <Image
+            src={firstFile.url}
+            alt={data.text || "Moment"}
+            fill
+            sizes="(min-width: 640px) 640px, 100vw"
+            className="size-full object-cover object-top"
+          />
+        ) : (
+          <video
+            src={firstFile.url}
+            className="size-full object-cover"
+            controls
+            playsInline
+          />
+        )}
 
         {data.files.length > 1 && (
           <span className="absolute top-3 right-3">

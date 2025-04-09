@@ -5,153 +5,158 @@ export const mockFeeds = [
   {
     id: 1,
     name: "Renata Fan",
-    image: "https://pbs.twimg.com/media/Ey_iMF0VcAImHMn?format=jpg&name=4096x4096"
+    image:
+      "https://pbs.twimg.com/media/Ey_iMF0VcAImHMn?format=jpg&name=4096x4096",
   },
   {
     id: 2,
     name: "Renata Saldanha",
-    image: "https://pbs.twimg.com/media/F5QLnHfbIAAdrzv?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/F5QLnHfbIAAdrzv?format=jpg&name=large",
   },
   {
     id: 3,
     name: "Renata Lo Prete",
-    image: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096"
+    image:
+      "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
   },
   {
     id: 4,
     name: "Renata Ceribelli",
-    image: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096"
+    image:
+      "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
   },
   {
     id: 5,
     name: "Renata Mathias",
-    image: "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096"
+    image:
+      "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
   },
   {
     id: 6,
     name: "Renata Barreto",
-    image: "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096"
+    image:
+      "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
   },
   {
     id: 7,
     name: "Renata Silveira",
-    image: "https://pbs.twimg.com/media/GOesRcMaUAAr4Fn?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GOesRcMaUAAr4Fn?format=jpg&name=large",
   },
   {
     id: 8,
     name: "Renata Agostini",
-    image: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
   },
   {
     id: 9,
     name: "Renata Souza",
-    image: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large",
   },
   {
     id: 10,
     name: "Renata Vasconcellos",
-    image: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large",
   },
   {
     id: 11,
     name: "Renata Capucci",
-    image: "https://pbs.twimg.com/media/GDI8eMpboAAFxSg?format=jpg&name=medium"
+    image: "https://pbs.twimg.com/media/GDI8eMpboAAFxSg?format=jpg&name=medium",
   },
   {
     id: 12,
     name: "Renata Heilborn",
-    image: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
   },
   {
     id: 13,
     name: "Renata Mendonça",
-    image: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
   },
   {
     id: 14,
     name: "Renata Abreu",
-    image: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
   },
   {
     id: 15,
     name: "Renata Banhara",
-    image: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large",
   },
   {
     id: 16,
     name: "Renata Sorrah",
-    image: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
   },
   {
     id: 17,
     name: "Renata Castro",
-    image: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
   },
   {
     id: 18,
     name: "Renata Campos",
-    image: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large",
   },
   {
     id: 19,
     name: "Renata Flores",
-    image: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large",
   },
   {
     id: 20,
     name: "Renata Gomes",
-    image: "https://pbs.twimg.com/media/GDI8eMpboAAFxSg?format=jpg&name=medium"
+    image: "https://pbs.twimg.com/media/GDI8eMpboAAFxSg?format=jpg&name=medium",
   },
   {
     id: 21,
     name: "Renata Lima",
-    image: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
   },
   {
     id: 22,
     name: "Renata Martins",
-    image: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
   },
   {
     id: 23,
     name: "Renata Nunes",
-    image: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
   },
   {
     id: 24,
     name: "Renata Oliveira",
-    image: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large",
   },
   {
     id: 25,
     name: "Renata Pereira",
-    image: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
   },
   {
     id: 26,
     name: "Renata Quintana",
-    image: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
   },
   {
     id: 27,
     name: "Renata Ribeiro",
-    image: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large",
   },
   {
     id: 28,
     name: "Renata Santos",
-    image: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large"
+    image: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large",
   },
   {
     id: 29,
     name: "Renata Teixeira",
-    image: "https://pbs.twimg.com/media/GDI8eMpboAAFxSg?format=jpg&name=medium"
+    image: "https://pbs.twimg.com/media/GDI8eMpboAAFxSg?format=jpg&name=medium",
   },
   {
     id: 30,
     name: "Renata Vasconcelos",
-    image: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large"
-  }
+    image: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
+  },
 ];
 
 // Footer links mock data
@@ -350,28 +355,32 @@ export const mockSuggestedUsers = [
     id: 2,
     username: "janedoe",
     name: "Jane Doe",
-    avatar: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
+    avatar:
+      "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
     followedBy: "user456",
   },
   {
     id: 3,
     username: "alexsmith",
     name: "Alex Smith",
-    avatar: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
+    avatar:
+      "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
     followedBy: "user789",
   },
   {
     id: 4,
     username: "sarahjones",
     name: "Sarah Jones",
-    avatar: "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
+    avatar:
+      "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
     followedBy: "user101",
   },
   {
     id: 5,
     username: "mikebrown",
     name: "Mike Brown",
-    avatar: "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
+    avatar:
+      "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
     followedBy: "user202",
   },
 ];
@@ -384,7 +393,7 @@ export const mockRecentSearches = [
     username: "renata",
     name: "Renata",
     avatar: "https://pbs.twimg.com/media/GOesRcMaUAAr4Fn?format=jpg&name=large",
-    verified: false
+    verified: false,
   },
   {
     id: 2,
@@ -392,7 +401,7 @@ export const mockRecentSearches = [
     username: "renataSaldanha",
     name: "Renata Saldanha",
     avatar: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
-    verified: true
+    verified: true,
   },
   {
     id: 3,
@@ -400,7 +409,7 @@ export const mockRecentSearches = [
     username: "RenataFan",
     name: "Renata Fan",
     avatar: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large",
-    verified: true
+    verified: true,
   },
   {
     id: 4,
@@ -408,7 +417,7 @@ export const mockRecentSearches = [
     username: "renataloprete",
     name: "Renata Lo Prete",
     avatar: "https://pbs.twimg.com/media/GmfBfSba4AE474E?format=jpg&name=large",
-    verified: true
+    verified: true,
   },
   {
     id: 5,
@@ -416,7 +425,7 @@ export const mockRecentSearches = [
     username: "renataceribelli",
     name: "renata ceribelli",
     avatar: "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
-    verified: false
+    verified: false,
   },
   {
     id: 6,
@@ -424,7 +433,7 @@ export const mockRecentSearches = [
     username: "renatamathias",
     name: "Renata Mathias",
     avatar: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
-    verified: false
+    verified: false,
   },
   {
     id: 7,
@@ -432,7 +441,7 @@ export const mockRecentSearches = [
     username: "renatabarreto",
     name: "Renata Barreto",
     avatar: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large",
-    verified: true
+    verified: true,
   },
   {
     id: 8,
@@ -440,7 +449,7 @@ export const mockRecentSearches = [
     username: "renataSilveira",
     name: "Renata Silveira",
     avatar: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
-    verified: false
+    verified: false,
   },
   {
     id: 9,
@@ -448,7 +457,7 @@ export const mockRecentSearches = [
     username: "renataagostini",
     name: "Renata Agostini",
     avatar: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
-    verified: false
+    verified: false,
   },
   {
     id: 10,
@@ -456,21 +465,21 @@ export const mockRecentSearches = [
     username: "renataSouza",
     name: "Renata Souza",
     avatar: "https://pbs.twimg.com/media/FQwnzejVEAcC3__?format=jpg&name=large",
-    verified: true
+    verified: true,
   },
   {
     id: 11,
     type: "search" as const,
-    query: "renata"
+    query: "renata",
   },
   {
     id: 12,
     type: "search" as const,
-    query: "renata saldanha"
+    query: "renata saldanha",
   },
   {
     id: 13,
     type: "search" as const,
-    query: "renata bbb"
-  }
+    query: "renata bbb",
+  },
 ];

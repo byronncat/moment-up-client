@@ -1,3 +1,5 @@
+"use client";
+
 import type { MomentUI } from "api";
 
 import Image from "next/image";
@@ -20,7 +22,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { Heart, Comment, User, Play, Pause, Share, Repeat, Bookmark } from "../icons";
+import {
+  Heart,
+  Comment,
+  User,
+  Play,
+  Pause,
+  Share,
+  Repeat,
+  Bookmark,
+} from "../icons";
 
 type MomentCardProps = Readonly<{
   data: MomentUI;
@@ -71,9 +82,12 @@ export default function MomentCard({ data }: MomentCardProps) {
                         fill
                         sizes="(min-width: 640px) 640px, 100vw"
                         className="object-cover"
+                        priority={index === 0}
                       />
                     ) : (
-                      <div className={cn("relative size-full", "cursor-pointer")}>
+                      <div
+                        className={cn("relative size-full", "cursor-pointer")}
+                      >
                         <video
                           src={file.url}
                           className="size-full object-cover"
@@ -83,11 +97,20 @@ export default function MomentCard({ data }: MomentCardProps) {
                           onPlay={() => setIsPlaying(true)}
                           onPause={() => setIsPlaying(false)}
                         />
-                        <div className={cn("absolute inset-0", "flex items-center justify-center", "pointer-events-none")}>
+                        <div
+                          className={cn(
+                            "absolute inset-0",
+                            "flex items-center justify-center",
+                            "pointer-events-none"
+                          )}
+                        >
                           {isPlaying ? (
                             <Pause className="size-12 fill-white/80" />
                           ) : (
-                            <Play className="size-12 fill-white/80" type="solid" />
+                            <Play
+                              className="size-12 fill-white/80"
+                              type="solid"
+                            />
                           )}
                         </div>
                       </div>
@@ -106,15 +129,15 @@ export default function MomentCard({ data }: MomentCardProps) {
         </CardContent>
       )}
 
-      <CardFooter className="p-3">
-        <div
-          className={cn(
-            "flex items-center justify-between",
-            "w-full",
-            "text-muted-foreground"
-          )}
-        >
-          <TooltipProvider>
+      <TooltipProvider>
+        <CardFooter className="p-3">
+          <div
+            className={cn(
+              "flex items-center justify-between",
+              "w-full",
+              "text-muted-foreground"
+            )}
+          >
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
@@ -159,9 +182,7 @@ export default function MomentCard({ data }: MomentCardProps) {
                 <p>Like</p>
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
 
-          <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
@@ -201,9 +222,7 @@ export default function MomentCard({ data }: MomentCardProps) {
                 <p>Comment</p>
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
 
-          <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
@@ -243,10 +262,8 @@ export default function MomentCard({ data }: MomentCardProps) {
                 <p>Repost</p>
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
 
-          <div className="flex items-center gap-1">
-            <TooltipProvider>
+            <div className="flex items-center gap-1">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
@@ -286,9 +303,7 @@ export default function MomentCard({ data }: MomentCardProps) {
                   <p>Bookmark</p>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
 
-            <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
@@ -327,10 +342,10 @@ export default function MomentCard({ data }: MomentCardProps) {
                   <p>Share</p>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
+            </div>
           </div>
-        </div>
-      </CardFooter>
+        </CardFooter>
+      </TooltipProvider>
     </Card>
   );
 }

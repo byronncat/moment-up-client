@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "@/components";
-import { ModeToggle } from "@/components";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { ModeSelection } from "@/components";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default async function Layout({
   children,
@@ -22,19 +22,16 @@ export default async function Layout({
     <div className="w-screen h-screen">
       <SidebarProvider defaultOpen={defaultOpen}>
         <Sidebar />
-        <div className="h-screen w-full">
-          <div className={cn("overflow-y-auto h-full", "relative")}>
-            <div
-              className={cn(
-                "flex justify-between items-center",
-                "h-14 w-full px-3",
-                "sticky top-0 right-0"
-              )}
-            >
-              <SidebarTrigger className="mt-5 text-foreground" />
-              <ModeToggle />
-            </div>
-            <div className="-mt-14">{children}</div>
+        <div className="h-screen w-full sm:w-[calc(100%-3rem)]">
+          <div
+            className={cn(
+              "overflow-y-auto h-full",
+              "relative",
+              "pt-14 sm:pt-0",
+              "pb-16 sm:pb-0"
+            )}
+          >
+            <div>{children}</div>
           </div>
         </div>
       </SidebarProvider>
