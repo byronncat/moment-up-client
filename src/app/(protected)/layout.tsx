@@ -6,12 +6,8 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default async function Layout({
   children,
-  stories,
-  moments,
 }: Readonly<{
   children: React.ReactNode;
-  stories: React.ReactNode;
-  moments: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar-state")?.value === "true";
