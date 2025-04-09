@@ -468,7 +468,7 @@ function SearchBar() {
                       >
                         <MagnifyingGlass className="size-4 fill-muted-foreground" />
                       </div>
-                      <span className="text-sm">Search for "{query}"</span>
+                      <span className="text-sm">Search for &ldquo;{query}&rdquo;</span>
                     </div>
                   </div>
                 </>
