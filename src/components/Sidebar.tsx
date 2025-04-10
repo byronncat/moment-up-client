@@ -56,7 +56,7 @@ const items = [
   },
   {
     title: "Explore",
-    url: ROUTE.EXPLORE,
+    url: ROUTE.EXPLORE_MEDIA,
     icon: Compass,
   },
   {
@@ -156,7 +156,7 @@ export default function Sidebar() {
     return (
       <div
         className={cn(
-          "fixed bottom-0 left-0 right-0 z-50",
+          "fixed bottom-0 left-0 z-50 w-full",
           "bg-background border-t border-border",
           "flex justify-around items-center",
           "p-2"

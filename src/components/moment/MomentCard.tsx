@@ -46,8 +46,9 @@ export default function MomentCard({ data }: MomentCardProps) {
         <div className="flex items-center gap-2">
           <Avatar className="size-8">
             <AvatarImage
-              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${data.username}`}
+              src={data.profile_image}
               alt={`${data.username}'s avatar`}
+              className="object-cover object-top"
             />
             <AvatarFallback className="bg-primary">
               <User className="size-4 fill-card" type="solid" />

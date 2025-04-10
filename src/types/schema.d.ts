@@ -5,7 +5,7 @@ declare module "schema" {
     email: string;
     password_hash?: string;
     bio?: string;
-    profile_picture?: string;
+    profile_image?: string;
     readonly created_at: Date;
   };
 

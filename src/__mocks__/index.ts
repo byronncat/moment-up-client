@@ -186,11 +186,17 @@ export const mockMoments: MomentUI[] = [
     id: 1,
     user_id: "1",
     username: "alice",
+    profile_image:
+      "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
     text: "Beautiful day at the beach 🌊",
     files: [
       {
         type: "image",
         url: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
+      },
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GoFJ8_PbYAAGVxY?format=jpg&name=large",
       },
     ],
     likes: 1234,
@@ -202,19 +208,17 @@ export const mockMoments: MomentUI[] = [
     id: 2,
     user_id: "2",
     username: "bob",
-    text: "City lights and night vibes ✨",
+    profile_image:
+      "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
+    text: "Beautiful day at the beach 🌊",
     files: [
       {
         type: "image",
-        url: "https://scontent-hkg1-2.cdninstagram.com/v/t51.2885-15/484396236_17855197362398163_2489887654681098974_n.jpg?stp=dst-jpg_e15_tt6&_nc_ht=scontent-hkg1-2.cdninstagram.com&_nc_oc=Q6cZ2QEM9pyT59uCPkJgav10bu7X4YHhfZZ6Wke-tbEg7x-Dcif_LsiPZCtM0rjbF9wqFH9OPz7_DcMSlad3bKluduzu&_nc_ohc=FV5wBT-BL2gQ7kNvwGBIKkK&_nc_gid=wC-T5Qg7SQVeyCR4ks-rQw&edm=AFY8k0kBAAAA&ig_cache_key=MzU4ODgwODAyNzQ2ODExMDY0Ng%3D%3D.3-ccb7-5&oh=00_AfFMfhWR9fOKtz_lSevQqHLOXJXot_Il-e8VjeJ0KVfnSg&oe=67F85377",
-      },
-      {
-        type: "image",
-        url: "https://scontent-hkg1-2.cdninstagram.com/v/t51.2885-15/484404902_17855197365398163_2363485767902053897_n.jpg?stp=dst-jpg_e15_tt6&_nc_ht=scontent-hkg1-2.cdninstagram.com&_nc_oc=Q6cZ2QFx6t5UobXCLdRI46Otf5-1UmnHHNTldyrIUm6QfyAleidD67Kqtwut12SEYoIXRTcQtKODkOFYYO1tB4oFZtI_&_nc_ohc=_zdtAxEjHW8Q7kNvwGpuj96&_nc_gid=zLaZBpCb04Aw2pUh3arCGA&edm=AFY8k0kBAAAA&ig_cache_key=MzU4ODgwODAyNzYwMjE2MzQ0OA%3D%3D.3-ccb7-5&oh=00_AfESJMSwCYiewGH09KDV6ZUeuas4-VT3xrUdAdYkm-s8Og&oe=67F882B6",
+        url: "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
       },
     ],
-    likes: 2345,
-    comments: 67,
+    likes: 1234,
+    comments: 45,
     created_at: new Date(),
     isLiked: false,
   },
@@ -222,83 +226,91 @@ export const mockMoments: MomentUI[] = [
     id: 3,
     user_id: "3",
     username: "charlie",
-    text: "Sunset vibes 🌅",
+    profile_image:
+      "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
+    text: "Beautiful day at the beach 🌊",
     files: [
       {
         type: "image",
-        url: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
+        url: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
       },
     ],
-    likes: 3456,
-    comments: 89,
+    likes: 1234,
+    comments: 45,
     created_at: new Date(),
     isLiked: false,
   },
   {
     id: 4,
     user_id: "4",
-    username: "dave",
-    text: "Exploring new places 🗺️",
+    username: "dan",
+    profile_image:
+      "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
+    text: "Beautiful day at the beach 🌊",
     files: [
       {
         type: "image",
-        url: "https://pbs.twimg.com/media/Ey_iMF0VcAImHMn?format=jpg&name=4096x4096",
-      },
-      {
-        type: "image",
-        url: "https://pbs.twimg.com/media/F5QLnHfbIAAdrzv?format=jpg&name=large",
-      },
-      {
-        type: "image",
-        url: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
-      },
-      {
-        type: "image",
-        url: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
+        url: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
       },
     ],
-    likes: 4567,
-    comments: 90,
+    likes: 1234,
+    comments: 45,
     created_at: new Date(),
-    isLiked: true,
+    isLiked: false,
   },
   {
     id: 5,
     user_id: "5",
     username: "eve",
-    text: "Coffee and good vibes ☕️",
+    profile_image:
+      "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
+    text: "Beautiful day at the beach 🌊",
     files: [
       {
         type: "image",
-        url: "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
+        url: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
+      },
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large",
       },
     ],
-    likes: 5678,
-    comments: 123,
+    likes: 1234,
+    comments: 45,
     created_at: new Date(),
-    isLiked: true,
+    isLiked: false,
   },
   {
     id: 6,
-    user_id: "5",
-    username: "eve",
-    text: "Weekend getaway 🏖️",
+    user_id: "6",
+    username: "frank",
+    profile_image:
+      "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
+    text: "Beautiful day at the beach 🌊",
     files: [
       {
         type: "image",
-        url: "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
+        url: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
       },
     ],
-    likes: 5678,
-    comments: 123,
+    likes: 1234,
+    comments: 45,
     created_at: new Date(),
-    isLiked: true,
+    isLiked: false,
   },
   {
     id: 7,
-    user_id: "6",
-    username: "frank",
-    text: "Just sharing my thoughts for today... Life is beautiful when you appreciate the little things. Every moment counts, and I'm grateful for all the experiences that shape who I am. 🌟",
+    user_id: "7",
+    username: "george",
+    profile_image:
+      "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
+    text: "Beautiful day at the beach 🌊",
+    files: [
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
+      },
+    ],
     likes: 1234,
     comments: 45,
     created_at: new Date(),
@@ -306,37 +318,107 @@ export const mockMoments: MomentUI[] = [
   },
   {
     id: 8,
-    user_id: "7",
-    username: "grace",
-    text: "Check out this amazing video! 🎥",
-    files: [
-      {
-        type: "video",
-        url: "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-      },
-    ],
-    likes: 2345,
-    comments: 67,
-    created_at: new Date(),
-    isLiked: false,
-  },
-  {
-    id: 9,
     user_id: "8",
-    username: "henry",
-    text: "A beautiful day captured in both words and images 🌞",
+    username: "harry",
+    profile_image:
+      "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
+    text: "Beautiful day at the beach 🌊",
     files: [
       {
         type: "image",
         url: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
       },
+    ],
+    likes: 1234,
+    comments: 45,
+    created_at: new Date(),
+    isLiked: false,
+  },
+  {
+    id: 9,
+    user_id: "9",
+    username: "irene",
+    profile_image:
+      "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
+    text: "Beautiful day at the beach 🌊",
+    files: [
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
+      },
+    ],
+    likes: 1234,
+    comments: 45,
+    created_at: new Date(),
+    isLiked: false,
+  },
+  {
+    id: 10,
+    user_id: "10",
+    username: "jose",
+    profile_image:
+      "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
+    text: "Beautiful day at the beach 🌊",
+    files: [
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
+      },
+    ],
+    likes: 1234,
+    comments: 45,
+    created_at: new Date(),
+    isLiked: false,
+  },
+  {
+    id: 11,
+    user_id: "11",
+    username: "kate",
+    profile_image:
+      "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
+    text: "Beautiful day at the beach 🌊",
+    files: [
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
+      },
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GgHsZ5vakAAz5jI?format=jpg&name=large",
+      },
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GgHsVFvbYAU2ZpA?format=jpg&name=large",
+      },
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GgHsRA8akAAeirJ?format=jpg&name=large",
+      },
+    ],
+    likes: 1234,
+    comments: 45,
+    created_at: new Date(),
+    isLiked: false,
+  },
+  {
+    id: 12,
+    user_id: "12",
+    username: "linda",
+    profile_image:
+      "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
+    text: "Beautiful day at the beach 🌊",
+    files: [
       {
         type: "video",
         url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       },
+      {
+        type: "image",
+        url: "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
+      },
     ],
-    likes: 3456,
-    comments: 89,
+    likes: 1234,
+    comments: 45,
     created_at: new Date(),
     isLiked: false,
   },
@@ -355,8 +437,7 @@ export const mockSuggestedUsers = [
     id: 2,
     username: "janedoe",
     name: "Jane Doe",
-    avatar:
-      "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
+    avatar: "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
     followedBy: "user456",
   },
   {

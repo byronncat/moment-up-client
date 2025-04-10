@@ -1,8 +1,8 @@
 import type { MomentUI } from "api";
 
 import Image from "next/image";
-import { Heart, Comment, Clone } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import { Heart, Comment, Clone, Video } from "@/components/icons";
 
 type MomentCellProps = Readonly<{
   data: MomentUI;
@@ -11,7 +11,7 @@ type MomentCellProps = Readonly<{
 export default function MomentCell({ data }: MomentCellProps) {
   if (!data.files || data.files.length === 0) return null;
 
-  const firstFile = data.files[0];
+  const randomFile = data.files[Math.floor(Math.random() * data.files.length)];
 
   return (
     <div key={data.id} className="relative group shadow-lg">
@@ -23,9 +23,9 @@ export default function MomentCell({ data }: MomentCellProps) {
           "relative"
         )}
       >
-        {firstFile.type === "image" ? (
+        {randomFile.type === "image" ? (
           <Image
-            src={firstFile.url}
+            src={randomFile.url}
             alt={data.text || "Moment"}
             fill
             sizes="(min-width: 640px) 640px, 100vw"
@@ -33,18 +33,22 @@ export default function MomentCell({ data }: MomentCellProps) {
           />
         ) : (
           <video
-            src={firstFile.url}
+            src={randomFile.url}
             className="size-full object-cover"
-            controls
             playsInline
+            preload="metadata"
           />
         )}
 
-        {data.files.length > 1 && (
+        {data.files.some(file => file.type === "video") ? (
+          <span className="absolute top-3 right-3">
+            <Video className="size-5 fill-white" type="solid" />
+          </span>
+        ) : data.files.length > 1 ? (
           <span className="absolute top-3 right-3">
             <Clone className="size-5 fill-white" type="solid" />
           </span>
-        )}
+        ) : null}
 
         <HoverOverlay likes={data.likes} comments={data.comments} />
       </div>

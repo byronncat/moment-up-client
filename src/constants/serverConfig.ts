@@ -6,7 +6,8 @@ export const ROUTE = {
 
   HOME: "/",
   PROFILE: (username: string) => `profile/${username}`,
-  EXPLORE: "/explore",
+  EXPLORE_MEDIA: "/explore/media",
+  EXPLORE_MOMENTS: "/explore/moments",
 };
 
 export const PROTECTED_ROUTES = [ROUTE.HOME];
@@ -21,7 +22,8 @@ export const PUBLIC_ROUTES = [
   ROUTE.SIGNUP,
   ROUTE.FORGOT_PASSWORD,
   ROUTE.VERIFY_RECOVERY,
-  ROUTE.EXPLORE,
+  ROUTE.EXPLORE_MEDIA,
+  ROUTE.EXPLORE_MOMENTS,
   ROUTE.PROFILE(""),
 ];
 

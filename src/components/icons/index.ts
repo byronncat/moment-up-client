@@ -17,4 +17,5 @@ export { default as Sun } from "./Sun";
 export { default as User } from "./User";
 export { default as CirclePlus } from "./CirclePlus";
 export { default as MagnifyingGlass } from "./MagnifyingGlass";
+export { default as Video } from "./Video";
 export { default as XMark } from "./XMark";
