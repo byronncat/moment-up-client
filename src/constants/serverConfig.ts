@@ -6,8 +6,13 @@ export const ROUTE = {
 
   HOME: "/",
   PROFILE: (username: string) => `profile/${username}`,
+  SEARCH: "/search",
   EXPLORE_MEDIA: "/explore/media",
   EXPLORE_MOMENTS: "/explore/moments",
+  MESSAGES: "/messages",
+  MESSAGE: (contactId?: string) =>
+    `/messages${contactId ? `/${contactId}` : ""}`,
+  THOUGHT: "/messages/thought",
 };
 
 export const PROTECTED_ROUTES = [ROUTE.HOME];

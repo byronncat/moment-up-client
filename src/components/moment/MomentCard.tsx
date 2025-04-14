@@ -84,6 +84,7 @@ export default function MomentCard({ data }: MomentCardProps) {
                         sizes="(min-width: 640px) 640px, 100vw"
                         className="object-cover"
                         priority={index === 0}
+                        loading={index === 0 ? "eager" : "lazy"}
                       />
                     ) : (
                       <div

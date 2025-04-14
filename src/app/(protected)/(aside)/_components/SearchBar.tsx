@@ -5,6 +5,7 @@ import { mockRecentSearches } from "@/__mocks__";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
 import { MagnifyingGlass, User, XMark, CircleCheck } from "@/components/icons";
 
 interface UserSearchItem {
@@ -43,42 +44,29 @@ export default function SearchBar() {
 
   return (
     <div className={cn("w-full mb-6", "relative")}>
-      <div
-        className={cn(
-          "relative",
-          "flex items-center",
-          "bg-card",
-          "rounded-full",
-          "border border-border",
-          "transition-all duration-200",
-          "focus-within:border-primary/70 focus-within:ring-1 focus-within:ring-primary/20"
-        )}
-      >
+      <div className="relative">
         <MagnifyingGlass
-          className={cn("size-4", "absolute left-4", "fill-muted-foreground")}
+          className={cn(
+            "size-4",
+            "absolute left-3 top-1/2 -translate-y-1/2 z-10",
+            "fill-muted-foreground"
+          )}
         />
-        <input
+        <Input
           type="text"
           id="search-input"
           placeholder="Search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setIsOpen(true)}
-          className={cn(
-            "w-full",
-            "py-2 pl-10 pr-4",
-            "bg-transparent",
-            "text-sm",
-            "outline-none",
-            "placeholder:text-muted-foreground"
-          )}
+          className={cn("h-10 bg-card pl-9", query && "pr-9")}
         />
         {query && (
           <button
             onClick={() => setQuery("")}
             className={cn(
-              "absolute right-4",
-              "p-1.5 rounded-full",
+              "absolute right-3 top-1/2 -translate-y-1/2 z-10",
+              "p-1 rounded-full",
               "cursor-pointer",
               "hover:bg-accent/[.07]",
               "transition-colors duration-150 ease-in-out"

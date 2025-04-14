@@ -2,12 +2,6 @@ import { cookies } from "next/headers";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "@/components";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import {
-  SearchBar,
-  SwitchAccount,
-  SuggestedUsers,
-  Footer,
-} from "./_components";
 
 export default async function Layout({
   children,
@@ -32,27 +26,7 @@ export default async function Layout({
               "pb-14 sm:pb-0"
             )}
           >
-            <div className={cn("size-full", "overflow-y-auto")}>
-              <div
-                className={cn("max-w-[64rem] mx-auto", "flex justify-center")}
-              >
-                <main className="max-w-[37.5rem] w-full">{children}</main>
-
-                <aside
-                  className={cn(
-                    "sticky top-5",
-                    "h-fit w-[20rem] mr-6 ml-auto",
-                    "space-y-6",
-                    "hidden lg:block"
-                  )}
-                >
-                  <SearchBar />
-                  <SwitchAccount />
-                  <SuggestedUsers />
-                  <Footer />
-                </aside>
-              </div>
-            </div>
+            <div className={cn("size-full", "overflow-y-auto")}>{children}</div>
           </div>
         </div>
       </SidebarProvider>

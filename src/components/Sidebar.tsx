@@ -8,7 +8,7 @@ import { ROUTE } from "@/constants/serverConfig";
 
 import Logo from "./Logo";
 import {
-  MessageSquare,
+  MessagesSquare,
   Compass,
   Home,
   SquarePlus,
@@ -51,7 +51,7 @@ const items = [
   },
   {
     title: "Search",
-    url: "",
+    url: ROUTE.SEARCH,
     icon: Search,
   },
   {
@@ -66,8 +66,8 @@ const items = [
   },
   {
     title: "Messages",
-    url: "#",
-    icon: MessageSquare,
+    url: ROUTE.MESSAGES,
+    icon: MessagesSquare,
   },
   {
     title: "Notifications",

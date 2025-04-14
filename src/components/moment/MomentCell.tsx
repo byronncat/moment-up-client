@@ -30,6 +30,7 @@ export default function MomentCell({ data }: MomentCellProps) {
             fill
             sizes="(min-width: 640px) 640px, 100vw"
             className="size-full object-cover object-top"
+            loading="lazy"
           />
         ) : (
           <video
@@ -40,7 +41,7 @@ export default function MomentCell({ data }: MomentCellProps) {
           />
         )}
 
-        {data.files.some(file => file.type === "video") ? (
+        {data.files.some((file) => file.type === "video") ? (
           <span className="absolute top-3 right-3">
             <Video className="size-5 fill-white" type="solid" />
           </span>
