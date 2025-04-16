@@ -41,7 +41,7 @@ export default function Message() {
             "mb-4"
           )}
         >
-          Mar 23, 2025, 1:18 AM
+          Mar 23, 2025, 1:18 AM
         </div>
 
         {messages.map((message) => (

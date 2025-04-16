@@ -4,3 +4,6 @@ export { default as Divider } from "./Divider";
 export { default as Loader } from "./Loader";
 export { default as ModeSelection } from "./ModeSelection";
 export { default as Sidebar } from "./Sidebar";
+export { default as NavigationBar } from "./HorizontalNavigationBar";
+
+export type { NavItem } from "./HorizontalNavigationBar";

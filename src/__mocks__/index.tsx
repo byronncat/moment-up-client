@@ -973,8 +973,158 @@ export const mockInitialMessages: Message[] = [
   },
 ];
 
+import { Twitter } from "lucide-react";
+
 export const mockQuickReplies: string[] = [
   "Can I learn more about your business?",
   "Can you tell me more about your ad?",
   "Is anyone available to chat?",
+];
+
+export const mockNotifications = [
+  {
+    identity: {
+      name: "Mei",
+      avatar: getRandomAvatar(),
+    },
+    content:
+      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
+    timestamp: "1h",
+    id: 1,
+  },
+  {
+    identity: {
+      name: "Thinh",
+      avatar: getRandomAvatar(),
+    },
+    content: "Thinh đã theo dõi bạn.",
+    timestamp: "2h",
+    id: 2,
+  },
+  {
+    identity: {
+      name: "Thinh",
+      avatar: getRandomAvatar(),
+    },
+    content:
+      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
+    timestamp: "3h",
+    id: 3,
+  },
+  {
+    identity: {
+      name: "Mei",
+      avatar: getRandomAvatar(),
+    },
+    content:
+      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
+    timestamp: "1h",
+    id: 4,
+  },
+  {
+    identity: {
+      name: "Thinh",
+      avatar: getRandomAvatar(),
+    },
+    content: "Thinh đã theo dõi bạn.",
+    timestamp: "2h",
+    id: 5,
+  },
+  {
+    identity: {
+      name: "Thinh",
+      avatar: getRandomAvatar(),
+    },
+    content:
+      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
+    timestamp: "3h",
+    id: 6,
+  },
+  {
+    identity: {
+      name: "Mei",
+      avatar: getRandomAvatar(),
+    },
+    content:
+      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
+    timestamp: "1h",
+    id: 7,
+  },
+  {
+    identity: {
+      name: "Thinh",
+      avatar: getRandomAvatar(),
+    },
+    content: "Thinh đã theo dõi bạn.",
+    timestamp: "2h",
+    id: 8,
+  },
+  {
+    identity: {
+      name: "Thinh",
+      avatar: getRandomAvatar(),
+    },
+    content:
+      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
+    timestamp: "3h",
+    id: 9,
+  },
+  {
+    identity: {
+      name: "Mei",
+      avatar: getRandomAvatar(),
+    },
+    content:
+      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
+    timestamp: "1h",
+    id: 10,
+  },
+  {
+    identity: {
+      name: "Thinh",
+      avatar: getRandomAvatar(),
+    },
+    content: "Thinh đã theo dõi bạn.",
+    timestamp: "2h",
+    id: 11,
+  },
+  {
+    identity: {
+      name: "Thinh",
+      avatar: getRandomAvatar(),
+    },
+    content:
+      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
+    timestamp: "3h",
+    id: 12,
+  },
+  {
+    identity: {
+      name: "Mei",
+      avatar: getRandomAvatar(),
+    },
+    content:
+      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
+    timestamp: "1h",
+    id: 13,
+  },
+  {
+    identity: {
+      name: "Thinh",
+      avatar: getRandomAvatar(),
+    },
+    content: "Thinh đã theo dõi bạn.",
+    timestamp: "2h",
+    id: 14,
+  },
+  {
+    identity: {
+      name: "Thinh",
+      avatar: getRandomAvatar(),
+    },
+    content:
+      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
+    timestamp: "3h",
+    id: 15,
+  },
 ];

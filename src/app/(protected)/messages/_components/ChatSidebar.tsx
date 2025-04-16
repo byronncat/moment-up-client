@@ -7,9 +7,10 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 import { useContact } from "../_provider/Contact";
-import { MagnifyingGlass, XMark } from "@/components/icons";
+import { type NavItem, NavigationBar } from "@/components";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { MagnifyingGlass, XMark } from "@/components/icons";
 import { ROUTE } from "@/constants/serverConfig";
 
 export default function ChatSidebar() {
@@ -39,10 +40,7 @@ export default function ChatSidebar() {
       <SidebarHeader title="Chats" />
       <SearchBar query={query} setQuery={setQuery} />
       <UserStatus userStatuses={userStatuses} className="pb-5" />
-      <ChatTypeSelection
-        selectedFilter={selectedFilter}
-        onFilterChange={setSelectedFilter}
-      />
+      <ChatTypeSelection onFilterChange={setSelectedFilter} />
 
       <div className="overflow-y-auto flex-1">
         {filteredContacts ? (
@@ -117,53 +115,29 @@ function SearchBar({ query, setQuery }: SearchBarProps) {
 }
 
 type ChatTypeSelectionProps = Readonly<{
-  selectedFilter: "all" | "inbox" | "groups";
   onFilterChange: (filter: "all" | "inbox" | "groups") => void;
 }>;
 
-function ChatTypeSelection({
-  selectedFilter,
-  onFilterChange,
-}: ChatTypeSelectionProps) {
-  const tabs = [
-    { id: "all", label: "All" },
-    { id: "inbox", label: "Inbox" },
-    { id: "groups", label: "Groups" },
+function ChatTypeSelection({ onFilterChange }: ChatTypeSelectionProps) {
+  const tabs: NavItem[] = [
+    {
+      id: "all",
+      label: "All",
+      onSelect: () => onFilterChange("all"),
+    },
+    {
+      id: "inbox",
+      label: "Inbox",
+      onSelect: () => onFilterChange("inbox"),
+    },
+    {
+      id: "groups",
+      label: "Groups",
+      onSelect: () => onFilterChange("groups"),
+    },
   ];
 
-  return (
-    <div className={cn("w-full", "border-b border-border")}>
-      <div className="flex">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => onFilterChange(tab.id as "all" | "inbox" | "groups")}
-            className={cn(
-              "cursor-pointer",
-              "relative w-1/3",
-              "px-6 py-3",
-              "transition-colors duration-200 ease-in-out",
-              selectedFilter === tab.id
-                ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground"
-            )}
-          >
-            <div className={cn("flex justify-center items-center", "w-full")}>
-              <span className="text-sm font-medium">{tab.label}</span>
-            </div>
-            {selectedFilter === tab.id && (
-              <span
-                className={cn(
-                  "absolute bottom-0 left-0",
-                  "w-full h-0.5 bg-primary"
-                )}
-              ></span>
-            )}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
+  return <NavigationBar items={tabs} className="mb-5 w-full" />;
 }
 
 function GroupAvatar({

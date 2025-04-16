@@ -56,7 +56,7 @@ const items = [
   },
   {
     title: "Explore",
-    url: ROUTE.EXPLORE_MEDIA,
+    url: ROUTE.EXPLORE(),
     icon: Compass,
   },
   {
@@ -71,7 +71,7 @@ const items = [
   },
   {
     title: "Notifications",
-    url: "#",
+    url: ROUTE.NOTIFICATION(),
     icon: Bell,
   },
   {

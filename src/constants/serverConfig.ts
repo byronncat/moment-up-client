@@ -5,14 +5,19 @@ export const ROUTE = {
   VERIFY_RECOVERY: "/accounts/recover/verify",
 
   HOME: "/",
-  PROFILE: (username: string) => `profile/${username}`,
+  PROFILE: (
+    username: string,
+    type: "default" | "media" | "likes" = "default"
+  ) => `/profile/${username}${type !== "default" ? `/${type}` : ""}`,
   SEARCH: "/search",
-  EXPLORE_MEDIA: "/explore/media",
-  EXPLORE_MOMENTS: "/explore/moments",
+  EXPLORE: (type: "media" | "moments" = "media") => `/explore/${type}`,
   MESSAGES: "/messages",
   MESSAGE: (contactId?: string) =>
     `/messages${contactId ? `/${contactId}` : ""}`,
   THOUGHT: "/messages/thought",
+  NOTIFICATION: (type: "all" | "mentions" = "all") =>
+    `/notifications${type === "all" ? "" : `/${type}`}`,
+  SETTINGS: "/settings",
 };
 
 export const PROTECTED_ROUTES = [ROUTE.HOME];
@@ -27,8 +32,6 @@ export const PUBLIC_ROUTES = [
   ROUTE.SIGNUP,
   ROUTE.FORGOT_PASSWORD,
   ROUTE.VERIFY_RECOVERY,
-  ROUTE.EXPLORE_MEDIA,
-  ROUTE.EXPLORE_MOMENTS,
   ROUTE.PROFILE(""),
 ];
 
