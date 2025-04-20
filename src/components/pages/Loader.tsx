@@ -1,11 +1,7 @@
 import { cn } from "@/lib/utils";
 import styles from "@/styles/loader.module.css";
 
-type LoaderProps = {
-  className?: string;
-};
-
-function BoxSpin({ className }: LoaderProps) {
+function BoxSpin({ className }: ComponentProps) {
   return (
     <div className={cn("flex flex-col justify-center items-center", className)}>
       <div>
@@ -24,8 +20,7 @@ function BoxSpin({ className }: LoaderProps) {
           className={cn(
             styles["configure-border-2"],
             "flex justify-center items-center",
-            "size-24 p-0.5",
-            "rotate-45"
+            "size-24 p-0.5"
           )}
         >
           <span
@@ -40,10 +35,9 @@ function BoxSpin({ className }: LoaderProps) {
       <div
         className={cn(
           styles.waviy,
-          "text-white",
-          "px-4 py-1 mt-16 rounded",
-          "font-bold text-xl tracking-widest",
-          "bg-primary"
+          "text-primary",
+          "px-4 py-1 mt-12 rounded",
+          "font-bold text-2xl tracking-widest"
         )}
       >
         <span>L</span>
@@ -53,28 +47,16 @@ function BoxSpin({ className }: LoaderProps) {
         <span>I</span>
         <span>N</span>
         <span>G</span>
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
       </div>
     </div>
   );
 }
 
-// TODO: Implement a regular spinner
-function Regular() {
-  return (
-    <div
-      className={cn(
-        "size-10",
-        "rounded-full animate-spin",
-        "border-4 border-solid border-t-transparent dark:border-t-transparent",
-        "border-primary dark:border-dark-primary"
-      )}
-    />
-  );
-}
-
 const Loader = {
   BoxSpin,
-  Regular,
 };
 
 export default Loader;

@@ -1,7 +1,11 @@
-import "react";
+declare type LayoutProps = Readonly<{
+  children: React.ReactNode;
+}>;
 
-declare module "react" {
-  interface CSSProperties {
-    [key: `--${string}`]: string | number;
+declare type ComponentProps<BaseProps = Record<string, unknown>> = Readonly<
+  BaseProps & {
+    className?: string;
+    children?: React.ReactNode;
+    onClick?: () => void;
   }
-}
+>;

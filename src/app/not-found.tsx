@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ROUTE } from "@/constants/serverConfig";
+import { ROUTE } from "@/constants/clientConfig";
 
 export default function NotFound() {
   return (

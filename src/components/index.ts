@@ -1,9 +1,9 @@
 export { default as Brand } from "./Brand";
 export { default as BubbleTextarea } from "./BubbleTextarea";
-export { default as Divider } from "./Divider";
-export { default as Loader } from "./Loader";
 export { default as ModeSelection } from "./ModeSelection";
 export { default as Sidebar } from "./Sidebar";
+export { default as SearchInput } from "./SearchInput";
+export { default as SearchItem } from "./SearchItem";
 export { default as NavigationBar } from "./HorizontalNavigationBar";
 
 export type { NavItem } from "./HorizontalNavigationBar";

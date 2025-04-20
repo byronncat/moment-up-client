@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const loginFormSchema = z.object({
+const login = z.object({
   identity: z.string().nonempty({
     message: "Username or email is required",
   }),
@@ -9,7 +9,34 @@ export const loginFormSchema = z.object({
   }),
 });
 
-export const recoverPasswordSchema = z.object({
+const signup = z.object({
+  username: z
+    .string()
+    .nonempty({
+      message: "Username is required",
+    })
+    .min(2, {
+      message: "Username must be at least 2 characters",
+    }),
+  email: z
+    .string()
+    .nonempty({
+      message: "Email is required",
+    })
+    .email({
+      message: "Invalid email address",
+    }),
+  password: z
+    .string()
+    .nonempty({
+      message: "Password is required",
+    })
+    .min(8, {
+      message: "Password must be at least 8 characters",
+    }),
+});
+
+const sendRecoveryEmail = z.object({
   email: z
     .string()
     .nonempty({
@@ -20,7 +47,7 @@ export const recoverPasswordSchema = z.object({
     }),
 });
 
-export const verifyRecoverySchema = z
+const changePassword = z
   .object({
     code: z
       .string()
@@ -50,29 +77,9 @@ export const verifyRecoverySchema = z
     path: ["confirmPassword"],
   });
 
-export const signupFormSchema = z.object({
-  username: z
-    .string()
-    .nonempty({
-      message: "Username is required",
-    })
-    .min(2, {
-      message: "Username must be at least 2 characters",
-    }),
-  email: z
-    .string()
-    .nonempty({
-      message: "Email is required",
-    })
-    .email({
-      message: "Invalid email address",
-    }),
-  password: z
-    .string()
-    .nonempty({
-      message: "Password is required",
-    })
-    .min(8, {
-      message: "Password must be at least 8 characters",
-    }),
-});
+export default {
+  login,
+  signup,
+  sendRecoveryEmail,
+  changePassword,
+};

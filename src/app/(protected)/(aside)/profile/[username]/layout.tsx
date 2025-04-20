@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Image, Heart, TableOfContents } from "lucide-react";
 import { User } from "@/components/icons";
-import { ROUTE } from "@/constants/serverConfig";
+import { ROUTE } from "@/constants/clientConfig";
 
 type LayoutProps = Readonly<{
   children: React.ReactNode;

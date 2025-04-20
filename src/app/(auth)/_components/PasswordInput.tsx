@@ -1,3 +1,5 @@
+"use client";
+
 import type { InputProps } from "@/components/ui/input";
 
 import { forwardRef, useState } from "react";

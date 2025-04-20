@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import Loader from "../Loader";
+import Loader from "./Loader";
 import Brand from "../Brand";
 
 export default function LoadingPage() {

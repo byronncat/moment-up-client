@@ -1,33 +1,26 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { ROUTE } from "@/constants/clientConfig";
 import Logo from "./Logo";
 import { sourceCodePro } from "@/styles/fonts";
-import { ROUTE } from "@/constants/serverConfig";
 
-type BrandProps = Readonly<{
+type BrandProps = ComponentProps<{
   hyperlink?: boolean;
-  className?: string;
 }>;
 
 export default function Brand({ hyperlink = true, className }: BrandProps) {
-  const Content = () => (
-    <div className={cn("flex items-center", className)}>
-      <LogoAndText />
-    </div>
-  );
-
   if (hyperlink)
     return (
       <Link href={ROUTE.HOME}>
-        <Content />
+        <Content className={className} />
       </Link>
     );
-  return <Content />;
+  return <Content className={className} />;
 }
 
-function LogoAndText() {
+function Content({ className }: ComponentProps) {
   return (
-    <>
+    <div className={cn("flex items-center", className)}>
       <Logo className="h-full mr-2" />
       <span
         className={cn(
@@ -40,6 +33,6 @@ function LogoAndText() {
       >
         MomentUp
       </span>
-    </>
+    </div>
   );
 }

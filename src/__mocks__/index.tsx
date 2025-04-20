@@ -973,8 +973,6 @@ export const mockInitialMessages: Message[] = [
   },
 ];
 
-import { Twitter } from "lucide-react";
-
 export const mockQuickReplies: string[] = [
   "Can I learn more about your business?",
   "Can you tell me more about your ad?",
@@ -1127,4 +1125,15 @@ export const mockNotifications = [
     timestamp: "3h",
     id: 15,
   },
+];
+
+export const mockHashtags = [
+  { id: 1, type: "hashtag" as const, tag: "travel", postCount: 1223 },
+  { id: 2, type: "hashtag" as const, tag: "photography", postCount: 945 },
+  { id: 3, type: "hashtag" as const, tag: "nature", postCount: 876 },
+  { id: 4, type: "hashtag" as const, tag: "food", postCount: 732 },
+  { id: 5, type: "hashtag" as const, tag: "art", postCount: 625 },
+  { id: 6, type: "hashtag" as const, tag: "fashion", postCount: 589 },
+  { id: 7, type: "hashtag" as const, tag: "fitness", postCount: 478 },
+  { id: 8, type: "hashtag" as const, tag: "music", postCount: 412 },
 ];

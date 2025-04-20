@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+import { Button } from "@/components/ui/button";
 import { LaptopMinimal, Moon, Sun } from "@/components/icons";
 import {
   DropdownMenu,
@@ -18,11 +19,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 
-type ModeSelectionProps = Readonly<{
-  className?: string;
-}>;
-
-export default function ModeSelection({ className }: ModeSelectionProps) {
+export default function ModeSelection({ className }: ComponentProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 

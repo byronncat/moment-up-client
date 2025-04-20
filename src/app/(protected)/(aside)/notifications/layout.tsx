@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { type NavItem, NavigationBar } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Cog } from "lucide-react";
-import { ROUTE } from "@/constants/serverConfig";
+import { ROUTE } from "@/constants/clientConfig";
 
 const tabs: NavItem[] = [
   {

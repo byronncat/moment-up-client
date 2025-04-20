@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "./providers";
 import { cn } from "@/lib/utils";
-import { ROUTE } from "@/constants/serverConfig";
+import { ROUTE } from "@/constants/clientConfig";
 
 import Logo from "./Logo";
 import {
@@ -41,6 +41,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
 import { sourceCodePro } from "@/styles/fonts";
 
 const items = [
@@ -117,6 +128,10 @@ export default function Sidebar() {
   const userPreferenceRef = useRef(true);
   const isFirstRender = useRef(true);
 
+  function logoutHandler() {
+    logout();
+  }
+
   useEffect(() => {
     const handleResize = () => {
       const isXl = window.innerWidth >= 1280;
@@ -146,9 +161,7 @@ export default function Sidebar() {
   }, [open, setOpen, isAboveXl]);
 
   useEffect(() => {
-    if (isAboveXl) {
-      userPreferenceRef.current = open;
-    }
+    if (isAboveXl) userPreferenceRef.current = open;
   }, [open, isAboveXl]);
 
   const MobileNav = () => {
@@ -298,43 +311,71 @@ export default function Sidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               {!open ? (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <SidebarMenuButton
-                      className="cursor-pointer"
-                      onClick={() => {
-                        console.log("Logout");
-                        // logout();
-                      }}
-                    >
+                <AlertDialog>
+                  <Tooltip>
+                    <AlertDialogTrigger asChild>
+                      <div>
+                        <TooltipTrigger asChild>
+                          <SidebarMenuButton className="cursor-pointer">
+                            <LogOut />
+                            <span>Logout</span>
+                          </SidebarMenuButton>
+                        </TooltipTrigger>
+                        <TooltipContent
+                          className={cn(
+                            "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
+                            "text-xs",
+                            "px-2 py-1 rounded-md",
+                            "dark:border border-border shadow-md"
+                          )}
+                          sideOffset={6}
+                          side="right"
+                        >
+                          <p>Logout</p>
+                        </TooltipContent>
+                      </div>
+                    </AlertDialogTrigger>
+                  </Tooltip>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently log
+                        you out.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={logoutHandler}>
+                        Logout
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              ) : (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <SidebarMenuButton className="cursor-pointer">
                       <LogOut />
                       <span>Logout</span>
                     </SidebarMenuButton>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    className={cn(
-                      "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
-                      "text-xs",
-                      "px-2 py-1 rounded-md",
-                      "dark:border border-border shadow-md"
-                    )}
-                    sideOffset={6}
-                    side="right"
-                  >
-                    <p>Logout</p>
-                  </TooltipContent>
-                </Tooltip>
-              ) : (
-                <SidebarMenuButton
-                  className="cursor-pointer"
-                  onClick={() => {
-                    console.log("Logout");
-                    // logout();
-                  }}
-                >
-                  <LogOut />
-                  <span>Logout</span>
-                </SidebarMenuButton>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently log
+                        you out.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={logoutHandler}>
+                        Logout
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               )}
             </SidebarMenuItem>
             <SidebarMenuItem>

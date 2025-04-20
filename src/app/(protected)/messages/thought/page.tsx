@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { BubbleTextarea } from "@/components";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronDown, ArrowLeft } from "@/components/icons";
-import { ROUTE } from "@/constants/serverConfig";
+import { ROUTE } from "@/constants/clientConfig";
 
 export default function ThoughtPage() {
   return (

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 export default function GoogleButton() {
   return (
     <button
+      type="button"
       className={cn(
         "cursor-pointer",
         "size-full h-10 rounded-lg",

@@ -1,114 +1,200 @@
 import type { z } from "zod";
 import type { API } from "api";
 
-import { loginFormSchema, signupFormSchema } from "@/lib/zodSchema";
-import { SERVER_HOST_URL } from "@/constants/serverConfig";
-
-const api = {
-  login: `${SERVER_HOST_URL}/v1/auth/login`,
-  logout: `${SERVER_HOST_URL}/v1/auth/logout`,
-  signup: `${SERVER_HOST_URL}/v1/auth/signup`,
-  verify: `${SERVER_HOST_URL}/v1/auth/verify`,
-};
+import zodSchema from "@/lib/zodSchema";
+// import { Api } from "@/constants/serverConfig";
 
 export async function login(
-  data: z.infer<typeof loginFormSchema>
+  data: z.infer<typeof zodSchema.login>
 ): Promise<API> {
-  return await fetch(api.login, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-    credentials: "include",
-  })
-    .then(async (res) => {
-      const response = await res.json();
-      if (!res.ok) throw response;
-      return {
-        success: true,
-        message: response,
-      };
-    })
-    .catch((err) => {
-      return {
-        success: false,
-        message: Array.isArray(err.message) ? err.message[0] : err.message,
-      };
+  try {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 2000);
     });
+    // throw new Error("Not implemented");
+
+    // create a cookie with the name "session" and value "123456789
+    // set the cookie to expire in 1 hour
+    document.cookie = "session=123456789; max-age=3600; path=/";
+    return {
+      success: true,
+      message: "ok",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "internal error",
+    };
+  }
+  // return await fetch(Api.auth.login, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(data),
+  //   credentials: "include",
+  // })
+  //   .then(async (res) => {
+  //     const response = await res.json();
+  //     if (!res.ok) throw response;
+  //     return {
+  //       success: true,
+  //       message: response,
+  //     };
+  //   })
+  //   .catch((err) => {
+  //     return {
+  //       success: false,
+  //       message: Array.isArray(err.message) ? err.message[0] : err.message,
+  //     };
+  //   });
 }
 
 export async function logout(): Promise<API> {
-  return await fetch(api.logout, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  })
-    .then(async (res) => {
-      const response = await res.json();
-      if (!res.ok) throw response;
-      return {
-        success: true,
-        message: response,
-      };
-    })
-    .catch((err) => {
-      return {
-        success: false,
-        message: Array.isArray(err.message) ? err.message[0] : err.message,
-      };
-    });
+  document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  return {
+    success: true,
+    message: "ok",
+  };
+  // return await fetch(Api.auth.logout, {
+  //   method: "DELETE",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   credentials: "include",
+  // })
+  //   .then(async (res) => {
+  //     const response = await res.json();
+  //     if (!res.ok) throw response;
+  //     return {
+  //       success: true,
+  //       message: response,
+  //     };
+  //   })
+  //   .catch((err) => {
+  //     return {
+  //       success: false,
+  //       message: Array.isArray(err.message) ? err.message[0] : err.message,
+  //     };
+  //   });
 }
 
 export async function signup(
-  data: z.infer<typeof signupFormSchema>
+  data: z.infer<typeof zodSchema.signup>
 ): Promise<API> {
-  return await fetch(api.signup, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-    credentials: "include",
-  })
-    .then(async (res) => {
-      const response = await res.json();
-      if (!res.ok) throw response;
-      return {
-        success: true,
-        message: response,
-      };
-    })
-    .catch((err) => {
-      return {
-        success: false,
-        message: Array.isArray(err.message) ? err.message[0] : err.message,
-      };
+  try {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 2000);
     });
+    // throw new Error("Not implemented");
+
+    // create a cookie with the name "session" and value "123456789
+    // set the cookie to expire in 1 hour
+    document.cookie = "session=123456789; max-age=3600; path=/";
+    return {
+      success: true,
+      message: "ok",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "internal error",
+    };
+  }
+
+  // return await fetch(Api.auth.signup, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(data),
+  //   credentials: "include",
+  // })
+  //   .then(async (res) => {
+  //     const response = await res.json();
+  //     if (!res.ok) throw response;
+  //     return {
+  //       success: true,
+  //       message: response,
+  //     };
+  //   })
+  //   .catch((err) => {
+  //     return {
+  //       success: false,
+  //       message: Array.isArray(err.message) ? err.message[0] : err.message,
+  //     };
+  //   });
 }
 
 export async function verify(): Promise<API> {
-  return await fetch(api.verify, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  })
-    .then(async (res) => {
-      const response = await res.json();
-      if (!res.ok) throw response;
-      return {
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 2000);
+  });
+  const cookie = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("session="));
+  if (cookie) {
+    return {
+      success: true,
+      message: "ok",
+    };
+  }
+  return {
+    success: false,
+    message: "ok",
+  };
+
+  // return await fetch(Api.auth.verify, {
+  //   method: "GET",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   credentials: "include",
+  // })
+  //   .then(async (res) => {
+  //     const response = await res.json();
+  //     if (!res.ok) throw response;
+  //     return {
+  //       success: true,
+  //       message: response,
+  //     };
+  //   })
+  //   .catch((err) => {
+  //     return {
+  //       success: false,
+  //       message: Array.isArray(err.message) ? err.message[0] : err.message,
+  //     };
+  //   });
+}
+
+export function sendRecoveryEmail(
+  data: z.infer<typeof zodSchema.sendRecoveryEmail>
+): Promise<API> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
         success: true,
-        message: response,
-      };
-    })
-    .catch((err) => {
-      return {
-        success: false,
-        message: Array.isArray(err.message) ? err.message[0] : err.message,
-      };
-    });
+        message: `Recovery email sent to ${data.email}`,
+      });
+    }, 2000);
+  });
+}
+
+export async function changePassword(
+  data: z.infer<typeof zodSchema.changePassword>
+): Promise<API> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        success: true,
+        message: `Password changed successfully`,
+      });
+    }, 2000);
+  });
 }

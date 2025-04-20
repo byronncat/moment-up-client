@@ -1,7 +1,9 @@
 "use client";
 
-import { type z } from "zod";
+import type { z } from "zod";
+import type { API } from "api";
 
+import { useRouter, usePathname } from "next/navigation";
 import {
   createContext,
   useContext,
@@ -9,13 +11,11 @@ import {
   useState,
   useCallback,
 } from "react";
-import { useRouter, usePathname } from "next/navigation";
 
+import zodSchema from "@/lib/zodSchema";
 import { auth } from "@/services";
-import { useToast } from "@/hooks/use-toast";
 import { LoadingPage } from "../pages";
-import { loginFormSchema, signupFormSchema } from "@/lib/zodSchema";
-import { AUTH_ROUTES, PROTECTED_ROUTES, ROUTE } from "@/constants/serverConfig";
+import { AUTH_ROUTES, PROTECTED_ROUTES, ROUTE } from "@/constants/clientConfig";
 
 const AuthContext = createContext(
   {} as {
@@ -24,9 +24,15 @@ const AuthContext = createContext(
     loaded: boolean;
     setLoaded: (loaded: boolean) => void;
     authenticate: () => Promise<void>;
-    login: (values: z.infer<typeof loginFormSchema>) => Promise<void>;
-    signup: (values: z.infer<typeof signupFormSchema>) => Promise<void>;
+    login: (values: z.infer<typeof zodSchema.login>) => Promise<API>;
+    signup: (values: z.infer<typeof zodSchema.signup>) => Promise<API>;
     logout: () => Promise<void>;
+    sendRecoveryEmail: (
+      values: z.infer<typeof zodSchema.sendRecoveryEmail>
+    ) => Promise<API>;
+    changePassword: (
+      values: z.infer<typeof zodSchema.changePassword>
+    ) => Promise<API>;
   }
 );
 
@@ -39,8 +45,7 @@ export default function AuthProvider({
 }>) {
   const router = useRouter();
   const pathname = usePathname();
-  const { toast } = useToast();
-  const [logged, setLogged] = useState<boolean>();
+  const [logged, setLogged] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
   const authenticate = useCallback(async () => {
@@ -50,49 +55,33 @@ export default function AuthProvider({
   }, []);
 
   const login = useCallback(
-    async (values: z.infer<typeof loginFormSchema>) => {
-      const { success, message } = await auth.login(values);
-      if (!success)
-        toast({
-          title: "Login failed",
-          description: message,
-          variant: "destructive",
-        });
-      else {
+    async (values: z.infer<typeof zodSchema.login>) => {
+      const res = await auth.login(values);
+      if (res.success) {
         setLogged(true);
         router.push(ROUTE.HOME);
       }
+      return res;
     },
-    [toast, router]
+    [router]
   );
 
   const signup = useCallback(
-    async (values: z.infer<typeof signupFormSchema>) => {
-      const { success, message } = await auth.signup(values);
-      if (!success)
-        toast({
-          title: "Signup failed",
-          description: message,
-          variant: "destructive",
-        });
-      else {
+    async (values: z.infer<typeof zodSchema.signup>) => {
+      const res = await auth.signup(values);
+      if (res.success) {
         setLogged(true);
         router.push(ROUTE.HOME);
       }
+      return res;
     },
-    [toast, router]
+    [router]
   );
 
   const logout = useCallback(async () => {
     setLoaded(false);
     const { success, message } = await auth.logout();
-    if (!success)
-      toast({
-        title: "Logout failed",
-        description: message,
-        variant: "destructive",
-      });
-    else {
+    if (success) {
       setLogged(false);
       router.push(ROUTE.LOGIN);
     }
@@ -100,7 +89,25 @@ export default function AuthProvider({
     setTimeout(() => {
       setLoaded(true);
     }, 100);
-  }, [toast, router]);
+  }, [router]);
+
+  const sendRecoveryEmail = useCallback(
+    async (values: z.infer<typeof zodSchema.sendRecoveryEmail>) => {
+      const res = await auth.sendRecoveryEmail(values);
+      if (res.success) router.push(ROUTE.VERIFY_RECOVERY);
+      return res;
+    },
+    [router]
+  );
+
+  const changePassword = useCallback(
+    async (values: z.infer<typeof zodSchema.changePassword>) => {
+      const res = await auth.changePassword(values);
+      if (res.success) router.push(ROUTE.LOGIN);
+      return res;
+    },
+    [router]
+  );
 
   useEffect(() => {
     authenticate();
@@ -108,11 +115,9 @@ export default function AuthProvider({
 
   useEffect(() => {
     if (loaded) {
-      if (logged && AUTH_ROUTES.includes(pathname)) {
-        router.replace(ROUTE.HOME);
-      } else if (!logged && PROTECTED_ROUTES.includes(pathname)) {
+      if (logged && AUTH_ROUTES.includes(pathname)) router.replace(ROUTE.HOME);
+      else if (!logged && PROTECTED_ROUTES.includes(pathname))
         router.replace(ROUTE.LOGIN);
-      }
     }
   }, [logged, loaded, pathname, router]);
 
@@ -127,6 +132,8 @@ export default function AuthProvider({
         login,
         signup,
         logout,
+        sendRecoveryEmail,
+        changePassword,
       }}
     >
       {loaded ? children : <LoadingPage />}
