@@ -93,7 +93,7 @@ const tabs: NavItem[] = [
   {
     id: "media",
     label: "Media",
-    icon: <Image />,
+    icon: <Image aria-label="User's media" />,
     href: ROUTE.PROFILE("username", "media"),
   },
   {

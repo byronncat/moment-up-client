@@ -10,6 +10,7 @@ import {
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import type { MomentUI } from "api";
 
 import {
   SearchInput,
@@ -56,7 +57,7 @@ export default function SearchPage() {
   const [searchResults, setSearchResults] = useState<{
     accounts: Array<UserSearchItem>;
     hashtags: Array<HashtagSearchItem>;
-    posts: Array<any>;
+    posts: Array<MomentUI>;
   }>({
     accounts: [],
     hashtags: [],
@@ -257,7 +258,7 @@ function SearchCategories({
   results: {
     accounts: Array<UserSearchItem>;
     hashtags: Array<HashtagSearchItem>;
-    posts: Array<any>;
+    posts: Array<MomentUI>;
   };
 }) {
   const categories: NavItem[] = [
@@ -295,7 +296,7 @@ function SearchResults({
   results: {
     accounts: Array<UserSearchItem>;
     hashtags: Array<HashtagSearchItem>;
-    posts: Array<any>;
+    posts: Array<MomentUI>;
   };
   isSearching: boolean;
   query: string;
@@ -313,7 +314,7 @@ function SearchResults({
   if (totalResults === 0) {
     return (
       <div className="p-4 text-center text-muted-foreground">
-        No results found for "{query}"
+        No results found for &quot;{query}&quot;
       </div>
     );
   }

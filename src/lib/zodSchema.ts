@@ -77,9 +77,11 @@ const changePassword = z
     path: ["confirmPassword"],
   });
 
-export default {
+const zodSchema = {
   login,
   signup,
   sendRecoveryEmail,
   changePassword,
 };
+
+export default zodSchema;

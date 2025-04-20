@@ -8,7 +8,7 @@ import { type NavItem, NavigationBar } from "@/components";
 const tabs: NavItem[] = [
   {
     id: "media",
-    icon: <Image />,
+    icon: <Image aria-label="Media" />,
     label: "Media",
     href: ROUTE.EXPLORE("media"),
   },
