@@ -15,12 +15,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip } from "@/components";
 import { cn } from "@/lib/utils";
 import {
   Heart,
@@ -131,223 +126,156 @@ export default function MomentCard({ data }: MomentCardProps) {
         </CardContent>
       )}
 
-      <TooltipProvider>
-        <CardFooter className="p-3">
-          <div
-            className={cn(
-              "flex items-center justify-between",
-              "w-full",
-              "text-muted-foreground"
-            )}
-          >
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  type="button"
+      <CardFooter className="p-3">
+        <div
+          className={cn(
+            "flex items-center justify-between",
+            "w-full",
+            "text-muted-foreground"
+          )}
+        >
+          <Tooltip content="Like" sideOffset={6}>
+            <button
+              type="button"
+              className={cn(
+                "group flex items-center gap-1",
+                data.isLiked ? "text-pink-500" : "hover:text-pink-500",
+                "cursor-pointer",
+                "transition-colors duration-150 ease-in-out"
+              )}
+            >
+              <div
+                className={cn(
+                  "p-2 rounded-full",
+                  "group-hover:bg-pink-500/10",
+                  "transition-colors duration-150 ease-in-out"
+                )}
+              >
+                <Heart
                   className={cn(
-                    "group flex items-center gap-1",
-                    data.isLiked ? "text-pink-500" : "hover:text-pink-500",
-                    "cursor-pointer",
+                    "size-5",
+                    "transition-colors duration-150 ease-in-out",
+                    data.isLiked
+                      ? "fill-pink-500"
+                      : "fill-muted-foreground group-hover:fill-pink-500"
+                  )}
+                  type={data.isLiked ? "solid" : "regular"}
+                />
+              </div>
+              <span>{data.likes}</span>
+            </button>
+          </Tooltip>
+
+          <Tooltip content="Comment" sideOffset={6}>
+            <button
+              type="button"
+              className={cn(
+                "group flex items-center gap-1",
+                "hover:text-blue-500",
+                "cursor-pointer"
+              )}
+            >
+              <div
+                className={cn(
+                  "p-2 rounded-full",
+                  "group-hover:bg-blue-500/10",
+                  "transition-colors duration-150 ease-in-out"
+                )}
+              >
+                <Comment
+                  className={cn(
+                    "size-5",
+                    "fill-muted-foreground group-hover:fill-blue-500"
+                  )}
+                />
+              </div>
+              <span>{data.comments}</span>
+            </button>
+          </Tooltip>
+
+          <Tooltip content="Repost" sideOffset={6}>
+            <button
+              type="button"
+              className={cn(
+                "group flex items-center gap-1",
+                "hover:text-green-500",
+                "cursor-pointer"
+              )}
+            >
+              <div
+                className={cn(
+                  "p-2 rounded-full",
+                  "group-hover:bg-green-500/10",
+                  "transition-colors duration-150 ease-in-out"
+                )}
+              >
+                <Repeat
+                  className={cn(
+                    "size-5",
+                    "fill-muted-foreground group-hover:fill-green-500"
+                  )}
+                />
+              </div>
+              <span>73</span>
+            </button>
+          </Tooltip>
+
+          <div className="flex items-center gap-1">
+            <Tooltip content="Bookmark" sideOffset={6}>
+              <button
+                type="button"
+                className={cn(
+                  "group flex items-center gap-1",
+                  "hover:text-blue-500",
+                  "cursor-pointer"
+                )}
+              >
+                <div
+                  className={cn(
+                    "p-2 rounded-full",
+                    "group-hover:bg-blue-500/10",
                     "transition-colors duration-150 ease-in-out"
                   )}
                 >
-                  <div
+                  <Bookmark
                     className={cn(
-                      "p-2 rounded-full",
-                      "group-hover:bg-pink-500/10",
-                      "transition-colors duration-150 ease-in-out"
+                      "size-5",
+                      "fill-muted-foreground group-hover:fill-blue-500"
                     )}
-                  >
-                    <Heart
-                      className={cn(
-                        "size-5",
-                        "transition-colors duration-150 ease-in-out",
-                        data.isLiked
-                          ? "fill-pink-500"
-                          : "fill-muted-foreground group-hover:fill-pink-500"
-                      )}
-                      type={data.isLiked ? "solid" : "regular"}
-                    />
-                  </div>
-                  <span>{data.likes}</span>
-                </button>
-              </TooltipTrigger>
-              <TooltipContent
-                className={cn(
-                  "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
-                  "text-xs",
-                  "px-2 py-1 rounded-md",
-                  "dark:border border-border shadow-md"
-                )}
-                sideOffset={6}
-              >
-                <p>Like</p>
-              </TooltipContent>
+                    type="regular"
+                  />
+                </div>
+              </button>
             </Tooltip>
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  type="button"
-                  className={cn(
-                    "group flex items-center gap-1",
-                    "hover:text-blue-500",
-                    "cursor-pointer"
-                  )}
-                >
-                  <div
-                    className={cn(
-                      "p-2 rounded-full",
-                      "group-hover:bg-blue-500/10",
-                      "transition-colors duration-150 ease-in-out"
-                    )}
-                  >
-                    <Comment
-                      className={cn(
-                        "size-5",
-                        "fill-muted-foreground group-hover:fill-blue-500"
-                      )}
-                    />
-                  </div>
-                  <span>{data.comments}</span>
-                </button>
-              </TooltipTrigger>
-              <TooltipContent
+            <Tooltip content="Share">
+              <button
+                type="button"
                 className={cn(
-                  "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
-                  "text-xs",
-                  "px-2 py-1 rounded-md",
-                  "dark:border border-border shadow-md"
+                  "group flex items-center gap-1",
+                  "hover:text-blue-500",
+                  "cursor-pointer"
                 )}
-                sideOffset={6}
               >
-                <p>Comment</p>
-              </TooltipContent>
+                <div
+                  className={cn(
+                    "p-2 rounded-full",
+                    "group-hover:bg-blue-500/10",
+                    "transition-colors duration-150 ease-in-out"
+                  )}
+                >
+                  <Share
+                    className={cn(
+                      "size-5",
+                      "fill-muted-foreground group-hover:fill-blue-500"
+                    )}
+                  />
+                </div>
+              </button>
             </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  type="button"
-                  className={cn(
-                    "group flex items-center gap-1",
-                    "hover:text-green-500",
-                    "cursor-pointer"
-                  )}
-                >
-                  <div
-                    className={cn(
-                      "p-2 rounded-full",
-                      "group-hover:bg-green-500/10",
-                      "transition-colors duration-150 ease-in-out"
-                    )}
-                  >
-                    <Repeat
-                      className={cn(
-                        "size-5",
-                        "fill-muted-foreground group-hover:fill-green-500"
-                      )}
-                    />
-                  </div>
-                  <span>73</span>
-                </button>
-              </TooltipTrigger>
-              <TooltipContent
-                className={cn(
-                  "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
-                  "text-xs",
-                  "px-2 py-1 rounded-md",
-                  "dark:border border-border shadow-md"
-                )}
-                sideOffset={6}
-              >
-                <p>Repost</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <div className="flex items-center gap-1">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    className={cn(
-                      "group flex items-center gap-1",
-                      "hover:text-blue-500",
-                      "cursor-pointer"
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "p-2 rounded-full",
-                        "group-hover:bg-blue-500/10",
-                        "transition-colors duration-150 ease-in-out"
-                      )}
-                    >
-                      <Bookmark
-                        className={cn(
-                          "size-5",
-                          "fill-muted-foreground group-hover:fill-blue-500"
-                        )}
-                        type="regular"
-                      />
-                    </div>
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent
-                  className={cn(
-                    "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
-                    "text-xs",
-                    "px-2 py-1 rounded-md",
-                    "dark:border border-border shadow-md"
-                  )}
-                  sideOffset={6}
-                >
-                  <p>Bookmark</p>
-                </TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    className={cn(
-                      "group flex items-center gap-1",
-                      "hover:text-blue-500",
-                      "cursor-pointer"
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "p-2 rounded-full",
-                        "group-hover:bg-blue-500/10",
-                        "transition-colors duration-150 ease-in-out"
-                      )}
-                    >
-                      <Share
-                        className={cn(
-                          "size-5",
-                          "fill-muted-foreground group-hover:fill-blue-500"
-                        )}
-                      />
-                    </div>
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent
-                  className={cn(
-                    "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
-                    "text-xs",
-                    "px-2 py-1 rounded-md",
-                    "dark:border border-border shadow-md"
-                  )}
-                  sideOffset={6}
-                >
-                  <p>Share</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
           </div>
-        </CardFooter>
-      </TooltipProvider>
+        </div>
+      </CardFooter>
     </Card>
   );
 }

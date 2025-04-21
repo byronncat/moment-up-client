@@ -1,11 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-type LogoProps = Readonly<{
-  className?: string;
-}>;
-
-export default function Logo({ className }: LogoProps) {
+export default function Logo({ className }: ComponentProps) {
   return (
     <span
       className={cn(

@@ -1,5 +1,6 @@
 import { AuthProvider, ThemeProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { Metadata } from "@/constants/metadata";
 import "@/styles/globals.css";
 
@@ -14,7 +15,9 @@ export default function RootLayout({ children }: LayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>{children}</AuthProvider>
+          <TooltipProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </TooltipProvider>
           <Toaster />
         </ThemeProvider>
       </body>

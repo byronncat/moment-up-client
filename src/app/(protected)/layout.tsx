@@ -1,19 +1,12 @@
 import { cookies } from "next/headers";
 import { cn } from "@/lib/utils";
-import { LoadingPage } from "@/components/pages";
-import { Sidebar } from "@/components";
+import { Sidebar } from "./_components";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
-export default async function Layout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function Layout({ children }: LayoutProps) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar-state")?.value === "true";
-  const session = cookieStore.get("session");
 
-  if (!session) return <LoadingPage />;
   return (
     <div className="w-screen h-screen">
       <SidebarProvider defaultOpen={defaultOpen}>

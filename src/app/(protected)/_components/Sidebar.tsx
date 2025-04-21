@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
-import { useAuth } from "./providers";
+import { useAuth } from "@/components/providers";
 import { cn } from "@/lib/utils";
 import { ROUTE } from "@/constants/clientConfig";
 
-import Logo from "./Logo";
+import { Logo, Tooltip } from "@/components";
 import {
   MessagesSquare,
   Compass,
@@ -34,13 +34,8 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
   useSidebar,
+  SIDEBAR_COOKIE_NAME,
 } from "@/components/ui/sidebar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,7 +46,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { sourceCodePro } from "@/styles/fonts";
 
 const items = [
@@ -120,32 +121,59 @@ const moreItems = [
   },
 ];
 
+const XL_BREAKPOINT = 1280;
+
 export default function Sidebar() {
   const { logout } = useAuth();
   const { open, setOpen, isMobile } = useSidebar();
   const [isAboveXl, setIsAboveXl] = useState(false);
-  const [showMore, setShowMore] = useState(false);
-  const userPreferenceRef = useRef(true);
+  const userPreferenceRef = useRef<boolean | null>(null);
   const isFirstRender = useRef(true);
 
   function logoutHandler() {
     logout();
   }
 
+  function getSidebarCookie(): boolean | null {
+    if (typeof document === "undefined") return null;
+    const cookies = document.cookie.split("; ");
+    const cookie = cookies.find((c) => c.startsWith(`${SIDEBAR_COOKIE_NAME}=`));
+    return cookie ? cookie.split("=")[1] === "true" : null;
+  }
+
+  useEffect(() => {
+    console.log("getSidebarCookie");
+    const storedState = getSidebarCookie();
+    if (storedState !== null) userPreferenceRef.current = storedState;
+    else userPreferenceRef.current = true;
+  }, []);
+
   useEffect(() => {
     const handleResize = () => {
-      const isXl = window.innerWidth >= 1280;
+      const isXl = window.innerWidth >= XL_BREAKPOINT;
 
       if (isFirstRender.current) {
         setIsAboveXl(isXl);
-        if (!isXl) setOpen(false);
+
+        if (isXl) {
+          const preferredState =
+            userPreferenceRef.current !== null
+              ? userPreferenceRef.current
+              : true;
+          setOpen(preferredState);
+        } else setOpen(false);
+
         isFirstRender.current = false;
         return;
       }
 
       if (isXl !== isAboveXl) {
         if (isXl) {
-          setOpen(userPreferenceRef.current);
+          const preferredState =
+            userPreferenceRef.current !== null
+              ? userPreferenceRef.current
+              : true;
+          setOpen(preferredState);
         } else {
           userPreferenceRef.current = open;
           setOpen(false);
@@ -235,7 +263,7 @@ export default function Sidebar() {
   };
 
   return (
-    <TooltipProvider>
+    <>
       <SidebarUI collapsible="icon">
         <SidebarHeader className="pt-5">
           <div className="flex justify-between items-center">
@@ -271,27 +299,13 @@ export default function Sidebar() {
                 {items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     {!open ? (
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <SidebarMenuButton asChild>
-                            <Link href={item.url}>
-                              <item.icon />
-                              <span>{item.title}</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </TooltipTrigger>
-                        <TooltipContent
-                          className={cn(
-                            "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
-                            "text-xs",
-                            "px-2 py-1 rounded-md",
-                            "dark:border border-border shadow-md"
-                          )}
-                          sideOffset={6}
-                          side="right"
-                        >
-                          <p>{item.title}</p>
-                        </TooltipContent>
+                      <Tooltip content={item.title} side="right" sideOffset={6}>
+                        <SidebarMenuButton asChild>
+                          <Link href={item.url}>
+                            <item.icon />
+                            <span>{item.title}</span>
+                          </Link>
+                        </SidebarMenuButton>
                       </Tooltip>
                     ) : (
                       <SidebarMenuButton asChild>
@@ -312,28 +326,12 @@ export default function Sidebar() {
             <SidebarMenuItem>
               {!open ? (
                 <AlertDialog>
-                  <Tooltip>
+                  <Tooltip content="Logout" side="right" sideOffset={6}>
                     <AlertDialogTrigger asChild>
-                      <div>
-                        <TooltipTrigger asChild>
-                          <SidebarMenuButton className="cursor-pointer">
-                            <LogOut />
-                            <span>Logout</span>
-                          </SidebarMenuButton>
-                        </TooltipTrigger>
-                        <TooltipContent
-                          className={cn(
-                            "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
-                            "text-xs",
-                            "px-2 py-1 rounded-md",
-                            "dark:border border-border shadow-md"
-                          )}
-                          sideOffset={6}
-                          side="right"
-                        >
-                          <p>Logout</p>
-                        </TooltipContent>
-                      </div>
+                      <SidebarMenuButton className="cursor-pointer">
+                        <LogOut />
+                        <span>Logout</span>
+                      </SidebarMenuButton>
                     </AlertDialogTrigger>
                   </Tooltip>
                   <AlertDialogContent>
@@ -380,68 +378,64 @@ export default function Sidebar() {
             </SidebarMenuItem>
             <SidebarMenuItem>
               {!open ? (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <SidebarMenuButton
-                      className="cursor-pointer"
-                      onClick={() => setShowMore(!showMore)}
+                <Tooltip content="More" side="right" sideOffset={6}>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <SidebarMenuButton className="cursor-pointer">
+                        <Menu />
+                        <span>More</span>
+                      </SidebarMenuButton>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="start"
+                      side="right"
+                      className="w-56"
                     >
+                      {moreItems.map((item) => (
+                        <DropdownMenuItem key={item.title} asChild>
+                          <Link
+                            href={item.url}
+                            className="flex items-center gap-2"
+                          >
+                            <item.icon size={18} />
+                            <span>{item.title}</span>
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </Tooltip>
+              ) : (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <SidebarMenuButton className="cursor-pointer">
                       <Menu />
                       <span>More</span>
                     </SidebarMenuButton>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    className={cn(
-                      "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
-                      "text-xs",
-                      "px-2 py-1 rounded-md",
-                      "dark:border border-border shadow-md"
-                    )}
-                    sideOffset={6}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="start"
                     side="right"
+                    className="w-56"
                   >
-                    <p>More</p>
-                  </TooltipContent>
-                </Tooltip>
-              ) : (
-                <SidebarMenuButton
-                  className="cursor-pointer"
-                  onClick={() => setShowMore(!showMore)}
-                >
-                  <Menu />
-                  <span>More</span>
-                </SidebarMenuButton>
+                    {moreItems.map((item) => (
+                      <DropdownMenuItem key={item.title} asChild>
+                        <Link
+                          href={item.url}
+                          className="flex items-center gap-2"
+                        >
+                          <item.icon size={18} />
+                          <span>{item.title}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               )}
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
       </SidebarUI>
-
-      {showMore && (
-        <div
-          className={cn(
-            "fixed bottom-16 left-16 z-50",
-            "bg-background border border-border rounded-lg shadow-lg",
-            "w-60 p-2 overflow-hidden"
-          )}
-        >
-          <div className="flex flex-col">
-            {moreItems.map((item) => (
-              <Link
-                key={item.title}
-                href={item.url}
-                className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-md",
-                  "hover:bg-accent transition-colors"
-                )}
-              >
-                <item.icon size={18} />
-                <span>{item.title}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
 
       {isAboveXl && (
         <div
@@ -459,6 +453,6 @@ export default function Sidebar() {
 
       <SmallScreenHeader />
       <MobileNav />
-    </TooltipProvider>
+    </>
   );
 }

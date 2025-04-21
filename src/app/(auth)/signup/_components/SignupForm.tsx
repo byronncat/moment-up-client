@@ -6,11 +6,11 @@ import type { API } from "api";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import zodSchema from "@/lib/zodSchema";
 import { useAuth } from "@/components/providers";
 
+import { Tooltip } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,12 +21,6 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 import { PasswordInput, SubmitButton } from "../../_components";
 import { CircleInfo } from "@/components/icons";
@@ -59,31 +53,16 @@ export default function SignupForm() {
 
   return (
     <div>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setShowDetails(!showDetails)}
-              className="absolute top-7 right-3"
-            >
-              <CircleInfo className="fill-blue-500 dark:fill-blue-400" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent
-            className={cn(
-              "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
-              "text-xs",
-              "px-2 py-1 rounded-md",
-              "border-none shadow-md"
-            )}
-            sideOffset={6}
-          >
-            <p>Show details</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip content="Show details" variant="borderless" sideOffset={6}>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setShowDetails(!showDetails)}
+          className="absolute top-7 right-3"
+        >
+          <CircleInfo className="fill-blue-500 dark:fill-blue-400" />
+        </Button>
+      </Tooltip>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(signupHandler)}>

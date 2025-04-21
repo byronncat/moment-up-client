@@ -3,7 +3,7 @@
 import type { z } from "zod";
 import type { API } from "api";
 
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   createContext,
   useContext,
@@ -15,7 +15,7 @@ import {
 import zodSchema from "@/lib/zodSchema";
 import { auth } from "@/services";
 import { LoadingPage } from "../pages";
-import { AUTH_ROUTES, PROTECTED_ROUTES, ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/clientConfig";
 
 const AuthContext = createContext(
   {} as {
@@ -38,13 +38,8 @@ const AuthContext = createContext(
 
 export const useAuth = () => useContext(AuthContext);
 
-export default function AuthProvider({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function AuthProvider({ children }: LayoutProps) {
   const router = useRouter();
-  const pathname = usePathname();
   const [logged, setLogged] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
@@ -112,14 +107,6 @@ export default function AuthProvider({
   useEffect(() => {
     authenticate();
   }, [authenticate]);
-
-  useEffect(() => {
-    if (loaded) {
-      if (logged && AUTH_ROUTES.includes(pathname)) router.replace(ROUTE.HOME);
-      else if (!logged && PROTECTED_ROUTES.includes(pathname))
-        router.replace(ROUTE.LOGIN);
-    }
-  }, [logged, loaded, pathname, router]);
 
   return (
     <AuthContext.Provider

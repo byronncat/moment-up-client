@@ -1,16 +1,8 @@
-import { cookies } from "next/headers";
 import { cn } from "@/lib/utils";
-import { LoadingPage } from "@/components/pages";
 import { ModeSelection, Brand } from "@/components";
 import { AsideBackground } from "./_components";
 
-export default async function Layout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  const cookieStore = await cookies();
-  const session = cookieStore.get("session");
-
-  if (session) return <LoadingPage />;
+export default async function Layout({ children }: LayoutProps) {
   return (
     <div className={cn("w-screen h-screen", "flex")}>
       <AsideBackground />
