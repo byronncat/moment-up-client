@@ -1,8 +1,9 @@
 import { mockSuggestedUsers, mockTrendingTopics } from "@/__mocks__";
 
-import type { API, SuggestedUser } from "api";
+import type { API, UserInfo, HashtagSearchItem } from "api";
+import { HashtagItem } from "schema";
 
-export async function getSuggestedUsers(): Promise<API<SuggestedUser[]>> {
+export async function getSuggestedUsers(): Promise<API<UserInfo[]>> {
   try {
     await new Promise((resolve) => {
       setTimeout(() => {
@@ -13,7 +14,7 @@ export async function getSuggestedUsers(): Promise<API<SuggestedUser[]>> {
     return {
       success: true,
       message: "ok",
-      data: mockSuggestedUsers,
+      data: mockSuggestedUsers.slice(0, 5),
     };
   } catch (error) {
     return {
@@ -23,16 +24,7 @@ export async function getSuggestedUsers(): Promise<API<SuggestedUser[]>> {
   }
 }
 
-export type TrendingTopic = {
-  id: number;
-  name: string;
-  category: string;
-  posts: number;
-  isLive?: boolean;
-  avatar?: string;
-};
-
-export async function getTrendingTopics(): Promise<API<TrendingTopic[]>> {
+export async function getTrendingTopics(): Promise<API<HashtagItem[]>> {
   try {
     await new Promise((resolve) => {
       setTimeout(() => {

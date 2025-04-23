@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 // TODO: Add pages
 const FooterLinks = [
@@ -11,8 +12,8 @@ const FooterLinks = [
 
 export default function Footer() {
   return (
-    <footer className="space-y-4 w-full">
-      <nav className="flex flex-wrap gap-x-1 gap-y-2">
+    <footer className="w-full px-2">
+      <nav className={cn("flex flex-wrap gap-x-1 gap-y-2", "mb-2")}>
         {FooterLinks.map((link, index) => (
           <span key={link.text} className="flex items-center">
             <Link

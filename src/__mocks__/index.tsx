@@ -1,4 +1,5 @@
 import type { AccountInfo, MomentUI, SearchItem, UserInfo } from "api";
+import { HashtagItem } from "schema";
 
 const avatar = [
   "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
@@ -231,12 +232,14 @@ export const mockCurrentUsers: AccountInfo[] = [
     username: "ThinhNgo",
     displayName: "Thinh Ngo",
     avatar: getUserAvatar("hanoi"),
+    verified: true,
   },
   {
     id: "anotherMe",
     username: "BaoTrung",
     displayName: "Bao Trung",
     avatar: getUserAvatar("tu_pham"),
+    verified: true,
   },
 ];
 
@@ -888,7 +891,7 @@ export const mockSuggestedUsers: UserInfo[] = [
 // Search history mock data
 export const mockSearches: SearchItem[] = [
   {
-    id: 1,
+    id: "1",
     type: "user" as const,
     username: "sophia_design",
     displayName: "Sophia Chen",
@@ -896,7 +899,7 @@ export const mockSearches: SearchItem[] = [
     verified: true,
   },
   {
-    id: 2,
+    id: "2",
     type: "user" as const,
     username: "alex_walker",
     displayName: "Alex Walker",
@@ -904,7 +907,7 @@ export const mockSearches: SearchItem[] = [
     verified: false,
   },
   {
-    id: 3,
+    id: "3",
     type: "user" as const,
     username: "dev_marcus",
     displayName: "Marcus Johnson",
@@ -912,7 +915,7 @@ export const mockSearches: SearchItem[] = [
     verified: true,
   },
   {
-    id: 4,
+    id: "4",
     type: "user" as const,
     username: "emily_photos",
     displayName: "Emily Rodriguez",
@@ -920,7 +923,7 @@ export const mockSearches: SearchItem[] = [
     verified: false,
   },
   {
-    id: 5,
+    id: "5",
     type: "user" as const,
     username: "tech_jamie",
     displayName: "Jamie Williams",
@@ -928,7 +931,7 @@ export const mockSearches: SearchItem[] = [
     verified: true,
   },
   {
-    id: 6,
+    id: "6",
     type: "user" as const,
     username: "design_priya",
     displayName: "Priya Patel",
@@ -936,7 +939,7 @@ export const mockSearches: SearchItem[] = [
     verified: false,
   },
   {
-    id: 7,
+    id: "7",
     type: "user" as const,
     username: "travel_noah",
     displayName: "Noah Garcia",
@@ -944,7 +947,7 @@ export const mockSearches: SearchItem[] = [
     verified: true,
   },
   {
-    id: 8,
+    id: "8",
     type: "user" as const,
     username: "coffee_zoe",
     displayName: "Zoe Thompson",
@@ -952,7 +955,7 @@ export const mockSearches: SearchItem[] = [
     verified: false,
   },
   {
-    id: 9,
+    id: "9",
     type: "user" as const,
     username: "fitness_liam",
     displayName: "Liam Wilson",
@@ -960,7 +963,7 @@ export const mockSearches: SearchItem[] = [
     verified: true,
   },
   {
-    id: 10,
+    id: "10",
     type: "user" as const,
     username: "chef_olivia",
     displayName: "Olivia Martinez",
@@ -968,28 +971,68 @@ export const mockSearches: SearchItem[] = [
     verified: false,
   },
   {
-    id: 11,
+    id: "11",
     type: "search" as const,
     query: "design inspiration",
   },
   {
-    id: 12,
+    id: "12",
     type: "search" as const,
     query: "travel destinations 2024",
   },
   {
-    id: 13,
+    id: "13",
     type: "search" as const,
     query: "coding bootcamp reviews",
   },
-  { id: 14, type: "hashtag" as const, tag: "travel", count: 1223 },
-  { id: 15, type: "hashtag" as const, tag: "photography", count: 945 },
-  { id: 16, type: "hashtag" as const, tag: "nature", count: 876 },
-  { id: 17, type: "hashtag" as const, tag: "food", count: 732 },
-  { id: 18, type: "hashtag" as const, tag: "art", count: 625 },
-  { id: 19, type: "hashtag" as const, tag: "fashion", count: 589 },
-  { id: 20, type: "hashtag" as const, tag: "fitness", count: 478 },
-  { id: 21, type: "hashtag" as const, tag: "music", count: 412 },
+  {
+    id: "14",
+    type: "hashtag" as const,
+    tag: "travel",
+    count: 1223,
+  },
+  {
+    id: "15",
+    type: "hashtag" as const,
+    tag: "photography",
+    count: 945,
+  },
+  {
+    id: "16",
+    type: "hashtag" as const,
+    tag: "nature",
+    count: 876,
+  },
+  {
+    id: "17",
+    type: "hashtag" as const,
+    tag: "food",
+    count: 732,
+  },
+  {
+    id: "18",
+    type: "hashtag" as const,
+    tag: "art",
+    count: 625,
+  },
+  {
+    id: "19",
+    type: "hashtag" as const,
+    tag: "fashion",
+    count: 589,
+  },
+  {
+    id: "20",
+    type: "hashtag" as const,
+    tag: "fitness",
+    count: 478,
+  },
+  {
+    id: "21",
+    type: "hashtag" as const,
+    tag: "music",
+    count: 412,
+  },
 ];
 
 // Chat mocks
@@ -1447,37 +1490,30 @@ export const mockNotifications = [
 ];
 
 // Trending topics mock data
-export const mockTrendingTopics = [
+export const mockTrendingTopics: HashtagItem[] = [
   {
-    id: 1,
-    name: "Hoyo",
-    category: "Trending",
-    posts: 8193,
+    id: "1",
+    tag: "hoyo",
+    count: 8193,
   },
   {
-    id: 2,
-    name: "Kuro",
-    category: "Gaming · Trending",
-    posts: 1250000,
+    id: "2",
+    tag: "kuro",
+    count: 1250000,
   },
   {
-    id: 3,
-    name: "Genshin",
-    category: "Gaming · Trending",
-    posts: 42400000,
+    id: "3",
+    tag: "genshin",
+    count: 42400000,
   },
   {
-    id: 4,
-    name: "ardelle h'ad",
-    category: "Trending in Vietnam",
-    posts: 3500000000,
+    id: "4",
+    tag: "ardelle h'ad",
+    count: 3500000000,
   },
   {
-    id: 5,
-    name: "Anthony Pompliano",
-    category: "From the Desk of Anthony Pompliano",
-    posts: 3000,
-    isLive: true,
-    avatar: "https://pbs.twimg.com/media/GfxwRq7a4AAlY6S?format=jpg&name=large",
+    id: "5",
+    tag: "genshin",
+    count: 42400000,
   },
 ];

@@ -25,7 +25,7 @@ export default function MediaPage() {
         ? mockMoments.map((moment) => (
             <MomentCell key={moment.id} data={moment} />
           ))
-        : new Array(9)
+        : Array(9)
             .fill(0)
             .map((_, i) => <Skeleton key={i} className="aspect-square" />)}
     </div>

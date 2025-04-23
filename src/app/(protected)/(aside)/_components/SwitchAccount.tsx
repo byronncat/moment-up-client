@@ -15,20 +15,19 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { AuthApi } from "@/services";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SwitchAccount() {
   const { user } = useAuth();
-
   if (!user) return null;
   return (
-    <div className="w-full">
+    <div className="w-full px-2">
       <div className="flex items-center justify-between">
         <Content user={user} />
         <SwitchButton />
@@ -74,8 +73,10 @@ function Content({ user }: ContentProps) {
 }
 
 function SwitchButton() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button
           className={cn(
@@ -87,23 +88,35 @@ function SwitchButton() {
           Switch
         </button>
       </DialogTrigger>
-      <ManagementModal />
+      <ManagementModal onClose={() => setOpen(false)} />
     </Dialog>
   );
 }
 
-function ManagementModal() {
+type ManagementModalProps = ComponentProps<{
+  onClose: () => void;
+}>;
+
+function ManagementModal({ onClose }: ManagementModalProps) {
   const { user, switchAccount } = useAuth();
   const [accounts, setAccounts] = useState<AccountInfo[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   async function switchAccountHandler(accountId: AccountInfo["id"]) {
-    if (user?.id === accountId) return;
+    if (user?.id === accountId || loading) return;
     setLoading(true);
-    toast.loading("Switching account...");
-    const { success } = await switchAccount(accountId);
-    setLoading(false);
-    if (!success) toast.error("Failed to switch account");
+    toast.promise(switchAccount(accountId), {
+      loading: "Switching account...",
+      success: (res) => {
+        setLoading(false);
+        if (res.success) {
+          onClose();
+          return "Account switched successfully";
+        }
+        throw new Error(res.message);
+      },
+      error: "Failed to switch account",
+    });
   }
 
   useEffect(() => {
@@ -117,22 +130,25 @@ function ManagementModal() {
 
   return (
     <DialogContent className="sm:max-w-md p-0 pb-4">
-      <DialogHeader className={cn("text-lg", "px-6 pt-6 pb-3")}>
-        <DialogTitle>
-          Manage Accounts {accounts && `(${accounts.length}}`}
-        </DialogTitle>
+      <DialogHeader className={cn("text-lg", "px-6 pt-6")}>
+        <DialogTitle>Manage Accounts</DialogTitle>
+        <DialogDescription>
+          Select an account to switch to or add a new account.
+        </DialogDescription>
       </DialogHeader>
       <div className="flex flex-col">
-        {loading ? (
+        {loading && !accounts ? (
           <SkeletonAccount />
         ) : (
           accounts?.map((account) => (
             <div
               key={account.id}
+              onClick={() => switchAccountHandler(account.id)}
               className={cn(
                 "px-6 py-3",
                 "flex items-center gap-2",
-                "hover:bg-accent/[.07] cursor-pointer",
+                !loading && "hover:bg-accent/[.07]",
+                user?.id !== account.id && "cursor-pointer",
                 "transition-colors duration-150 ease-in-out"
               )}
             >
@@ -167,15 +183,11 @@ function ManagementModal() {
         )}
         <div className={cn("self-end mt-6 pr-4", "flex justify-center gap-3")}>
           <DialogClose asChild>
-            <Button variant="outline">Close</Button>
+            <Button variant="outline" disabled={loading}>
+              Close
+            </Button>
           </DialogClose>
-          <Button>
-            {loading ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              "Add an account"
-            )}
-          </Button>
+          <Button disabled={loading}>Add an account</Button>
         </div>
       </div>
     </DialogContent>

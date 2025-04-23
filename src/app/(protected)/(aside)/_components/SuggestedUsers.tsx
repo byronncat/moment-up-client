@@ -3,6 +3,7 @@
 import type { UserInfo } from "api";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { SuggestingApi, UserApi } from "@/services";
@@ -26,6 +27,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { User, CircleCheck } from "@/components/icons";
 import { UserPlus } from "lucide-react";
+import SectionHeader from "./SectionHeader";
 
 export default function SuggestedSection() {
   const [suggestedUsers, setSuggestedUsers] = useState<UserInfo[]>([]);
@@ -45,8 +47,8 @@ export default function SuggestedSection() {
 
   return (
     <div className="w-full">
-      <Header className="mb-4" />
-      <div className="space-y-4">
+      <SectionHeader className="mb-4">Suggested for you</SectionHeader>
+      <div>
         {loading
           ? Array.from({ length: 5 }).map((_, index) => (
               <SkeletonUserItem key={index} />
@@ -59,28 +61,9 @@ export default function SuggestedSection() {
   );
 }
 
-function Header({ className }: ComponentProps) {
-  return (
-    <div className={cn("flex items-center justify-between", className)}>
-      <span className="text-sm font-semibold text-muted-foreground">
-        Suggested for you
-      </span>
-      <button
-        className={cn(
-          "text-xs font-semibold",
-          "cursor-pointer hover:opacity-60",
-          "transition-opacity duration-150 ease-in-out"
-        )}
-      >
-        See all
-      </button>
-    </div>
-  );
-}
-
 function SkeletonUserItem() {
   return (
-    <div className="flex items-center justify-between">
+    <div className={cn("flex items-center justify-between", "p-2")}>
       <div className="flex items-center gap-2">
         <Skeleton className="size-10 rounded-full" />
         <div className="flex flex-col gap-1">
@@ -99,15 +82,32 @@ type SuggestedUserItemProps = ComponentProps<{
 
 function SuggestedUserItem({ user }: SuggestedUserItemProps) {
   const [isFollowing, setIsFollowing] = useState(false);
-  function followHandler() {
+  const router = useRouter();
+
+  function followHandler(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
     if (isFollowing) UserApi.unfollowUser(user.id);
     else UserApi.followUser(user.id);
     setIsFollowing((prev) => !prev);
   }
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-2">
+    <div
+      className={cn(
+        "flex items-center justify-between",
+        "p-2 rounded-md",
+        "hover:bg-accent/[.07] cursor-pointer",
+        "transition-colors duration-150 ease-in-out"
+      )}
+      onClick={(e) => {
+        router.push(ROUTE.PROFILE(user.username));
+      }}
+    >
+      <div
+        className="flex items-center gap-2"
+        onClick={(e) => e.preventDefault()}
+      >
         <HoverCard>
           <HoverCardTrigger asChild>
             <Link href={ROUTE.PROFILE(user.username)}>
@@ -134,19 +134,20 @@ function SuggestedUserItem({ user }: SuggestedUserItemProps) {
         <div className="flex flex-col">
           <HoverCard>
             <HoverCardTrigger asChild>
-              <Link
-                href={ROUTE.PROFILE(user.username)}
-                className={cn(
-                  "text-sm font-semibold",
-                  "hover:opacity-60",
-                  "transition-opacity duration-150 ease-in-out",
-                  "flex items-center gap-1.5"
-                )}
-              >
-                {user.username}
-                {user.verified && (
-                  <CircleCheck className="size-3 fill-primary" />
-                )}
+              <Link href={ROUTE.PROFILE(user.username)}>
+                <div
+                  className={cn(
+                    "text-sm font-semibold",
+                    "hover:opacity-60",
+                    "transition-opacity duration-150 ease-in-out",
+                    "flex items-center gap-1.5"
+                  )}
+                >
+                  {user.username}
+                  {user.verified && (
+                    <CircleCheck className="size-3 fill-primary" />
+                  )}
+                </div>
               </Link>
             </HoverCardTrigger>
             <HoverCardContent className="w-[18rem]">
@@ -171,7 +172,7 @@ function SuggestedUserItem({ user }: SuggestedUserItemProps) {
 
 type FollowButtonProps = ComponentProps<{
   isFollowing: boolean;
-  followHandler: () => void;
+  followHandler: (e: React.MouseEvent) => void;
 }>;
 
 function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
@@ -182,7 +183,11 @@ function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
         "cursor-pointer hover:text-primary/80",
         "transition-colors duration-150 ease-in-out"
       )}
-      onClick={followHandler}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        followHandler(e);
+      }}
     >
       {isFollowing ? "Following" : "Follow"}
     </button>
@@ -192,7 +197,7 @@ function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
 type UserInfoCardProps = ComponentProps<{
   user: UserInfo;
   isFollowing?: boolean;
-  onFollow?: () => void;
+  onFollow?: (e: React.MouseEvent) => void;
 }>;
 
 function UserInfoCard({ user, isFollowing, onFollow }: UserInfoCardProps) {

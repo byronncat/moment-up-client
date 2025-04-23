@@ -1,5 +1,6 @@
 declare module "api" {
-  import type { Moment, User } from "schema";
+  import type { Moment, User, HashtagItem } from "schema";
+
   type MomentUI = Moment &
     Pick<User, "username" | "avatar"> & {
       likes: number;
@@ -36,27 +37,19 @@ declare module "api" {
     };
   };
 
-  // Search
-  type UserSearchItem = {
-    id: number;
+  // Items
+  type UserSearchItem = AccountInfo & {
     type: "user";
-    username: User["username"];
-    displayName: User["display_name"];
-    avatar: User["avatar"];
-    verified: User["verified"];
   };
 
   type QuerySearchItem = {
-    id: number;
+    id: string;
     type: "search";
     query: string;
   };
 
-  type HashtagSearchItem = {
-    id: number;
+  type HashtagSearchItem = HashtagItem & {
     type: "hashtag";
-    tag: string;
-    count: number;
   };
 
   type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;

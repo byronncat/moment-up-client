@@ -1,18 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import type { HashtagItem } from "schema";
+
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { SuggestingApi } from "@/services";
-import { TrendingTopic } from "@/services/suggesting";
-import { toast } from "sonner";
-import { MoreHorizontal } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/components/icons";
 import { ROUTE } from "@/constants/clientConfig";
 
+import SectionHeader from "./SectionHeader";
+import format from "@/helpers/format";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
+import { MoreHorizontal, XCircle, AlertCircle, Ban, Copy } from "lucide-react";
+
 export default function TrendingSection() {
-  const [topics, setTopics] = useState<TrendingTopic[]>([]);
+  const [topics, setTopics] = useState<HashtagItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -34,102 +43,130 @@ export default function TrendingSection() {
     fetchTrendingTopics();
   }, []);
 
-  function formatPostCount(count: number): string {
-    return count.toLocaleString();
-  }
-
-  if (isLoading) {
-    return (
-      <div className="w-full mb-8 space-y-4 animate-pulse">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-16 rounded-md bg-accent/25"></div>
-        ))}
+  return (
+    <div className="w-full">
+      <SectionHeader className="mb-4">Trending topics</SectionHeader>
+      <div>
+        {isLoading
+          ? Array.from({ length: 5 }).map((_, index) => (
+              <SkeletonTrendingTopicItem key={index} />
+            ))
+          : topics.map((topic) => (
+              <TrendingTopicItem key={topic.id} topic={topic} />
+            ))}
       </div>
-    );
-  }
+    </div>
+  );
+}
+
+const FEEDBACK_OPTIONS = [
+  {
+    label: "The associated content is not relevant",
+    icon: XCircle,
+    value: "not-relevant",
+  },
+  {
+    label: "This trend is spam",
+    icon: AlertCircle,
+    value: "spam",
+  },
+  {
+    label: "This trend is abusive or harmful",
+    icon: AlertCircle,
+    value: "abusive",
+  },
+  {
+    label: "Not interested in this",
+    icon: Ban,
+    value: "not-interested",
+  },
+  {
+    label: "This trend is a duplicate",
+    icon: Copy,
+    value: "duplicate",
+  },
+  {
+    label: "This trend is harmful or spammy",
+    icon: AlertCircle,
+    value: "harmful",
+  },
+];
+
+function TrendingTopicItem({ topic }: { topic: HashtagItem }) {
+  return (
+    <div
+      className={cn(
+        "w-full p-2 rounded-md",
+        "hover:bg-accent/[.07] cursor-pointer",
+        "transition-colors duration-150 ease-in-out"
+      )}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-1">
+          <Link
+            href={ROUTE.SEARCH(topic.tag)}
+            className={cn("block font-semibold text-sm", "hover:underline")}
+          >
+            #{topic.tag}
+          </Link>
+          <span className="text-xs text-muted-foreground">
+            {format.number(topic.count)} posts
+          </span>
+        </div>
+        <FeedbackButton />
+      </div>
+    </div>
+  );
+}
+
+function FeedbackButton() {
+  const feedbackHandler = (feedback: string) => {
+    toast.success(`Feedback submitted: ${feedback}`);
+  };
 
   return (
-    <div className="w-full mb-8">
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-sm font-semibold text-foreground">
-          What's happening
-        </span>
-      </div>
-      <div className="space-y-1">
-        {topics.map((topic) => (
-          <div
-            key={topic.id}
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className={cn(
+            "rounded-full p-1 cursor-pointer",
+            "hover:bg-primary/10 group",
+            "transition-colors duration-150 ease-in-out"
+          )}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <MoreHorizontal
             className={cn(
-              "w-full py-3 px-4 rounded-md",
-              "hover:bg-accent/30 cursor-pointer",
+              "size-4 text-muted-foreground",
+              "group-hover:text-primary",
               "transition-colors duration-150 ease-in-out"
             )}
+          />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" side="bottom">
+        {FEEDBACK_OPTIONS.map((option) => (
+          <DropdownMenuItem
+            key={option.value}
+            onClick={() => feedbackHandler(option.value)}
           >
-            {topic.avatar ? (
-              <div className="flex items-center gap-3 mb-1">
-                <Avatar className="size-10">
-                  <AvatarImage
-                    src={topic.avatar}
-                    alt={topic.name}
-                    className="object-cover"
-                  />
-                  <AvatarFallback className="bg-primary">
-                    <User className="size-4 fill-card" type="solid" />
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold">{topic.name}</span>
-                    {topic.isLive && (
-                      <span className="text-xs px-1.5 py-0.5 h-5 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-sm">
-                        LIVE
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-xs text-muted-foreground">
-                    {topic.category}
-                  </span>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">
-                    {topic.category}
-                  </span>
-                  <button
-                    className={cn(
-                      "rounded-full p-1",
-                      "hover:bg-accent/40",
-                      "transition-colors duration-150 ease-in-out"
-                    )}
-                  >
-                    <MoreHorizontal className="size-4 text-muted-foreground" />
-                  </button>
-                </div>
-                <Link
-                  href={ROUTE.SEARCH(topic.name)}
-                  className="block font-semibold text-sm hover:underline"
-                >
-                  {topic.name}
-                </Link>
-                <span className="text-xs text-muted-foreground">
-                  {formatPostCount(topic.posts)} posts
-                </span>
-              </>
-            )}
-          </div>
+            <option.icon className="mr-2 h-4 w-4" />
+            {option.label}
+          </DropdownMenuItem>
         ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function SkeletonTrendingTopicItem() {
+  return (
+    <div className={cn("flex items-center justify-between", "p-2")}>
+      <div className="flex flex-col gap-1">
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-4 w-16" />
       </div>
-      <button
-        className={cn(
-          "mt-4 text-sm text-primary font-medium w-full text-left px-4 py-3 rounded-md",
-          "hover:bg-accent/30",
-          "transition-colors duration-150 ease-in-out"
-        )}
-      >
-        Show more
-      </button>
+      <Skeleton className="size-4" />
     </div>
   );
 }

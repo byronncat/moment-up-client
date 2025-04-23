@@ -223,12 +223,13 @@ export async function getAllAcounts(): Promise<API<AccountInfo[]>> {
 export async function switchAccount(
   accountId: AccountInfo["id"]
 ): Promise<API<AccountInfo>> {
+  const anotherUser = mockCurrentUsers.find((user) => user.id !== accountId);
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         success: true,
         message: "ok",
-        data: mockCurrentUsers[1],
+        data: anotherUser,
       });
     }, 2000);
   });

@@ -29,4 +29,10 @@ declare module "schema" {
     content: string;
     readonly created_at: Date;
   };
+
+  export type HashtagItem = {
+    readonly id: string;
+    tag: string;
+    count: number;
+  };
 }

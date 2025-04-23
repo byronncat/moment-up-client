@@ -14,16 +14,24 @@ export default function Layout({ children }: LayoutProps) {
       <aside
         className={cn(
           "sticky top-5",
-          "h-fit w-[20rem] mr-6 ml-auto",
+          "h-fit w-[20rem] pt-5 mr-6 ml-auto",
           "space-y-6",
           "hidden lg:block"
         )}
       >
         <SearchBar />
         <SwitchAccount />
-        <TrendingTopics />
-        <SuggestedUsers />
-        <Footer />
+        <div
+          className={cn(
+            "overflow-y-auto max-h-[calc(100vh-10rem)]",
+            "space-y-6",
+            "scrollbar-hide"
+          )}
+        >
+          <TrendingTopics />
+          <SuggestedUsers />
+          <Footer />
+        </div>
       </aside>
     </div>
   );
