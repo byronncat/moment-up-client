@@ -1,23 +1,21 @@
 "use client";
 
+import type { SearchItem as SearchItemType } from "api";
 import {
-  mockRecentSearches,
+  mockSearches,
   mockFeeds,
   mockSuggestedUsers,
   mockMoments,
-  mockHashtags,
 } from "@/__mocks__";
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { MomentUI } from "api";
 
-import {
-  SearchInput,
-  SearchItem,
-  NavigationBar,
+import { SearchInput, SearchItem } from "../_components";
+import NavigationBar, {
   type NavItem,
-} from "@/components";
+} from "@/components/HorizontalNavigationBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { XMark, CircleCheck } from "@/components/icons";
 import { MomentCell } from "@/components/moment";
@@ -92,8 +90,10 @@ export default function SearchPage() {
           verified: index % 3 === 0, // Random verification status for demo
         }));
 
-      const filteredHashtags = mockHashtags.filter((tag) =>
-        tag.tag.toLowerCase().includes(query.toLowerCase())
+      const filteredHashtags = mockSearches.filter(
+        (tag) =>
+          tag.type === "hashtag" &&
+          tag.tag?.toLowerCase().includes(query.toLowerCase())
       );
 
       const filteredPosts = mockMoments
@@ -104,7 +104,7 @@ export default function SearchPage() {
 
       setSearchResults({
         accounts: filteredAccounts,
-        hashtags: filteredHashtags,
+        hashtags: filteredHashtags as unknown as HashtagSearchItem[],
         posts: filteredPosts,
       });
       setIsSearching(false);
@@ -134,12 +134,12 @@ export default function SearchPage() {
               setActiveCategory={setActiveCategory}
               results={searchResults}
             />
-            <SearchResults
+            {/* <SearchResults
               results={searchResults}
               isSearching={isSearching}
               query={query}
               activeCategory={activeCategory}
-            />
+            /> */}
           </>
         )}
       </div>
@@ -161,7 +161,7 @@ function RecentSearches() {
     <div className="p-4">
       <Header />
       <div className="space-y-1">
-        {mockRecentSearches.slice(0, 8).map((item) => (
+        {mockSearches.slice(0, 8).map((item) => (
           <div
             key={item.id}
             className={cn(
@@ -171,11 +171,7 @@ function RecentSearches() {
               "cursor-pointer hover:bg-accent/[.05]"
             )}
           >
-            {isUserSearchItem(item) ? (
-              <SearchItem data={item} variant="user" />
-            ) : (
-              <SearchItem data={item} variant="query" />
-            )}
+            <SearchItem data={item} />
             <button className="text-muted-foreground hover:text-foreground">
               <XMark className="size-4 fill-current" />
             </button>
@@ -295,7 +291,7 @@ function SearchResults({
 }: {
   results: {
     accounts: Array<UserSearchItem>;
-    hashtags: Array<HashtagSearchItem>;
+    hashtags: Array<SearchItemType>;
     posts: Array<MomentUI>;
   };
   isSearching: boolean;
@@ -333,7 +329,7 @@ function SearchResults({
               "cursor-pointer hover:bg-accent/[.05]"
             )}
           >
-            <SearchItem data={item} variant="user" />
+            <SearchItem data={item} />
             <button className="text-sm text-primary font-semibold hover:text-primary/80">
               Follow
             </button>
@@ -357,7 +353,7 @@ function SearchResults({
               "cursor-pointer hover:bg-accent/[.05]"
             )}
           >
-            <SearchItem data={item} variant="hashtag" />
+            <SearchItem data={item} />
           </div>
         ))}
       </div>

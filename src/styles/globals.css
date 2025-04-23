@@ -70,6 +70,19 @@
       opacity: 0;
     }
   }
+
+  --animate-search-loading: search-loading 1.5s ease-in-out infinite;
+  @keyframes search-loading {
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
 }
 
 /*
@@ -97,6 +110,17 @@
     @apply bg-background text-foreground;
     font-family: var(--font-montserrat);
   }
+
+  /**
+  * `display: table` ensures our content div will match the size of its children in both
+  * horizontal and vertical axis so we can determine if scroll width/height changed and
+  * recalculate thumb sizes. This doesn't account for children with *percentage*
+  * widths that change. We'll wait to see what use-cases consumers come up with there
+  * before trying to resolve it.
+  */
+  /* [data-radix-scroll-area-viewport] > div {
+    display: block !important;
+  } */
 }
 
 @layer utilities {

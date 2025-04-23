@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-import { BubbleTextarea } from "@/components";
+import BubbleTextarea from "@/components/BubbleTextarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronDown, ArrowLeft } from "@/components/icons";
 import { ROUTE } from "@/constants/clientConfig";

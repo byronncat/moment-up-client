@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import zodSchema from "@/lib/zodSchema";
 import { useAuth } from "@/components/providers";
 
-import { Tooltip } from "@/components";
+import Tooltip from "@/components/others/Tooltip";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -27,8 +27,8 @@ import { CircleInfo } from "@/components/icons";
 
 export default function SignupForm() {
   const { signup } = useAuth();
-  const form = useForm<z.infer<typeof zodSchema.signup>>({
-    resolver: zodResolver(zodSchema.signup),
+  const form = useForm<z.infer<typeof zodSchema.auth.signup>>({
+    resolver: zodResolver(zodSchema.auth.signup),
     defaultValues: {
       email: "ByronAT445@gmail.com",
       username: "Byron",
@@ -38,7 +38,7 @@ export default function SignupForm() {
 
   const [showDetails, setShowDetails] = useState(false);
   const [loading, setLoading] = useState(false);
-  async function signupHandler(values: z.infer<typeof zodSchema.signup>) {
+  async function signupHandler(values: z.infer<typeof zodSchema.auth.signup>) {
     setLoading(true);
     toast.promise(signup(values), {
       loading: "Signing up...",

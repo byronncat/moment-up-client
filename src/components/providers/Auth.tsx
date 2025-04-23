@@ -1,7 +1,7 @@
 "use client";
 
 import type { z } from "zod";
-import type { API } from "api";
+import type { API, AccountInfo } from "api";
 
 import { useRouter } from "next/navigation";
 import {
@@ -13,26 +13,28 @@ import {
 } from "react";
 
 import zodSchema from "@/lib/zodSchema";
-import { auth } from "@/services";
+import { AuthApi } from "@/services";
 import { LoadingPage } from "../pages";
 import { ROUTE } from "@/constants/clientConfig";
 
 const AuthContext = createContext(
   {} as {
+    user: AccountInfo | null;
     logged?: boolean;
     setLogged: (logged: boolean) => void;
     loaded: boolean;
     setLoaded: (loaded: boolean) => void;
     authenticate: () => Promise<void>;
-    login: (values: z.infer<typeof zodSchema.login>) => Promise<API>;
-    signup: (values: z.infer<typeof zodSchema.signup>) => Promise<API>;
-    logout: () => Promise<void>;
+    login: (values: z.infer<typeof zodSchema.auth.login>) => Promise<API>;
+    signup: (values: z.infer<typeof zodSchema.auth.signup>) => Promise<API>;
+    logout: () => Promise<API>;
     sendRecoveryEmail: (
-      values: z.infer<typeof zodSchema.sendRecoveryEmail>
+      values: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
     ) => Promise<API>;
     changePassword: (
-      values: z.infer<typeof zodSchema.changePassword>
+      values: z.infer<typeof zodSchema.auth.changePassword>
     ) => Promise<API>;
+    switchAccount: (accountId: AccountInfo["id"]) => Promise<API<AccountInfo>>;
   }
 );
 
@@ -42,16 +44,18 @@ export default function AuthProvider({ children }: LayoutProps) {
   const router = useRouter();
   const [logged, setLogged] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [user, setUser] = useState<AccountInfo | null>(null);
 
   const authenticate = useCallback(async () => {
-    const { success } = await auth.verify();
+    const { success, data } = await AuthApi.verify();
+    if (success && data) setUser(data);
     setLogged(success);
     setLoaded(true);
   }, []);
 
   const login = useCallback(
-    async (values: z.infer<typeof zodSchema.login>) => {
-      const res = await auth.login(values);
+    async (values: z.infer<typeof zodSchema.auth.login>) => {
+      const res = await AuthApi.login(values);
       if (res.success) {
         setLogged(true);
         router.push(ROUTE.HOME);
@@ -62,8 +66,8 @@ export default function AuthProvider({ children }: LayoutProps) {
   );
 
   const signup = useCallback(
-    async (values: z.infer<typeof zodSchema.signup>) => {
-      const res = await auth.signup(values);
+    async (values: z.infer<typeof zodSchema.auth.signup>) => {
+      const res = await AuthApi.signup(values);
       if (res.success) {
         setLogged(true);
         router.push(ROUTE.HOME);
@@ -75,20 +79,21 @@ export default function AuthProvider({ children }: LayoutProps) {
 
   const logout = useCallback(async () => {
     setLoaded(false);
-    const { success, message } = await auth.logout();
-    if (success) {
+    const res = await AuthApi.logout();
+    if (res.success) {
       setLogged(false);
       router.push(ROUTE.LOGIN);
     }
-
     setTimeout(() => {
       setLoaded(true);
     }, 100);
+
+    return res;
   }, [router]);
 
   const sendRecoveryEmail = useCallback(
-    async (values: z.infer<typeof zodSchema.sendRecoveryEmail>) => {
-      const res = await auth.sendRecoveryEmail(values);
+    async (values: z.infer<typeof zodSchema.auth.sendRecoveryEmail>) => {
+      const res = await AuthApi.sendRecoveryEmail(values);
       if (res.success) router.push(ROUTE.VERIFY_RECOVERY);
       return res;
     },
@@ -96,12 +101,21 @@ export default function AuthProvider({ children }: LayoutProps) {
   );
 
   const changePassword = useCallback(
-    async (values: z.infer<typeof zodSchema.changePassword>) => {
-      const res = await auth.changePassword(values);
+    async (values: z.infer<typeof zodSchema.auth.changePassword>) => {
+      const res = await AuthApi.changePassword(values);
       if (res.success) router.push(ROUTE.LOGIN);
       return res;
     },
     [router]
+  );
+
+  const switchAccount = useCallback(
+    async (accountId: AccountInfo["id"]) => {
+      const res = await AuthApi.switchAccount(accountId);
+      if (res.success && res.data) setUser(res.data);
+      return res;
+    },
+    [setUser, setLogged]
   );
 
   useEffect(() => {
@@ -111,6 +125,7 @@ export default function AuthProvider({ children }: LayoutProps) {
   return (
     <AuthContext.Provider
       value={{
+        user,
         logged,
         setLogged,
         loaded,
@@ -121,6 +136,7 @@ export default function AuthProvider({ children }: LayoutProps) {
         logout,
         sendRecoveryEmail,
         changePassword,
+        switchAccount,
       }}
     >
       {loaded ? children : <LoadingPage />}

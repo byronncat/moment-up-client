@@ -23,8 +23,8 @@ import { ActionableText, PasswordInput, SubmitButton } from "../../_components";
 
 export default function LoginForm() {
   const { login } = useAuth();
-  const form = useForm<z.infer<typeof zodSchema.login>>({
-    resolver: zodResolver(zodSchema.login),
+  const form = useForm<z.infer<typeof zodSchema.auth.login>>({
+    resolver: zodResolver(zodSchema.auth.login),
     defaultValues: {
       identity: "Byron",
       password: "12345678",
@@ -32,7 +32,7 @@ export default function LoginForm() {
   });
 
   const [loading, setLoading] = useState(false);
-  async function loginHandler(values: z.infer<typeof zodSchema.login>) {
+  async function loginHandler(values: z.infer<typeof zodSchema.auth.login>) {
     setLoading(true);
     toast.promise(login(values), {
       loading: "Logging in...",

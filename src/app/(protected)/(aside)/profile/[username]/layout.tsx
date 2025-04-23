@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
-import { type NavItem, NavigationBar } from "@/components";
+import NavigationBar, {
+  type NavItem,
+} from "@/components/HorizontalNavigationBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Image, Heart, TableOfContents } from "lucide-react";

@@ -1,11 +1,13 @@
+import { mockCurrentUsers } from "@/__mocks__";
+
 import type { z } from "zod";
-import type { API } from "api";
+import type { AccountInfo, API } from "api";
 
 import zodSchema from "@/lib/zodSchema";
 // import { Api } from "@/constants/serverConfig";
 
 export async function login(
-  data: z.infer<typeof zodSchema.login>
+  data: z.infer<typeof zodSchema.auth.login>
 ): Promise<API> {
   try {
     await new Promise((resolve) => {
@@ -82,7 +84,7 @@ export async function logout(): Promise<API> {
 }
 
 export async function signup(
-  data: z.infer<typeof zodSchema.signup>
+  data: z.infer<typeof zodSchema.auth.signup>
 ): Promise<API> {
   try {
     await new Promise((resolve) => {
@@ -130,12 +132,18 @@ export async function signup(
   //   });
 }
 
-export async function verify(): Promise<API> {
+export async function verify(): Promise<API<AccountInfo>> {
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
     }, 2000);
   });
+
+  return {
+    success: true,
+    message: "ok",
+    data: mockCurrentUsers[0],
+  };
   const cookie = document.cookie
     .split("; ")
     .find((row) => row.startsWith("session="));
@@ -143,6 +151,7 @@ export async function verify(): Promise<API> {
     return {
       success: true,
       message: "ok",
+      data: mockCurrentUsers[0],
     };
   }
   return {
@@ -174,7 +183,7 @@ export async function verify(): Promise<API> {
 }
 
 export function sendRecoveryEmail(
-  data: z.infer<typeof zodSchema.sendRecoveryEmail>
+  data: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
 ): Promise<API> {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -187,13 +196,39 @@ export function sendRecoveryEmail(
 }
 
 export async function changePassword(
-  data: z.infer<typeof zodSchema.changePassword>
+  data: z.infer<typeof zodSchema.auth.changePassword>
 ): Promise<API> {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         success: true,
         message: `Password changed successfully`,
+      });
+    }, 2000);
+  });
+}
+
+export async function getAllAcounts(): Promise<API<AccountInfo[]>> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        success: true,
+        message: "ok",
+        data: mockCurrentUsers,
+      });
+    }, 2000);
+  });
+}
+
+export async function switchAccount(
+  accountId: AccountInfo["id"]
+): Promise<API<AccountInfo>> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        success: true,
+        message: "ok",
+        data: mockCurrentUsers[1],
       });
     }, 2000);
   });

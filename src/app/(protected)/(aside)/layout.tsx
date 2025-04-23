@@ -4,15 +4,13 @@ import {
   SearchBar,
   SuggestedUsers,
   SwitchAccount,
+  TrendingTopics,
 } from "./_components";
 
-export default function Layout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function Layout({ children }: LayoutProps) {
   return (
     <div className={cn("max-w-[64rem] mx-auto", "flex justify-center")}>
       <main className="max-w-[37.5rem] w-full">{children}</main>
-
       <aside
         className={cn(
           "sticky top-5",
@@ -23,6 +21,7 @@ export default function Layout({
       >
         <SearchBar />
         <SwitchAccount />
+        <TrendingTopics />
         <SuggestedUsers />
         <Footer />
       </aside>

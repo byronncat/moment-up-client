@@ -7,7 +7,9 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 import { useContact } from "../_provider/Contact";
-import { type NavItem, NavigationBar } from "@/components";
+import NavigationBar, {
+  type NavItem,
+} from "@/components/HorizontalNavigationBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { MagnifyingGlass, XMark } from "@/components/icons";

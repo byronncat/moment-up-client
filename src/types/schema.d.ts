@@ -2,10 +2,12 @@ declare module "schema" {
   export type User = {
     readonly id: uuidv4;
     username: string;
+    display_name: string;
     email: string;
     password_hash?: string;
     bio?: string;
-    profile_image?: string;
+    avatar?: string;
+    verified: boolean;
     readonly created_at: Date;
   };
 

@@ -1,13 +1,19 @@
-"use client";
-
-import { mockFooterLinks } from "@/__mocks__";
 import Link from "next/link";
+
+// TODO: Add pages
+const FooterLinks = [
+  { text: "About", href: "#" },
+  { text: "Help", href: "#" },
+  { text: "Privacy", href: "#" },
+  { text: "Terms", href: "#" },
+  { text: "Locations", href: "#" },
+];
 
 export default function Footer() {
   return (
     <footer className="space-y-4 w-full">
       <nav className="flex flex-wrap gap-x-1 gap-y-2">
-        {mockFooterLinks.map((link, index) => (
+        {FooterLinks.map((link, index) => (
           <span key={link.text} className="flex items-center">
             <Link
               href={link.href}
@@ -15,7 +21,7 @@ export default function Footer() {
             >
               {link.text}
             </Link>
-            {index < mockFooterLinks.length - 1 && (
+            {index < FooterLinks.length - 1 && (
               <span className="text-xs text-muted-foreground mx-1">•</span>
             )}
           </span>

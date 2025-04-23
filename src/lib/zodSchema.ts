@@ -77,11 +77,22 @@ const changePassword = z
     path: ["confirmPassword"],
   });
 
+const search = z.object({
+  query: z.string().nonempty({
+    message: "Search query is required",
+  }),
+});
+
 const zodSchema = {
-  login,
-  signup,
-  sendRecoveryEmail,
-  changePassword,
+  auth: {
+    login,
+    signup,
+    sendRecoveryEmail,
+    changePassword,
+  },
+  core: {
+    search,
+  },
 };
 
 export default zodSchema;

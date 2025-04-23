@@ -1,10 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { type NavItem, NavigationBar } from "@/components";
-import { Button } from "@/components/ui/button";
-import { Cog } from "lucide-react";
 import { ROUTE } from "@/constants/clientConfig";
+import NavigationBar, {
+  type NavItem,
+} from "@/components/HorizontalNavigationBar";
+import { Button } from "@/components/ui/button";
+import { Cog, Bell, User } from "lucide-react";
 
 const tabs: NavItem[] = [
   {

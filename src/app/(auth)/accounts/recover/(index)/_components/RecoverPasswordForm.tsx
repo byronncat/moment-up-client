@@ -21,8 +21,8 @@ import { SubmitButton } from "../../../../_components";
 
 export default function RecoverPasswordForm() {
   const { sendRecoveryEmail } = useAuth();
-  const form = useForm<z.infer<typeof zodSchema.sendRecoveryEmail>>({
-    resolver: zodResolver(zodSchema.sendRecoveryEmail),
+  const form = useForm<z.infer<typeof zodSchema.auth.sendRecoveryEmail>>({
+    resolver: zodResolver(zodSchema.auth.sendRecoveryEmail),
     defaultValues: {
       email: "",
     },
@@ -30,7 +30,7 @@ export default function RecoverPasswordForm() {
 
   const [loading, setLoading] = useState(false);
   async function sendEmailHandler(
-    values: z.infer<typeof zodSchema.sendRecoveryEmail>
+    values: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
   ) {
     setLoading(true);
     toast.promise(sendRecoveryEmail(values), {

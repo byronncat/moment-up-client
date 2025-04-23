@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { ModeSelection, Brand } from "@/components";
+import ModeSelection from "@/components/others/ModeSelection";
+import Brand from "@/components/others/Brand";
 import { AsideBackground } from "./_components";
 
 export default async function Layout({ children }: LayoutProps) {

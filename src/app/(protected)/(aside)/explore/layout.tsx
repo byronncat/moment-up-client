@@ -3,7 +3,9 @@
 import { cn } from "@/lib/utils";
 import { ROUTE } from "@/constants/clientConfig";
 import { Image, Users } from "lucide-react";
-import { type NavItem, NavigationBar } from "@/components";
+import NavigationBar, {
+  type NavItem,
+} from "@/components/HorizontalNavigationBar";
 
 const tabs: NavItem[] = [
   {

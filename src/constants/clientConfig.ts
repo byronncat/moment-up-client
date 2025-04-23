@@ -9,7 +9,8 @@ export const ROUTE = {
     username: string,
     type: "default" | "media" | "likes" = "default"
   ) => `/profile/${username}${type !== "default" ? `/${type}` : ""}`,
-  SEARCH: "/search",
+  SEARCH: (query?: string) =>
+    `/search${query ? `?q=${encodeURIComponent(query)}` : ""}`,
   EXPLORE: (type: "media" | "moments" = "media") => `/explore/${type}`,
   MESSAGES: "/messages",
   MESSAGE: (contactId?: string) =>

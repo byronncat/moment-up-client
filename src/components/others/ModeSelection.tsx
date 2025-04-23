@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
-import { Tooltip } from "@/components";
+import Tooltip from "./Tooltip";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

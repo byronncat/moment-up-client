@@ -15,7 +15,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import { Tooltip } from "@/components";
+import Tooltip from "../others/Tooltip";
 import { cn } from "@/lib/utils";
 import {
   Heart,
@@ -41,7 +41,7 @@ export default function MomentCard({ data }: MomentCardProps) {
         <div className="flex items-center gap-2">
           <Avatar className="size-8">
             <AvatarImage
-              src={data.profile_image}
+              src={data.avatar}
               alt={`${data.username}'s avatar`}
               className="object-cover object-top"
             />

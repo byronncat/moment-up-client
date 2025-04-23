@@ -1,38 +1,27 @@
+import type {
+  SearchItem,
+  UserSearchItem,
+  QuerySearchItem,
+  HashtagSearchItem,
+} from "api";
+
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CircleCheck, User, MagnifyingGlass } from "@/components/icons";
 
-type UserData = {
-  avatar: string;
-  username: string;
-  name: string;
-  verified?: boolean;
-};
-
-type QueryData = {
-  query: string;
-};
-
-type HashtagData = {
-  tag: string;
-};
-
 type SearchItemProps = Readonly<{
-  data: UserData | QueryData | HashtagData;
-  variant?: "query" | "user" | "hashtag";
+  data: SearchItem;
 }>;
 
-export default function SearchItem({
-  data,
-  variant = "user",
-}: SearchItemProps) {
+export default function SearchItem({ data }: SearchItemProps) {
+  const variant = data.type;
   const Variant = {
     user: () => (
       <>
         <Avatar className="size-12">
           <AvatarImage
-            src={(data as UserData).avatar}
-            alt={(data as UserData).username}
+            src={(data as UserSearchItem).avatar}
+            alt={(data as UserSearchItem).username}
             className="object-cover"
           />
           <AvatarFallback className="bg-primary">
@@ -42,19 +31,19 @@ export default function SearchItem({
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold">
-              {(data as UserData).username}
+              {(data as UserSearchItem).username}
             </span>
-            {(data as UserData).verified && (
+            {(data as UserSearchItem).verified && (
               <CircleCheck className="size-3.5 fill-primary" />
             )}
           </div>
           <span className="text-sm text-muted-foreground">
-            {(data as UserData).name}
+            {(data as UserSearchItem).displayName}
           </span>
         </div>
       </>
     ),
-    query: () => (
+    search: () => (
       <>
         <div
           className={cn(
@@ -65,7 +54,7 @@ export default function SearchItem({
         >
           <MagnifyingGlass className="size-5 fill-muted-foreground" />
         </div>
-        <span className="text-sm">{(data as QueryData).query}</span>
+        <span className="text-sm">{(data as QuerySearchItem).query}</span>
       </>
     ),
     hashtag: () => (
@@ -79,7 +68,14 @@ export default function SearchItem({
         >
           <span className="text-xl">#</span>
         </div>
-        <span className="text-sm">{(data as HashtagData).tag}</span>
+        <div className="flex flex-col">
+          <span className="text-sm font-semibold">
+            {(data as HashtagSearchItem).tag}
+          </span>
+          <span className="text-sm text-muted-foreground">
+            {`${(data as HashtagSearchItem).count} tagged`}
+          </span>
+        </div>
       </>
     ),
   };

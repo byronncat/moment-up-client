@@ -6,7 +6,8 @@ import { useAuth } from "@/components/providers";
 import { cn } from "@/lib/utils";
 import { ROUTE } from "@/constants/clientConfig";
 
-import { Logo, Tooltip } from "@/components";
+import Logo from "@/components/others/Logo";
+import Tooltip from "@/components/others/Tooltip";
 import {
   MessagesSquare,
   Compass,
@@ -63,7 +64,7 @@ const items = [
   },
   {
     title: "Search",
-    url: ROUTE.SEARCH,
+    url: ROUTE.SEARCH(),
     icon: Search,
   },
   {
@@ -142,7 +143,6 @@ export default function Sidebar() {
   }
 
   useEffect(() => {
-    console.log("getSidebarCookie");
     const storedState = getSidebarCookie();
     if (storedState !== null) userPreferenceRef.current = storedState;
     else userPreferenceRef.current = true;
@@ -197,7 +197,7 @@ export default function Sidebar() {
     return (
       <div
         className={cn(
-          "fixed bottom-0 left-0 z-50 w-full",
+          "fixed bottom-0 left-0 z-20 w-full",
           "bg-background border-t border-border",
           "flex justify-around items-center",
           "p-2"
@@ -225,7 +225,7 @@ export default function Sidebar() {
     return (
       <div
         className={cn(
-          "fixed top-0 left-0 right-0 z-50",
+          "fixed top-0 left-0 right-0 z-20",
           "bg-background border-b border-border",
           "flex items-center justify-between",
           "p-2 px-4 h-14"
@@ -440,7 +440,7 @@ export default function Sidebar() {
       {isAboveXl && (
         <div
           className={cn(
-            "fixed top-5 left-14 z-20",
+            "fixed top-5 left-14 z-10",
             "transition-all duration-300",
             open
               ? "opacity-0 pointer-events-none translate-x-2"
