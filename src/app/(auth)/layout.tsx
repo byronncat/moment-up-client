@@ -1,9 +1,11 @@
 import { cn } from "@/lib/utils";
-import ModeSelection from "@/components/others/ModeSelection";
-import Brand from "@/components/others/Brand";
+import ModeSelection from "@/components/common/ModeSelection";
+import Brand from "@/components/common/Brand";
 import { AsideBackground } from "./_components";
 
-export default async function Layout({ children }: LayoutProps) {
+export default async function Layout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className={cn("w-screen h-screen", "flex")}>
       <AsideBackground />

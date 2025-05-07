@@ -1,5 +1,5 @@
 declare module "schema" {
-  export type User = {
+  type User = {
     readonly id: uuidv4;
     username: string;
     display_name: string;
@@ -11,28 +11,53 @@ declare module "schema" {
     readonly created_at: Date;
   };
 
-  export type Moment = {
-    readonly id: serial;
+  type HashtagItem = {
+    readonly id: string;
+    readonly tag: string;
+    count: number;
+  };
+
+  type Feed = {
+    readonly id: string;
     readonly user_id: User["id"];
-    text?: string;
-    files?: {
-      type: "image" | "video";
-      url: string;
-    }[];
+    content: File | string;
+    sound?: File;
     readonly created_at: Date;
   };
 
-  export type Comment = {
-    readonly id: serial;
+  type FeedView = {
+    readonly id: string;
+    readonly feed_id: Feed["id"];
+    readonly user_id: User["id"];
+    readonly created_at: Date;
+  };
+
+  type Moment = {
+    readonly id: string;
+    readonly user_id: User["id"];
+    text?: string;
+    files?: File[];
+    readonly created_at: Date;
+  };
+
+  type MomentLike = {
+    readonly id: string;
+    readonly moment_id: Moment["id"];
+    readonly user_id: User["id"];
+    readonly created_at: Date;
+  };
+
+  type Comment = {
+    readonly id: string;
     readonly moment_id: Moment["id"];
     readonly user_id: User["id"];
     content: string;
     readonly created_at: Date;
   };
 
-  export type HashtagItem = {
+  type File = {
     readonly id: string;
-    tag: string;
-    count: number;
+    readonly type: "image" | "video" | "audio";
+    readonly url: string;
   };
 }

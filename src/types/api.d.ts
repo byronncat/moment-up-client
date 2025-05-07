@@ -1,12 +1,11 @@
 declare module "api" {
-  import type { Moment, User, HashtagItem } from "schema";
-
-  type MomentUI = Moment &
-    Pick<User, "username" | "avatar"> & {
-      likes: number;
-      comments: number;
-      isLiked: boolean;
-    };
+  import type {
+    Moment as MomentSchema,
+    User,
+    HashtagItem,
+    Feed,
+    File,
+  } from "schema";
 
   type API<T = void> = {
     success: boolean;
@@ -53,4 +52,44 @@ declare module "api" {
   };
 
   type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;
+
+  // Core
+  type FeedNotification = {
+    id: Feed["id"];
+    user: {
+      id: User["id"];
+      displayName: User["display_name"];
+      avatar: User["avatar"];
+      isViewed: boolean;
+    };
+    latestFeedTime: Feed["created_at"];
+  };
+
+  type FeedInfo = {
+    user: AccountInfo & {
+      isViewed: boolean;
+    };
+    feeds: {
+      id: Feed["id"];
+      content: Feed["content"];
+      sound?: Feed["sound"];
+      createdAt: Feed["created_at"];
+    }[];
+  };
+
+  type MomentInfo = Omit<MomentSchema, "id" | "user_id"> & {
+    likes: number;
+    comments: number;
+    isLiked: boolean;
+  };
+
+  type DetailedMoment = {
+    id: MomentSchema["id"];
+    user: UserInfo;
+    post: MomentInfo;
+  };
+
+  type CellMoment = MomentInfo & {
+    id: MomentSchema["id"];
+  };
 }

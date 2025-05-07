@@ -29,4 +29,8 @@ export const Metadata: MetadataMap = {
     title: "Verify Recovery Code",
     description: "Verify your recovery code",
   },
+  home: {
+    title: "Home",
+    description: "Home page",
+  },
 };

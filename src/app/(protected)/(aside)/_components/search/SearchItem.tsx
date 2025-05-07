@@ -6,8 +6,8 @@ import type {
 } from "api";
 
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CircleCheck, User, MagnifyingGlass } from "@/components/icons";
+import { Avatar } from "@/components";
+import { CircleCheck, MagnifyingGlass } from "@/components/icons";
 
 type SearchItemProps = Readonly<{
   data: SearchItem;
@@ -18,16 +18,11 @@ export default function SearchItem({ data }: SearchItemProps) {
   const Variant = {
     user: () => (
       <>
-        <Avatar className="size-12">
-          <AvatarImage
-            src={(data as UserSearchItem).avatar}
-            alt={(data as UserSearchItem).username}
-            className="object-cover"
-          />
-          <AvatarFallback className="bg-primary">
-            <User className="size-6 fill-card" type="solid" />
-          </AvatarFallback>
-        </Avatar>
+        <Avatar
+          src={(data as UserSearchItem).avatar}
+          alt={(data as UserSearchItem).username}
+          size="12"
+        />
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold">

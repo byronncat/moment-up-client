@@ -1,16 +1,15 @@
-import type { MomentUI } from "api";
+import type { CellMoment } from "api";
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Heart, Comment, Clone, Video } from "@/components/icons";
 
 type MomentCellProps = Readonly<{
-  data: MomentUI;
+  data: CellMoment;
 }>;
 
 export default function MomentCell({ data }: MomentCellProps) {
   if (!data.files || data.files.length === 0) return null;
-
   const randomFile = data.files[Math.floor(Math.random() * data.files.length)];
 
   return (
@@ -26,7 +25,7 @@ export default function MomentCell({ data }: MomentCellProps) {
         {randomFile.type === "image" ? (
           <Image
             src={randomFile.url}
-            alt={data.text || "Moment"}
+            alt={data.text || "Moment image"}
             fill
             sizes="(min-width: 640px) 640px, 100vw"
             className="size-full object-cover object-top"

@@ -7,9 +7,17 @@ import {
   TrendingTopics,
 } from "./_components";
 
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className={cn("max-w-[64rem] mx-auto", "flex justify-center")}>
+    <div
+      className={cn(
+        "max-w-[64rem] mx-auto",
+        "flex justify-center",
+        "min-h-screen"
+      )}
+    >
       <main className="max-w-[37.5rem] w-full">{children}</main>
       <aside
         className={cn(

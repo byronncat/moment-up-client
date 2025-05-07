@@ -30,7 +30,7 @@ import {
 export default function SearchBar() {
   const [inputQuery, setInputQuery] = useState("");
   const [displayQuery, setDisplayQuery] = useState("");
-  const [items, setItems] = useState<SearchItemType[]>([]);
+  const [items, setItems] = useState<SearchItemType[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
@@ -65,8 +65,8 @@ export default function SearchBar() {
     setIsLoading(true);
 
     const res = await SearchApi.search({ query });
-    if (res.success && res.data) {
-      setItems(res.data);
+    if (res.success) {
+      setItems(res.data ?? []);
       setDisplayQuery(query);
     } else {
       toast.error(res.message || "Failed to perform search");
@@ -79,8 +79,8 @@ export default function SearchBar() {
     setIsLoading(true);
 
     const res = await SearchApi.getSearchHistory();
-    if (res.success && res.data) {
-      setItems(res.data);
+    if (res.success) {
+      setItems(res.data ?? []);
       setDisplayQuery("");
     } else {
       toast.error(res.message || "Failed to load search history");
@@ -88,13 +88,13 @@ export default function SearchBar() {
     setIsLoading(false);
   }
 
-  useEffect(() => {
-    if (inputQuery) searchHandler(inputQuery);
-    else if (isOpen) fetchSearchHistory();
-  }, [inputQuery, isOpen]);
+  // useEffect(() => {
+  //   if (inputQuery) searchHandler(inputQuery);
+  //   else if (isOpen) fetchSearchHistory();
+  // }, [inputQuery, isOpen, searchHandler, fetchSearchHistory]);
 
   const showDropdown =
-    isOpen && (!isLoading || (isLoading && items.length > 0));
+    isOpen && (!isLoading || (isLoading && items && items.length > 0));
 
   if (pathname === ROUTE.SEARCH()) return null;
   return (
@@ -147,7 +147,7 @@ export default function SearchBar() {
 
 type DropdownProps = {
   query: string;
-  items: SearchItemType[];
+  items: SearchItemType[] | null;
   isLoading: boolean;
   inputQuery: string;
   removeItemHandler: (item: SearchItemType) => void;
@@ -164,6 +164,7 @@ function Dropdown({
   clearAllItems,
   onItemClick,
 }: DropdownProps) {
+  if (!items) return null;
   const renderItemList = (
     title: string,
     showClearButton = false,

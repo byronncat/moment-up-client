@@ -40,7 +40,9 @@ const AuthContext = createContext(
 
 export const useAuth = () => useContext(AuthContext);
 
-export default function AuthProvider({ children }: LayoutProps) {
+export default function AuthProvider({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   const router = useRouter();
   const [logged, setLogged] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -112,10 +114,10 @@ export default function AuthProvider({ children }: LayoutProps) {
   const switchAccount = useCallback(
     async (accountId: AccountInfo["id"]) => {
       const res = await AuthApi.switchAccount(accountId);
-      if (res.success && res.data) setUser(res.data);
+      if (res.success) setUser(res.data ?? null);
       return res;
     },
-    [setUser, setLogged]
+    [setUser]
   );
 
   useEffect(() => {

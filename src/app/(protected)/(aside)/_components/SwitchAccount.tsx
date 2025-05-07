@@ -7,8 +7,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/providers";
 import { ROUTE } from "@/constants/clientConfig";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/components/icons";
+import { Avatar } from "@/components";
 import {
   Dialog,
   DialogClose,
@@ -44,24 +43,22 @@ function Content({ user }: ContentProps) {
   return (
     <div className="flex items-center gap-2">
       <Link href={ROUTE.PROFILE(user.username)}>
-        <Avatar className="size-10">
-          <AvatarImage
-            src={user?.avatar}
-            alt="Your profile picture"
-            className="object-cover"
-          />
-          <AvatarFallback className="bg-primary">
-            <User className="size-6 fill-card" type="solid" />
-          </AvatarFallback>
-        </Avatar>
+        <Avatar
+          src={user.avatar}
+          alt={`${user?.displayName}'s avatar`}
+          size="10"
+          className={cn(
+            "hover:opacity-80",
+            "transition-opacity duration-150 ease-in-out"
+          )}
+        />
       </Link>
       <div className="flex flex-col">
         <Link
           href={ROUTE.PROFILE(user.username)}
           className={cn(
             "text-sm font-semibold",
-            "hover:opacity-60",
-            "transition-opacity duration-150 ease-in-out"
+            "hover:opacity-80 transition-opacity duration-150 ease-in-out"
           )}
         >
           {user?.displayName}
@@ -81,8 +78,8 @@ function SwitchButton() {
         <button
           className={cn(
             "text-xs font-semibold text-primary",
-            "cursor-pointer hover:text-primary/80",
-            "transition-colors duration-150 ease-in-out"
+            "cursor-pointer hover:opacity-80",
+            "transition-opacity duration-150 ease-in-out"
           )}
         >
           Switch
@@ -120,11 +117,11 @@ function ManagementModal({ onClose }: ManagementModalProps) {
   }
 
   useEffect(() => {
-    const fetchAccounts = async () => {
+    async function fetchAccounts() {
       const res = await AuthApi.getAllAcounts();
-      if (res.success && res.data) setAccounts(res.data);
+      if (res.success) setAccounts(res.data ?? []);
       setLoading(false);
-    };
+    }
     fetchAccounts();
   }, []);
 
@@ -152,16 +149,11 @@ function ManagementModal({ onClose }: ManagementModalProps) {
                 "transition-colors duration-150 ease-in-out"
               )}
             >
-              <Avatar className="size-12">
-                <AvatarImage
-                  src={account.avatar}
-                  alt="Your profile picture"
-                  className="object-cover"
-                />
-                <AvatarFallback className="bg-primary">
-                  <User className="size-8 fill-card" type="solid" />
-                </AvatarFallback>
-              </Avatar>
+              <Avatar
+                src={account.avatar}
+                alt="Your profile picture"
+                size="12"
+              />
               <div className="flex flex-col">
                 <div className="flex items-center gap-1.5">
                   <span className="font-semibold">{account.displayName}</span>

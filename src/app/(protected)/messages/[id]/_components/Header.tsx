@@ -5,7 +5,7 @@ import { type Contact } from "@/__mocks__";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Phone, Video, CircleInfo } from "@/components/icons";
+import { Phone, Video, CircleInfo, User } from "@/components/icons";
 
 type HeaderProps = {
   contact?: Contact;
@@ -34,7 +34,9 @@ function HeaderLeft({ contact }: HeaderProps) {
           alt={contact?.name}
           className="object-cover object-top"
         />
-        <AvatarFallback>{contact?.name[0]}</AvatarFallback>
+        <AvatarFallback className="bg-primary">
+          <User className="size-6 fill-card" type="solid" />
+        </AvatarFallback>
       </Avatar>
       <div>
         <h2 className={cn("font-semibold text-lg", "flex items-center")}>

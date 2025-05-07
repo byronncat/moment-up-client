@@ -16,9 +16,13 @@ export async function search(
     });
     // throw new Error("Not implemented");
 
-    const filteredData = mockSearches.filter((item) =>
-      item.query?.toLowerCase().includes(data.query.toLowerCase())
-    );
+    const filteredData = mockSearches.filter((item) => {
+      if (item.type === "user")
+        return item.username.toLowerCase().includes(data.query.toLowerCase());
+      if (item.type === "hashtag")
+        return item.tag.toLowerCase().includes(data.query.toLowerCase());
+      return item.query.toLowerCase().includes(data.query.toLowerCase());
+    });
 
     return {
       success: true,

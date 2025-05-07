@@ -1,6 +1,6 @@
 import { mockSuggestedUsers, mockTrendingTopics } from "@/__mocks__";
 
-import type { API, UserInfo, HashtagSearchItem } from "api";
+import type { API, UserInfo } from "api";
 import { HashtagItem } from "schema";
 
 export async function getSuggestedUsers(): Promise<API<UserInfo[]>> {

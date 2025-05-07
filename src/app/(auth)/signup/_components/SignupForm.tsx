@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import zodSchema from "@/lib/zodSchema";
 import { useAuth } from "@/components/providers";
 
-import Tooltip from "@/components/others/Tooltip";
+import Tooltip from "@/components/common/Tooltip";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

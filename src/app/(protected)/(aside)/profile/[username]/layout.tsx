@@ -43,12 +43,12 @@ function Information({ username }: Readonly<{ username?: string }>) {
 
       <Avatar className="size-28">
         <AvatarImage
-          src="https://pbs.twimg.com/media/GgHsZ5vakAAz5jI?format=jpg&name=large"
+          src="https://pbs.twimg.com/mkkkkedia/GgHsZ5vakAAz5jI?format=jpg&name=large"
           alt={`${username}'s profile`}
           className="object-cover"
         />
         <AvatarFallback className="bg-primary">
-          <User className="size-12 fill-card" type="solid" />
+          <User className="size-22 fill-card" type="solid" />
         </AvatarFallback>
       </Avatar>
 

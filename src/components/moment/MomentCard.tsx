@@ -1,12 +1,16 @@
 "use client";
 
-import type { MomentUI } from "api";
+import type { DetailedMoment, UserInfo } from "api";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
+import { UserApi } from "@/services";
+import { ROUTE } from "@/constants/clientConfig";
 
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, UserInfoCard } from "../common";
 import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
 import {
   Carousel,
@@ -15,68 +19,146 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import Tooltip from "../others/Tooltip";
-import { cn } from "@/lib/utils";
 import {
-  Heart,
-  Comment,
-  User,
-  Play,
-  Pause,
-  Share,
-  Repeat,
-  Bookmark,
-} from "../icons";
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../ui/hover-card";
+import Tooltip from "../common/Tooltip";
+import { Heart, Comment, Play, Pause, Share, Repeat, Bookmark } from "../icons";
 
 type MomentCardProps = Readonly<{
-  data: MomentUI;
+  data: DetailedMoment;
 }>;
 
 export default function MomentCard({ data }: MomentCardProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-
   return (
     <Card className="overflow-hidden">
-      <CardHeader className="p-3">
-        <div className="flex items-center gap-2">
-          <Avatar className="size-8">
-            <AvatarImage
-              src={data.avatar}
-              alt={`${data.username}'s avatar`}
-              className="object-cover object-top"
-            />
-            <AvatarFallback className="bg-primary">
-              <User className="size-4 fill-card" type="solid" />
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold">{data.username}</span>
-            <span className="text-xs text-muted-foreground">
-              {dayjs(data.created_at).fromNow()}
+      <Header data={data} />
+      <Content momentId={data.id} postData={data.post} />
+      <Footer postData={data.post} />
+    </Card>
+  );
+}
+
+type HeaderProps = ComponentProps<{
+  data: DetailedMoment;
+}>;
+
+function Header({ data }: HeaderProps) {
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  function followHandler(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isFollowing) UserApi.unfollowUser(data.id);
+    else UserApi.followUser(data.id);
+    setIsFollowing((prev) => !prev);
+  }
+
+  return (
+    <CardHeader className={cn("p-3 space-y-0", "flex flex-row gap-2")}>
+      <HoverableComponent
+        userInfo={data.user}
+        isFollowing={isFollowing}
+        followHandler={followHandler}
+      >
+        <Avatar
+          src={data.user.avatar}
+          alt={`${data.user.displayName}'s avatar`}
+          size="12"
+        />
+      </HoverableComponent>
+      <div className={cn("flex flex-col", "mt-1")}>
+        <div className="flex items-center gap-1">
+          <HoverableComponent
+            userInfo={data.user}
+            isFollowing={isFollowing}
+            followHandler={followHandler}
+          >
+            <span
+              className={cn(
+                "font-semibold text-base/tight",
+                "truncate max-w-[12rem] md:max-w-[20rem]"
+              )}
+            >
+              {data.user.displayName}
             </span>
-          </div>
+          </HoverableComponent>
+          <span className="text-base/tight text-muted-foreground">·</span>
+          <span className="text-sm/tight text-muted-foreground">
+            {dayjs(data.post.created_at).fromNow()}
+          </span>
         </div>
-      </CardHeader>
+        <HoverableComponent
+          userInfo={data.user}
+          isFollowing={isFollowing}
+          followHandler={followHandler}
+        >
+          <span className="text-sm text-muted-foreground">
+            @{data.user.username}
+          </span>
+        </HoverableComponent>
+      </div>
+    </CardHeader>
+  );
+}
 
-      {data.text && (
-        <CardContent className="px-3 pb-2">
-          <p className="text-sm whitespace-pre-wrap">{data.text}</p>
-        </CardContent>
-      )}
+type ContentProps = ComponentProps<{
+  momentId: DetailedMoment["id"];
+  postData: DetailedMoment["post"];
+}>;
 
-      {data.files && data.files.length > 0 && (
-        <CardContent className="p-0">
-          <Carousel className="w-full">
-            <CarouselContent>
-              {data.files.map((file, index) => (
-                <CarouselItem key={index}>
+function Content({ momentId, postData }: ContentProps) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showFullText, setShowFullText] = useState(false);
+
+  const TextContent = () =>
+    postData.text && (
+      <CardContent className="px-3 pb-2">
+        <p className={cn("wrap-break-word", !showFullText && "line-clamp-5")}>
+          {postData.text}
+        </p>
+        {postData.text.length > 280 && !showFullText && (
+          <button
+            onClick={() => setShowFullText(true)}
+            className={cn(
+              "font-semibold text-sm text-muted-foreground",
+              "cursor-pointer hover:underline"
+            )}
+          >
+            Show more
+          </button>
+        )}
+        {showFullText && (
+          <button
+            onClick={() => setShowFullText(false)}
+            className={cn(
+              "font-semibold text-sm text-muted-foreground",
+              "cursor-pointer hover:underline"
+            )}
+          >
+            Show less
+          </button>
+        )}
+      </CardContent>
+    );
+
+  const MediaContent = () =>
+    postData.files && (
+      <CardContent className="p-0">
+        <Carousel className="w-full">
+          <CarouselContent>
+            {postData.files.map((file, index) => (
+              <CarouselItem key={index}>
+                <Link href={ROUTE.MOMENT(momentId)}>
                   <div className="relative aspect-square">
                     {file.type === "image" ? (
                       <Image
                         src={file.url}
-                        alt={data.text || "Moment image"}
+                        alt={`Moment ${index + 1}`}
                         fill
-                        sizes="(min-width: 640px) 640px, 100vw"
+                        sizes="574px"
                         className="object-cover"
                         priority={index === 0}
                         loading={index === 0 ? "eager" : "lazy"}
@@ -113,169 +195,216 @@ export default function MomentCard({ data }: MomentCardProps) {
                       </div>
                     )}
                   </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            {data.files.length > 1 && (
-              <>
-                <CarouselPrevious className="left-2" />
-                <CarouselNext className="right-2" />
-              </>
-            )}
-          </Carousel>
-        </CardContent>
-      )}
+                </Link>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          {postData.files.length > 1 && (
+            <>
+              <CarouselPrevious className="left-2" />
+              <CarouselNext className="right-2" />
+            </>
+          )}
+        </Carousel>
+      </CardContent>
+    );
 
-      <CardFooter className="p-3">
+  return (
+    <div>
+      <TextContent />
+      <MediaContent />
+    </div>
+  );
+}
+
+type FooterProps = ComponentProps<{
+  postData: DetailedMoment["post"];
+}>;
+
+const buttonStyles = {
+  iconSize: "size-5",
+  transition: "transition-colors duration-150 ease-in-out",
+};
+
+function Footer({ postData }: FooterProps) {
+  const buttons = [
+    {
+      icon: (
+        <Heart
+          type={postData.isLiked ? "solid" : "regular"}
+          className={cn(
+            buttonStyles.iconSize,
+            buttonStyles.transition,
+            postData.isLiked
+              ? "fill-pink-500"
+              : "fill-muted-foreground group-hover:fill-pink-500"
+          )}
+        />
+      ),
+      hoverColor: "pink-500",
+      count: postData.likes,
+      tooltip: "Like",
+      isActive: postData.isLiked,
+    },
+    {
+      icon: (
+        <Comment
+          className={cn(
+            buttonStyles.iconSize,
+            buttonStyles.transition,
+            "fill-muted-foreground group-hover:fill-sky-500",
+            "translate-x-[1px]"
+          )}
+        />
+      ),
+      hoverColor: "sky-500",
+      count: postData.comments,
+      tooltip: "Comment",
+    },
+    {
+      icon: (
+        <Repeat
+          className={cn(
+            buttonStyles.iconSize,
+            buttonStyles.transition,
+            "fill-muted-foreground group-hover:fill-green-500"
+          )}
+        />
+      ),
+      hoverColor: "green-500",
+      count: 73,
+      tooltip: "Repost",
+    },
+    {
+      icon: (
+        <Bookmark
+          type="regular"
+          className={cn(
+            buttonStyles.iconSize,
+            buttonStyles.transition,
+            "fill-muted-foreground group-hover:fill-yellow-500"
+          )}
+        />
+      ),
+      hoverColor: "yellow-500",
+      tooltip: "Bookmark",
+    },
+    {
+      icon: (
+        <Share
+          className={cn(
+            buttonStyles.iconSize,
+            buttonStyles.transition,
+            "fill-muted-foreground group-hover:fill-blue-500"
+          )}
+        />
+      ),
+      hoverColor: "blue-500",
+      tooltip: "Share",
+    },
+  ];
+
+  return (
+    <CardFooter className="p-3">
+      <div
+        className={cn(
+          "flex items-center justify-between",
+          "w-full",
+          "text-muted-foreground"
+        )}
+      >
+        {buttons.slice(0, 3).map((button) => (
+          <ActionButton key={button.tooltip} {...button} />
+        ))}
+
+        <div className="flex items-center gap-1">
+          {buttons.slice(3).map((button) => (
+            <ActionButton key={button.tooltip} {...button} />
+          ))}
+        </div>
+      </div>
+    </CardFooter>
+  );
+}
+
+type ActionButtonProps = {
+  icon: React.ReactNode;
+  hoverColor: string;
+  count?: number;
+  tooltip: string;
+  isActive?: boolean;
+  activeColor?: string;
+  onClick?: () => void;
+};
+
+function ActionButton({
+  icon,
+  hoverColor,
+  count,
+  tooltip,
+  isActive = false,
+  activeColor,
+  onClick,
+}: ActionButtonProps) {
+  const color = isActive ? activeColor || hoverColor : undefined;
+
+  return (
+    <Tooltip content={tooltip} sideOffset={6}>
+      <button
+        type="button"
+        onClick={onClick}
+        className={cn(
+          "group flex items-center gap-1",
+          isActive ? `text-${color}` : `hover:text-${hoverColor}`,
+          "cursor-pointer",
+          buttonStyles.transition
+        )}
+      >
         <div
           className={cn(
-            "flex items-center justify-between",
-            "w-full",
-            "text-muted-foreground"
+            "p-2 rounded-full",
+            `group-hover:bg-${hoverColor}/10`,
+            buttonStyles.transition
           )}
         >
-          <Tooltip content="Like" sideOffset={6}>
-            <button
-              type="button"
-              className={cn(
-                "group flex items-center gap-1",
-                data.isLiked ? "text-pink-500" : "hover:text-pink-500",
-                "cursor-pointer",
-                "transition-colors duration-150 ease-in-out"
-              )}
-            >
-              <div
-                className={cn(
-                  "p-2 rounded-full",
-                  "group-hover:bg-pink-500/10",
-                  "transition-colors duration-150 ease-in-out"
-                )}
-              >
-                <Heart
-                  className={cn(
-                    "size-5",
-                    "transition-colors duration-150 ease-in-out",
-                    data.isLiked
-                      ? "fill-pink-500"
-                      : "fill-muted-foreground group-hover:fill-pink-500"
-                  )}
-                  type={data.isLiked ? "solid" : "regular"}
-                />
-              </div>
-              <span>{data.likes}</span>
-            </button>
-          </Tooltip>
-
-          <Tooltip content="Comment" sideOffset={6}>
-            <button
-              type="button"
-              className={cn(
-                "group flex items-center gap-1",
-                "hover:text-blue-500",
-                "cursor-pointer"
-              )}
-            >
-              <div
-                className={cn(
-                  "p-2 rounded-full",
-                  "group-hover:bg-blue-500/10",
-                  "transition-colors duration-150 ease-in-out"
-                )}
-              >
-                <Comment
-                  className={cn(
-                    "size-5",
-                    "fill-muted-foreground group-hover:fill-blue-500"
-                  )}
-                />
-              </div>
-              <span>{data.comments}</span>
-            </button>
-          </Tooltip>
-
-          <Tooltip content="Repost" sideOffset={6}>
-            <button
-              type="button"
-              className={cn(
-                "group flex items-center gap-1",
-                "hover:text-green-500",
-                "cursor-pointer"
-              )}
-            >
-              <div
-                className={cn(
-                  "p-2 rounded-full",
-                  "group-hover:bg-green-500/10",
-                  "transition-colors duration-150 ease-in-out"
-                )}
-              >
-                <Repeat
-                  className={cn(
-                    "size-5",
-                    "fill-muted-foreground group-hover:fill-green-500"
-                  )}
-                />
-              </div>
-              <span>73</span>
-            </button>
-          </Tooltip>
-
-          <div className="flex items-center gap-1">
-            <Tooltip content="Bookmark" sideOffset={6}>
-              <button
-                type="button"
-                className={cn(
-                  "group flex items-center gap-1",
-                  "hover:text-blue-500",
-                  "cursor-pointer"
-                )}
-              >
-                <div
-                  className={cn(
-                    "p-2 rounded-full",
-                    "group-hover:bg-blue-500/10",
-                    "transition-colors duration-150 ease-in-out"
-                  )}
-                >
-                  <Bookmark
-                    className={cn(
-                      "size-5",
-                      "fill-muted-foreground group-hover:fill-blue-500"
-                    )}
-                    type="regular"
-                  />
-                </div>
-              </button>
-            </Tooltip>
-
-            <Tooltip content="Share">
-              <button
-                type="button"
-                className={cn(
-                  "group flex items-center gap-1",
-                  "hover:text-blue-500",
-                  "cursor-pointer"
-                )}
-              >
-                <div
-                  className={cn(
-                    "p-2 rounded-full",
-                    "group-hover:bg-blue-500/10",
-                    "transition-colors duration-150 ease-in-out"
-                  )}
-                >
-                  <Share
-                    className={cn(
-                      "size-5",
-                      "fill-muted-foreground group-hover:fill-blue-500"
-                    )}
-                  />
-                </div>
-              </button>
-            </Tooltip>
-          </div>
+          {icon}
         </div>
-      </CardFooter>
-    </Card>
+        {count !== undefined && <span>{count}</span>}
+      </button>
+    </Tooltip>
+  );
+}
+
+type HoverableComponentProps = ComponentProps<{
+  userInfo: UserInfo;
+  isFollowing: boolean;
+  followHandler: (e: React.MouseEvent) => void;
+}>;
+
+function HoverableComponent({
+  children,
+  userInfo,
+  isFollowing,
+  followHandler,
+}: HoverableComponentProps) {
+  return (
+    <HoverCard>
+      <HoverCardTrigger
+        className={cn(
+          "inline-flex",
+          "hover:opacity-80 transition-opacity duration-150 ease-in-out"
+        )}
+        asChild
+      >
+        <Link href={ROUTE.PROFILE(userInfo.username)}>{children}</Link>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-[18rem]">
+        <UserInfoCard
+          user={userInfo}
+          isFollowing={isFollowing}
+          onFollow={followHandler}
+        />
+      </HoverCardContent>
+    </HoverCard>
   );
 }

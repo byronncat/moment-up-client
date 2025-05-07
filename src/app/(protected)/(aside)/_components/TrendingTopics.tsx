@@ -21,23 +21,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MoreHorizontal, XCircle, AlertCircle, Ban, Copy } from "lucide-react";
 
 export default function TrendingSection() {
-  const [topics, setTopics] = useState<HashtagItem[]>([]);
+  const [topics, setTopics] = useState<HashtagItem[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchTrendingTopics() {
-      try {
-        const response = await SuggestingApi.getTrendingTopics();
-        if (response.success && response.data) {
-          setTopics(response.data);
-        } else {
-          toast.error(response.message || "Failed to load trending topics");
-        }
-      } catch (error) {
-        toast.error("An error occurred while fetching trending topics");
-      } finally {
-        setIsLoading(false);
-      }
+      const res = await SuggestingApi.getTrendingTopics();
+      if (res.success) setTopics(res.data ?? []);
+      else toast.error(res.message || "Failed to load trending topics");
+      setIsLoading(false);
     }
 
     fetchTrendingTopics();
@@ -45,13 +37,15 @@ export default function TrendingSection() {
 
   return (
     <div className="w-full">
-      <SectionHeader className="mb-4">Trending topics</SectionHeader>
+      <SectionHeader className="mb-4" loading={isLoading}>
+        Trending topics
+      </SectionHeader>
       <div>
         {isLoading
           ? Array.from({ length: 5 }).map((_, index) => (
               <SkeletonTrendingTopicItem key={index} />
             ))
-          : topics.map((topic) => (
+          : topics?.map((topic) => (
               <TrendingTopicItem key={topic.id} topic={topic} />
             ))}
       </div>
@@ -97,7 +91,7 @@ function TrendingTopicItem({ topic }: { topic: HashtagItem }) {
     <div
       className={cn(
         "w-full p-2 rounded-md",
-        "hover:bg-accent/[.07] cursor-pointer",
+        "hover:bg-accent/[.05] cursor-pointer",
         "transition-colors duration-150 ease-in-out"
       )}
     >
@@ -121,7 +115,8 @@ function TrendingTopicItem({ topic }: { topic: HashtagItem }) {
 
 function FeedbackButton() {
   const feedbackHandler = (feedback: string) => {
-    toast.success(`Feedback submitted: ${feedback}`);
+    console.log(feedback);
+    toast.success("Feedback submitted");
   };
 
   return (
@@ -149,6 +144,7 @@ function FeedbackButton() {
           <DropdownMenuItem
             key={option.value}
             onClick={() => feedbackHandler(option.value)}
+            className="cursor-pointer"
           >
             <option.icon className="mr-2 h-4 w-4" />
             {option.label}

@@ -10,14 +10,14 @@ import {
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import type { MomentUI } from "api";
+import type { DetailedMoment } from "api";
 
 import { SearchInput, SearchItem } from "../_components";
 import NavigationBar, {
   type NavItem,
 } from "@/components/HorizontalNavigationBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { XMark, CircleCheck } from "@/components/icons";
+import { XMark, CircleCheck, User } from "@/components/icons";
 import { MomentCell } from "@/components/moment";
 
 // Define our search item types
@@ -46,16 +46,12 @@ interface HashtagSearchItem {
 type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;
 type SearchCategory = "accounts" | "hashtags" | "posts" | "all";
 
-function isUserSearchItem(item: SearchItem): item is UserSearchItem {
-  return item.type === "user";
-}
-
 export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState<{
     accounts: Array<UserSearchItem>;
     hashtags: Array<HashtagSearchItem>;
-    posts: Array<MomentUI>;
+    posts: Array<DetailedMoment>;
   }>({
     accounts: [],
     hashtags: [],
@@ -80,13 +76,15 @@ export default function SearchPage() {
 
     const timer = setTimeout(() => {
       const filteredAccounts = mockFeeds
-        .filter((user) => user.name.toLowerCase().includes(query.toLowerCase()))
+        .filter((user) =>
+          user.user.displayName.toLowerCase().includes(query.toLowerCase())
+        )
         .map((user, index) => ({
           id: user.id,
           type: "user" as const,
-          username: user.name.toLowerCase().replace(/\s+/g, ""),
-          name: user.name,
-          avatar: user.image,
+          username: user.user.displayName.toLowerCase().replace(/\s+/g, ""),
+          name: user.user.displayName,
+          avatar: user.user.avatar,
           verified: index % 3 === 0, // Random verification status for demo
         }));
 
@@ -98,12 +96,12 @@ export default function SearchPage() {
 
       const filteredPosts = mockMoments
         .filter((post) =>
-          post.text?.toLowerCase().includes(query.toLowerCase())
+          post.post.text?.toLowerCase().includes(query.toLowerCase())
         )
         .slice(0, 6);
 
       setSearchResults({
-        accounts: filteredAccounts,
+        accounts: filteredAccounts as unknown as UserSearchItem[],
         hashtags: filteredHashtags as unknown as HashtagSearchItem[],
         posts: filteredPosts,
       });
@@ -208,13 +206,15 @@ function PopularAccounts() {
                   alt={user.username}
                   className="object-cover object-top"
                 />
-                <AvatarFallback>{user.name[0]}</AvatarFallback>
+                <AvatarFallback className="bg-primary">
+                  <User className="size-10 fill-card" type="solid" />
+                </AvatarFallback>
               </Avatar>
               <div className={cn("flex items-center gap-1", "mb-1")}>
                 <p className={cn("font-medium", "truncate max-w-32")}>
                   {user.username}
                 </p>
-                {user.id % 3 === 0 && (
+                {user.verified && (
                   <CircleCheck className="size-3.5 fill-primary" />
                 )}
               </div>
@@ -225,7 +225,7 @@ function PopularAccounts() {
                   "text-xs text-muted-foreground"
                 )}
               >
-                Followed by {user.followedBy}
+                Followed by {user.followedBy?.count}
               </p>
               <button
                 className={cn(
@@ -254,7 +254,7 @@ function SearchCategories({
   results: {
     accounts: Array<UserSearchItem>;
     hashtags: Array<HashtagSearchItem>;
-    posts: Array<MomentUI>;
+    posts: Array<DetailedMoment>;
   };
 }) {
   const categories: NavItem[] = [
@@ -292,7 +292,7 @@ function SearchResults({
   results: {
     accounts: Array<UserSearchItem>;
     hashtags: Array<SearchItemType>;
-    posts: Array<MomentUI>;
+    posts: Array<DetailedMoment>;
   };
   isSearching: boolean;
   query: string;
@@ -329,7 +329,7 @@ function SearchResults({
               "cursor-pointer hover:bg-accent/[.05]"
             )}
           >
-            <SearchItem data={item} />
+            {/* <SearchItem data={item} variant="user" /> */}
             <button className="text-sm text-primary font-semibold hover:text-primary/80">
               Follow
             </button>
@@ -369,7 +369,8 @@ function SearchResults({
         {results.posts
           .slice(0, activeCategory === "all" ? 6 : undefined)
           .map((post) => (
-            <MomentCell key={post.id} data={post} />
+            // <MomentCell key={post.id} data={post} />
+            <div key={post.id}>{post.id}</div>
           ))}
       </div>
 

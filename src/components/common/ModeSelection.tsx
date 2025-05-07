@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
+import { useIsClient } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 
 import Tooltip from "./Tooltip";
@@ -16,14 +16,9 @@ import { LaptopMinimal, Moon, Sun } from "@/components/icons";
 
 export default function ModeSelection({ className }: ComponentProps) {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const isClient = useIsClient();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
+  if (!isClient) return null;
   return (
     <DropdownMenu>
       <Tooltip content="Theme" variant="borderless" sideOffset={6}>

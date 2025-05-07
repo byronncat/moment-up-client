@@ -1,166 +1,237 @@
 "use client";
 
-import { mockFeeds } from "@/__mocks__";
+import type { FeedNotification } from "api";
 
-import { useRef } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CoreApi } from "@/services";
+import { ROUTE } from "@/constants/clientConfig";
+
+import { Avatar } from "@/components";
 import { Card } from "@/components/ui/card";
-import { Plus, User, ChevronLeft, ChevronRight } from "@/components/icons";
+import { Plus, ChevronLeft, ChevronRight } from "@/components/icons";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function Feeds() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+type Direction = "left" | "right";
+const ITEMS_PER_VIEW = 3;
+const ITEM_WIDTH = 88; // size-18 (72px) + gap (16px)
 
-  const scroll = (direction: "left" | "right") => {
-    if (containerRef.current) {
-      const scrollAmount = direction === "left" ? -200 : 200;
-      containerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
+function throttle(callback: (direction: Direction) => void, delay: number) {
+  let isThrottled = false;
+  return (direction: Direction) => {
+    if (isThrottled) return;
+    isThrottled = true;
+    setTimeout(() => {
+      isThrottled = false;
+    }, delay);
+    callback(direction);
   };
+}
 
-  const startScrolling = (direction: "left" | "right") => {
-    if (containerRef.current) {
-      const scrollAmount = direction === "left" ? -1200 : 1200;
-      scrollIntervalRef.current = setInterval(() => {
-        containerRef.current?.scrollBy({
-          left: scrollAmount,
-          behavior: "smooth",
-        });
-      }, 5);
-    }
-  };
+export default function Feeds({ className }: ComponentProps) {
+  const [feeds, setFeeds] = useState<FeedNotification[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const stopScrolling = () => {
-    if (scrollIntervalRef.current) {
-      clearInterval(scrollIntervalRef.current);
-      scrollIntervalRef.current = null;
+  useEffect(() => {
+    console.log(3);
+    async function fetchFeeds() {
+      const res = await CoreApi.getFeeds();
+      if (res.success) setFeeds(res.data ?? []);
+      setLoading(false);
     }
-  };
+    fetchFeeds();
+  }, []);
+
+  const checkScrollability = useCallback(() => {
+    if (!scrollContainerRef.current) return;
+
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1); // -1 for rounding errors
+  }, []);
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+    checkScrollability();
+
+    scrollContainer.addEventListener("scroll", checkScrollability);
+    window.addEventListener("resize", checkScrollability);
+
+    return () => {
+      scrollContainer.removeEventListener("scroll", checkScrollability);
+      window.removeEventListener("resize", checkScrollability);
+    };
+  }, [checkScrollability, feeds]);
+
+  const handleScroll = throttle((direction: Direction) => {
+    if (!scrollContainerRef.current) return;
+
+    const scrollAmount = direction === "left" ? -1 : 1;
+    const scrollDistance = ITEMS_PER_VIEW * ITEM_WIDTH * scrollAmount;
+
+    scrollContainerRef.current.scrollBy({
+      left: scrollDistance,
+      behavior: "smooth",
+    });
+  }, 150);
 
   return (
-    <Card
-      className={cn("pt-4 pb-2", "relative overflow-hidden", "w-full px-8")}
-    >
-      <div
-        ref={containerRef}
-        className={cn(
-          "max-w-[32rem] mx-auto",
-          "flex gap-4",
-          "overflow-x-auto scrollbar-hide",
-          "scroll-smooth",
-          "snap-x snap-mandatory"
-        )}
+    <div className={className}>
+      <Card
+        className={cn("relative overflow-hidden", "w-full box-content", "flex")}
       >
-        <button
-          type="button"
+        <NavigationButton
+          direction="left"
+          onScroll={handleScroll}
+          disabled={!canScrollLeft}
+        />
+        <div
+          ref={scrollContainerRef}
           className={cn(
-            "relative group",
-            "cursor-pointer",
-            "snap-start snap-always"
+            "max-w-[32rem] w-full",
+            "pt-4 pb-2",
+            "flex gap-4",
+            "overflow-x-auto scrollbar-hide",
+            "scroll-smooth",
+            "snap-x snap-mandatory",
+            "will-change-scroll transform-gpu"
           )}
         >
-          <div className={cn("flex items-center justify-center", "size-18")}>
-            <div
-              className={cn(
-                "size-16 rounded-full bg-primary/20",
-                "flex items-center justify-center",
-                "border-2 border-primary",
-                "transition-all duration-200",
-                "group-hover:scale-105 group-hover:border-primary/70"
-              )}
-            >
-              <Plus className="size-6 text-card-foreground fill-primary" />
-            </div>
-          </div>
-          <span
+          <CreateFeedButton className="snap-start" />
+          {loading
+            ? Array.from({ length: 3 }).map((_, index) => (
+                <FeedItemSkeleton key={index} />
+              ))
+            : feeds.map((feed) => (
+                <FeedItem key={feed.id} data={feed} className="snap-start" />
+              ))}
+        </div>
+        <NavigationButton
+          direction="right"
+          onScroll={handleScroll}
+          disabled={!canScrollRight}
+        />
+      </Card>
+    </div>
+  );
+}
+
+type FeedItemProps = ComponentProps<{
+  data: FeedNotification;
+}>;
+
+function FeedItem({ data, className }: FeedItemProps) {
+  return (
+    <div className={className}>
+      <Link
+        href={ROUTE.FEED(data.id)}
+        className={cn("group", "cursor-pointer", "flex flex-col items-center")}
+      >
+        <div className={cn("flex items-center justify-center", "size-18")}>
+          <Avatar
+            src={data.user.avatar}
+            alt={`${data.user.displayName}'s avatar`}
+            size="14"
+            ring
             className={cn(
-              "text-xs font-semibold",
-              "inline-block",
-              "max-w-16 truncate text-center",
-              "transition-colors group-hover:text-primary"
+              "transition-all duration-200",
+              "group-hover:scale-105 group-hover:border-primary/70"
             )}
-          >
-            Create
-          </span>
-        </button>
+          />
+        </div>
+        <span
+          className={cn(
+            "text-xs font-semibold",
+            "inline-block",
+            "max-w-16 truncate text-center",
+            "transition-colors group-hover:text-primary"
+          )}
+        >
+          {data.user.displayName}
+        </span>
+      </Link>
+    </div>
+  );
+}
 
-        {mockFeeds.map((feed) => (
-          <div key={feed.id} className="snap-start snap-always">
-            <button type="button" className={cn("group", "cursor-pointer")}>
-              <div
-                className={cn("flex items-center justify-center", "size-18")}
-              >
-                <div
-                  className={cn(
-                    "size-16 rounded-full avatar-container",
-                    "flex items-center justify-center",
-                    "border-2 border-primary",
-                    "transition-all duration-200",
-                    "group-hover:scale-105 group-hover:border-primary/70"
-                  )}
-                >
-                  <Avatar className="size-14">
-                    <AvatarImage
-                      src={feed.image}
-                      alt={feed.name}
-                      className="object-cover"
-                    />
-                    <AvatarFallback className="bg-primary">
-                      <User className="size-6 fill-card" type="solid" />
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
-              </div>
-              <span
-                className={cn(
-                  "text-xs font-semibold",
-                  "inline-block",
-                  "max-w-16 truncate text-center",
-                  "transition-colors group-hover:text-primary"
-                )}
-              >
-                {feed.name}
-              </span>
-            </button>
-          </div>
-        ))}
+function CreateFeedButton({ className }: ComponentProps) {
+  return (
+    <button
+      type="button"
+      className={cn("relative group", "cursor-pointer", className)}
+    >
+      <div className={cn("flex items-center justify-center", "size-18")}>
+        <div
+          className={cn(
+            "size-16 rounded-full bg-primary/20",
+            "flex items-center justify-center",
+            "border-2 border-primary",
+            "transition-all duration-200",
+            "group-hover:scale-105 group-hover:border-primary/70"
+          )}
+        >
+          <Plus className="size-6 text-card-foreground fill-primary" />
+        </div>
       </div>
+      <span
+        className={cn(
+          "text-xs font-semibold",
+          "inline-block",
+          "max-w-16 truncate text-center",
+          "transition-colors group-hover:text-primary"
+        )}
+      >
+        Create
+      </span>
+    </button>
+  );
+}
 
-      <button
-        type="button"
-        onClick={() => scroll("left")}
-        onMouseDown={() => startScrolling("left")}
-        onMouseUp={stopScrolling}
-        onMouseLeave={stopScrolling}
-        className={cn(
-          "cursor-pointer",
-          "w-8 h-full shrink-0",
-          "absolute left-0 top-0",
-          "transition-colors duration-200",
-          "hover:bg-accent/[.05]",
-          "border-r border-border"
-        )}
-      >
+type NavigationButtonProps = ComponentProps<{
+  direction: Direction;
+  onScroll: (direction: Direction) => void;
+  disabled?: boolean;
+}>;
+
+function NavigationButton({
+  direction,
+  onScroll,
+  disabled = false,
+  className,
+}: NavigationButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={() => onScroll(direction)}
+      disabled={disabled}
+      className={cn(
+        "w-8 shrink-0",
+        "transition-colors duration-200",
+        disabled ? "opacity-30" : "hover:bg-accent/[.05] cursor-pointer",
+        className
+      )}
+    >
+      {direction === "left" ? (
         <ChevronLeft className="size-8 -mt-3" />
-      </button>
-      <button
-        type="button"
-        onClick={() => scroll("right")}
-        onMouseDown={() => startScrolling("right")}
-        onMouseUp={stopScrolling}
-        onMouseLeave={stopScrolling}
-        className={cn(
-          "cursor-pointer",
-          "w-8 h-full shrink-0",
-          "absolute right-0 top-0",
-          "transition-colors duration-200",
-          "hover:bg-accent/[.05]",
-          "border-l border-border"
-        )}
-      >
+      ) : (
         <ChevronRight className="size-8 -mt-3" />
-      </button>
-    </Card>
+      )}
+    </button>
+  );
+}
+
+function FeedItemSkeleton() {
+  return (
+    <div className={cn("flex flex-col items-center", "h-24")}>
+      <div className={cn("flex items-center justify-center", "size-18")}>
+        <Skeleton className="size-16 rounded-full" />
+      </div>
+      <Skeleton className="w-16 h-3 mt-0.5" />
+    </div>
   );
 }

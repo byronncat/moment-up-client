@@ -6,8 +6,8 @@ import { useAuth } from "@/components/providers";
 import { cn } from "@/lib/utils";
 import { ROUTE } from "@/constants/clientConfig";
 
-import Logo from "@/components/others/Logo";
-import Tooltip from "@/components/others/Tooltip";
+import Logo from "@/components/common/Logo";
+import Tooltip from "@/components/common/Tooltip";
 import {
   MessagesSquare,
   Compass,

@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { type Message } from "@/__mocks__";
-
+import { User } from "@/components/icons";
 type ChatMessageProps = {
   message: Message;
 };
@@ -23,7 +23,9 @@ export default function ChatMessage({ message }: ChatMessageProps) {
             alt={message.user.name}
             className="object-cover object-top"
           />
-          <AvatarFallback>{message.user.name[0]}</AvatarFallback>
+          <AvatarFallback className="bg-primary">
+            <User className="size-6 fill-card" type="solid" />
+          </AvatarFallback>
         </Avatar>
       )}
       <div

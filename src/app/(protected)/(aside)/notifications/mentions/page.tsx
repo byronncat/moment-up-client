@@ -4,6 +4,7 @@ import { mockNotifications } from "@/__mocks__";
 
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User } from "@/components/icons";
 
 export default function MentionsPage() {
   return mockNotifications.map((notification) => (
@@ -19,7 +20,7 @@ export default function MentionsPage() {
             className="object-cover object-top"
           />
           <AvatarFallback className="bg-primary">
-            {/* <User className="size-4 fill-card" type="solid" /> */}
+            <User className="size-6 fill-card" type="solid" />
           </AvatarFallback>
         </Avatar>
       </div>

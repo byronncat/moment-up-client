@@ -4,7 +4,7 @@ import {
   type Message,
   mockContacts,
   mockInitialMessages,
-  getRandomAvatar,
+  // getRandomAvatar,
 } from "@/__mocks__";
 
 import { useState } from "react";
@@ -21,7 +21,9 @@ export default function Message() {
       user: {
         id: "1",
         name: "La Vie",
-        avatar: getRandomAvatar(),
+        // avatar: getRandomAvatar(),
+        avatar:
+          "https://pbs.twimg.com/profile_images/1713024402486321152/X48G9Bl_400x400.jpg",
       },
       timestamp: "Just now",
     };

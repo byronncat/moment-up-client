@@ -5,7 +5,9 @@ import { Metadata } from "@/constants/metadata";
 import "@/styles/globals.css";
 
 export const metadata = Metadata.root;
-export default function RootLayout({ children }: LayoutProps) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased bg-background overflow-hidden">

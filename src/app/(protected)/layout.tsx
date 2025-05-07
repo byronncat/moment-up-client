@@ -4,12 +4,15 @@ import { Sidebar } from "./_components";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-export default async function Layout({ children }: LayoutProps) {
+export default async function Layout({
+  children,
+  modal,
+}: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar-state")?.value === "true";
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen relative">
       <SidebarProvider defaultOpen={defaultOpen}>
         <Sidebar />
         <div className="h-screen w-full sm:w-[calc(100%-3rem)]">
@@ -25,6 +28,7 @@ export default async function Layout({ children }: LayoutProps) {
           </ScrollArea>
         </div>
       </SidebarProvider>
+      {modal}
     </div>
   );
 }

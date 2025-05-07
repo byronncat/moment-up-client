@@ -4,19 +4,19 @@ import { NextResponse } from "next/server";
 import { PROTECTED_ROUTES, AUTH_ROUTES, ROUTE } from "@/constants/clientConfig";
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const hasSession = request.cookies.has("session");
+  // const { pathname } = request.nextUrl;
+  // const hasSession = request.cookies.has("session");
 
-  if (hasSession && AUTH_ROUTES.some((route) => pathname.startsWith(route)))
-    return NextResponse.redirect(new URL(ROUTE.HOME, request.url));
+  // if (hasSession && AUTH_ROUTES.some((route) => pathname.startsWith(route)))
+  //   return NextResponse.redirect(new URL(ROUTE.HOME, request.url));
 
-  if (
-    !hasSession &&
-    PROTECTED_ROUTES.some(
-      (route) => pathname === route || pathname.startsWith(route + "/")
-    )
-  )
-    return NextResponse.redirect(new URL(ROUTE.LOGIN, request.url));
+  // if (
+  //   !hasSession &&
+  //   PROTECTED_ROUTES.some(
+  //     (route) => pathname === route || pathname.startsWith(route + "/")
+  //   )
+  // )
+  //   return NextResponse.redirect(new URL(ROUTE.LOGIN, request.url));
 
   return NextResponse.next();
 }

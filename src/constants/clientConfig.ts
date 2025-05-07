@@ -12,6 +12,8 @@ export const ROUTE = {
   SEARCH: (query?: string) =>
     `/search${query ? `?q=${encodeURIComponent(query)}` : ""}`,
   EXPLORE: (type: "media" | "moments" = "media") => `/explore/${type}`,
+  FEED: (feedId: string) => `/feed/${feedId}`,
+  MOMENT: (momentId: string) => `/moment/${momentId}`,
   MESSAGES: "/messages",
   MESSAGE: (contactId?: string) =>
     `/messages${contactId ? `/${contactId}` : ""}`,
@@ -35,3 +37,8 @@ export const PUBLIC_ROUTES = [
   ROUTE.VERIFY_RECOVERY,
   ROUTE.PROFILE(""),
 ];
+
+export const ASPECT_RATIO = {
+  HORIZONTAL: 1.91 / 1,
+  VERTICAL: 9 / 16,
+};
