@@ -3,7 +3,7 @@ import { mockSearches } from "@/__mocks__";
 import type { z } from "zod";
 import type { API, SearchItem } from "api";
 
-import zodSchema from "@/lib/zodSchema";
+import zodSchema from "@/libraries/zodSchema";
 
 export async function search(
   data: z.infer<typeof zodSchema.core.search>

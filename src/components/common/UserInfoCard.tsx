@@ -4,8 +4,8 @@ import type { UserInfo } from "api";
 
 import Link from "next/link";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
-import format from "@/helpers/format";
+import { cn } from "@/libraries/utils";
+import format from "@/utilities/format";
 import { ROUTE } from "@/constants/clientConfig";
 
 import { Avatar } from ".";

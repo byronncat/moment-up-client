@@ -8,7 +8,7 @@ import { MomentCard, MomentSkeleton } from "@/components/moment";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDebounceCallback } from "usehooks-ts";
 import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { Logo } from "@/components";
 
 export default function Moments() {

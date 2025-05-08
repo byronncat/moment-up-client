@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { CoreApi } from "@/services";
 import { ASPECT_RATIO, ROUTE } from "@/constants/clientConfig";
 

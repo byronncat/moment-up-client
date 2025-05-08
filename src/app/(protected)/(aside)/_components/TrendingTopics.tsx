@@ -5,12 +5,12 @@ import type { HashtagItem } from "schema";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { SuggestingApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";
 
 import SectionHeader from "./SectionHeader";
-import format from "@/helpers/format";
+import format from "@/utilities/format";
 import {
   DropdownMenu,
   DropdownMenuContent,

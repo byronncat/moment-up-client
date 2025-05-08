@@ -5,7 +5,7 @@ import type {
   HashtagSearchItem,
 } from "api";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components";
 import { CircleCheck, MagnifyingGlass } from "@/components/icons";
 

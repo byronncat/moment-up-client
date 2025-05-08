@@ -4,7 +4,7 @@ import type { AccountInfo } from "api";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { useAuth } from "@/components/providers";
 import { ROUTE } from "@/constants/clientConfig";
 import { Avatar } from "@/components";

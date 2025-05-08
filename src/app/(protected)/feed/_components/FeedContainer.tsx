@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 
 export default function Wrapper({
   children,

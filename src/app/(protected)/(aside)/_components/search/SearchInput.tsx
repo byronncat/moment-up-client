@@ -1,5 +1,5 @@
 import { useDebounceCallback } from "usehooks-ts";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { Input } from "@/components/ui/input";
 import { MagnifyingGlass, XMark } from "@/components/icons";
 

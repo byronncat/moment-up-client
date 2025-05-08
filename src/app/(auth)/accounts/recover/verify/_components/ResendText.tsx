@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 
 const RESEND_TIME = 60; // seconds
 export default function ResendText({ onClick }: ComponentProps) {

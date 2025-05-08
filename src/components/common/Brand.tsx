@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
 import Logo from "./Logo";
 import { sourceCodePro } from "@/styles/fonts";

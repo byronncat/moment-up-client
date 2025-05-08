@@ -3,7 +3,7 @@ import { mockCurrentUsers } from "@/__mocks__";
 import type { z } from "zod";
 import type { AccountInfo, API } from "api";
 
-import zodSchema from "@/lib/zodSchema";
+import zodSchema from "@/libraries/zodSchema";
 // import { Api } from "@/constants/serverConfig";
 
 export async function login(

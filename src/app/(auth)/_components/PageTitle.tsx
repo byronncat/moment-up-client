@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 
 const titleVariants = cva("text-center cursor-default", {
   variants: {

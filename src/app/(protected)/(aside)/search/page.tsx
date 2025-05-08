@@ -9,7 +9,7 @@ import {
 } from "@/__mocks__";
 
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import type { DetailedMoment } from "api";
 
 import { SearchInput, SearchItem } from "../_components";

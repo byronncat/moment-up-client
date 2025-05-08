@@ -5,7 +5,7 @@ import type { DetailedMoment, UserInfo } from "api";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import dayjs from "dayjs";
 import { UserApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";

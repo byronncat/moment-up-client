@@ -5,7 +5,7 @@ import type { UserInfo } from "api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { SuggestingApi, UserApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";
 

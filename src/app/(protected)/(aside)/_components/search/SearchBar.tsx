@@ -5,7 +5,7 @@ import type { SearchItem as SearchItemType } from "api";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef, useState, useEffect } from "react";
 import { useOnClickOutside } from "usehooks-ts";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
 import { SearchApi } from "@/services";
 import { toast } from "sonner";
