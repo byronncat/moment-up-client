@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useContact } from "./_provider/Contact";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import { ROUTE } from "@/constants/clientConfig";

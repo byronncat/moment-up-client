@@ -2,15 +2,15 @@
 
 import type { HashtagItem } from "schema";
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { cn } from "@/libraries/utils";
 import { SuggestingApi } from "@/services";
+import format from "@/utilities/format";
 import { ROUTE } from "@/constants/clientConfig";
 
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 import SectionHeader from "./SectionHeader";
-import format from "@/utilities/format";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,6 +35,7 @@ export default function TrendingSection() {
     fetchTrendingTopics();
   }, []);
 
+  if (topics?.length === 0) return null;
   return (
     <div className="w-full">
       <SectionHeader className="mb-4" loading={isLoading}>
@@ -98,10 +99,10 @@ function TrendingTopicItem({ topic }: { topic: HashtagItem }) {
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
           <Link
-            href={ROUTE.SEARCH(topic.tag)}
+            href={ROUTE.SEARCH(topic.id)}
             className={cn("block font-semibold text-sm", "hover:underline")}
           >
-            #{topic.tag}
+            #{topic.id}
           </Link>
           <span className="text-xs text-muted-foreground">
             {format.number(topic.count)} posts

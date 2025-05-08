@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import backgroundImg from "@/assets/imgs/night-neon.avif";
 
 export default function AsideBackground() {

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ROUTE } from "@/constants/clientConfig";
 

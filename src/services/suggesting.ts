@@ -11,10 +11,15 @@ export async function getSuggestedUsers(): Promise<API<UserInfo[]>> {
       }, 1000);
     });
 
+    const startIndex = Math.floor(
+      Math.random() * (mockSuggestedUsers.length - 5)
+    );
+    const endIndex = startIndex + 5;
+
     return {
       success: true,
       message: "ok",
-      data: mockSuggestedUsers.slice(0, 5),
+      data: mockSuggestedUsers.slice(startIndex, endIndex),
     };
   } catch (error) {
     return {

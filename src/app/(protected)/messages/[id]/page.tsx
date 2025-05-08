@@ -8,7 +8,7 @@ import {
 } from "@/__mocks__";
 
 import { useState } from "react";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { Header, Message as ChatMessage, MessageInput } from "./_components";
 import { useParams } from "next/navigation";
 export default function Message() {

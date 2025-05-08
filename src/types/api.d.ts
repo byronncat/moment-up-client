@@ -56,13 +56,11 @@ declare module "api" {
   // Core
   type FeedNotification = {
     id: Feed["id"];
-    user: {
-      id: User["id"];
-      displayName: User["display_name"];
-      avatar: User["avatar"];
-      isViewed: boolean;
-    };
-    latestFeedTime: Feed["created_at"];
+    userId: User["id"];
+    displayName: User["display_name"];
+    avatar: User["avatar"];
+    viewed: boolean;
+    latestFeedTime: Date;
   };
 
   type FeedInfo = {

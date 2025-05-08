@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import {
   Tooltip as TooltipUI,
   TooltipContent,

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 
 export default function Logo({ className }: ComponentProps) {
   return (

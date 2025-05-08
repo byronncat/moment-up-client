@@ -1,4 +1,4 @@
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { Textarea } from "./ui/textarea";
 
 interface BubbleTextareaProps {

@@ -5,7 +5,7 @@ import type {
   HashtagSearchItem,
 } from "api";
 
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { Avatar } from "@/components";
 import { CircleCheck, MagnifyingGlass } from "@/components/icons";
 
@@ -65,7 +65,7 @@ export default function SearchItem({ data }: SearchItemProps) {
         </div>
         <div className="flex flex-col">
           <span className="text-sm font-semibold">
-            {(data as HashtagSearchItem).tag}
+            {(data as HashtagSearchItem).id}
           </span>
           <span className="text-sm text-muted-foreground">
             {`${(data as HashtagSearchItem).count} tagged`}

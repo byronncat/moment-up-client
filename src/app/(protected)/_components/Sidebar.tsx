@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/components/providers";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { ROUTE } from "@/constants/clientConfig";
 
 import Logo from "@/components/common/Logo";

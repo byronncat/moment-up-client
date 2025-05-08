@@ -9,7 +9,7 @@ import {
 } from "@/__mocks__";
 
 import { useEffect, useState } from "react";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import type { DetailedMoment } from "api";
 
 import { SearchInput, SearchItem } from "../_components";
@@ -77,21 +77,21 @@ export default function SearchPage() {
     const timer = setTimeout(() => {
       const filteredAccounts = mockFeeds
         .filter((user) =>
-          user.user.displayName.toLowerCase().includes(query.toLowerCase())
+          user.displayName.toLowerCase().includes(query.toLowerCase())
         )
         .map((user, index) => ({
           id: user.id,
           type: "user" as const,
-          username: user.user.displayName.toLowerCase().replace(/\s+/g, ""),
-          name: user.user.displayName,
-          avatar: user.user.avatar,
+          username: user.displayName.toLowerCase().replace(/\s+/g, ""),
+          name: user.displayName,
+          avatar: user.avatar,
           verified: index % 3 === 0, // Random verification status for demo
         }));
 
       const filteredHashtags = mockSearches.filter(
         (tag) =>
           tag.type === "hashtag" &&
-          tag.tag?.toLowerCase().includes(query.toLowerCase())
+          tag.id?.toLowerCase().includes(query.toLowerCase())
       );
 
       const filteredPosts = mockMoments
@@ -115,7 +115,7 @@ export default function SearchPage() {
     <div className="flex flex-col h-full">
       <div className={cn("sticky top-0 z-10", "bg-background p-4")}>
         <h1 className="text-xl font-bold mb-3">Search</h1>
-        <SearchInput query={query} setQuery={setQuery} />
+        {/* <SearchInput query={query} setQuery={setQuery} /> */}
       </div>
 
       {/* Search content */}

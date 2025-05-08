@@ -1,4 +1,4 @@
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { Metadata } from "@/constants/metadata";
 
 import { PageTitle } from "../../../_components";

@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { Sidebar } from "./_components";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";

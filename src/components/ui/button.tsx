@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
   clsx(
@@ -15,7 +15,7 @@ const buttonVariants = cva(
     "focus-visible:outline-hidden",
     "focus-visible:ring-1 focus-visible:ring-ring",
     "disabled:pointer-events-none disabled:opacity-50",
-    "[&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0"
+    "[&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0"
   ),
   {
     variants: {
@@ -25,7 +25,7 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90",
         outline: clsx(
-          "border border-input",
+          "border border-border",
           "bg-background shadow-xs",
           "hover:bg-accent/[.1] hover:text-accent-foreground"
         ),

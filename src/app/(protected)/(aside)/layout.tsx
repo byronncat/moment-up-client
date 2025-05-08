@@ -1,4 +1,4 @@
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import {
   Footer,
   SearchBar,
@@ -13,16 +13,15 @@ export default function Layout({
   return (
     <div
       className={cn(
-        "max-w-[64rem] mx-auto",
         "flex justify-center",
-        "min-h-screen"
+        "max-w-[64rem] mx-auto min-h-screen"
       )}
     >
       <main className="max-w-[37.5rem] w-full">{children}</main>
       <aside
         className={cn(
           "sticky top-5",
-          "h-fit w-[20rem] pt-5 mr-6 ml-auto",
+          "h-fit w-[20rem] mr-6 ml-auto",
           "space-y-6",
           "hidden lg:block"
         )}

@@ -1,5 +1,5 @@
 import type { FeedNotification } from "api";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { ROUTE } from "@/constants/clientConfig";
 import Link from "next/link";
 import { Avatar } from "@/components";
@@ -21,10 +21,10 @@ export default function FeedItem({
       >
         <div className={cn("flex items-center justify-center", "size-18")}>
           <Avatar
-            src={data.user.avatar}
-            alt={`${data.user.displayName}'s avatar`}
+            src={data.avatar}
+            alt={`${data.displayName}'s avatar`}
             size="14"
-            ring={data.user.isViewed}
+            ring={data.viewed}
             className={cn(
               "transition-all duration-200",
               "group-hover:scale-105 group-hover:border-primary/70"
@@ -39,7 +39,7 @@ export default function FeedItem({
             "transition-colors group-hover:text-primary"
           )}
         >
-          {data.user.displayName}
+          {data.displayName}
         </span>
       </Link>
     </div>

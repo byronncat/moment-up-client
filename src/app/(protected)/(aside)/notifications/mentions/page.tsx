@@ -2,7 +2,7 @@
 
 import { mockNotifications } from "@/__mocks__";
 
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "@/components/icons";
 

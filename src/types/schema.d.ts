@@ -13,7 +13,6 @@ declare module "schema" {
 
   type HashtagItem = {
     readonly id: string;
-    readonly tag: string;
     count: number;
   };
 

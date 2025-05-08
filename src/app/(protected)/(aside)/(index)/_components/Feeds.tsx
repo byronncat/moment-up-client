@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { CoreApi } from "@/services";
 import throttle from "@/helpers/throttle";
 
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import FeedItem, { FeedItemSkeleton, CreateFeedButton } from "./FeedItem";
 import { Card } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "@/components/icons";

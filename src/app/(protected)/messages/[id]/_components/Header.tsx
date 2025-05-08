@@ -2,7 +2,7 @@
 
 import { type Contact } from "@/__mocks__";
 
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Phone, Video, CircleInfo, User } from "@/components/icons";

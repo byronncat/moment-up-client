@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import zodSchema from "@/libraries/zodSchema";
+import zodSchema from "@/lib/zodSchema";
 import { useAuth } from "@/components/providers";
 
 import Tooltip from "@/components/common/Tooltip";

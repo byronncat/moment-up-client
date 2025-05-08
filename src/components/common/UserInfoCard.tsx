@@ -2,13 +2,13 @@
 
 import type { UserInfo } from "api";
 
-import Link from "next/link";
 import { useState } from "react";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import format from "@/utilities/format";
 import { ROUTE } from "@/constants/clientConfig";
 
-import { Avatar } from ".";
+import Link from "next/link";
+import Avatar from "./Avatar";
 import { Button } from "../ui/button";
 import {
   CardContent,
@@ -18,9 +18,9 @@ import {
   CardTitle,
 } from "../ui/card";
 import { CircleCheck } from "../icons";
-import { UserMinus, UserPlus } from "lucide-react";
+import { UserMinus, UserPlus, UserCheck } from "lucide-react";
 
-type UserInfoCardProps = ComponentProps<{
+type UserInfoCardProps = Readonly<{
   user: UserInfo;
   isFollowing?: boolean;
   onFollow?: (e: React.MouseEvent) => void;
@@ -90,12 +90,13 @@ export default function UserInfoCard({
   );
 }
 
-type FollowButtonProps = ComponentProps<{
+function FollowButton({
+  isFollowing,
+  followHandler,
+}: Readonly<{
   isFollowing?: boolean;
   followHandler?: (e: React.MouseEvent) => void;
-}>;
-
-function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
+}>) {
   const [isHovering, setIsHovering] = useState(false);
   return (
     <Button
@@ -107,18 +108,19 @@ function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {isFollowing ? isHovering ? <UserMinus /> : <UserMinus /> : <UserPlus />}
+      {isFollowing ? isHovering ? <UserMinus /> : <UserCheck /> : <UserPlus />}
       {isFollowing ? (isHovering ? "Unfollow" : "Following") : "Follow"}
     </Button>
   );
 }
 
-type FollowSectionProps = ComponentProps<{
+function FollowSection({
+  following,
+  followers,
+}: Readonly<{
   following: UserInfo["following"];
   followers: UserInfo["followers"];
-}>;
-
-function FollowSection({ following, followers }: FollowSectionProps) {
+}>) {
   return (
     <div className={cn("flex gap-3", "text-sm", "mt-3")}>
       <div className="flex items-center gap-1">
@@ -133,12 +135,12 @@ function FollowSection({ following, followers }: FollowSectionProps) {
   );
 }
 
-type FollowedByProps = ComponentProps<{
-  users: UserInfo["followedBy"];
-}>;
-
 const MAX_FOLLOWED_BY_DISPLAY = 3;
-function FollowedBy({ users }: FollowedByProps) {
+function FollowedBy({
+  users,
+}: Readonly<{
+  users: UserInfo["followedBy"];
+}>) {
   if (!users) return null;
   const DisplayUsers = users.displayItems;
   return (

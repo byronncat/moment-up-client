@@ -74,7 +74,7 @@ const video = [
   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
 ];
 
-export function getRandomFile(
+function getRandomFile(
   text: string,
   type: "image" | "video" | "audio" = "image"
 ) {
@@ -86,167 +86,310 @@ export function getRandomFile(
   return avatar[seed % avatar.length];
 }
 
-// Feeds mock data
 export const mockFeeds: FeedNotification[] = [
   {
     id: "033794b7-df1f-4d8b-b42e-64b980f303fd",
-    user: {
-      id: "5f93e68e-aeeb-4246-a7a0-adf033c1b03c",
-      displayName: "Scotti Wilds",
-      avatar: getRandomFile("5f93e68e-aeeb-4246-a7a0-adf033c1b03c"),
-      isViewed: false,
-    },
+    userId: "5f93e68e-aeeb-4246-a7a0-adf033c1b03c",
+    displayName: "Scotti Wilds",
+    avatar: getRandomFile("5f93e68e-aeeb-4246-a7a0-adf033c1b03c"),
+    viewed: false,
     latestFeedTime: new Date("10/28/2024"),
   },
   {
     id: "ed4e3c51-fbc3-45e7-a84b-9f7aa6cf8b5e",
-    user: {
-      id: "c725caa6-63f4-48e3-bc5e-a2b435799590",
-      displayName: "Emmalyn Riguard",
-      avatar: getRandomFile("c725caa6-63f4-48e3-bc5e-a2b435799590"),
-      isViewed: true,
-    },
+    userId: "c725caa6-63f4-48e3-bc5e-a2b435799590",
+    displayName: "Emmalyn Riguard",
+    avatar: getRandomFile("c725caa6-63f4-48e3-bc5e-a2b435799590"),
+    viewed: true,
     latestFeedTime: new Date("1/26/2025"),
   },
   {
     id: "edad6651-dde3-4505-857d-3506b3a1d67a",
-    user: {
-      id: "6d9ac04f-dea5-477a-876a-265f236c9f33",
-      displayName: "Glenn Maddison",
-      avatar: getRandomFile("6d9ac04f-dea5-477a-876a-265f236c9f33"),
-      isViewed: true,
-    },
+    userId: "6d9ac04f-dea5-477a-876a-265f236c9f33",
+    displayName: "Glenn Maddison",
+    avatar: getRandomFile("6d9ac04f-dea5-477a-876a-265f236c9f33"),
+    viewed: true,
     latestFeedTime: new Date("10/24/2024"),
   },
   {
     id: "fefddf01-93f5-4f75-baae-0dcea6fde3de",
-    user: {
-      id: "2a70eafb-81b5-48f7-ac2e-6710aaad390d",
-      displayName: "Wallis Klimecki",
-      avatar: getRandomFile("2a70eafb-81b5-48f7-ac2e-6710aaad390d"),
-      isViewed: false,
-    },
+    userId: "2a70eafb-81b5-48f7-ac2e-6710aaad390d",
+    displayName: "Wallis Klimecki",
+    avatar: getRandomFile("2a70eafb-81b5-48f7-ac2e-6710aaad390d"),
+    viewed: false,
     latestFeedTime: new Date("5/31/2024"),
   },
   {
     id: "c9293268-8fc7-4a52-b4cd-b1c7c53410a8",
-    user: {
-      id: "a4d27e3a-61d2-4a54-ba98-6d005632c0b3",
-      displayName: "Tannie Normanville",
-      avatar: getRandomFile("a4d27e3a-61d2-4a54-ba98-6d005632c0b3"),
-      isViewed: false,
-    },
+    userId: "a4d27e3a-61d2-4a54-ba98-6d005632c0b3",
+    displayName: "Tannie Normanville",
+    avatar: getRandomFile("a4d27e3a-61d2-4a54-ba98-6d005632c0b3"),
+    viewed: false,
     latestFeedTime: new Date("1/16/2025"),
   },
   {
     id: "1d86b12d-c764-4de4-a8b8-81c3c01d4fda",
-    user: {
-      id: "a0e20552-439f-42ba-9c59-060083501cfe",
-      displayName: "Haleigh Brodley",
-      avatar: getRandomFile("a0e20552-439f-42ba-9c59-060083501cfe"),
-      isViewed: false,
-    },
+    userId: "a0e20552-439f-42ba-9c59-060083501cfe",
+    displayName: "Haleigh Brodley",
+    avatar: getRandomFile("a0e20552-439f-42ba-9c59-060083501cfe"),
+    viewed: false,
     latestFeedTime: new Date("4/3/2025"),
   },
   {
     id: "765d396b-c3d8-4dd3-878d-5654be131a02",
-    user: {
-      id: "32afbf0e-8298-477e-8269-506bf5997d46",
-      displayName: "Noach Wilsey",
-      avatar: getRandomFile("32afbf0e-8298-477e-8269-506bf5997d46"),
-      isViewed: false,
-    },
+    userId: "32afbf0e-8298-477e-8269-506bf5997d46",
+    displayName: "Noach Wilsey",
+    avatar: getRandomFile("32afbf0e-8298-477e-8269-506bf5997d46"),
+    viewed: false,
     latestFeedTime: new Date("8/1/2024"),
   },
   {
     id: "b432afac-4752-4f4e-ba4d-10b6ede9d3bf",
-    user: {
-      id: "648f9e3f-9ad2-4e30-9064-780e0f13f5e2",
-      displayName: "Carree Negri",
-      avatar: getRandomFile("648f9e3f-9ad2-4e30-9064-780e0f13f5e2"),
-      isViewed: true,
-    },
+    userId: "648f9e3f-9ad2-4e30-9064-780e0f13f5e2",
+    displayName: "Carree Negri",
+    avatar: getRandomFile("648f9e3f-9ad2-4e30-9064-780e0f13f5e2"),
+    viewed: true,
     latestFeedTime: new Date("5/28/2024"),
   },
   {
     id: "1388d404-55dc-4b0b-9082-fe6a7733d5ab",
-    user: {
-      id: "564f8288-c6d4-465a-aa0a-f96ba7a2336b",
-      displayName: "Cleve Matskevich",
-      avatar: getRandomFile("564f8288-c6d4-465a-aa0a-f96ba7a2336b"),
-      isViewed: true,
-    },
+    userId: "564f8288-c6d4-465a-aa0a-f96ba7a2336b",
+    displayName: "Cleve Matskevich",
+    avatar: getRandomFile("564f8288-c6d4-465a-aa0a-f96ba7a2336b"),
+    viewed: true,
     latestFeedTime: new Date("1/17/2025"),
   },
   {
     id: "08ed2e00-4dc4-4466-8c84-c0ce27bac584",
-    user: {
-      id: "dd1f5358-e0fd-462a-9ef2-725b7ff5762c",
-      displayName: "Pammy Melby",
-      avatar: getRandomFile("dd1f5358-e0fd-462a-9ef2-725b7ff5762c"),
-      isViewed: false,
-    },
+    userId: "dd1f5358-e0fd-462a-9ef2-725b7ff5762c",
+    displayName: "Pammy Melby",
+    avatar: getRandomFile("dd1f5358-e0fd-462a-9ef2-725b7ff5762c"),
+    viewed: false,
     latestFeedTime: new Date("9/25/2024"),
   },
   {
     id: "976908be-7129-48db-9f26-ddcda7937412",
-    user: {
-      id: "e2afcdea-9472-4bf5-9929-e1006a240043",
-      displayName: "Dorelle Castelow",
-      avatar: getRandomFile("e2afcdea-9472-4bf5-9929-e1006a240043"),
-      isViewed: true,
-    },
+    userId: "e2afcdea-9472-4bf5-9929-e1006a240043",
+    displayName: "Dorelle Castelow",
+    avatar: getRandomFile("e2afcdea-9472-4bf5-9929-e1006a240043"),
+    viewed: true,
     latestFeedTime: new Date("9/1/2024"),
   },
   {
     id: "1f3be3fa-72ed-4236-afa7-2b150fe76df2",
-    user: {
-      id: "d5b7a123-dc9f-4b34-b65f-bb57259bf8f9",
-      displayName: "Antony Taffe",
-      avatar: getRandomFile("d5b7a123-dc9f-4b34-b65f-bb57259bf8f9"),
-      isViewed: true,
-    },
+    userId: "d5b7a123-dc9f-4b34-b65f-bb57259bf8f9",
+    displayName: "Antony Taffe",
+    avatar: getRandomFile("d5b7a123-dc9f-4b34-b65f-bb57259bf8f9"),
+    viewed: true,
     latestFeedTime: new Date("6/28/2024"),
   },
   {
     id: "5fbe4b6d-2c5d-40bd-9d8d-f19fc4a072ef",
-    user: {
-      id: "15beb04c-4df3-4bde-828e-914b02b340e2",
-      displayName: "Ginni Hestrop",
-      avatar: getRandomFile("15beb04c-4df3-4bde-828e-914b02b340e2"),
-      isViewed: true,
-    },
+    userId: "15beb04c-4df3-4bde-828e-914b02b340e2",
+    displayName: "Ginni Hestrop",
+    avatar: getRandomFile("15beb04c-4df3-4bde-828e-914b02b340e2"),
+    viewed: true,
     latestFeedTime: new Date("4/11/2025"),
   },
   {
     id: "a07c5630-d4e3-4ae4-93bb-c4e931259a76",
-    user: {
-      id: "3fbc69e7-3d1a-4946-ae8c-790db31ceb6d",
-      displayName: "Kelsey Mattiazzo",
-      avatar: getRandomFile("3fbc69e7-3d1a-4946-ae8c-790db31ceb6d"),
-      isViewed: true,
-    },
+    userId: "3fbc69e7-3d1a-4946-ae8c-790db31ceb6d",
+    displayName: "Kelsey Mattiazzo",
+    avatar: getRandomFile("3fbc69e7-3d1a-4946-ae8c-790db31ceb6d"),
+    viewed: true,
     latestFeedTime: new Date("3/10/2025"),
   },
   {
     id: "b22bfa1e-a282-468a-95eb-78002df79868",
-    user: {
-      id: "22fe505f-0517-43c7-99d2-0a5ef80c6f9f",
-      displayName: "Laurena Szimoni",
-      avatar: getRandomFile("22fe505f-0517-43c7-99d2-0a5ef80c6f9f"),
-      isViewed: true,
-    },
+    userId: "22fe505f-0517-43c7-99d2-0a5ef80c6f9f",
+    displayName: "Laurena Szimoni",
+    avatar: getRandomFile("22fe505f-0517-43c7-99d2-0a5ef80c6f9f"),
+    viewed: true,
     latestFeedTime: new Date("8/17/2024"),
   },
   {
     id: "1dfa7dc6-8c67-4a6b-991d-14f24de988e9",
-    user: {
-      id: "d1e65277-e60c-41bd-baaa-5d401d60240c",
-      displayName: "Bev Dod",
-      avatar: getRandomFile("d1e65277-e60c-41bd-baaa-5d401d60240c"),
-      isViewed: false,
-    },
+    userId: "d1e65277-e60c-41bd-baaa-5d401d60240c",
+    displayName: "Bev Dod",
+    avatar: getRandomFile("d1e65277-e60c-41bd-baaa-5d401d60240c"),
+    viewed: false,
     latestFeedTime: new Date("5/10/2024"),
+  },
+];
+
+export const mockSearches: SearchItem[] = [
+  {
+    id: "45d49f7d-d07f-4eae-abcf-2f61ced287a2",
+    type: "user" as const,
+    username: "mbontoft0",
+    displayName: "Mac Bontoft",
+    avatar: getRandomFile("45d49f7d-d07f-4eae-abcf-2f61ced287a2"),
+    verified: true,
+  },
+  {
+    id: "7b0bf82a-0407-4fa4-9fdf-106a681a626c",
+    type: "user" as const,
+    username: "ssauven1",
+    displayName: "Stanislaw Sauven",
+    avatar: getRandomFile("7b0bf82a-0407-4fa4-9fdf-106a681a626c"),
+    verified: false,
+  },
+  {
+    id: "e0e16793-c56f-4456-80d9-9767d5e3c3da",
+    type: "user" as const,
+    username: "ahaccleton2",
+    displayName: "Aurie Haccleton",
+    avatar: getRandomFile("e0e16793-c56f-4456-80d9-9767d5e3c3da"),
+    verified: true,
+  },
+  {
+    id: "261c65cb-4646-47ba-a65a-262d7242ee9f",
+    type: "user" as const,
+    username: "droderham3",
+    displayName: "Dannie Roderham",
+    avatar: getRandomFile("261c65cb-4646-47ba-a65a-262d7242ee9f"),
+    verified: true,
+  },
+  {
+    id: "4bef2e89-8dc0-4dd4-8b82-219b13d4ae0d",
+    type: "user" as const,
+    username: "tronald4",
+    displayName: "Timmie Ronald",
+    avatar: getRandomFile("4bef2e89-8dc0-4dd4-8b82-219b13d4ae0d"),
+    verified: false,
+  },
+  {
+    id: "60edd744-11e7-497f-9077-491a49369b18",
+    type: "user" as const,
+    username: "hhartley5",
+    displayName: "Hyacinthe Hartley",
+    avatar: getRandomFile("60edd744-11e7-497f-9077-491a49369b18"),
+    verified: true,
+  },
+  {
+    id: "382d48f6-a932-410b-8309-ff0b9b6024e4",
+    type: "user" as const,
+    username: "vblacklock6",
+    displayName: "Virginie Blacklock",
+    avatar: getRandomFile("382d48f6-a932-410b-8309-ff0b9b6024e4"),
+    verified: true,
+  },
+  {
+    id: "766e49e6-46b7-4104-bfa1-aed763262d57",
+    type: "user" as const,
+    username: "jsevern7",
+    displayName: "Justin Severn",
+    avatar: getRandomFile("766e49e6-46b7-4104-bfa1-aed763262d57"),
+    verified: false,
+  },
+  {
+    id: "41e5323f-0ce9-4d37-a8db-46d4ca0a8809",
+    type: "user" as const,
+    username: "bakers8",
+    displayName: "Berry Akers",
+    avatar: getRandomFile("41e5323f-0ce9-4d37-a8db-46d4ca0a8809"),
+    verified: false,
+  },
+  {
+    id: "a2f41718-2ddb-4c03-bdda-f80c5373cd96",
+    type: "user" as const,
+    username: "smcwilliam9",
+    displayName: "Spense McWilliam",
+    avatar: getRandomFile("a2f41718-2ddb-4c03-bdda-f80c5373cd96"),
+    verified: true,
+  },
+  {
+    id: "6934603c-5bd1-40c5-a298-3d0cde2de578",
+    type: "user" as const,
+    username: "bsantea",
+    displayName: "Bernetta Sante",
+    avatar: getRandomFile("6934603c-5bd1-40c5-a298-3d0cde2de578"),
+    verified: true,
+  },
+  {
+    id: "c6ad53bf-1252-4911-bef7-a9bb13f26aed",
+    type: "user" as const,
+    username: "mpackingtonb",
+    displayName: "Morse Packington",
+    avatar: getRandomFile("c6ad53bf-1252-4911-bef7-a9bb13f26aed"),
+    verified: false,
+  },
+  {
+    type: "hashtag" as const,
+    id: "purus",
+    count: 502053,
+  },
+  {
+    type: "hashtag" as const,
+    id: "bibendum",
+    count: 999040,
+  },
+  {
+    type: "hashtag" as const,
+    id: "morbi",
+    count: 580656,
+  },
+  {
+    type: "hashtag" as const,
+    id: "diam",
+    count: 785210,
+  },
+  {
+    type: "hashtag" as const,
+    id: "nascetur",
+    count: 771306,
+  },
+  {
+    type: "hashtag" as const,
+    id: "vestibulum",
+    count: 560842,
+  },
+  {
+    type: "hashtag" as const,
+    id: "amet",
+    count: 262813,
+  },
+  {
+    type: "hashtag" as const,
+    id: "faucibus",
+    count: 967001,
+  },
+  {
+    type: "hashtag" as const,
+    id: "maecenas",
+    count: 773000,
+  },
+  {
+    type: "hashtag" as const,
+    id: "nec",
+    count: 576860,
+  },
+  {
+    type: "hashtag" as const,
+    id: "ultrices",
+    count: 698670,
+  },
+  {
+    type: "hashtag" as const,
+    id: "vel",
+    count: 797545,
+  },
+];
+
+export const mockCurrentUsers: AccountInfo[] = [
+  {
+    id: "thinhngo",
+    username: "byronat445",
+    displayName: "Thinh Ngo",
+    avatar: getRandomFile("byronat445"),
+    verified: true,
+  },
+  {
+    id: "anotherMe",
+    username: "hkbtrung",
+    displayName: "Bao Trung",
+    avatar: getRandomFile("hkbtrung"),
+    verified: true,
   },
 ];
 
@@ -340,24 +483,6 @@ export const mockFeed: FeedInfo[] = [
   //     },
   //   ],
   // },
-];
-
-// Current user mock data
-export const mockCurrentUsers: AccountInfo[] = [
-  {
-    id: "me",
-    username: "ThinhNgo",
-    displayName: "Thinh Ngo",
-    avatar: getRandomFile("hanoi"),
-    verified: true,
-  },
-  {
-    id: "anotherMe",
-    username: "BaoTrung",
-    displayName: "Bao Trung",
-    avatar: getRandomFile("tu_pham"),
-    verified: true,
-  },
 ];
 
 export const mockMoments: DetailedMoment[] = [];
@@ -1099,298 +1224,150 @@ export const mockMoments: DetailedMoment[] = [];
 //     ]
 //   : [];
 
-export const mockSuggestedUsers: UserInfo[] = [];
-// [
-//   {
-//     id: "101",
-//     username: "traveler_emma",
-//     displayName: "Emma Wilson",
-//     avatar: getRandomFile(101),
-//     verified: true,
-//     bio: "Travel photographer | Adventure seeker | Coffee enthusiast",
-//     followers: 15420,
-//     following: 843,
-//     followedBy: {
-//       displayItems: [
-//         {
-//           id: "3",
-//           displayName: "Alex Smith",
-//           avatar: getRandomFile(3),
-//         },
-//       ],
-//       count: 1,
-//     },
-//   },
-//   {
-//     id: "102",
-//     username: "tech_jason",
-//     displayName: "Jason Chen",
-//     avatar: getRandomFile(102),
-//     verified: false,
-//     followers: 7821,
-//     following: 532,
-//   },
-//   {
-//     id: "103",
-//     username: "foodie_sophie",
-//     displayName: "Sophie Rodriguez",
-//     avatar: getRandomFile(103),
-//     verified: true,
-//     bio: "Food blogger | Recipe developer | Always hungry",
-//     followers: 2580000,
-//     following: 1247,
-//     followedBy: {
-//       displayItems: [
-//         {
-//           id: "5",
-//           displayName: "Mike Brown",
-//           avatar: getRandomFile(5),
-//         },
-//         {
-//           id: "3",
-//           displayName: "Alex Smith",
-//           avatar: getRandomFile(3),
-//         },
-//       ],
-//       count: 2,
-//     },
-//   },
-//   {
-//     id: "104",
-//     username: "fitness_marcus",
-//     displayName: "Marcus Johnson",
-//     avatar: getRandomFile(104),
-//     verified: true,
-//     bio: "Personal trainer | Nutrition coach | Wellness advocate",
-//     followers: 28937,
-//     following: 921,
-//   },
-//   {
-//     id: "105",
-//     username: "artist_maya",
-//     displayName: "Maya Patel",
-//     avatar: getRandomFile(105),
-//     verified: false,
-//     bio: "Digital artist | Illustrator | Dreamer",
-//     followers: 9642,
-//     following: 1105,
-//     followedBy: {
-//       displayItems: [
-//         {
-//           id: "4",
-//           displayName: "Sarah Jones",
-//           avatar: getRandomFile(4),
-//         },
-//         {
-//           id: "5",
-//           displayName: "Mike Brown",
-//           avatar: getRandomFile(5),
-//         },
-//         {
-//           id: "2",
-//           displayName: "Jane Doe",
-//           avatar: getRandomFile(2),
-//         },
-//       ],
-//       count: 67,
-//     },
-//   },
-//   {
-//     id: "106",
-//     username: "music_noah",
-//     displayName: "Noah Garcia",
-//     avatar: getRandomFile(106),
-//     verified: true,
-//     bio: "Music producer | DJ | Creating vibes",
-//     followers: 3500000000,
-//     following: 758,
-//     followedBy: {
-//       displayItems: [
-//         {
-//           id: "1",
-//           displayName: "John Doe",
-//           avatar: getRandomFile(1),
-//         },
-//         {
-//           id: "5",
-//           displayName: "Mike Brown",
-//           avatar: getRandomFile(5),
-//         },
-//         {
-//           id: "3",
-//           displayName: "Alex Smith",
-//           avatar: getRandomFile(3),
-//         },
-//       ],
-//       count: 15,
-//     },
-//   },
-//   {
-//     id: "107",
-//     username: "writer_olivia",
-//     displayName: "Olivia Thompson",
-//     avatar: getRandomFile(107),
-//     verified: false,
-//     bio: "Novelist | Poet | Storyteller",
-//     followers: 17382,
-//     following: 623,
-//     followedBy: {
-//       displayItems: [
-//         {
-//           id: "3",
-//           displayName: "Alex Smith",
-//           avatar: getRandomFile(3),
-//         },
-//       ],
-//       count: 1,
-//     },
-//   },
-// ];
-
-// Search history mock data
-export const mockSearches: SearchItem[] = [
+export const mockSuggestedUsers: UserInfo[] = [
   {
-    id: "1",
-    type: "user" as const,
-    username: "sophia_design",
-    displayName: "Sophia Chen",
-    avatar: getRandomFile("sophia_design"),
+    id: "057b50c5-4646-42bf-98ea-933c108f2671",
+    username: "wbale0",
+    displayName: "Werner Bale",
+    avatar: getRandomFile("057b50c5-4646-42bf-98ea-933c108f2671"),
     verified: true,
+    bio: "Travel photographer | Adventure seeker | Coffee enthusiast",
+    followers: 642249,
+    following: 236261,
+    followedBy: {
+      displayItems: [
+        {
+          id: "8b7c2c17-a3be-47db-b2c6-3070d6b93c96",
+          displayName: "Cesar Sloan",
+          avatar: getRandomFile("8b7c2c17-a3be-47db-b2c6-3070d6b93c96"),
+        },
+      ],
+      count: 1,
+    },
   },
   {
-    id: "2",
-    type: "user" as const,
-    username: "alex_walker",
-    displayName: "Alex Walker",
-    avatar: getRandomFile("alex_walker"),
+    id: "ca0f9eb5-c789-4e50-9f8c-457ff3b9f964",
+    username: "tech_jason",
+    displayName: "Jason Chen",
+    avatar: getRandomFile("ca0f9eb5-c789-4e50-9f8c-457ff3b9f964"),
     verified: false,
+    followers: 725940,
+    following: 532,
   },
   {
-    id: "3",
-    type: "user" as const,
-    username: "dev_marcus",
+    id: "90946704-51dc-4a73-9f56-99531bc3db7b",
+    username: "foodie_sophie",
+    displayName: "Sophie Rodriguez",
+    avatar: getRandomFile("90946704-51dc-4a73-9f56-99531bc3db7b"),
+    verified: true,
+    bio: "Food blogger | Recipe developer | Always hungry",
+    followers: 80078,
+    following: 208034,
+    followedBy: {
+      displayItems: [
+        {
+          id: "7b41edc6-3590-46a9-9eee-88d3f603be0c",
+          displayName: "Mike Brown",
+          avatar: getRandomFile("7b41edc6-3590-46a9-9eee-88d3f603be0c"),
+        },
+        {
+          id: "2a204883-b417-4d6b-b5df-c3c6184f4de6",
+          displayName: "Alex Smith",
+          avatar: getRandomFile("2a204883-b417-4d6b-b5df-c3c6184f4de6"),
+        },
+      ],
+      count: 2,
+    },
+  },
+  {
+    id: "92a1e004-8ddf-46ab-8811-28a6e1bb7a60",
+    username: "fitness_marcus",
     displayName: "Marcus Johnson",
-    avatar: getRandomFile("dev_marcus"),
+    avatar: getRandomFile("92a1e004-8ddf-46ab-8811-28a6e1bb7a60"),
     verified: true,
+    bio: "Personal trainer | Nutrition coach | Wellness advocate",
+    followers: 28937,
+    following: 21,
   },
   {
-    id: "4",
-    type: "user" as const,
-    username: "emily_photos",
-    displayName: "Emily Rodriguez",
-    avatar: getRandomFile("emily_photos"),
+    id: "e879fbc3-4438-47c0-a68e-87c6a9e2fa59",
+    username: "artist_maya",
+    displayName: "Maya Patel",
+    avatar: getRandomFile("e879fbc3-4438-47c0-a68e-87c6a9e2fa59"),
     verified: false,
+    bio: "Digital artist | Illustrator | Dreamer",
+    followers: 9642,
+    following: 65475,
+    followedBy: {
+      displayItems: [
+        {
+          id: "b154dc99-9ecf-427f-9e81-faca1bcd3603",
+          displayName: "Sarah Jones",
+          avatar: getRandomFile("b154dc99-9ecf-427f-9e81-faca1bcd3603"),
+        },
+        {
+          id: "66258213-11b2-4646-b7d6-20bf47379881",
+          displayName: "Wynn Tumility",
+          avatar: getRandomFile("66258213-11b2-4646-b7d6-20bf47379881"),
+        },
+        {
+          id: "19a73186-4d88-41d8-8565-60bb19433b18",
+          displayName: "Helyn Vooght",
+          avatar: getRandomFile("19a73186-4d88-41d8-8565-60bb19433b18"),
+        },
+      ],
+      count: 67,
+    },
   },
   {
-    id: "5",
-    type: "user" as const,
-    username: "tech_jamie",
-    displayName: "Jamie Williams",
-    avatar: getRandomFile("tech_jamie"),
-    verified: true,
-  },
-  {
-    id: "6",
-    type: "user" as const,
-    username: "design_priya",
-    displayName: "Priya Patel",
-    avatar: getRandomFile("design_priya"),
-    verified: false,
-  },
-  {
-    id: "7",
-    type: "user" as const,
-    username: "travel_noah",
+    id: "6a5d499b-073e-4253-890b-2f739b1de380",
+    username: "music_noah",
     displayName: "Noah Garcia",
-    avatar: getRandomFile("travel_noah"),
+    avatar: getRandomFile("6a5d499b-073e-4253-890b-2f739b1de380"),
     verified: true,
+    bio: "Music producer | DJ | Creating vibes",
+    followers: 3500000000,
+    following: 758,
+    followedBy: {
+      displayItems: [
+        {
+          id: "1524663d-ae03-43bc-80f3-488594f466fd",
+          displayName: "Rosalie Rizon",
+          avatar: getRandomFile("1524663d-ae03-43bc-80f3-488594f466fd"),
+        },
+        {
+          id: "1524663d-ae03-43bc-80f3-488594f466fd",
+          displayName: "Doralia Dransfield",
+          avatar: getRandomFile("1524663d-ae03-43bc-80f3-488594f466fd"),
+        },
+        {
+          id: "7911e7fa-2371-4914-9f1f-c7b266951dbe",
+          displayName: "Karoly Faragher",
+          avatar: getRandomFile("7911e7fa-2371-4914-9f1f-c7b266951dbe"),
+        },
+      ],
+      count: 15,
+    },
   },
   {
-    id: "8",
-    type: "user" as const,
-    username: "coffee_zoe",
-    displayName: "Zoe Thompson",
-    avatar: getRandomFile("coffee_zoe"),
+    id: "6a635b66-9923-4539-8a9c-5a12a14f879b",
+    username: "writer_olivia",
+    displayName: "Olivia Thompson",
+    avatar: getRandomFile("6a635b66-9923-4539-8a9c-5a12a14f879b"),
     verified: false,
-  },
-  {
-    id: "9",
-    type: "user" as const,
-    username: "fitness_liam",
-    displayName: "Liam Wilson",
-    avatar: getRandomFile("fitness_liam"),
-    verified: true,
-  },
-  {
-    id: "10",
-    type: "user" as const,
-    username: "chef_olivia",
-    displayName: "Olivia Martinez",
-    avatar: getRandomFile("chef_olivia"),
-    verified: false,
-  },
-  {
-    id: "11",
-    type: "search" as const,
-    query: "design inspiration",
-  },
-  {
-    id: "12",
-    type: "search" as const,
-    query: "travel destinations 2024",
-  },
-  {
-    id: "13",
-    type: "search" as const,
-    query: "coding bootcamp reviews",
-  },
-  {
-    id: "14",
-    type: "hashtag" as const,
-    tag: "travel",
-    count: 1223,
-  },
-  {
-    id: "15",
-    type: "hashtag" as const,
-    tag: "photography",
-    count: 945,
-  },
-  {
-    id: "16",
-    type: "hashtag" as const,
-    tag: "nature",
-    count: 876,
-  },
-  {
-    id: "17",
-    type: "hashtag" as const,
-    tag: "food",
-    count: 732,
-  },
-  {
-    id: "18",
-    type: "hashtag" as const,
-    tag: "art",
-    count: 625,
-  },
-  {
-    id: "19",
-    type: "hashtag" as const,
-    tag: "fashion",
-    count: 589,
-  },
-  {
-    id: "20",
-    type: "hashtag" as const,
-    tag: "fitness",
-    count: 478,
-  },
-  {
-    id: "21",
-    type: "hashtag" as const,
-    tag: "music",
-    count: 412,
+    bio: "Novelist | Poet | Storyteller",
+    followers: 17382,
+    following: 623,
+    followedBy: {
+      displayItems: [
+        {
+          id: "19a73186-4d88-41d8-8565-60bb19433b18",
+          displayName: "Alex Smith",
+          avatar: getRandomFile("19a73186-4d88-41d8-8565-60bb19433b18"),
+        },
+      ],
+      count: 1,
+    },
   },
 ];
 
@@ -1851,28 +1828,23 @@ export const mockNotifications = [
 // Trending topics mock data
 export const mockTrendingTopics: HashtagItem[] = [
   {
-    id: "1",
-    tag: "hoyo",
+    id: "hoyo",
     count: 8193,
   },
   {
-    id: "2",
-    tag: "kuro",
+    id: "kuro",
     count: 1250000,
   },
   {
-    id: "3",
-    tag: "genshin",
+    id: "genshin",
     count: 42400000,
   },
   {
-    id: "4",
-    tag: "ardelle h'ad",
+    id: "ardelle h'ad",
     count: 3500000000,
   },
   {
-    id: "5",
-    tag: "genshin",
+    id: "grearye",
     count: 42400000,
   },
 ];

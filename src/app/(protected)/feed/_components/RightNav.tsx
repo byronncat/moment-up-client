@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { CoreApi } from "@/services";
 import { ASPECT_RATIO, ROUTE } from "@/constants/clientConfig";
 
@@ -93,13 +93,13 @@ export default function RightNav({ onClose, data, loading }: RightNavProps) {
                   )}
                 >
                   <Avatar
-                    src={feed.user.avatar}
-                    alt={`${feed.user.displayName}'s avatar`}
+                    src={feed.avatar}
+                    alt={`${feed.displayName}'s avatar`}
                     size="12"
                     ring
                   />
                   <div className="flex-1">
-                    <div className="font-semibold">{feed.user.displayName}</div>
+                    <div className="font-semibold">{feed.displayName}</div>
                     <div className="text-sm text-muted-foreground">
                       <span>{dayjs(feed.latestFeedTime).fromNow()}</span>
                     </div>

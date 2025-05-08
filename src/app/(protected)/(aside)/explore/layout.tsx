@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { ROUTE } from "@/constants/clientConfig";
 import { Image, Users } from "lucide-react";
 import NavigationBar, {

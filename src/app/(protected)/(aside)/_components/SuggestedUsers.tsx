@@ -2,13 +2,13 @@
 
 import type { UserInfo } from "api";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { cn } from "@/libraries/utils";
 import { SuggestingApi, UserApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";
 
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { Avatar, UserInfoCard } from "@/components";
 import {
   HoverCard,
@@ -32,6 +32,7 @@ export default function SuggestedSection() {
     fetchSuggestedUsers();
   }, []);
 
+  if (suggestedUsers?.length === 0) return null;
   return (
     <div className="w-full">
       <SectionHeader className="mb-4" loading={loading}>
@@ -65,11 +66,11 @@ function SkeletonUserItem() {
   );
 }
 
-type SuggestedUserItemProps = ComponentProps<{
+function SuggestedUserItem({
+  user,
+}: Readonly<{
   user: UserInfo;
-}>;
-
-function SuggestedUserItem({ user }: SuggestedUserItemProps) {
+}>) {
   const [isFollowing, setIsFollowing] = useState(false);
   const router = useRouter();
 
@@ -89,7 +90,7 @@ function SuggestedUserItem({ user }: SuggestedUserItemProps) {
         "hover:bg-accent/[.05] cursor-pointer",
         "transition-colors duration-150 ease-in-out"
       )}
-      onClick={(e) => {
+      onClick={() => {
         router.push(ROUTE.PROFILE(user.username));
       }}
     >
@@ -157,12 +158,13 @@ function SuggestedUserItem({ user }: SuggestedUserItemProps) {
   );
 }
 
-type FollowTextProps = ComponentProps<{
+function FollowText({
+  isFollowing,
+  followHandler,
+}: Readonly<{
   isFollowing: boolean;
   followHandler: (e: React.MouseEvent) => void;
-}>;
-
-function FollowText({ isFollowing, followHandler }: FollowTextProps) {
+}>) {
   const [isHovering, setIsHovering] = useState(false);
 
   return (

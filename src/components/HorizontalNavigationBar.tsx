@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 
 export type NavItem = {
   id: string;

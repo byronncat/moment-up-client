@@ -12,7 +12,7 @@ import {
   useCallback,
 } from "react";
 
-import zodSchema from "@/libraries/zodSchema";
+import zodSchema from "@/lib/zodSchema";
 import { AuthApi } from "@/services";
 import { LoadingPage } from "../pages";
 import { ROUTE } from "@/constants/clientConfig";
@@ -34,7 +34,7 @@ const AuthContext = createContext(
     changePassword: (
       values: z.infer<typeof zodSchema.auth.changePassword>
     ) => Promise<API>;
-    switchAccount: (accountId: AccountInfo["id"]) => Promise<API<AccountInfo>>;
+    changeAccount: (accountId: AccountInfo["id"]) => Promise<API<AccountInfo>>;
   }
 );
 
@@ -111,7 +111,7 @@ export default function AuthProvider({
     [router]
   );
 
-  const switchAccount = useCallback(
+  const changeAccount = useCallback(
     async (accountId: AccountInfo["id"]) => {
       const res = await AuthApi.switchAccount(accountId);
       if (res.success) setUser(res.data ?? null);
@@ -138,7 +138,7 @@ export default function AuthProvider({
         logout,
         sendRecoveryEmail,
         changePassword,
-        switchAccount,
+        changeAccount,
       }}
     >
       {loaded ? children : <LoadingPage />}

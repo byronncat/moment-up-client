@@ -3,7 +3,7 @@ import { mockCurrentUsers } from "@/__mocks__";
 import type { z } from "zod";
 import type { AccountInfo, API } from "api";
 
-import zodSchema from "@/libraries/zodSchema";
+import zodSchema from "@/lib/zodSchema";
 // import { Api } from "@/constants/serverConfig";
 
 export async function login(
@@ -223,7 +223,8 @@ export async function getAllAcounts(): Promise<API<AccountInfo[]>> {
 export async function switchAccount(
   accountId: AccountInfo["id"]
 ): Promise<API<AccountInfo>> {
-  const anotherUser = mockCurrentUsers.find((user) => user.id !== accountId);
+  console.log(accountId);
+  const anotherUser = mockCurrentUsers.find((user) => user.id === accountId);
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({

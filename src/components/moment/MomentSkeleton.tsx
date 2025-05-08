@@ -1,4 +1,4 @@
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 

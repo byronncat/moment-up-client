@@ -5,7 +5,7 @@ import type { DetailedMoment } from "api";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { CoreApi } from "@/services";
 
 import { Modal } from "@/components";

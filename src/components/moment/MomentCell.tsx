@@ -1,7 +1,7 @@
 import type { CellMoment } from "api";
 
 import Image from "next/image";
-import { cn } from "@/libraries/utils";
+import { cn } from "@/lib/utils";
 import { Heart, Comment, Clone, Video } from "@/components/icons";
 
 type MomentCellProps = Readonly<{

@@ -3,7 +3,7 @@ import { mockSearches } from "@/__mocks__";
 import type { z } from "zod";
 import type { API, SearchItem } from "api";
 
-import zodSchema from "@/libraries/zodSchema";
+import zodSchema from "@/lib/zodSchema";
 
 export async function search(
   data: z.infer<typeof zodSchema.core.search>
@@ -14,13 +14,12 @@ export async function search(
         resolve(true);
       }, 2000);
     });
-    // throw new Error("Not implemented");
 
     const filteredData = mockSearches.filter((item) => {
       if (item.type === "user")
         return item.username.toLowerCase().includes(data.query.toLowerCase());
       if (item.type === "hashtag")
-        return item.tag.toLowerCase().includes(data.query.toLowerCase());
+        return item.id.toLowerCase().includes(data.query.toLowerCase());
       return item.query.toLowerCase().includes(data.query.toLowerCase());
     });
 
@@ -44,7 +43,6 @@ export async function getSearchHistory(): Promise<API<SearchItem[]>> {
         resolve(true);
       }, 2000);
     });
-    // throw new Error("Not implemented");
 
     return {
       success: true,

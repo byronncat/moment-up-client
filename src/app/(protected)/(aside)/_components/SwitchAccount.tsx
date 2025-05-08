@@ -2,11 +2,14 @@
 
 import type { AccountInfo } from "api";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { cn } from "@/libraries/utils";
+import { toast } from "sonner";
 import { useAuth } from "@/components/providers";
+import { AuthApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";
+
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { Avatar } from "@/components";
 import {
   Dialog,
@@ -17,12 +20,10 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AuthApi } from "@/services";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function SwitchAccount() {
+export default function SwitchAccountt() {
   const { user } = useAuth();
   if (!user) return null;
   return (
@@ -35,11 +36,11 @@ export default function SwitchAccount() {
   );
 }
 
-type ContentProps = ComponentProps<{
+function Content({
+  user,
+}: Readonly<{
   user: AccountInfo;
-}>;
-
-function Content({ user }: ContentProps) {
+}>) {
   return (
     <div className="flex items-center gap-2">
       <Link href={ROUTE.PROFILE(user.username)}>
@@ -90,19 +91,20 @@ function SwitchButton() {
   );
 }
 
-type ManagementModalProps = ComponentProps<{
+function ManagementModal({
+  onClose,
+}: Readonly<{
   onClose: () => void;
-}>;
-
-function ManagementModal({ onClose }: ManagementModalProps) {
-  const { user, switchAccount } = useAuth();
+}>) {
+  const { user, changeAccount } = useAuth();
   const [accounts, setAccounts] = useState<AccountInfo[] | null>(null);
   const [loading, setLoading] = useState(true);
 
-  async function switchAccountHandler(accountId: AccountInfo["id"]) {
+  async function switchAccount(accountId: AccountInfo["id"]) {
     if (user?.id === accountId || loading) return;
     setLoading(true);
-    toast.promise(switchAccount(accountId), {
+
+    toast.promise(changeAccount(accountId), {
       loading: "Switching account...",
       success: (res) => {
         setLoading(false);
@@ -140,7 +142,7 @@ function ManagementModal({ onClose }: ManagementModalProps) {
           accounts?.map((account) => (
             <div
               key={account.id}
-              onClick={() => switchAccountHandler(account.id)}
+              onClick={() => switchAccount(account.id)}
               className={cn(
                 "px-6 py-3",
                 "flex items-center gap-2",
@@ -155,7 +157,7 @@ function ManagementModal({ onClose }: ManagementModalProps) {
                 size="12"
               />
               <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <span className="font-semibold">{account.displayName}</span>
                   {user?.id === account.id && (
                     <span
