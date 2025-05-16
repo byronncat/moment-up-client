@@ -5,9 +5,9 @@ import type { z } from "zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { toast } from "sonner";
-import zodSchema from "@/lib/zodSchema";
+import zodSchema from "@/libraries/zodSchema";
 import { useAuth } from "@/components/providers";
 import { styles } from "../../../../_constants/styles";
 

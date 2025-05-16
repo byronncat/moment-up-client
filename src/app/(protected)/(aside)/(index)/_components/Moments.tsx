@@ -6,7 +6,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { CoreApi } from "@/services";
 import { useInfiniteScroll } from "@/hooks";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import NoMoments from "./NoMoments";
 import MomentError from "./MomentError";
 import NoMoreMoments from "./NoMoreMoments";

@@ -1,5 +1,5 @@
 import type { FeedNotification } from "api";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
 import Link from "next/link";
 import { Avatar } from "@/components";

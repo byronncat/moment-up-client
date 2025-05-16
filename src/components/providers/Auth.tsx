@@ -12,7 +12,7 @@ import {
   useCallback,
 } from "react";
 
-import zodSchema from "@/lib/zodSchema";
+import zodSchema from "@/libraries/zodSchema";
 import { AuthApi } from "@/services";
 import { LoadingPage } from "../pages";
 import { ROUTE } from "@/constants/clientConfig";

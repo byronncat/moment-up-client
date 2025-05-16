@@ -1,5 +1,5 @@
 import { Logo } from "@/components";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 
 export default function NoMoments() {
   return (

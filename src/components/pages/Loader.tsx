@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import styles from "@/styles/loader.module.css";
 
 function BoxSpin({ className }: ComponentProps) {

@@ -3,7 +3,7 @@
 import type { UserInfo } from "api";
 
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import format from "@/utilities/format";
 import { ROUTE } from "@/constants/clientConfig";
 

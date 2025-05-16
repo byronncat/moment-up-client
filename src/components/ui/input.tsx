@@ -1,7 +1,7 @@
 import * as React from "react";
 import clsx from "clsx";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 
 export type InputProps = React.ComponentProps<"input">;
 const Input = React.forwardRef<HTMLInputElement, InputProps>(

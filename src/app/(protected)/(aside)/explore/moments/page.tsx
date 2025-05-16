@@ -2,7 +2,7 @@
 import { mockMoments } from "@/__mocks__";
 
 import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MomentCard } from "@/components/moment";
 

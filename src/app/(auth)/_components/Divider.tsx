@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 
 type DividerProps = ComponentProps<{
   text?: string;

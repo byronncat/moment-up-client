@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { Feeds, Moments } from "./_components";
 import { Metadata } from "@/constants/metadata";
 

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
 import { Metadata } from "@/constants/metadata";
 

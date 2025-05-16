@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { CircleExclamation } from "@/components/icons";
 import { RotateCw } from "lucide-react";

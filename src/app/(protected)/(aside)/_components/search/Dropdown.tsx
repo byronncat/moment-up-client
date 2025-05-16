@@ -1,6 +1,6 @@
 import type { SearchItem as SearchItemType } from "api";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import SearchItem from "./SearchItem";
 import {
   AlertDialog,

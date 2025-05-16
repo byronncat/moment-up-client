@@ -5,7 +5,7 @@ import type { FeedInfo } from "api";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState, useCallback } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { ASPECT_RATIO } from "@/constants/clientConfig";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";

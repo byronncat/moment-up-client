@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { SuggestingApi, UserApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Avatar, UserInfoCard } from "@/components";
 import {

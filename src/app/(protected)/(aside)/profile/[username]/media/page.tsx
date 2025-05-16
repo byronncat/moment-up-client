@@ -1,6 +1,6 @@
 import { mockMoments } from "@/__mocks__";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 // import { MomentCell } from "@/components/moment";
 
 export default function MediaPage() {

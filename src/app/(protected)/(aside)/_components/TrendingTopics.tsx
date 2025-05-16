@@ -8,7 +8,7 @@ import { SuggestingApi } from "@/services";
 import format from "@/utilities/format";
 import { ROUTE } from "@/constants/clientConfig";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import SectionHeader from "./SectionHeader";
 import {

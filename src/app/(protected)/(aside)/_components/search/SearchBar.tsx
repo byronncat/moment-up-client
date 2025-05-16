@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { SearchApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import SearchInput from "./SearchInput";
 import Dropdown from "./Dropdown";
 const DEBOUNCE_TIME = 500;

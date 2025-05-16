@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { ROUTE } from "@/constants/clientConfig";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { Compass } from "lucide-react";
 

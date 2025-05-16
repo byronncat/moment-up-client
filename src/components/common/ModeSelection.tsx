@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useIsClient } from "usehooks-ts";
-import { cn } from "@/lib/utils";
+import { cn } from "@/libraries/utils";
 
 import Tooltip from "./Tooltip";
 import { Button } from "@/components/ui/button";
