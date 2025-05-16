@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import zodSchema from "@/lib/zodSchema";
 import { useAuth } from "@/components/providers";
+import { styles } from "../../../../_constants/styles";
 
 import { InputOTPPattern, ResendText } from "./";
 import {
@@ -83,7 +84,7 @@ export default function ChangePasswordForm({ className }: ComponentProps) {
               </FormItem>
             )}
           />
-          <div className="space-y-4 mt-8">
+          <div className={cn(styles.inputGroup, "mt-4")}>
             <FormField
               control={form.control}
               name="newPassword"
@@ -92,7 +93,7 @@ export default function ChangePasswordForm({ className }: ComponentProps) {
                   <FormControl>
                     <PasswordInput
                       placeholder="New password"
-                      className="h-10 bg-card"
+                      className={styles.input}
                       autoComplete="new-password"
                       {...field}
                     />
@@ -110,7 +111,7 @@ export default function ChangePasswordForm({ className }: ComponentProps) {
                   <FormControl>
                     <PasswordInput
                       placeholder="Confirm new password"
-                      className="h-10 bg-card"
+                      className={styles.input}
                       autoComplete="new-password"
                       {...field}
                     />

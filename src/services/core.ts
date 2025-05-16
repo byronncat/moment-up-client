@@ -51,7 +51,7 @@ export async function getMoments(page: number): Promise<API<DetailedMoment[]>> {
         message: "ok",
         data: moments,
       });
-    }, 1000);
+    }, 5000);
   });
 }
 

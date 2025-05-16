@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import zodSchema from "@/lib/zodSchema";
 import { useAuth } from "@/components/providers";
+import { styles } from "../../../../_constants/styles";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -48,7 +49,7 @@ export default function RecoverPasswordForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(sendEmailHandler)}>
-        <div className="space-y-4">
+        <div className={styles.inputGroup}>
           <FormField
             control={form.control}
             name="email"
@@ -57,7 +58,7 @@ export default function RecoverPasswordForm() {
                 <FormControl>
                   <Input
                     placeholder="Email"
-                    className="h-10 bg-card"
+                    className={styles.input}
                     autoComplete="email"
                     {...field}
                   />

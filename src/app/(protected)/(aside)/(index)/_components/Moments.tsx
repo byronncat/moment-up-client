@@ -4,84 +4,107 @@ import type { DetailedMoment } from "api";
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { CoreApi } from "@/services";
-import { MomentCard, MomentSkeleton } from "@/components/moment";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useDebounceCallback } from "usehooks-ts";
-import { Loader2 } from "lucide-react";
+import { useInfiniteScroll } from "@/hooks";
+
 import { cn } from "@/lib/utils";
-import { Logo } from "@/components";
+import NoMoments from "./NoMoments";
+import MomentError from "./MomentError";
+import NoMoreMoments from "./NoMoreMoments";
+import { MomentCard, MomentSkeleton } from "@/components/moment";
+import { Loader2 } from "lucide-react";
 
 export default function Moments() {
-  const [moments, setMoments] = useState<DetailedMoment[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
-  const page = useRef(1);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setLoaded] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const isInitialLoading = useRef(false);
 
-  const fetchMoments = useDebounceCallback(async () => {
-    const res = await CoreApi.getMoments(page.current);
+  const {
+    items: moments,
+    isLoading: isLoadingMore,
+    hasMore,
+    loaderRef,
+    loadMore,
+    reset,
+  } = useInfiniteScroll<DetailedMoment>();
+
+  const fetchMomentsPage = useCallback(async (page: number) => {
+    const res = await CoreApi.getMoments(page);
     if (res.success) {
-      const newMoments = res.data ?? [];
-      setMoments((prev) => (prev ? [...prev, ...newMoments] : newMoments));
-      if (newMoments.length === 0) setHasMore(false);
-      else page.current += 1;
+      return res.data ?? [];
     }
-  }, 1000);
+    throw new Error("Failed to fetch moments");
+  }, []);
+
+  const fetchInitialMoments = useCallback(async () => {
+    if (isInitialLoading.current) return;
+    isInitialLoading.current = true;
+    setError(null);
+
+    try {
+      await loadMore(fetchMomentsPage);
+      setLoaded(true);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error("Unknown error"));
+    } finally {
+      isInitialLoading.current = false;
+    }
+  }, [loadMore, fetchMomentsPage]);
+
+  async function handleRefresh() {
+    setLoaded(false);
+    reset();
+    await fetchInitialMoments();
+  }
 
   useEffect(() => {
-    async function initFetch() {
-      await fetchMoments();
-      setLoading(false);
+    fetchInitialMoments();
+  }, [fetchInitialMoments]);
+
+  let content = null;
+  if (!isLoaded) {
+    content = <MomentSkeletons />;
+  } else if (error) {
+    content = <MomentError onRefresh={handleRefresh} />;
+  } else if (moments) {
+    if (moments.length > 0) {
+      const footer = hasMore ? (
+        isLoadingMore && (
+          <div
+            className={cn("w-full py-12", "flex justify-center items-center")}
+          >
+            <Loader2 className="size-8 animate-spin text-muted-foreground" />
+          </div>
+        )
+      ) : (
+        <NoMoreMoments />
+      );
+
+      content = (
+        <>
+          {moments.map((moment) => (
+            <MomentCard key={moment.id} data={moment} />
+          ))}
+          {footer}
+          <div ref={loaderRef} />
+        </>
+      );
+    } else {
+      content = <NoMoments />;
     }
-    initFetch();
-  }, [fetchMoments]);
+  }
 
-  // useEffect(() => {
-  //   if (loading) return;
+  return <Wrapper>{content}</Wrapper>;
+}
 
-  //   observerRef.current = new IntersectionObserver(
-  //     (entries) => {
-  //       if (entries[0].isIntersecting && hasMore) fetchMoments();
-  //     },
-  //     { threshold: 0.1 }
-  //   );
+function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <div className={cn("flex flex-col gap-4", "grow")}>{children}</div>;
+}
 
-  //   if (loadMoreRef.current) observerRef.current.observe(loadMoreRef.current);
-
-  //   return () => {
-  //     if (observerRef.current) observerRef.current.disconnect();
-  //   };
-  // }, [loading, hasMore, fetchMoments]);
-
-  // if (loading && !moments) return <MomentSkeleton count={3} />;
+function MomentSkeletons() {
   return (
-    <div className={cn("flex flex-col gap-4", "grow")}>
+    <>
       <MomentSkeleton variant="horizontal" />
-      {moments?.map((moment) => <MomentCard key={moment.id} data={moment} />)}
-      {/* {hasMore && <div ref={loadMoreRef}>{loading && <Loader />}</div>}
-       */}
-      {!hasMore && moments?.length === 0 && <NoMoments />}
-    </div>
-  );
-}
-
-function Loader() {
-  return (
-    <div className="flex items-center justify-center py-4">
-      <Loader2 className="size-4 animate-spin" />
-    </div>
-  );
-}
-
-function NoMoments() {
-  return (
-    <div className={cn("flex flex-col items-center justify-center", "h-full")}>
-      <Logo className="size-12" />
-      <p className={cn("text-lg font-medium", "mt-4")}>No moments yet</p>
-      <p className={cn("text-sm text-muted-foreground", "mt-1")}>
-        When anyone you follow posts, they&apos;ll show up here.
-      </p>
-    </div>
+      <MomentSkeleton variant="square" />
+    </>
   );
 }

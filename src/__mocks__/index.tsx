@@ -376,23 +376,6 @@ export const mockSearches: SearchItem[] = [
   },
 ];
 
-export const mockCurrentUsers: AccountInfo[] = [
-  {
-    id: "thinhngo",
-    username: "byronat445",
-    displayName: "Thinh Ngo",
-    avatar: getRandomFile("byronat445"),
-    verified: true,
-  },
-  {
-    id: "anotherMe",
-    username: "hkbtrung",
-    displayName: "Bao Trung",
-    avatar: getRandomFile("hkbtrung"),
-    verified: true,
-  },
-];
-
 export const mockFeed: FeedInfo[] = [
   // {
   //   user: {
@@ -485,888 +468,738 @@ export const mockFeed: FeedInfo[] = [
   // },
 ];
 
-export const mockMoments: DetailedMoment[] = [];
-// isDev
-//   ? [
-//       {
-//         id: "1",
-//         user: {
-//           id: "1",
-//           username: "alice",
-//           displayName: "Alice",
-//           avatar:
-//             "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
-//           verified: false,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GTP4USoaYAMKWLD?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "3",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GmE2QNobcAE18qo?format=jpg&name=medium",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "2",
-//         user: {
-//           id: "2",
-//           username: "bob",
-//           displayName: "Bob",
-//           avatar:
-//             "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
-//           verified: false,
-//           followers: 5678,
-//           following: 890,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GPwTSoQW8AA0aH2?format=jpg&name=large",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 5678,
-//           comments: 123,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "3",
-//         user: {
-//           id: "3",
-//           username: "charlie",
-//           displayName: "Charlie",
-//           avatar:
-//             "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
-//           verified: true,
-//           followers: 1500000,
-//           following: 2000,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 1500000,
-//           comments: 8760,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "4",
-//         user: {
-//           id: "4",
-//           username: "dan",
-//           displayName: "Dan",
-//           avatar:
-//             "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
-//           verified: false,
-//           followers: 2750000,
-//           following: 1500,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 2750000,
-//           comments: 12500,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "5",
-//         user: {
-//           id: "5",
-//           username: "eve",
-//           displayName: "Eve",
-//           avatar:
-//             "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
-//           verified: true,
-//           followers: 4200000000,
-//           following: 2500,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 4200000000,
-//           comments: 780000,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "6",
-//         user: {
-//           id: "6",
-//           username: "frank",
-//           displayName: "Frank",
-//           avatar:
-//             "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
-//           verified: false,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GlLNYbPbIAANJjZ?format=jpg&name=4096x4096",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "7",
-//         user: {
-//           id: "7",
-//           username: "george",
-//           displayName: "George",
-//           avatar:
-//             "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
-//           verified: true,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "8",
-//         user: {
-//           id: "8",
-//           username: "harry",
-//           displayName: "Harry",
-//           avatar:
-//             "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
-//           verified: false,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "9",
-//         user: {
-//           id: "9",
-//           username: "irene",
-//           displayName: "Irene",
-//           avatar:
-//             "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
-//           verified: true,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "10",
-//         user: {
-//           id: "10",
-//           username: "jose",
-//           displayName: "Jose",
-//           avatar:
-//             "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
-//           verified: false,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "11",
-//         user: {
-//           id: "11",
-//           username: "kate",
-//           displayName: "Kate",
-//           avatar:
-//             "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
-//           verified: true,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GgHsZ5vakAAz5jI?format=jpg&name=large",
-//             },
-//             {
-//               id: "3",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GgHsVFvbYAU2ZpA?format=jpg&name=large",
-//             },
-//             {
-//               id: "4",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GgHsRA8akAAeirJ?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "12",
-//         user: {
-//           id: "12",
-//           username: "linda",
-//           displayName: "Linda",
-//           avatar:
-//             "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
-//           verified: false,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "video",
-//               url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "13",
-//         user: {
-//           id: "13",
-//           username: "mary",
-//           displayName: "Mary",
-//           avatar:
-//             "https://pbs.twimg.com/media/F7_0tmmbMAAuv6G?format=jpg&name=large",
-//           verified: true,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/F7_0tmmbMAAuv6G?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "14",
-//         user: {
-//           id: "14",
-//           username: "nancy",
-//           displayName: "Nancy",
-//           avatar:
-//             "https://pbs.twimg.com/media/GPYqzecbsAAy4Ie?format=jpg&name=4096x4096",
-//           verified: false,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GCsUDkvaQAASmNU?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GPYqzecbsAAy4Ie?format=jpg&name=4096x4096",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "15",
-//         user: {
-//           id: "15",
-//           username: "olivia",
-//           displayName: "Olivia",
-//           avatar:
-//             "https://pbs.twimg.com/media/GgC22OAaMAAmA9I?format=jpg&name=large",
-//           verified: true,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GgC22OAaMAAmA9I?format=jpg&name=large",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GnmzBjbbcAAn9Ou?format=jpg&name=4096x4096",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "16",
-//         user: {
-//           id: "16",
-//           username: "pat",
-//           displayName: "Pat",
-//           avatar: getRandomFile(16),
-//           verified: false,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GllqHMLa4AATGzZ?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GkREMhqbAAIEd5S?format=jpg&name=4096x4096",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "17",
-//         user: {
-//           id: "17",
-//           username: "pat",
-//           displayName: "Patrick",
-//           avatar: getRandomFile(17),
-//           verified: true,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GfxwRq7a4AAlY6S?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "177",
-//         user: {
-//           id: "177",
-//           username: "pat",
-//           displayName: "Patricia",
-//           avatar: getRandomFile(177),
-//           verified: false,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/Gdm5F3mboAgSG_x?format=jpg&name=large",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GNVppwoakAA3Yxq?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "3",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GCpqzHQbwAABMGr?format=jpg&name=large",
-//             },
-//             {
-//               id: "4",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/F-I4FN2bgAAbsbE?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "5",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GLGU7XDbEAADwGY?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "19",
-//         user: {
-//           id: "19",
-//           username: "pat",
-//           displayName: "Patrick S.",
-//           avatar: getRandomFile(19),
-//           verified: true,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GfxwRq7a4AAlY6S?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "20",
-//         user: {
-//           id: "20",
-//           username: "pat",
-//           displayName: "Patty",
-//           avatar: getRandomFile(20),
-//           verified: false,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GowgbJ9aIAADxvn?format=jpg&name=large",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GoXF5VOXcAA5W_F?format=jpg&name=large",
-//             },
-//             {
-//               id: "3",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/Ghvkngoa0AAZBHM?format=jpg&name=large",
-//             },
-//             {
-//               id: "4",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/Gj8UYDjbEAAVJeD?format=jpg&name=large",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "21",
-//         user: {
-//           id: "21",
-//           username: "pat",
-//           displayName: "Patrick M.",
-//           avatar: getRandomFile(21),
-//           verified: true,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GmkyyAnaEAA3K9v?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/Gj_e2lNbEAAWF9u?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "3",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GjMsVS9a0AA66Tb?format=jpg&name=4096x4096",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "22",
-//         user: {
-//           id: "22",
-//           username: "pat",
-//           displayName: "Pat T.",
-//           avatar: getRandomFile(22),
-//           verified: false,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/FtEzdouaQAARPKN?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GgLvSHibYAMCR1k?format=jpg&name=medium",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//       {
-//         id: "23",
-//         user: {
-//           id: "23",
-//           username: "pat",
-//           displayName: "Patrick B.",
-//           avatar: getRandomFile(23),
-//           verified: true,
-//           followers: 1234,
-//           following: 567,
-//         },
-//         post: {
-//           text: "Beautiful day at the beach 🌊",
-//           files: [
-//             {
-//               id: "1",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/GicHHmPaYAAfESg?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "2",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/FkXOfZCaEAAR2pX?format=jpg&name=4096x4096",
-//             },
-//             {
-//               id: "3",
-//               type: "image",
-//               url: "https://pbs.twimg.com/media/FWHk8VgUIAANFcX?format=jpg&name=4096x4096",
-//             },
-//           ],
-//           likes: 1234,
-//           comments: 45,
-//           created_at: new Date(),
-//           isLiked: false,
-//         },
-//       },
-//     ]
-//   : [];
-
-export const mockSuggestedUsers: UserInfo[] = [
+export const mockMoments: DetailedMoment[] = [
   {
-    id: "057b50c5-4646-42bf-98ea-933c108f2671",
-    username: "wbale0",
-    displayName: "Werner Bale",
-    avatar: getRandomFile("057b50c5-4646-42bf-98ea-933c108f2671"),
-    verified: true,
-    bio: "Travel photographer | Adventure seeker | Coffee enthusiast",
-    followers: 642249,
-    following: 236261,
-    followedBy: {
-      displayItems: [
+    id: "a9a6d7c2-1e20-4439-a60b-51a188131da1",
+    user: {
+      id: "a9a6d7c2-1e20-4439-a60b-51a188131da1",
+      username: "gespine0",
+      displayName: "Guillema Espine",
+      avatar:
+        "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
+      verified: false,
+      followers: 5533,
+      following: 30849,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
         {
-          id: "8b7c2c17-a3be-47db-b2c6-3070d6b93c96",
-          displayName: "Cesar Sloan",
-          avatar: getRandomFile("8b7c2c17-a3be-47db-b2c6-3070d6b93c96"),
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GTP4USoaYAMKWLD?format=jpg&name=4096x4096",
+        },
+        {
+          id: "3",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GmE2QNobcAE18qo?format=jpg&name=medium",
         },
       ],
-      count: 1,
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
     },
   },
   {
-    id: "ca0f9eb5-c789-4e50-9f8c-457ff3b9f964",
-    username: "tech_jason",
-    displayName: "Jason Chen",
-    avatar: getRandomFile("ca0f9eb5-c789-4e50-9f8c-457ff3b9f964"),
-    verified: false,
-    followers: 725940,
-    following: 532,
-  },
-  {
-    id: "90946704-51dc-4a73-9f56-99531bc3db7b",
-    username: "foodie_sophie",
-    displayName: "Sophie Rodriguez",
-    avatar: getRandomFile("90946704-51dc-4a73-9f56-99531bc3db7b"),
-    verified: true,
-    bio: "Food blogger | Recipe developer | Always hungry",
-    followers: 80078,
-    following: 208034,
-    followedBy: {
-      displayItems: [
+    id: "f3d246a4-61f3-4b6e-a0ac-bac29a2b5b0e",
+    user: {
+      id: "f3d246a4-61f3-4b6e-a0ac-bac29a2b5b0e",
+      username: "rgland1",
+      displayName: "Rhodia Gland",
+      avatar:
+        "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
+      verified: false,
+      followers: 825084,
+      following: 51202,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
         {
-          id: "7b41edc6-3590-46a9-9eee-88d3f603be0c",
-          displayName: "Mike Brown",
-          avatar: getRandomFile("7b41edc6-3590-46a9-9eee-88d3f603be0c"),
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GPwTSoQW8AA0aH2?format=jpg&name=large",
         },
         {
-          id: "2a204883-b417-4d6b-b5df-c3c6184f4de6",
-          displayName: "Alex Smith",
-          avatar: getRandomFile("2a204883-b417-4d6b-b5df-c3c6184f4de6"),
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
         },
       ],
-      count: 2,
+      likes: 5678,
+      comments: 123,
+      created_at: new Date(),
+      isLiked: false,
     },
   },
   {
-    id: "92a1e004-8ddf-46ab-8811-28a6e1bb7a60",
-    username: "fitness_marcus",
-    displayName: "Marcus Johnson",
-    avatar: getRandomFile("92a1e004-8ddf-46ab-8811-28a6e1bb7a60"),
-    verified: true,
-    bio: "Personal trainer | Nutrition coach | Wellness advocate",
-    followers: 28937,
-    following: 21,
-  },
-  {
-    id: "e879fbc3-4438-47c0-a68e-87c6a9e2fa59",
-    username: "artist_maya",
-    displayName: "Maya Patel",
-    avatar: getRandomFile("e879fbc3-4438-47c0-a68e-87c6a9e2fa59"),
-    verified: false,
-    bio: "Digital artist | Illustrator | Dreamer",
-    followers: 9642,
-    following: 65475,
-    followedBy: {
-      displayItems: [
+    id: "3",
+    user: {
+      id: "3",
+      username: "charlie",
+      displayName: "Charlie",
+      avatar:
+        "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
+      verified: true,
+      followers: 1500000,
+      following: 2000,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
         {
-          id: "b154dc99-9ecf-427f-9e81-faca1bcd3603",
-          displayName: "Sarah Jones",
-          avatar: getRandomFile("b154dc99-9ecf-427f-9e81-faca1bcd3603"),
-        },
-        {
-          id: "66258213-11b2-4646-b7d6-20bf47379881",
-          displayName: "Wynn Tumility",
-          avatar: getRandomFile("66258213-11b2-4646-b7d6-20bf47379881"),
-        },
-        {
-          id: "19a73186-4d88-41d8-8565-60bb19433b18",
-          displayName: "Helyn Vooght",
-          avatar: getRandomFile("19a73186-4d88-41d8-8565-60bb19433b18"),
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
         },
       ],
-      count: 67,
+      likes: 1500000,
+      comments: 8760,
+      created_at: new Date(),
+      isLiked: false,
     },
   },
   {
-    id: "6a5d499b-073e-4253-890b-2f739b1de380",
-    username: "music_noah",
-    displayName: "Noah Garcia",
-    avatar: getRandomFile("6a5d499b-073e-4253-890b-2f739b1de380"),
-    verified: true,
-    bio: "Music producer | DJ | Creating vibes",
-    followers: 3500000000,
-    following: 758,
-    followedBy: {
-      displayItems: [
+    id: "4",
+    user: {
+      id: "4",
+      username: "dan",
+      displayName: "Dan",
+      avatar:
+        "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
+      verified: false,
+      followers: 2750000,
+      following: 1500,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
         {
-          id: "1524663d-ae03-43bc-80f3-488594f466fd",
-          displayName: "Rosalie Rizon",
-          avatar: getRandomFile("1524663d-ae03-43bc-80f3-488594f466fd"),
-        },
-        {
-          id: "1524663d-ae03-43bc-80f3-488594f466fd",
-          displayName: "Doralia Dransfield",
-          avatar: getRandomFile("1524663d-ae03-43bc-80f3-488594f466fd"),
-        },
-        {
-          id: "7911e7fa-2371-4914-9f1f-c7b266951dbe",
-          displayName: "Karoly Faragher",
-          avatar: getRandomFile("7911e7fa-2371-4914-9f1f-c7b266951dbe"),
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
         },
       ],
-      count: 15,
+      likes: 2750000,
+      comments: 12500,
+      created_at: new Date(),
+      isLiked: false,
     },
   },
   {
-    id: "6a635b66-9923-4539-8a9c-5a12a14f879b",
-    username: "writer_olivia",
-    displayName: "Olivia Thompson",
-    avatar: getRandomFile("6a635b66-9923-4539-8a9c-5a12a14f879b"),
-    verified: false,
-    bio: "Novelist | Poet | Storyteller",
-    followers: 17382,
-    following: 623,
-    followedBy: {
-      displayItems: [
+    id: "5",
+    user: {
+      id: "5",
+      username: "eve",
+      displayName: "Eve",
+      avatar:
+        "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
+      verified: true,
+      followers: 4200000000,
+      following: 2500,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
         {
-          id: "19a73186-4d88-41d8-8565-60bb19433b18",
-          displayName: "Alex Smith",
-          avatar: getRandomFile("19a73186-4d88-41d8-8565-60bb19433b18"),
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large",
         },
       ],
-      count: 1,
+      likes: 4200000000,
+      comments: 780000,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "6",
+    user: {
+      id: "6",
+      username: "frank",
+      displayName: "Frank",
+      avatar:
+        "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
+      verified: false,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GlLNYbPbIAANJjZ?format=jpg&name=4096x4096",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "7",
+    user: {
+      id: "7",
+      username: "george",
+      displayName: "George",
+      avatar:
+        "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
+      verified: true,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "8",
+    user: {
+      id: "8",
+      username: "harry",
+      displayName: "Harry",
+      avatar:
+        "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
+      verified: false,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "9",
+    user: {
+      id: "9",
+      username: "irene",
+      displayName: "Irene",
+      avatar:
+        "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
+      verified: true,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GHWbMb9W8AE1aXK?format=jpg&name=4096x4096",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "10",
+    user: {
+      id: "10",
+      username: "jose",
+      displayName: "Jose",
+      avatar:
+        "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
+      verified: false,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "11",
+    user: {
+      id: "11",
+      username: "kate",
+      displayName: "Kate",
+      avatar:
+        "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
+      verified: true,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GgHsZ5vakAAz5jI?format=jpg&name=large",
+        },
+        {
+          id: "3",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GgHsVFvbYAU2ZpA?format=jpg&name=large",
+        },
+        {
+          id: "4",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GgHsRA8akAAeirJ?format=jpg&name=large",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "12",
+    user: {
+      id: "12",
+      username: "linda",
+      displayName: "Linda",
+      avatar:
+        "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
+      verified: false,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "video",
+          url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "13",
+    user: {
+      id: "13",
+      username: "mary",
+      displayName: "Mary",
+      avatar:
+        "https://pbs.twimg.com/media/F7_0tmmbMAAuv6G?format=jpg&name=large",
+      verified: true,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/F7_0tmmbMAAuv6G?format=jpg&name=large",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "14",
+    user: {
+      id: "14",
+      username: "nancy",
+      displayName: "Nancy",
+      avatar:
+        "https://pbs.twimg.com/media/GPYqzecbsAAy4Ie?format=jpg&name=4096x4096",
+      verified: false,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GCsUDkvaQAASmNU?format=jpg&name=4096x4096",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GPYqzecbsAAy4Ie?format=jpg&name=4096x4096",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "15",
+    user: {
+      id: "15",
+      username: "olivia",
+      displayName: "Olivia",
+      avatar:
+        "https://pbs.twimg.com/media/GgC22OAaMAAmA9I?format=jpg&name=large",
+      verified: true,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GgC22OAaMAAmA9I?format=jpg&name=large",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GnmzBjbbcAAn9Ou?format=jpg&name=4096x4096",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "ec85c1c0-0416-4bf9-82fc-f0a7bb3e492d",
+    user: {
+      id: "ec85c1c0-0416-4bf9-82fc-f0a7bb3e492d",
+      username: "pat",
+      displayName: "Pat",
+      avatar: getRandomFile("ec85c1c0-0416-4bf9-82fc-f0a7bb3e492d"),
+      verified: false,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GllqHMLa4AATGzZ?format=jpg&name=4096x4096",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GkREMhqbAAIEd5S?format=jpg&name=4096x4096",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "61561c89-eb6f-4b70-bb0a-0ff75c0f89a9",
+    user: {
+      id: "61561c89-eb6f-4b70-bb0a-0ff75c0f89a9",
+      username: "mharris5",
+      displayName: "Maggie Harris",
+      avatar: getRandomFile("61561c89-eb6f-4b70-bb0a-0ff75c0f89a9"),
+      verified: true,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GfxwRq7a4AAlY6S?format=jpg&name=large",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "b81ef1c7-dc91-484a-a38f-4efc3bcef406",
+    user: {
+      id: "b81ef1c7-dc91-484a-a38f-4efc3bcef406",
+      username: "owasielewskib",
+      displayName: "Osbourn Wasielewski",
+      avatar: getRandomFile("b81ef1c7-dc91-484a-a38f-4efc3bcef40"),
+      verified: false,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/Gdm5F3mboAgSG_x?format=jpg&name=large",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GNVppwoakAA3Yxq?format=jpg&name=4096x4096",
+        },
+        {
+          id: "3",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GCpqzHQbwAABMGr?format=jpg&name=large",
+        },
+        {
+          id: "4",
+          type: "image",
+          url: "https://pbs.twimg.com/media/F-I4FN2bgAAbsbE?format=jpg&name=4096x4096",
+        },
+        {
+          id: "5",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GLGU7XDbEAADwGY?format=jpg&name=large",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "741dba63-27a7-43b8-b6fd-2cecd4ad5a9b",
+    user: {
+      id: "741dba63-27a7-43b8-b6fd-2cecd4ad5a9b",
+      username: "imarchantc",
+      displayName: "Idalina Marchant",
+      avatar: getRandomFile("741dba63-27a7-43b8-b6fd-2cecd4ad5a9b"),
+      verified: true,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GfxwRq7a4AAlY6S?format=jpg&name=large",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "2b15a77e-fd97-445c-8056-344b7d1df5c2",
+    user: {
+      id: "2b15a77e-fd97-445c-8056-344b7d1df5c2",
+      username: "sabbat",
+      displayName: "Sam Abba",
+      avatar: getRandomFile("2b15a77e-fd97-445c-8056-344b7d1df5c2"),
+      verified: false,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GowgbJ9aIAADxvn?format=jpg&name=large",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GoXF5VOXcAA5W_F?format=jpg&name=large",
+        },
+        {
+          id: "3",
+          type: "image",
+          url: "https://pbs.twimg.com/media/Ghvkngoa0AAZBHM?format=jpg&name=large",
+        },
+        {
+          id: "4",
+          type: "image",
+          url: "https://pbs.twimg.com/media/Gj8UYDjbEAAVJeD?format=jpg&name=large",
+        },
+      ],
+      likes: 363127,
+      comments: 455,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "80a35216-a718-4238-b35d-e2ba95f6f43",
+    user: {
+      id: "80a35216-a718-4238-b35d-e2ba95f6f43",
+      username: "wcotmank",
+      displayName: "Wendie Cotman",
+      avatar: getRandomFile("80a35216-a718-4238-b35d-e2ba95f6f43"),
+      verified: true,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GmkyyAnaEAA3K9v?format=jpg&name=4096x4096",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/Gj_e2lNbEAAWF9u?format=jpg&name=4096x4096",
+        },
+        {
+          id: "3",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GjMsVS9a0AA66Tb?format=jpg&name=4096x4096",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "86843c49-8cff-4671-baf5-b3cafd66b9bb",
+    user: {
+      id: "86843c49-8cff-4671-baf5-b3cafd66b9bb",
+      username: "habelsf",
+      displayName: "Hildagard Abels",
+      avatar: getRandomFile("86843c49-8cff-4671-baf5-b3cafd66b9b"),
+      verified: false,
+      followers: 227776,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/FtEzdouaQAARPKN?format=jpg&name=4096x4096",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GgLvSHibYAMCR1k?format=jpg&name=medium",
+        },
+      ],
+      likes: 227776,
+      comments: 86168,
+      created_at: new Date(),
+      isLiked: false,
+    },
+  },
+  {
+    id: "4010887c-e1cc-47a7-abd4-616cdd80f3e5",
+    user: {
+      id: "4010887c-e1cc-47a7-abd4-616cdd80f3e5",
+      username: "alidgertwoodd",
+      displayName: "Allys Lidgertwood",
+      avatar: getRandomFile("4010887c-e1cc-47a7-abd4-616cdd80f3e5"),
+      verified: true,
+      followers: 1234,
+      following: 567,
+    },
+    post: {
+      text: "Beautiful day at the beach 🌊",
+      files: [
+        {
+          id: "1",
+          type: "image",
+          url: "https://pbs.twimg.com/media/GicHHmPaYAAfESg?format=jpg&name=4096x4096",
+        },
+        {
+          id: "2",
+          type: "image",
+          url: "https://pbs.twimg.com/media/FkXOfZCaEAAR2pX?format=jpg&name=4096x4096",
+        },
+        {
+          id: "3",
+          type: "image",
+          url: "https://pbs.twimg.com/media/FWHk8VgUIAANFcX?format=jpg&name=4096x4096",
+        },
+      ],
+      likes: 1234,
+      comments: 45,
+      created_at: new Date(),
+      isLiked: false,
     },
   },
 ];
@@ -1825,7 +1658,154 @@ export const mockNotifications = [
   },
 ];
 
-// Trending topics mock data
+// Aside
+export const mockSuggestedUsers: UserInfo[] = [
+  {
+    id: "057b50c5-4646-42bf-98ea-933c108f2671",
+    username: "wbale0",
+    displayName: "Werner Bale",
+    avatar: getRandomFile("057b50c5-4646-42bf-98ea-933c108f2671"),
+    verified: true,
+    bio: "Travel photographer | Adventure seeker | Coffee enthusiast",
+    followers: 642249,
+    following: 236261,
+    followedBy: {
+      displayItems: [
+        {
+          id: "8b7c2c17-a3be-47db-b2c6-3070d6b93c96",
+          displayName: "Cesar Sloan",
+          avatar: getRandomFile("8b7c2c17-a3be-47db-b2c6-3070d6b93c96"),
+        },
+      ],
+      count: 1,
+    },
+  },
+  {
+    id: "ca0f9eb5-c789-4e50-9f8c-457ff3b9f964",
+    username: "tech_jason",
+    displayName: "Jason Chen",
+    avatar: getRandomFile("ca0f9eb5-c789-4e50-9f8c-457ff3b9f964"),
+    verified: false,
+    followers: 725940,
+    following: 532,
+  },
+  {
+    id: "90946704-51dc-4a73-9f56-99531bc3db7b",
+    username: "foodie_sophie",
+    displayName: "Sophie Rodriguez",
+    avatar: getRandomFile("90946704-51dc-4a73-9f56-99531bc3db7b"),
+    verified: true,
+    bio: "Food blogger | Recipe developer | Always hungry",
+    followers: 80078,
+    following: 208034,
+    followedBy: {
+      displayItems: [
+        {
+          id: "7b41edc6-3590-46a9-9eee-88d3f603be0c",
+          displayName: "Mike Brown",
+          avatar: getRandomFile("7b41edc6-3590-46a9-9eee-88d3f603be0c"),
+        },
+        {
+          id: "2a204883-b417-4d6b-b5df-c3c6184f4de6",
+          displayName: "Alex Smith",
+          avatar: getRandomFile("2a204883-b417-4d6b-b5df-c3c6184f4de6"),
+        },
+      ],
+      count: 2,
+    },
+  },
+  {
+    id: "92a1e004-8ddf-46ab-8811-28a6e1bb7a60",
+    username: "fitness_marcus",
+    displayName: "Marcus Johnson",
+    avatar: getRandomFile("92a1e004-8ddf-46ab-8811-28a6e1bb7a60"),
+    verified: true,
+    bio: "Personal trainer | Nutrition coach | Wellness advocate",
+    followers: 28937,
+    following: 21,
+  },
+  {
+    id: "e879fbc3-4438-47c0-a68e-87c6a9e2fa59",
+    username: "artist_maya",
+    displayName: "Maya Patel",
+    avatar: getRandomFile("e879fbc3-4438-47c0-a68e-87c6a9e2fa59"),
+    verified: false,
+    bio: "Digital artist | Illustrator | Dreamer",
+    followers: 9642,
+    following: 65475,
+    followedBy: {
+      displayItems: [
+        {
+          id: "b154dc99-9ecf-427f-9e81-faca1bcd3603",
+          displayName: "Sarah Jones",
+          avatar: getRandomFile("b154dc99-9ecf-427f-9e81-faca1bcd3603"),
+        },
+        {
+          id: "66258213-11b2-4646-b7d6-20bf47379881",
+          displayName: "Wynn Tumility",
+          avatar: getRandomFile("66258213-11b2-4646-b7d6-20bf47379881"),
+        },
+        {
+          id: "19a73186-4d88-41d8-8565-60bb19433b18",
+          displayName: "Helyn Vooght",
+          avatar: getRandomFile("19a73186-4d88-41d8-8565-60bb19433b18"),
+        },
+      ],
+      count: 67,
+    },
+  },
+  {
+    id: "6a5d499b-073e-4253-890b-2f739b1de380",
+    username: "music_noah",
+    displayName: "Noah Garcia",
+    avatar: getRandomFile("6a5d499b-073e-4253-890b-2f739b1de380"),
+    verified: true,
+    bio: "Music producer | DJ | Creating vibes",
+    followers: 3500000000,
+    following: 758,
+    followedBy: {
+      displayItems: [
+        {
+          id: "1524663d-ae03-43bc-80f3-488594f466fd",
+          displayName: "Rosalie Rizon",
+          avatar: getRandomFile("1524663d-ae03-43bc-80f3-488594f466fd"),
+        },
+        {
+          id: "1524663d-ae03-43bc-80f3-488594f466fd",
+          displayName: "Doralia Dransfield",
+          avatar: getRandomFile("1524663d-ae03-43bc-80f3-488594f466fd"),
+        },
+        {
+          id: "7911e7fa-2371-4914-9f1f-c7b266951dbe",
+          displayName: "Karoly Faragher",
+          avatar: getRandomFile("7911e7fa-2371-4914-9f1f-c7b266951dbe"),
+        },
+      ],
+      count: 15,
+    },
+  },
+  {
+    id: "6a635b66-9923-4539-8a9c-5a12a14f879b",
+    username: "writer_olivia",
+    displayName: "Olivia Thompson",
+    avatar: getRandomFile("6a635b66-9923-4539-8a9c-5a12a14f879b"),
+    verified: false,
+    bio: "Novelist | Poet | Storyteller",
+    followers: 17382,
+    following: 623,
+    followedBy: {
+      displayItems: [
+        {
+          id: "19a73186-4d88-41d8-8565-60bb19433b18",
+          displayName: "Alex Smith",
+          avatar: getRandomFile("19a73186-4d88-41d8-8565-60bb19433b18"),
+        },
+      ],
+      count: 1,
+    },
+  },
+];
+
 export const mockTrendingTopics: HashtagItem[] = [
   {
     id: "hoyo",
@@ -1846,5 +1826,22 @@ export const mockTrendingTopics: HashtagItem[] = [
   {
     id: "grearye",
     count: 42400000,
+  },
+];
+
+export const mockCurrentUsers: AccountInfo[] = [
+  {
+    id: "thinhngo",
+    username: "byronat445",
+    displayName: "Thinh Ngo",
+    avatar: getRandomFile("byronat445"),
+    verified: true,
+  },
+  {
+    id: "anotherMe",
+    username: "hkbtrung",
+    displayName: "Bao Trung",
+    avatar: getRandomFile("hkbtrung"),
+    verified: true,
   },
 ];

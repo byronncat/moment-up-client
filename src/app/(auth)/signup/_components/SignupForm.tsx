@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import zodSchema from "@/lib/zodSchema";
 import { useAuth } from "@/components/providers";
+import { styles } from "../../_constants/styles";
 
 import Tooltip from "@/components/common/Tooltip";
 import { Button } from "@/components/ui/button";
@@ -66,7 +67,7 @@ export default function SignupForm() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(signupHandler)}>
-          <div className="space-y-4">
+          <div className={styles.inputGroup}>
             <FormField
               control={form.control}
               name="email"
@@ -75,7 +76,7 @@ export default function SignupForm() {
                   <FormControl>
                     <Input
                       placeholder="Email"
-                      className="h-10 bg-card"
+                      className={styles.input}
                       autoComplete="email"
                       {...field}
                     />
@@ -92,7 +93,7 @@ export default function SignupForm() {
                   <FormControl>
                     <Input
                       placeholder="Username"
-                      className="h-10 bg-card"
+                      className={styles.input}
                       autoComplete="username"
                       {...field}
                     />
@@ -115,7 +116,7 @@ export default function SignupForm() {
                   <FormControl>
                     <PasswordInput
                       placeholder="Pasword"
-                      className="h-10 bg-card"
+                      className={styles.input}
                       autoComplete="new-password"
                       {...field}
                     />

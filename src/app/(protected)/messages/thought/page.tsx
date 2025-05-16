@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 import BubbleTextarea from "@/components/BubbleTextarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChevronDown, ArrowLeft } from "@/components/icons";
+import { Chevron, ArrowLeft } from "@/components/icons";
 import { ROUTE } from "@/constants/clientConfig";
 
 export default function ThoughtPage() {
@@ -110,7 +110,10 @@ function ShareButton() {
       >
         {/* <ArrowUpRight className="w-4 h-4" /> */}
         Shared with followers you follow back
-        <ChevronDown className={cn("w-4 h-4", isOpenShare && "rotate-180")} />
+        <Chevron
+          direction="down"
+          className={cn("size-4", isOpenShare && "rotate-180")}
+        />
       </button>
     </div>
   );

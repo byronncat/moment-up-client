@@ -1,9 +1,8 @@
 export { default as ArrowLeft } from "./ArrowLeft";
 export { default as Bookmark } from "./Bookmark";
 export { default as CircleCheck } from "./CircleCheck";
-export { default as ChevronLeft } from "./ChevronLeft";
-export { default as ChevronRight } from "./ChevronRight";
-export { default as ChevronDown } from "./ChevronDown";
+export { default as CircleExclamation } from "./CircleExclamation";
+export { default as Chevron } from "./Chevron";
 export { default as CircleInfo } from "./CircleInfo";
 export { default as Clone } from "./Clone";
 export { default as Comment } from "./Comment";

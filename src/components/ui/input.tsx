@@ -11,7 +11,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         type={type}
         className={cn(
           clsx(
-            "flex",
+            "flex w-full",
             "rounded-md border border-border bg-input",
             "px-3 py-1",
             "text-base md:text-sm",

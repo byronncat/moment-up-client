@@ -9,7 +9,7 @@ import throttle from "@/helpers/throttle";
 import { cn } from "@/lib/utils";
 import FeedItem, { FeedItemSkeleton, CreateFeedButton } from "./FeedItem";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight } from "@/components/icons";
+import { Chevron } from "@/components/icons";
 
 type Direction = "left" | "right";
 const ITEMS_PER_VIEW = 3;
@@ -135,9 +135,9 @@ function NavigationButton({
       )}
     >
       {direction === "left" ? (
-        <ChevronLeft className="size-8 -mt-3" />
+        <Chevron direction="left" className="size-8 -mt-3" />
       ) : (
-        <ChevronRight className="size-8 -mt-3" />
+        <Chevron direction="right" className="size-8 -mt-3" />
       )}
     </button>
   );

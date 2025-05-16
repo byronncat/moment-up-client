@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import zodSchema from "@/lib/zodSchema";
 import { useAuth } from "@/components/providers";
 import { ROUTE } from "@/constants/clientConfig";
+import { styles } from "../../_constants/styles";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -49,7 +50,7 @@ export default function LoginForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(loginHandler)}>
-        <div className="space-y-4">
+        <div className={styles.inputGroup}>
           <FormField
             control={form.control}
             name="identity"
@@ -58,7 +59,7 @@ export default function LoginForm() {
                 <FormControl>
                   <Input
                     placeholder="Username or Email"
-                    className="h-10 bg-card"
+                    className={styles.input}
                     autoComplete="username"
                     {...field}
                   />
@@ -75,7 +76,7 @@ export default function LoginForm() {
                 <FormControl>
                   <PasswordInput
                     placeholder="Pasword"
-                    className="h-10 bg-card"
+                    className={styles.input}
                     autoComplete="current-password"
                     {...field}
                   />

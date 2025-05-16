@@ -8,6 +8,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import { UserApi } from "@/services";
+import format from "@/utilities/format";
 import { ROUTE } from "@/constants/clientConfig";
 
 import { Avatar, UserInfoCard } from "../common";
@@ -241,7 +242,7 @@ function Footer({ postData }: FooterProps) {
           )}
         />
       ),
-      hoverColor: "pink-500",
+      color: "pink-500",
       count: postData.likes,
       tooltip: "Like",
       isActive: postData.isLiked,
@@ -257,7 +258,7 @@ function Footer({ postData }: FooterProps) {
           )}
         />
       ),
-      hoverColor: "sky-500",
+      color: "sky-500",
       count: postData.comments,
       tooltip: "Comment",
     },
@@ -271,7 +272,7 @@ function Footer({ postData }: FooterProps) {
           )}
         />
       ),
-      hoverColor: "green-500",
+      color: "green-500",
       count: 73,
       tooltip: "Repost",
     },
@@ -286,7 +287,7 @@ function Footer({ postData }: FooterProps) {
           )}
         />
       ),
-      hoverColor: "yellow-500",
+      color: "yellow-500",
       tooltip: "Bookmark",
     },
     {
@@ -299,7 +300,7 @@ function Footer({ postData }: FooterProps) {
           )}
         />
       ),
-      hoverColor: "blue-500",
+      color: "blue-500",
       tooltip: "Share",
     },
   ];
@@ -329,24 +330,55 @@ function Footer({ postData }: FooterProps) {
 
 type ActionButtonProps = {
   icon: React.ReactNode;
-  hoverColor: string;
-  count?: number;
+  color: string;
   tooltip: string;
+  count?: number;
   isActive?: boolean;
-  activeColor?: string;
   onClick?: () => void;
 };
 
 function ActionButton({
   icon,
-  hoverColor,
+  color,
   count,
   tooltip,
   isActive = false,
-  activeColor,
   onClick,
 }: ActionButtonProps) {
-  const color = isActive ? activeColor || hoverColor : undefined;
+  let textClass = "";
+  let hoverTextClass = "";
+  let bgHoverClass = "";
+  switch (color) {
+    case "pink-500":
+      textClass = "text-pink-500";
+      hoverTextClass = "hover:text-pink-500";
+      bgHoverClass = "group-hover:bg-pink-500/10";
+      break;
+    case "sky-500":
+      textClass = "text-sky-500";
+      hoverTextClass = "hover:text-sky-500";
+      bgHoverClass = "group-hover:bg-sky-500/10";
+      break;
+    case "green-500":
+      textClass = "text-green-500";
+      hoverTextClass = "hover:text-green-500";
+      bgHoverClass = "group-hover:bg-green-500/10";
+      break;
+    case "yellow-500":
+      textClass = "text-yellow-500";
+      hoverTextClass = "hover:text-yellow-500";
+      bgHoverClass = "group-hover:bg-yellow-500/10";
+      break;
+    case "blue-500":
+      textClass = "text-blue-500";
+      hoverTextClass = "hover:text-blue-500";
+      bgHoverClass = "group-hover:bg-blue-500/10";
+      break;
+    default:
+      textClass = "";
+      hoverTextClass = "";
+      bgHoverClass = "";
+  }
 
   return (
     <Tooltip content={tooltip} sideOffset={6}>
@@ -355,7 +387,7 @@ function ActionButton({
         onClick={onClick}
         className={cn(
           "group flex items-center gap-1",
-          isActive ? `text-${color}` : `hover:text-${hoverColor}`,
+          isActive ? textClass : hoverTextClass,
           "cursor-pointer",
           buttonStyles.transition
         )}
@@ -363,13 +395,13 @@ function ActionButton({
         <div
           className={cn(
             "p-2 rounded-full",
-            `group-hover:bg-${hoverColor}/10`,
+            bgHoverClass,
             buttonStyles.transition
           )}
         >
           {icon}
         </div>
-        {count !== undefined && <span>{count}</span>}
+        {count && <span>{format.number(count)}</span>}
       </button>
     </Tooltip>
   );
