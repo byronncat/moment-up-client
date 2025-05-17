@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { CircleExclamation } from "@/components/icons";
 import { RotateCw } from "lucide-react";
 
-export default function MomentError({
+export default function ErrorContent({
   onRefresh,
 }: Readonly<{
   onRefresh: () => void;

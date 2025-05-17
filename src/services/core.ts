@@ -1,5 +1,6 @@
 import { mockFeed, mockFeeds, mockMoments } from "@/__mocks__";
 import type { API, FeedInfo, FeedNotification, DetailedMoment } from "api";
+import { PAGE_CONFIG } from "@/constants/clientConfig";
 
 export async function getFeeds(): Promise<API<FeedNotification[]>> {
   return new Promise((resolve) => {
@@ -38,10 +39,9 @@ export async function getFeed(feedId: string): Promise<API<FeedInfo>> {
   });
 }
 
-const PAGE_SIZE = 5;
 export async function getMoments(page: number): Promise<API<DetailedMoment[]>> {
-  const start = (page - 1) * PAGE_SIZE;
-  const end = start + PAGE_SIZE;
+  const start = (page - 1) * PAGE_CONFIG.MOMENT_CARD_PAGE;
+  const end = start + PAGE_CONFIG.MOMENT_CARD_PAGE;
   const moments = mockMoments.slice(start, end);
 
   return new Promise((resolve) => {
@@ -51,7 +51,7 @@ export async function getMoments(page: number): Promise<API<DetailedMoment[]>> {
         message: "ok",
         data: moments,
       });
-    }, 5000);
+    }, 1000);
   });
 }
 
@@ -64,6 +64,33 @@ export async function getMoment(
         success: true,
         message: "ok",
         data: mockMoments.find((moment) => moment.id === momentId),
+      });
+    }, 1000);
+  });
+}
+
+export async function explore(
+  type: "media" | "moments",
+  page: number
+): Promise<API<DetailedMoment[]>> {
+  const start =
+    (page - 1) *
+    (type === "media"
+      ? PAGE_CONFIG.MOMENT_CELL_PAGE
+      : PAGE_CONFIG.MOMENT_CARD_PAGE);
+  const end =
+    start +
+    (type === "media"
+      ? PAGE_CONFIG.MOMENT_CELL_PAGE
+      : PAGE_CONFIG.MOMENT_CARD_PAGE);
+  const moments = mockMoments.slice(start, end);
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        success: true,
+        message: "ok",
+        data: moments,
       });
     }, 1000);
   });

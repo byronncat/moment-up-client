@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from "@/constants/metadata";
 import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
 import { Image, Users } from "lucide-react";
@@ -22,11 +21,12 @@ const tabs: NavItem[] = [
   },
 ];
 
+export const metadata = Metadata.explore;
 export default function ExploreLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className={cn("flex flex-col", "pt-0 sm:pt-2 pb-10")}>
+    <div className={cn("flex flex-col h-full", "pt-0 sm:pt-2 pb-10")}>
       <NavigationBar items={tabs} className="mb-8" />
       <div className="flex-1">{children}</div>
     </div>

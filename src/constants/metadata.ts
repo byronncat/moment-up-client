@@ -33,4 +33,8 @@ export const Metadata: MetadataMap = {
     title: "Home",
     description: "Home page",
   },
+  explore: {
+    title: "Explore",
+    description: "Explore page",
+  },
 };

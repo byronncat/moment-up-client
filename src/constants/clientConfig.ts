@@ -42,3 +42,10 @@ export const ASPECT_RATIO = {
   HORIZONTAL: 1.91 / 1,
   VERTICAL: 9 / 16,
 };
+
+export const PAGE_CONFIG = {
+  MOMENT_CARD_PAGE: 6,
+  MOMENT_CARD_CHUNK: 2,
+  MOMENT_CELL_PAGE: 24,
+  MOMENT_CELL_CHUNK: 12,
+};

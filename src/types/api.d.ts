@@ -86,8 +86,4 @@ declare module "api" {
     user: UserInfo;
     post: MomentInfo;
   };
-
-  type CellMoment = MomentInfo & {
-    id: MomentSchema["id"];
-  };
 }

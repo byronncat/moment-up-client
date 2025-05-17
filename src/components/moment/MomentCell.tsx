@@ -1,16 +1,17 @@
-import type { CellMoment } from "api";
+import type { DetailedMoment } from "api";
 
 import Image from "next/image";
 import { cn } from "@/libraries/utils";
 import { Heart, Comment, Clone, Video } from "@/components/icons";
 
 type MomentCellProps = Readonly<{
-  data: CellMoment;
+  data: DetailedMoment;
 }>;
 
 export default function MomentCell({ data }: MomentCellProps) {
-  if (!data.files || data.files.length === 0) return null;
-  const randomFile = data.files[Math.floor(Math.random() * data.files.length)];
+  if (!data.post.files || data.post.files.length === 0) return null;
+  const randomFile =
+    data.post.files[Math.floor(Math.random() * data.post.files.length)];
 
   return (
     <div key={data.id} className="relative group shadow-lg">
@@ -25,11 +26,13 @@ export default function MomentCell({ data }: MomentCellProps) {
         {randomFile.type === "image" ? (
           <Image
             src={randomFile.url}
-            alt={data.text || "Moment image"}
+            alt={data.post.text || "Moment image"}
             fill
-            sizes="(min-width: 640px) 640px, 100vw"
+            sizes="33vw"
             className="size-full object-cover object-top"
             loading="lazy"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQrJyEwPDY2ODYyTEhMR0BGRlNCRkJHYGFjYWM4OTtBV0ZGUJJgdmBwoKD/2wBDARUXFx4aHh0eHCAdHyChOKE4oaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaH/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
           />
         ) : (
           <video
@@ -40,17 +43,17 @@ export default function MomentCell({ data }: MomentCellProps) {
           />
         )}
 
-        {data.files.some((file) => file.type === "video") ? (
+        {data.post.files.some((file) => file.type === "video") ? (
           <span className="absolute top-3 right-3">
             <Video className="size-5 fill-white" type="solid" />
           </span>
-        ) : data.files.length > 1 ? (
+        ) : data.post.files.length > 1 ? (
           <span className="absolute top-3 right-3">
             <Clone className="size-5 fill-white" type="solid" />
           </span>
         ) : null}
 
-        <HoverOverlay likes={data.likes} comments={data.comments} />
+        <HoverOverlay likes={data.post.likes} comments={data.post.comments} />
       </div>
     </div>
   );
