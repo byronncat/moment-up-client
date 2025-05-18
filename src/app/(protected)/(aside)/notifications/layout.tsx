@@ -2,9 +2,7 @@
 
 import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
-import NavigationBar, {
-  type NavItem,
-} from "@/components/HorizontalNavigationBar";
+import { NavigationBar, type NavItem } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Cog, Bell, User } from "lucide-react";
 

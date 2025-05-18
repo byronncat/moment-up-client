@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserInfo } from "api";
+import type { UserCardInfo } from "api";
 
 import { useState } from "react";
 import { cn } from "@/libraries/utils";
@@ -21,7 +21,7 @@ import { CircleCheck } from "../icons";
 import { UserMinus, UserPlus, UserCheck } from "lucide-react";
 
 type UserInfoCardProps = Readonly<{
-  user: UserInfo;
+  user: UserCardInfo;
   isFollowing?: boolean;
   onFollow?: (e: React.MouseEvent) => void;
 }>;
@@ -118,8 +118,8 @@ function FollowSection({
   following,
   followers,
 }: Readonly<{
-  following: UserInfo["following"];
-  followers: UserInfo["followers"];
+  following: UserCardInfo["following"];
+  followers: UserCardInfo["followers"];
 }>) {
   return (
     <div className={cn("flex gap-3", "text-sm", "mt-3")}>
@@ -139,7 +139,7 @@ const MAX_FOLLOWED_BY_DISPLAY = 3;
 function FollowedBy({
   users,
 }: Readonly<{
-  users: UserInfo["followedBy"];
+  users: UserCardInfo["followedBy"];
 }>) {
   if (!users) return null;
   const DisplayUsers = users.displayItems;

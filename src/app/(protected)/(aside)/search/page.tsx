@@ -13,9 +13,7 @@ import { cn } from "@/libraries/utils";
 import type { DetailedMoment } from "api";
 
 import { SearchInput, SearchItem } from "../_components";
-import NavigationBar, {
-  type NavItem,
-} from "@/components/HorizontalNavigationBar";
+import { NavigationBar, type NavItem } from "@/components";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { XMark, CircleCheck, User } from "@/components/icons";
 import { MomentCell } from "@/components/moment";

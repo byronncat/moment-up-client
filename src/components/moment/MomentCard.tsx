@@ -1,6 +1,6 @@
 "use client";
 
-import type { DetailedMoment, UserInfo } from "api";
+import type { DetailedMoment, UserCardInfo } from "api";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -409,7 +409,7 @@ function ActionButton({
 }
 
 type HoverableComponentProps = ComponentProps<{
-  userInfo: UserInfo;
+  userInfo: UserCardInfo;
   isFollowing: boolean;
   followHandler: (e: React.MouseEvent) => void;
 }>;

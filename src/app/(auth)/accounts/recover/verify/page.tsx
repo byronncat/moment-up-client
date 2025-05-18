@@ -5,7 +5,7 @@ import { PageTitle } from "../../../_components";
 import { ChangePasswordForm } from "./_components";
 import Link from "next/link";
 
-export const metadata = Metadata.verifyRecovery;
+export const metadata = Metadata.verify;
 export default function VerifyRecoveryPage() {
   return (
     <div className={cn("w-96 rounded-lg", "px-5 pt-6 pb-5")}>

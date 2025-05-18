@@ -4,9 +4,10 @@ import { User } from "../icons";
 
 type AvatarProps = ComponentProps<{
   src?: string;
-  alt: string;
-  size: "7" | "10" | "12" | "14";
+  alt?: string;
+  size: "7" | "10" | "12" | "14" | "26";
   ring?: boolean;
+  showRing?: boolean;
   className?: string;
 }>;
 
@@ -31,6 +32,11 @@ const sizeClass = {
     avatar: "size-14",
     userFallback: "size-8",
   },
+  "26": {
+    ring: "size-28",
+    avatar: "size-26",
+    userFallback: "size-14",
+  },
 };
 
 export default function Avatar({
@@ -38,6 +44,7 @@ export default function Avatar({
   alt,
   size,
   ring = false,
+  showRing = true,
   className,
 }: AvatarProps) {
   const sizeStyles = sizeClass[size];
@@ -47,7 +54,8 @@ export default function Avatar({
         sizeStyles.ring,
         "rounded-full",
         "flex items-center justify-center",
-        "border-2 border-primary",
+        "border-2",
+        showRing ? "border-primary" : "border-transparent",
         className
       )}
     >

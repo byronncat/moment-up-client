@@ -1,9 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/libraries/utils";
+import Link from "next/link";
 
 export type NavItem = {
   id: string;
@@ -70,8 +70,8 @@ function Item({ data, active }: ItemProps) {
         "px-6 py-3",
         "transition-colors duration-200 ease-in-out",
         active
-          ? "text-foreground"
-          : "text-muted-foreground hover:text-foreground"
+          ? "text-primary bg-primary/10"
+          : "text-muted-foreground hover:text-muted-foreground hover:bg-muted"
       )}
     >
       <div className={cn("flex justify-center items-center gap-2", "w-full")}>

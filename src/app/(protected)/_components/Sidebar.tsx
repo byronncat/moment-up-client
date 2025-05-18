@@ -57,51 +57,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { sourceCodePro } from "@/styles/fonts";
 
-const items = [
-  {
-    title: "Home",
-    url: ROUTE.HOME,
-    icon: Home,
-    matchPath: (pathname: string) => pathname === ROUTE.HOME,
-  },
-  {
-    title: "Search",
-    url: ROUTE.SEARCH(),
-    icon: Search,
-    matchPath: (pathname: string) => pathname.startsWith(ROUTE.SEARCH()),
-  },
-  {
-    title: "Explore",
-    url: ROUTE.EXPLORE(),
-    icon: Compass,
-    matchPath: (pathname: string) => pathname.startsWith(ROUTE.EXPLORE()),
-  },
-  {
-    title: "Create",
-    url: "#",
-    icon: SquarePlus,
-    matchPath: () => false,
-  },
-  {
-    title: "Messages",
-    url: ROUTE.MESSAGES,
-    icon: MessagesSquare,
-    matchPath: (pathname: string) => pathname === ROUTE.MESSAGES,
-  },
-  {
-    title: "Notifications",
-    url: ROUTE.NOTIFICATION(),
-    icon: Bell,
-    matchPath: (pathname: string) => pathname.startsWith(ROUTE.NOTIFICATION()),
-  },
-  {
-    title: "Profile",
-    url: ROUTE.PROFILE("username"),
-    icon: User,
-    matchPath: (pathname: string) => pathname.startsWith("/profile"),
-  },
-];
-
 const moreItems = [
   {
     title: "Settings",
@@ -134,11 +89,57 @@ const XL_BREAKPOINT = 1280;
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const { open, setOpen, isMobile } = useSidebar();
   const [isAboveXl, setIsAboveXl] = useState(false);
   const userPreferenceRef = useRef<boolean | null>(null);
   const isFirstRender = useRef(true);
+
+  const items = [
+    {
+      title: "Home",
+      url: ROUTE.HOME,
+      icon: Home,
+      matchPath: (pathname: string) => pathname === ROUTE.HOME,
+    },
+    {
+      title: "Search",
+      url: ROUTE.SEARCH(),
+      icon: Search,
+      matchPath: (pathname: string) => pathname.startsWith(ROUTE.SEARCH()),
+    },
+    {
+      title: "Explore",
+      url: ROUTE.EXPLORE(),
+      icon: Compass,
+      matchPath: (pathname: string) => pathname.startsWith(ROUTE.EXPLORE()),
+    },
+    {
+      title: "Create",
+      url: "#",
+      icon: SquarePlus,
+      matchPath: () => false,
+    },
+    {
+      title: "Messages",
+      url: ROUTE.MESSAGES,
+      icon: MessagesSquare,
+      matchPath: (pathname: string) => pathname === ROUTE.MESSAGES,
+    },
+    {
+      title: "Notifications",
+      url: ROUTE.NOTIFICATION(),
+      icon: Bell,
+      matchPath: (pathname: string) =>
+        pathname.startsWith(ROUTE.NOTIFICATION()),
+    },
+    {
+      title: "Profile",
+      url: user?.username ? ROUTE.PROFILE(user.username) : "#",
+      icon: User,
+      matchPath: (pathname: string) => pathname.startsWith("/profile"),
+    },
+  ];
 
   function logoutHandler() {
     logout();
@@ -309,7 +310,13 @@ export default function Sidebar() {
                   <SidebarMenuItem key={item.title}>
                     {!open ? (
                       <Tooltip content={item.title} side="right" sideOffset={6}>
-                        <SidebarMenuButton asChild className={cn(item.matchPath(pathname) && "font-semibold bg-primary text-white hover:bg-primary/80 hover:text-white")}>
+                        <SidebarMenuButton
+                          asChild
+                          className={cn(
+                            item.matchPath(pathname) &&
+                              "font-semibold bg-primary text-white hover:bg-primary/80 hover:text-white"
+                          )}
+                        >
                           <Link href={item.url}>
                             <item.icon />
                             <span>{item.title}</span>
@@ -317,7 +324,13 @@ export default function Sidebar() {
                         </SidebarMenuButton>
                       </Tooltip>
                     ) : (
-                      <SidebarMenuButton asChild className={cn(item.matchPath(pathname) && "font-semibold bg-primary text-white hover:bg-primary/80 hover:text-white")}>
+                      <SidebarMenuButton
+                        asChild
+                        className={cn(
+                          item.matchPath(pathname) &&
+                            "font-semibold bg-primary text-white hover:bg-primary/80 hover:text-white"
+                        )}
+                      >
                         <Link href={item.url}>
                           <item.icon />
                           <span>{item.title}</span>

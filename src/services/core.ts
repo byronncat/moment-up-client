@@ -83,7 +83,13 @@ export async function explore(
     (type === "media"
       ? PAGE_CONFIG.MOMENT_CELL_PAGE
       : PAGE_CONFIG.MOMENT_CARD_PAGE);
-  const moments = mockMoments.slice(start, end);
+  const filteredMoments =
+    type === "media"
+      ? mockMoments.filter(
+          (moment) => moment.post.files && moment.post.files.length > 0
+        )
+      : mockMoments;
+  const moments = filteredMoments.slice(start, end);
 
   return new Promise((resolve) => {
     setTimeout(() => {

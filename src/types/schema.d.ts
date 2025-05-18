@@ -7,6 +7,7 @@ declare module "schema" {
     password_hash?: string;
     bio?: string;
     avatar?: string;
+    background_image?: string;
     verified: boolean;
     readonly created_at: Date;
   };

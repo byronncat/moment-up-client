@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserInfo } from "api";
+import type { UserCardInfo } from "api";
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -20,7 +20,9 @@ import { CircleCheck } from "@/components/icons";
 import SectionHeader from "./SectionHeader";
 
 export default function SuggestedSection() {
-  const [suggestedUsers, setSuggestedUsers] = useState<UserInfo[] | null>(null);
+  const [suggestedUsers, setSuggestedUsers] = useState<UserCardInfo[] | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -69,7 +71,7 @@ function SkeletonUserItem() {
 function SuggestedUserItem({
   user,
 }: Readonly<{
-  user: UserInfo;
+  user: UserCardInfo;
 }>) {
   const [isFollowing, setIsFollowing] = useState(false);
   const router = useRouter();

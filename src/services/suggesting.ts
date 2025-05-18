@@ -1,9 +1,9 @@
 import { mockSuggestedUsers, mockTrendingTopics } from "@/__mocks__";
 
-import type { API, UserInfo } from "api";
+import type { API, UserCardInfo } from "api";
 import { HashtagItem } from "schema";
 
-export async function getSuggestedUsers(): Promise<API<UserInfo[]>> {
+export async function getSuggestedUsers(): Promise<API<UserCardInfo[]>> {
   try {
     await new Promise((resolve) => {
       setTimeout(() => {

@@ -10,11 +10,13 @@ type MomentCellProps = Readonly<{
 
 export default function MomentCell({ data }: MomentCellProps) {
   if (!data.post.files || data.post.files.length === 0) return null;
-  const randomFile =
-    data.post.files[Math.floor(Math.random() * data.post.files.length)];
+  const coverFile = data.post.files[0];
 
   return (
-    <div key={data.id} className="relative group shadow-lg">
+    <div
+      key={data.id}
+      className={cn("relative group", "rounded-lg shadow-lg overflow-hidden")}
+    >
       <div
         className={cn(
           "aspect-square overflow-hidden",
@@ -23,9 +25,9 @@ export default function MomentCell({ data }: MomentCellProps) {
           "relative"
         )}
       >
-        {randomFile.type === "image" ? (
+        {coverFile.type === "image" ? (
           <Image
-            src={randomFile.url}
+            src={coverFile.url}
             alt={data.post.text || "Moment image"}
             fill
             sizes="33vw"
@@ -36,7 +38,7 @@ export default function MomentCell({ data }: MomentCellProps) {
           />
         ) : (
           <video
-            src={randomFile.url}
+            src={coverFile.url}
             className="size-full object-cover"
             playsInline
             preload="metadata"

@@ -1,7 +1,6 @@
 "use client";
 
-import type { DetailedMoment, ProfileInfo } from "api";
-import { usePathname } from "next/navigation";
+import type { DetailedMoment } from "api";
 import { useState, useEffect, useCallback, useRef, use } from "react";
 import { useInfiniteScroll, useChunkRender } from "@/hooks";
 import { UserApi } from "@/services";
@@ -9,19 +8,20 @@ import { PAGE_CONFIG } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import { NoContent, ErrorContent } from "@/components";
-import { MomentCell } from "@/components/moment";
-import { Skeleton } from "@/components/ui/skeleton";
+import { MomentCard, MomentSkeleton } from "@/components/moment";
 import { Loader2 } from "lucide-react";
 
-export default function MediaPage() {
+export default function ProfilePage({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}) {
   const [isLoaded, setLoaded] = useState(false);
   const isInitialLoading = useRef(false);
-  const pathname = usePathname();
-  const segments = pathname.split("/").filter(Boolean);
-  const username = segments.at(-2) as ProfileInfo["username"];
+  const username = use(params).username;
 
   const {
-    items: media,
+    items: moments,
     isLoading: isLoadingMore,
     hasMore,
     loaderRef,
@@ -35,68 +35,62 @@ export default function MediaPage() {
     hasMoreChunks,
     chunkLoaderRef,
     reset: resetChunks,
-  } = useChunkRender(media ?? [], {
-    chunkSize: PAGE_CONFIG.MOMENT_CELL_CHUNK,
+  } = useChunkRender(moments ?? [], {
+    chunkSize: PAGE_CONFIG.MOMENT_CARD_CHUNK,
   });
 
-  const visibleMedia = media?.slice(0, itemsToShow) ?? [];
+  const visibleMoments = moments?.slice(0, itemsToShow) ?? [];
 
-  const fetchMediaPage = useCallback(
+  const fetchMomentsPage = useCallback(
     async (page: number) => {
       if (!username) throw new Error("Username is required");
-      const res = await UserApi.getMoments("media", username, page);
+      const res = await UserApi.getMoments("moments", username, page);
       if (res.success) {
         return res.data ?? [];
       }
-      throw new Error("Failed to fetch media");
+      throw new Error("Failed to fetch moments");
     },
     [username]
   );
 
-  const fetchInitialMedia = useCallback(async () => {
+  const fetchInitialMoments = useCallback(async () => {
     if (isInitialLoading.current) return;
     isInitialLoading.current = true;
 
     try {
-      await loadMore(fetchMediaPage);
+      await loadMore(fetchMomentsPage);
     } finally {
       setLoaded(true);
       isInitialLoading.current = false;
     }
-  }, [fetchMediaPage]);
+  }, [fetchMomentsPage]);
 
   async function handleRefresh() {
     setLoaded(false);
     resetChunks();
     resetInfiniteScroll();
-    await fetchInitialMedia();
+    await fetchInitialMoments();
   }
 
   useEffect(() => {
-    fetchInitialMedia();
-  }, [fetchInitialMedia]);
+    fetchInitialMoments();
+  }, [fetchInitialMoments]);
 
   let content = null;
   if (!isLoaded) {
     content = (
       <>
-        {Array(9)
-          .fill(0)
-          .map((_, i) => (
-            <Skeleton key={i} className="aspect-square" />
-          ))}
+        <MomentSkeleton variant="horizontal" />
+        <MomentSkeleton variant="square" />
       </>
     );
   } else if (error) {
     content = <ErrorContent onRefresh={handleRefresh} />;
-  } else if (media && media.length > 0) {
+  } else if (moments && moments.length > 0) {
     const footer = hasMore
       ? isLoadingMore && (
           <div
-            className={cn(
-              "col-span-3 py-4",
-              "flex justify-center items-center"
-            )}
+            className={cn("w-full py-12", "flex justify-center items-center")}
           >
             <Loader2 className="size-8 animate-spin text-muted-foreground" />
           </div>
@@ -105,8 +99,8 @@ export default function MediaPage() {
 
     content = (
       <>
-        {visibleMedia.map((item) => (
-          <MomentCell key={item.id} data={item} />
+        {visibleMoments.map((moment) => (
+          <MomentCard key={moment.id} data={moment} />
         ))}
         <div
           ref={chunkLoaderRef}
@@ -122,15 +116,13 @@ export default function MediaPage() {
   } else {
     content = (
       <NoContent
-        title="No media yet"
-        description="When this user posts media, they'll show up here."
+        title="No moments yet"
+        description="When this user posts moments, they'll show up here."
       />
     );
   }
 
   return (
-    <div className={cn("grid grid-cols-3", "gap-1", "px-1 sm:px-0 mt-5")}>
-      {content}
-    </div>
+    <div className={cn("flex flex-col gap-4", "px-3 sm:px-0")}>{content}</div>
   );
 }

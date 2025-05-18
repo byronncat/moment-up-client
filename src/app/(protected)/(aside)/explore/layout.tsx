@@ -1,10 +1,8 @@
 import { Metadata } from "@/constants/metadata";
-import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
+import { cn } from "@/libraries/utils";
+import { NavigationBar, type NavItem } from "@/components";
 import { Image, Users } from "lucide-react";
-import NavigationBar, {
-  type NavItem,
-} from "@/components/HorizontalNavigationBar";
 
 const tabs: NavItem[] = [
   {

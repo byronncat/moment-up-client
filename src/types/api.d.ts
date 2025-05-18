@@ -22,10 +22,15 @@ declare module "api" {
     verified: User["verified"];
   };
 
-  type UserInfo = AccountInfo & {
+  type ProfileInfo = AccountInfo & {
+    bio?: User["bio"];
+    backgroundImage?: User["background_image"];
+    hasFeed: boolean;
     followers: number;
     following: number;
-    bio?: User["bio"];
+  };
+
+  type UserCardInfo = Omit<ProfileInfo, "backgroundImage"> & {
     followedBy?: {
       displayItems: {
         id: User["id"];
@@ -83,7 +88,7 @@ declare module "api" {
 
   type DetailedMoment = {
     id: MomentSchema["id"];
-    user: UserInfo;
+    user: UserCardInfo;
     post: MomentInfo;
   };
 }

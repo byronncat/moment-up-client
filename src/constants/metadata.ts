@@ -1,7 +1,14 @@
 import type { Metadata as NextMetadata } from "next";
 
-type MetadataMap = {
-  [key: string]: NextMetadata;
+export type MetadataMap = {
+  root: NextMetadata;
+  login: NextMetadata;
+  signup: NextMetadata;
+  recover: NextMetadata;
+  verify: NextMetadata;
+  home: NextMetadata;
+  explore: NextMetadata;
+  profile: (username: string) => NextMetadata;
 };
 
 export const Metadata: MetadataMap = {
@@ -36,5 +43,11 @@ export const Metadata: MetadataMap = {
   explore: {
     title: "Explore",
     description: "Explore page",
+  },
+  profile: (username: string) => {
+    return {
+      title: `@${username}`,
+      description: `Profile page of ${username}`,
+    };
   },
 };
