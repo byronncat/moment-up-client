@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/components/providers";
 import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
 
+import Link from "next/link";
 import Logo from "@/components/common/Logo";
 import Tooltip from "@/components/common/Tooltip";
 import {
@@ -61,36 +62,43 @@ const items = [
     title: "Home",
     url: ROUTE.HOME,
     icon: Home,
+    matchPath: (pathname: string) => pathname === ROUTE.HOME,
   },
   {
     title: "Search",
     url: ROUTE.SEARCH(),
     icon: Search,
+    matchPath: (pathname: string) => pathname.startsWith(ROUTE.SEARCH()),
   },
   {
     title: "Explore",
     url: ROUTE.EXPLORE(),
     icon: Compass,
+    matchPath: (pathname: string) => pathname.startsWith(ROUTE.EXPLORE()),
   },
   {
     title: "Create",
     url: "#",
     icon: SquarePlus,
+    matchPath: () => false,
   },
   {
     title: "Messages",
     url: ROUTE.MESSAGES,
     icon: MessagesSquare,
+    matchPath: (pathname: string) => pathname === ROUTE.MESSAGES,
   },
   {
     title: "Notifications",
     url: ROUTE.NOTIFICATION(),
     icon: Bell,
+    matchPath: (pathname: string) => pathname.startsWith(ROUTE.NOTIFICATION()),
   },
   {
     title: "Profile",
     url: ROUTE.PROFILE("username"),
     icon: User,
+    matchPath: (pathname: string) => pathname.startsWith("/profile"),
   },
 ];
 
@@ -125,6 +133,7 @@ const moreItems = [
 const XL_BREAKPOINT = 1280;
 
 export default function Sidebar() {
+  const pathname = usePathname();
   const { logout } = useAuth();
   const { open, setOpen, isMobile } = useSidebar();
   const [isAboveXl, setIsAboveXl] = useState(false);
@@ -300,7 +309,7 @@ export default function Sidebar() {
                   <SidebarMenuItem key={item.title}>
                     {!open ? (
                       <Tooltip content={item.title} side="right" sideOffset={6}>
-                        <SidebarMenuButton asChild>
+                        <SidebarMenuButton asChild className={cn(item.matchPath(pathname) && "font-semibold bg-primary text-white hover:bg-primary/80 hover:text-white")}>
                           <Link href={item.url}>
                             <item.icon />
                             <span>{item.title}</span>
@@ -308,7 +317,7 @@ export default function Sidebar() {
                         </SidebarMenuButton>
                       </Tooltip>
                     ) : (
-                      <SidebarMenuButton asChild>
+                      <SidebarMenuButton asChild className={cn(item.matchPath(pathname) && "font-semibold bg-primary text-white hover:bg-primary/80 hover:text-white")}>
                         <Link href={item.url}>
                           <item.icon />
                           <span>{item.title}</span>
