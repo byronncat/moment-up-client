@@ -18,7 +18,7 @@ export const ROUTE = {
   MESSAGE: (contactId?: string) =>
     `/messages${contactId ? `/${contactId}` : ""}`,
   THOUGHT: "/messages/thought",
-  NOTIFICATION: (type: "all" | "mentions" = "all") =>
+  NOTIFICATION: (type: "all" | "requests" | "information" = "all") =>
     `/notifications${type === "all" ? "" : `/${type}`}`,
   SETTINGS: "/settings",
 };

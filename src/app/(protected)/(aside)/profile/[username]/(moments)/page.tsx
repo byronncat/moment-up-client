@@ -115,10 +115,12 @@ export default function ProfilePage({
     );
   } else {
     content = (
-      <NoContent
-        title="No moments yet"
-        description="When this user posts moments, they'll show up here."
-      />
+      <div className="mt-32">
+        <NoContent
+          title="No moments yet"
+          description="When this user posts moments, they'll show up here."
+        />
+      </div>
     );
   }
 

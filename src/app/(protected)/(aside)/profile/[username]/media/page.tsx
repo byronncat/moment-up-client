@@ -120,11 +120,13 @@ export default function MediaPage() {
       </>
     );
   } else {
-    content = (
-      <NoContent
-        title="No media yet"
-        description="When this user posts media, they'll show up here."
-      />
+    return (
+      <div className="mt-32">
+        <NoContent
+          title="No media yet"
+          description="When this user posts media, they'll show up here."
+        />
+      </div>
     );
   }
 

@@ -5,6 +5,7 @@ declare module "api" {
     HashtagItem,
     Feed,
     File,
+    Notification as NotificationSchema,
   } from "schema";
 
   type API<T = void> = {
@@ -91,4 +92,26 @@ declare module "api" {
     user: UserCardInfo;
     post: MomentInfo;
   };
+
+  // Others
+  type SecurityNotification = NotificationSchema & {
+    type: "security";
+    information: "login";
+  };
+
+  type CommunityNotification = NotificationSchema & {
+    type: "community";
+    information: {
+      type: "post" | "mention";
+      avatar: User["avatar"];
+      displayName: User["display_name"];
+      content: string;
+    } | {
+      type: "follow";
+      avatar: User["avatar"];
+      displayName: User["display_name"];
+    };
+  };
+
+  type Notification = SecurityNotification | CommunityNotification;
 }

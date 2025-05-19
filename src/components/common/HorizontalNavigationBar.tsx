@@ -70,8 +70,8 @@ function Item({ data, active }: ItemProps) {
         "px-6 py-3",
         "transition-colors duration-200 ease-in-out",
         active
-          ? "text-primary bg-primary/10"
-          : "text-muted-foreground hover:text-muted-foreground hover:bg-muted"
+          ? "text-primary bg-primary/20"
+          : "text-muted-foreground hover:bg-muted"
       )}
     >
       <div className={cn("flex justify-center items-center gap-2", "w-full")}>

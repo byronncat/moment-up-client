@@ -46,7 +46,7 @@ export default async function Layout({ children, params }: LayoutProps) {
           className={cn(
             "mb-4",
             "bg-card rounded-b-lg",
-            "dark:border-b border-border",
+            "dark:border-b border-x border-border",
             "overflow-hidden shadow-sm"
           )}
         >

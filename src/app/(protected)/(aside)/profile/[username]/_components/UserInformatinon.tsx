@@ -87,7 +87,7 @@ export default function Information({
 function UserInformationSkeleton() {
   return (
     <div className={cn("w-full relative", "flex flex-col items-center")}>
-      <Skeleton className={cn("w-full h-40", "-mb-15 bg-muted")} />
+      <Skeleton className={cn("w-full h-40", "-mb-15 bg-muted rounded-none")} />
 
       <Avatar size="26" ring showRing={false} />
 

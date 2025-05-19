@@ -9,6 +9,7 @@ export type MetadataMap = {
   home: NextMetadata;
   explore: NextMetadata;
   profile: (username: string) => NextMetadata;
+  notifications: NextMetadata;
 };
 
 export const Metadata: MetadataMap = {
@@ -49,5 +50,9 @@ export const Metadata: MetadataMap = {
       title: `@${username}`,
       description: `Profile page of ${username}`,
     };
+  },
+  notifications: {
+    title: "Notifications",
+    description: "Notifications page",
   },
 };

@@ -115,10 +115,12 @@ export default function LikesPage({
     );
   } else {
     content = (
-      <NoContent
-        title="No liked moments"
-        description="When this user likes moments, they'll show up here."
-      />
+      <div className="mt-32">
+        <NoContent
+          title="No liked moments"
+          description="When this user likes moments, they'll show up here."
+        />
+      </div>
     );
   }
 

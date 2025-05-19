@@ -55,6 +55,13 @@ declare module "schema" {
     readonly created_at: Date;
   };
 
+  type Notification = {
+    readonly id: string;
+    readonly user_id: User["id"];
+    readonly created_at: Date;
+    type: "community" | "security" | "system";
+  };
+
   type File = {
     readonly id: string;
     readonly type: "image" | "video" | "audio";

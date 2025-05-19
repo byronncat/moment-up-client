@@ -6,6 +6,7 @@ import type {
   FeedNotification,
   FeedInfo,
   ProfileInfo,
+  Notification,
 } from "api";
 import { HashtagItem } from "schema";
 import sound1 from "./1.mp3";
@@ -72,6 +73,8 @@ const avatar = isDev
       "https://pbs.twimg.com/media/FTwr23WVIAA9yL3?format=jpg&name=large",
 
       "https://pbs.twimg.com/media/GgwpklCa0AA8MkD?format=jpg&name=4096x4096",
+
+      "https://pbs.twimg.com/media/GjPNWTNb0AAZvar?format=jpg&name=medium",
     ]
   : [];
 
@@ -644,7 +647,7 @@ export const mockMoments: DetailedMoment[] = isDev
             {
               id: "1",
               type: "image",
-              url: "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
+              url: "https://pbs.twimg.com/media/GjPNWTNb0AAZvar?format=jpg&name=medium",
             },
             {
               id: "2",
@@ -1612,151 +1615,48 @@ export const mockQuickReplies: string[] = [
   "Is anyone available to chat?",
 ];
 
-export const mockNotifications = [
+export const mockNotifications: Notification[] = [
   {
-    identity: {
-      name: "Mei",
-      avatar: getRandomFile("mei"),
-    },
-    content:
-      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
-    timestamp: "1h",
-    id: 1,
+    id: "1",
+    user_id: "1",
+    created_at: new Date(),
+    type: "security",
+    information: "login",
   },
   {
-    identity: {
-      name: "Thinh",
-      avatar: getRandomFile("thinh"),
+    id: "2",
+    user_id: "1",
+    created_at: new Date(),
+    type: "community",
+    information: {
+      type: "post",
+      avatar: getRandomFile("byronat445"),
+      displayName: "Byron Atwood",
+      content: "Hello, how are you?",
     },
-    content: "Thinh đã theo dõi bạn.",
-    timestamp: "2h",
-    id: 2,
   },
   {
-    identity: {
-      name: "Thinh",
-      avatar: getRandomFile("thinh"),
+    id: "3",
+    user_id: "1",
+    created_at: new Date(),
+    type: "community",
+    information: {
+      type: "mention",
+      avatar: getRandomFile("ethan_byler"),
+      displayName: "Ethan Byler",
+      content: "That's me. Then, how about **Byron Atwood**?",
     },
-    content:
-      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
-    timestamp: "3h",
-    id: 3,
   },
   {
-    identity: {
-      name: "Mei",
-      avatar: getRandomFile("mei"),
+    id: "4",
+    user_id: "1",
+    created_at: new Date(),
+    type: "community",
+    information: {
+      type: "follow",
+      avatar: getRandomFile("yuna"),
+      displayName: "Yuna",
     },
-    content:
-      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
-    timestamp: "1h",
-    id: 4,
-  },
-  {
-    identity: {
-      name: "Thinh",
-      avatar: getRandomFile("thinh"),
-    },
-    content: "Thinh đã theo dõi bạn.",
-    timestamp: "2h",
-    id: 5,
-  },
-  {
-    identity: {
-      name: "Thinh",
-      avatar: getRandomFile("thinh"),
-    },
-    content:
-      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
-    timestamp: "3h",
-    id: 6,
-  },
-  {
-    identity: {
-      name: "Mei",
-      avatar: getRandomFile("mei"),
-    },
-    content:
-      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
-    timestamp: "1h",
-    id: 7,
-  },
-  {
-    identity: {
-      name: "Thinh",
-      avatar: getRandomFile("thinh"),
-    },
-    content: "Thinh đã theo dõi bạn.",
-    timestamp: "2h",
-    id: 8,
-  },
-  {
-    identity: {
-      name: "Thinh",
-      avatar: getRandomFile("thinh"),
-    },
-    content:
-      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
-    timestamp: "3h",
-    id: 9,
-  },
-  {
-    identity: {
-      name: "Mei",
-      avatar: getRandomFile("mei"),
-    },
-    content:
-      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
-    timestamp: "1h",
-    id: 10,
-  },
-  {
-    identity: {
-      name: "Thinh",
-      avatar: getRandomFile("thinh"),
-    },
-    content: "Thinh đã theo dõi bạn.",
-    timestamp: "2h",
-    id: 11,
-  },
-  {
-    identity: {
-      name: "Thinh",
-      avatar: getRandomFile("thinh"),
-    },
-    content:
-      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
-    timestamp: "3h",
-    id: 12,
-  },
-  {
-    identity: {
-      name: "Mei",
-      avatar: getRandomFile("mei"),
-    },
-    content:
-      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
-    timestamp: "1h",
-    id: 13,
-  },
-  {
-    identity: {
-      name: "Thinh",
-      avatar: getRandomFile("thinh"),
-    },
-    content: "Thinh đã theo dõi bạn.",
-    timestamp: "2h",
-    id: 14,
-  },
-  {
-    identity: {
-      name: "Thinh",
-      avatar: getRandomFile("thinh"),
-    },
-    content:
-      "Có đăng nhập vào tài khoản @ThnhNg81335456 của bạn từ một thiết bị mới trên Mar 26, 2025. Xem lại ngay.",
-    timestamp: "3h",
-    id: 15,
   },
 ];
 
@@ -1876,11 +1776,6 @@ export const mockSuggestedUsers: UserCardInfo[] = [
         {
           id: "1524663d-ae03-43bc-80f3-488594f466fd",
           displayName: "Rosalie Rizon",
-          avatar: getRandomFile("1524663d-ae03-43bc-80f3-488594f466fd"),
-        },
-        {
-          id: "1524663d-ae03-43bc-80f3-488594f466fd",
-          displayName: "Doralia Dransfield",
           avatar: getRandomFile("1524663d-ae03-43bc-80f3-488594f466fd"),
         },
         {
