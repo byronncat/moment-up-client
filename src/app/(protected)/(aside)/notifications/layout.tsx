@@ -32,7 +32,7 @@ export default function Layout({
     <div className="flex flex-col border-x border-border h-full">
       <div
         className={cn(
-          "sticky top-0 z-10 bg-card transform translate-x-[0.03125rem] ",
+          "sticky top-0 z-10 bg-card transform translate-x-[0.03125rem] "
         )}
       >
         <div
@@ -50,9 +50,7 @@ export default function Layout({
         <NavigationBar items={tabs} />
       </div>
 
-      <div className="overflow-y-auto">
-        {children}
-      </div>
+      <div className="overflow-y-auto">{children}</div>
     </div>
   );
 }

@@ -54,16 +54,13 @@ export default function MediaPage() {
   );
 
   const fetchInitialMedia = useCallback(async () => {
-    if (isInitialLoading.current) return;
+    if (isInitialLoading.current || isLoaded) return;
     isInitialLoading.current = true;
 
-    try {
-      await loadMore(fetchMediaPage);
-    } finally {
-      setLoaded(true);
-      isInitialLoading.current = false;
-    }
-  }, [fetchMediaPage]);
+    await loadMore(fetchMediaPage);
+    setLoaded(true);
+    isInitialLoading.current = false;
+  }, [fetchMediaPage, loadMore, isLoaded]);
 
   async function handleRefresh() {
     setLoaded(false);

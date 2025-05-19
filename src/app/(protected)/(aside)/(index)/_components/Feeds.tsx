@@ -69,7 +69,7 @@ export default function Feeds({
       scrollContainer.removeEventListener("scroll", checkScrollability);
       window.removeEventListener("resize", checkScrollability);
     };
-  }, [checkScrollability, feeds]);
+  }, [checkScrollability]);
 
   return (
     <div className={className}>

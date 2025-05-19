@@ -101,16 +101,18 @@ declare module "api" {
 
   type CommunityNotification = NotificationSchema & {
     type: "community";
-    information: {
-      type: "post" | "mention";
-      avatar: User["avatar"];
-      displayName: User["display_name"];
-      content: string;
-    } | {
-      type: "follow";
-      avatar: User["avatar"];
-      displayName: User["display_name"];
-    };
+    information:
+      | {
+          type: "post" | "mention";
+          avatar: User["avatar"];
+          displayName: User["display_name"];
+          content: string;
+        }
+      | {
+          type: "follow";
+          avatar: User["avatar"];
+          displayName: User["display_name"];
+        };
   };
 
   type Notification = SecurityNotification | CommunityNotification;

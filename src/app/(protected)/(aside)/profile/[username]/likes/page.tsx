@@ -54,16 +54,13 @@ export default function LikesPage({
   );
 
   const fetchInitialMoments = useCallback(async () => {
-    if (isInitialLoading.current) return;
+    if (isInitialLoading.current || isLoaded) return;
     isInitialLoading.current = true;
 
-    try {
-      await loadMore(fetchMomentsPage);
-    } finally {
-      setLoaded(true);
-      isInitialLoading.current = false;
-    }
-  }, [fetchMomentsPage]);
+    await loadMore(fetchMomentsPage);
+    setLoaded(true);
+    isInitialLoading.current = false;
+  }, [fetchMomentsPage, loadMore, isLoaded]);
 
   async function handleRefresh() {
     setLoaded(false);
