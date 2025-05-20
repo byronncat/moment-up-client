@@ -404,39 +404,43 @@ export default function Sidebar() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Tooltip content="More" side="right" sideOffset={6}>
-                  <DropdownMenu>
+                <DropdownMenu>
+                  <Tooltip content="More" side="right" sideOffset={6}>
                     <DropdownMenuTrigger asChild>
                       <SidebarMenuButton className="cursor-pointer">
                         <Menu />
                         <span>More</span>
                       </SidebarMenuButton>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      align="start"
-                      side="top"
-                      className="w-56"
-                    >
-                      <DropdownMenuItem asChild>
-                        <div className="flex items-center gap-2">
-                          <Settings size={18} />
-                          <span>Settings</span>
-                        </div>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <ModeSelection
-                          asChild
-                          className="w-full justify-start gap-2 rounded-none font-normal"
-                        >
+                  </Tooltip>
+                  <DropdownMenuContent
+                    align="start"
+                    side="top"
+                    className="w-56"
+                  >
+                    <DropdownMenuItem asChild>
+                      <div className="flex items-center gap-2">
+                        <Settings size={18} />
+                        <span>Settings</span>
+                      </div>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <ModeSelection
+                        asChild
+                        showTooltip={false}
+                        side="right"
+                        sideOffset={8}
+                      >
+                        <DropdownMenuItem asChild className="cursor-pointer">
                           <div className="flex items-center gap-2">
-                            <Settings size={18} />
-                            <span>Settings</span>
+                            <Palette size={18} />
+                            <span>Appearance</span>
                           </div>
-                        </ModeSelection>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </Tooltip>
+                        </DropdownMenuItem>
+                      </ModeSelection>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               )}
             </SidebarMenuItem>
           </SidebarMenu>
