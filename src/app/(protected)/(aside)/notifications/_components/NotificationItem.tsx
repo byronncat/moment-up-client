@@ -48,7 +48,7 @@ const SecurityNotification = ({ information }: SecurityNotificationProps) => {
             "flex items-center justify-center"
           )}
         >
-          <ShieldAlert className="size-7" />
+          <ShieldAlert className="size-7 text-muted-foreground" />
         </div>
       </div>
       <div className="grow min-w-0">

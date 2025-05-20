@@ -75,6 +75,10 @@ const avatar = isDev
       "https://pbs.twimg.com/media/GgwpklCa0AA8MkD?format=jpg&name=4096x4096",
 
       "https://pbs.twimg.com/media/GjPNWTNb0AAZvar?format=jpg&name=medium",
+
+      "https://pbs.twimg.com/media/GKYSLwTaAAA7Uu9?format=jpg&name=4096x4096",
+      "https://pbs.twimg.com/media/GEwApvjaMAAX2R6?format=jpg&name=4096x4096",
+      "https://pbs.twimg.com/media/GjlpiyBaIAENj43?format=jpg&name=large",
     ]
   : [];
 
@@ -1294,6 +1298,38 @@ export const mockMoments: DetailedMoment[] = isDev
           isLiked: false,
         },
       },
+      {
+        id: "0c140867-69dc-4181-93de-f4aec644d1b0",
+        user: {
+          id: "0c140867-69dc-4181-93de-f4aec644d1b0",
+          username: "alidgertwoodd",
+          displayName: "Allys Lidgertwood",
+          avatar: getRandomFile("0c140867-69dc-4181-93de-f4aec644d1b0"),
+          verified: true,
+          followers: 186,
+          following: 26,
+          hasFeed: true,
+        },
+        post: {
+          text: "Beautiful day at the beach 🌊",
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GKYSLwTaAAA7Uu9?format=jpg&name=4096x4096",
+            },
+            {
+              id: "2",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GEwApvjaMAAX2R6?format=jpg&name=4096x4096",
+            },
+          ],
+          likes: 2320,
+          comments: 3757,
+          created_at: new Date(),
+          isLiked: false,
+        },
+      },
     ]
   : [];
 
@@ -1302,6 +1338,9 @@ export const mockProfile: ProfileInfo = {
   username: "byronat445",
   displayName: "Byron Atwood",
   avatar: getRandomFile("byronat445"),
+  backgroundImage: isDev
+    ? "https://pbs.twimg.com/media/GjlpiyBaIAENj43?format=jpg&name=large"
+    : undefined,
   hasFeed: true,
   bio: "I'm a software engineer and a coffee addict.",
   verified: true,

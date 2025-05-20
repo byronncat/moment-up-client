@@ -76,7 +76,7 @@ function Item({ data, active }: ItemProps) {
     >
       <div className={cn("flex justify-center items-center gap-2", "w-full")}>
         {data.icon}
-        <span className="text-sm font-medium">{data.label}</span>
+        <span className={cn("text-sm", active ? "font-semibold" : "font-medium")}>{data.label}</span>
       </div>
       {active && (
         <span
