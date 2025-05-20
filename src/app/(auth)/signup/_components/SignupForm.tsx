@@ -61,7 +61,7 @@ export default function SignupForm() {
           onClick={() => setShowDetails(!showDetails)}
           className="absolute top-7 right-3"
         >
-          <CircleInfo className="fill-blue-500 dark:fill-blue-400" />
+          <CircleInfo className="fill-blue-500 dark:fill-blue-400 size-5" />
         </Button>
       </Tooltip>
 

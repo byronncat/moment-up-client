@@ -14,47 +14,69 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LaptopMinimal, Moon, Sun } from "@/components/icons";
 
-export default function ModeSelection({ className }: ComponentProps) {
+type ModeSelectionProps = Readonly<{
+  className?: string;
+  asChild?: boolean;
+  children?: React.ReactNode;
+  showTooltip?: boolean;
+  side?: "top" | "bottom" | "left" | "right";
+  sideOffset?: number;
+}>;
+
+export default function ModeSelection({
+  className,
+  asChild,
+  children,
+  showTooltip = true,
+  side = "bottom",
+  sideOffset = 4,
+}: ModeSelectionProps) {
   const { theme, setTheme } = useTheme();
   const isClient = useIsClient();
 
   if (!isClient) return null;
   return (
     <DropdownMenu>
-      <Tooltip content="Theme" variant="borderless" sideOffset={6}>
+      <ShowTooltip showTooltip={showTooltip}>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className={cn(
-              "size-9 rounded-full",
-              "duration-200 ease-in-out",
-              className
-            )}
-          >
-            <Sun
-              type={theme === "system" ? "regular" : "solid"}
+          {asChild ? (
+            children
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
               className={cn(
-                "size-6 text-yellow-500",
-                "rotate-0 scale-100",
-                "transition-all dark:-rotate-90 dark:scale-0"
+                "size-9 rounded-full",
+                "duration-200 ease-in-out",
+                className
               )}
-            />
-            <Moon
-              type={theme === "system" ? "regular" : "solid"}
-              className={cn(
-                "absolute",
-                "size-6 text-gray-200",
-                "rotate-90 scale-0",
-                "transition-all dark:rotate-0 dark:scale-100"
-              )}
-            />
-            <span className="sr-only">Toggle theme</span>
-          </Button>
+            >
+              <Sun
+                type={theme === "system" ? "regular" : "solid"}
+                className={cn(
+                  "size-6 text-yellow-500",
+                  "rotate-0 scale-100",
+                  "transition-all dark:-rotate-90 dark:scale-0"
+                )}
+              />
+              <Moon
+                type={theme === "system" ? "regular" : "solid"}
+                className={cn(
+                  "absolute",
+                  "size-6 text-gray-200",
+                  "rotate-90 scale-0",
+                  "transition-all dark:rotate-0 dark:scale-100"
+                )}
+              />
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+          )}
         </DropdownMenuTrigger>
-      </Tooltip>
+      </ShowTooltip>
       <DropdownMenuContent
         align="end"
+        side={side}
+        sideOffset={sideOffset}
         className="font-medium"
         onCloseAutoFocus={(e) => e.preventDefault()}
       >
@@ -84,5 +106,21 @@ export default function ModeSelection({ className }: ComponentProps) {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+function ShowTooltip({
+  showTooltip,
+  children,
+}: {
+  showTooltip: boolean;
+  children: React.ReactNode;
+}) {
+  return showTooltip ? (
+    <Tooltip content="Theme" variant="borderless" sideOffset={6}>
+      {children}
+    </Tooltip>
+  ) : (
+    children
   );
 }

@@ -15,7 +15,8 @@ const buttonVariants = cva(
     "focus-visible:outline-hidden",
     "focus-visible:ring-1 focus-visible:ring-ring",
     "disabled:pointer-events-none disabled:opacity-50",
-    "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0",
+    // "[&_svg]:size-4",
   ),
   {
     variants: {

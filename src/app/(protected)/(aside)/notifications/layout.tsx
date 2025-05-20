@@ -43,7 +43,7 @@ export default function Layout({
         >
           <h1 className="text-2xl font-bold">Notifications</h1>
           <Button variant="ghost" size="icon" className="rounded-full">
-            <Settings />
+            <Settings className="size-5 text-muted-foreground" />
           </Button>
         </div>
 

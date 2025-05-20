@@ -52,7 +52,7 @@ const SecurityNotification = ({ information }: SecurityNotificationProps) => {
         </div>
       </div>
       <div className="grow min-w-0">
-        <div className="font-bold">{title}</div>
+        <div className="font-semibold">{title}</div>
         <div className="text-muted-foreground truncate">{description}</div>
       </div>
     </>
@@ -81,7 +81,7 @@ const CommunityNotification = ({ information }: CommunityNotificationProps) => {
         <Avatar src={information.avatar} size="12" />
       </div>
       <div className="grow min-w-0">
-        <div className="font-bold">{title}</div>
+        <div className="font-semibold">{title}</div>
         {information.type === "follow" ? (
           <div className="flex items-center gap-2 mt-2">
             <Button variant="outline" size="sm">

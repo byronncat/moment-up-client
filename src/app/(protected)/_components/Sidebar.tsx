@@ -7,7 +7,7 @@ import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
 
 import Link from "next/link";
-import Logo from "@/components/common/Logo";
+import { ModeSelection, Logo } from "@/components";
 import Tooltip from "@/components/common/Tooltip";
 import {
   MessagesSquare,
@@ -19,9 +19,7 @@ import {
   Settings,
   User,
   Menu,
-  Save,
-  Activity,
-  RotateCcw,
+  Palette,
   LogOut,
 } from "lucide-react";
 import {
@@ -56,34 +54,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sourceCodePro } from "@/styles/fonts";
-
-const moreItems = [
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-  {
-    title: "Your activity",
-    url: "#",
-    icon: Activity,
-  },
-  {
-    title: "Saved",
-    url: "#",
-    icon: Save,
-  },
-  {
-    title: "Switch appearance",
-    url: "#",
-    icon: RotateCcw,
-  },
-  {
-    title: "Report a problem",
-    url: "#",
-    icon: RotateCcw,
-  },
-];
 
 const XL_BREAKPOINT = 1280;
 
@@ -399,7 +369,41 @@ export default function Sidebar() {
               )}
             </SidebarMenuItem>
             <SidebarMenuItem>
-              {!open ? (
+              {open ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <SidebarMenuButton className="cursor-pointer">
+                      <Menu />
+                      <span>More</span>
+                    </SidebarMenuButton>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="start"
+                    side="top"
+                    className="w-56"
+                  >
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <div className="flex items-center gap-2">
+                        <Settings size={18} />
+                        <span>Settings</span>
+                      </div>
+                    </DropdownMenuItem>
+                    <ModeSelection
+                      asChild
+                      showTooltip={false}
+                      side="right"
+                      sideOffset={8}
+                    >
+                      <DropdownMenuItem asChild className="cursor-pointer">
+                        <div className="flex items-center gap-2">
+                          <Palette size={18} />
+                          <span>Appearance</span>
+                        </div>
+                      </DropdownMenuItem>
+                    </ModeSelection>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
                 <Tooltip content="More" side="right" sideOffset={6}>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -410,49 +414,29 @@ export default function Sidebar() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                       align="start"
-                      side="right"
+                      side="top"
                       className="w-56"
                     >
-                      {moreItems.map((item) => (
-                        <DropdownMenuItem key={item.title} asChild>
-                          <Link
-                            href={item.url}
-                            className="flex items-center gap-2"
-                          >
-                            <item.icon size={18} />
-                            <span>{item.title}</span>
-                          </Link>
-                        </DropdownMenuItem>
-                      ))}
+                      <DropdownMenuItem asChild>
+                        <div className="flex items-center gap-2">
+                          <Settings size={18} />
+                          <span>Settings</span>
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <ModeSelection
+                          asChild
+                          className="w-full justify-start gap-2 rounded-none font-normal"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Settings size={18} />
+                            <span>Settings</span>
+                          </div>
+                        </ModeSelection>
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </Tooltip>
-              ) : (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <SidebarMenuButton className="cursor-pointer">
-                      <Menu />
-                      <span>More</span>
-                    </SidebarMenuButton>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="start"
-                    side="right"
-                    className="w-56"
-                  >
-                    {moreItems.map((item) => (
-                      <DropdownMenuItem key={item.title} asChild>
-                        <Link
-                          href={item.url}
-                          className="flex items-center gap-2"
-                        >
-                          <item.icon size={18} />
-                          <span>{item.title}</span>
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
               )}
             </SidebarMenuItem>
           </SidebarMenu>
