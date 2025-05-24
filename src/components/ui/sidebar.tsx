@@ -282,7 +282,7 @@ const SidebarTrigger = React.forwardRef<
           }}
           {...props}
         >
-          <PanelLeft className="size-5 text-muted-foreground"/>
+          <PanelLeft className="size-5 text-muted-foreground" />
           <span className="sr-only">Toggle Sidebar</span>
         </Button>
       </TooltipTrigger>

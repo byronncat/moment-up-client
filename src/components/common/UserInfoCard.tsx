@@ -103,7 +103,7 @@ function FollowButton({
       variant={
         isFollowing ? (isHovering ? "destructive" : "default") : "outline"
       }
-      className="text-sm w-full"
+      className="text-sm w-full [&_svg]:size-4"
       onClick={followHandler}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}

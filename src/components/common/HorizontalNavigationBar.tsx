@@ -67,7 +67,7 @@ function Item({ data, active }: ItemProps) {
       key={data.id}
       className={cn(
         "relative size-full",
-        "px-6 py-3",
+        "py-3",
         "transition-colors duration-200 ease-in-out",
         active
           ? "text-primary bg-primary/20"
@@ -76,7 +76,11 @@ function Item({ data, active }: ItemProps) {
     >
       <div className={cn("flex justify-center items-center gap-2", "w-full")}>
         {data.icon}
-        <span className={cn("text-sm", active ? "font-semibold" : "font-medium")}>{data.label}</span>
+        <span
+          className={cn("text-sm", active ? "font-semibold" : "font-medium")}
+        >
+          {data.label}
+        </span>
       </div>
       {active && (
         <span

@@ -7,6 +7,7 @@ import type {
   FeedInfo,
   ProfileInfo,
   Notification,
+  ProfileCardInfo,
 } from "api";
 import { HashtagItem } from "schema";
 import sound1 from "./1.mp3";
@@ -78,7 +79,20 @@ const avatar = isDev
 
       "https://pbs.twimg.com/media/GKYSLwTaAAA7Uu9?format=jpg&name=4096x4096",
       "https://pbs.twimg.com/media/GEwApvjaMAAX2R6?format=jpg&name=4096x4096",
-      "https://pbs.twimg.com/media/GjlpiyBaIAENj43?format=jpg&name=large",
+
+      "https://pbs.twimg.com/media/GqGfFSebwAAxT4c?format=jpg&name=4096x4096",
+
+      "https://pbs.twimg.com/media/GnHpja0b0AAqHkB?format=jpg&name=4096x4096",
+      "https://pbs.twimg.com/media/GiQ95fjbAAAL1ZK?format=jpg&name=4096x4096",
+
+      "https://pbs.twimg.com/media/GjZDOyAa8AArPqh?format=jpg&name=4096x4096",
+    ]
+  : [];
+
+const backgroundImg = isDev
+  ? [
+    "https://pbs.twimg.com/media/GjlpiyBaIAENj43?format=jpg&name=large",
+    "https://pbs.twimg.com/media/GRn1_2AaUAAT7JU?format=jpg&name=4096x4096",
     ]
   : [];
 
@@ -241,6 +255,16 @@ export const mockSearches: SearchItem[] = [
     verified: true,
   },
   {
+    id: "hello",
+    type: "hashtag" as const,
+    count: 100,
+  },
+  {
+    id: "7ptf82a-0407-4fa4-9fdf-106a681tttt6c",
+    type: "search" as const,
+    query: "general",
+  },
+  {
     id: "7b0bf82a-0407-4fa4-9fdf-106a681a626c",
     type: "user" as const,
     username: "ssauven1",
@@ -255,6 +279,11 @@ export const mockSearches: SearchItem[] = [
     displayName: "Aurie Haccleton",
     avatar: getRandomFile("e0e16793-c56f-4456-80d9-9767d5e3c3da"),
     verified: true,
+  },
+  {
+    id: "d576a73e-b60e-46ba-947f-9807a63cc997",
+    type: "search" as const,
+    query: "software",
   },
   {
     id: "261c65cb-4646-47ba-a65a-262d7242ee9f",
@@ -273,12 +302,27 @@ export const mockSearches: SearchItem[] = [
     verified: false,
   },
   {
+    id: "16280b1f-3118-44f7-8f94-bfc3d30919fd",
+    type: "search" as const,
+    query: "education",
+  },
+  {
     id: "60edd744-11e7-497f-9077-491a49369b18",
     type: "user" as const,
     username: "hhartley5",
     displayName: "Hyacinthe Hartley",
     avatar: getRandomFile("60edd744-11e7-497f-9077-491a49369b18"),
     verified: true,
+  },
+  {
+    type: "hashtag" as const,
+    id: "faucibus",
+    count: 967001,
+  },
+  {
+    type: "hashtag" as const,
+    id: "maecenas",
+    count: 773000,
   },
   {
     id: "382d48f6-a932-410b-8309-ff0b9b6024e4",
@@ -313,6 +357,21 @@ export const mockSearches: SearchItem[] = [
     verified: true,
   },
   {
+    type: "hashtag" as const,
+    id: "purus",
+    count: 502053,
+  },
+  {
+    type: "hashtag" as const,
+    id: "bibendum",
+    count: 999040,
+  },
+  {
+    type: "hashtag" as const,
+    id: "morbi",
+    count: 580656,
+  },
+  {
     id: "6934603c-5bd1-40c5-a298-3d0cde2de578",
     type: "user" as const,
     username: "bsantea",
@@ -327,21 +386,6 @@ export const mockSearches: SearchItem[] = [
     displayName: "Morse Packington",
     avatar: getRandomFile("c6ad53bf-1252-4911-bef7-a9bb13f26aed"),
     verified: false,
-  },
-  {
-    type: "hashtag" as const,
-    id: "purus",
-    count: 502053,
-  },
-  {
-    type: "hashtag" as const,
-    id: "bibendum",
-    count: 999040,
-  },
-  {
-    type: "hashtag" as const,
-    id: "morbi",
-    count: 580656,
   },
   {
     type: "hashtag" as const,
@@ -362,16 +406,6 @@ export const mockSearches: SearchItem[] = [
     type: "hashtag" as const,
     id: "amet",
     count: 262813,
-  },
-  {
-    type: "hashtag" as const,
-    id: "faucibus",
-    count: 967001,
-  },
-  {
-    type: "hashtag" as const,
-    id: "maecenas",
-    count: 773000,
   },
   {
     type: "hashtag" as const,
@@ -694,6 +728,33 @@ export const mockMoments: DetailedMoment[] = isDev
           ],
           likes: 1234,
           comments: 45,
+          created_at: new Date(),
+          isLiked: false,
+        },
+      },
+      {
+        id: "aefa5f0b-ff4d-47a9-a6ad-25d5a0ef9ff6",
+        user: {
+          id: "aefa5f0b-ff4d-47a9-a6ad-25d5a0ef9ff6",
+          username: "oshirase_gan",
+          displayName: "千里GAN(活動縮小中",
+          avatar: getRandomFile("aefa5f0b-ff4d-47a9-a6ad-25d5a0ef9ff6"),
+          verified: true,
+          followers: 86,
+          following: 191,
+          hasFeed: true,
+        },
+        post: {
+          text: "Beautiful day at the beach 🌊",
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: backgroundImg[1],
+            },
+          ],
+          likes: 943,
+          comments: 142,
           created_at: new Date(),
           isLiked: false,
         },
@@ -1330,6 +1391,114 @@ export const mockMoments: DetailedMoment[] = isDev
           isLiked: false,
         },
       },
+      {
+        id: "746c9f5c-1676-48e7-9fdc-cf5db40c2a3c",
+        user: {
+          id: "746c9f5c-1676-48e7-9fdc-cf5db40c2a3c",
+          username: "alidgertwoodd",
+          displayName: "Allys Lidgertwood",
+          avatar: getRandomFile("746c9f5c-1676-48e7-9fdc-cf5db40c2a3c"),
+          verified: true,
+          followers: 86,
+          following: 191,
+          hasFeed: true,
+        },
+        post: {
+          text: "Beautiful day at the beach 🌊",
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GqGfFSebwAAxT4c?format=jpg&name=4096x4096",
+            },
+          ],
+          likes: 3234,
+          comments: 57,
+          created_at: new Date(),
+          isLiked: false,
+        },
+      },
+      {
+        id: "14d62a13-3a63-4486-9af4-dd149279c2db",
+        user: {
+          id: "14d62a13-3a63-4486-9af4-dd149279c2db",
+          username: "alidgertwoodd",
+          displayName: "Allys Lidgertwood",
+          avatar: getRandomFile("14d62a13-3a63-4486-9af4-dd149279c2db"),
+          verified: true,
+          followers: 86,
+          following: 191,
+          hasFeed: true,
+        },
+        post: {
+          text: "Beautiful day at the beach 🌊",
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GqGfFSebwAAxT4c?format=jpg&name=4096x4096",
+            },
+          ],
+          likes: 943,
+          comments: 142,
+          created_at: new Date(),
+          isLiked: false,
+        },
+      },
+      {
+        id: "0be4e5fe-49ac-4d55-aee1-dab7d4b5a5bf",
+        user: {
+          id: "0be4e5fe-49ac-4d55-aee1-dab7d4b5a5bf",
+          username: "luts7602",
+          displayName: "manda",
+          avatar: getRandomFile("0be4e5fe-49ac-4d55-aee1-dab7d4b5a5bf"),
+          verified: true,
+          followers: 86,
+          following: 191,
+          hasFeed: true,
+        },
+        post: {
+          text: "Beautiful day at the beach 🌊",
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GjZDOyAa8AArPqh?format=jpg&name=4096x4096",
+            },
+          ],
+          likes: 943,
+          comments: 142,
+          created_at: new Date(),
+          isLiked: false,
+        },
+      },
+      {
+        id: "e2f55ce8-f2fb-47e0-a739-40cba7885b62",
+        user: {
+          id: "e2f55ce8-f2fb-47e0-a739-40cba7885b62",
+          username: "n_n_nima",
+          displayName: "nima",
+          avatar: getRandomFile("e2f55ce8-f2fb-47e0-a739-40cba7885b62"),
+          verified: true,
+          followers: 86,
+          following: 191,
+          hasFeed: true,
+        },
+        post: {
+          text: "Beautiful day at the beach 🌊",
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: backgroundImg[0],
+            },
+          ],
+          likes: 943,
+          comments: 142,
+          created_at: new Date(),
+          isLiked: false,
+        },
+      },
     ]
   : [];
 
@@ -1700,6 +1869,43 @@ export const mockNotifications: Notification[] = [
 ];
 
 // Aside
+export const mockPopularAccounts: ProfileCardInfo[] = [
+  {
+    id: "057b50c5-4646-42bf-98ea-933c108f2671",
+    username: "wbale0",
+    displayName: "Werner Bale",
+    avatar: getRandomFile("057b50c5-4646-42bf-98ea-933c108f2671"),
+    verified: true,
+    bio: "Travel photographer | Adventure seeker | Coffee enthusiast",
+    backgroundImage: backgroundImg[0],
+  },
+  {
+    id: "ca0f9eb5-c789-4e50-9f8c-457ff3b9f964",
+    username: "tech_jason",
+    displayName: "Jason Chen",
+    avatar: getRandomFile("ca0f9eb5-c789-4e50-9f8c-457ff3b9f964"),
+    verified: false,
+  },
+  {
+    id: "90946704-51dc-4a73-9f56-99531bc3db7b",
+    username: "foodie_sophie",
+    displayName: "Sophie Rodriguez",
+    avatar: getRandomFile("90946704-51dc-4a73-9f56-99531bc3db7b"),
+    verified: true,
+    bio: "Food blogger | Recipe developer | Always hungry",
+    backgroundImage: backgroundImg[1],
+  },
+  {
+    id: "92a1e004-8ddf-46ab-8811-28a6e1bb7a60",
+    username: "fitness_marcus",
+    displayName: "Marcus Johnson",
+    avatar: getRandomFile("92a1e004-8ddf-46ab-8811-28a6e1bb7a60"),
+    verified: true,
+    bio: "Personal trainer | Nutrition coach | Wellness advocate",
+    backgroundImage: backgroundImg[1],
+  },
+];
+
 export const mockSuggestedUsers: UserCardInfo[] = [
   {
     id: "057b50c5-4646-42bf-98ea-933c108f2671",
@@ -1842,6 +2048,27 @@ export const mockSuggestedUsers: UserCardInfo[] = [
           id: "19a73186-4d88-41d8-8565-60bb19433b18",
           displayName: "Alex Smith",
           avatar: getRandomFile("19a73186-4d88-41d8-8565-60bb19433b18"),
+        },
+      ],
+      count: 1,
+    },
+  },
+  {
+    id: "ffaeecbd-58a5-4235-95f5-f51c2471a842",
+    username: "huhi_1211",
+    displayName: "huhi | fevercell",
+    avatar: getRandomFile("ffaeecbd-58a5-4235-95f5-f51c2471a842"),
+    verified: false,
+    bio: "Novelist | Poet | Storyteller",
+    followers: 17382,
+    following: 623,
+    hasFeed: false,
+    followedBy: {
+      displayItems: [
+        {
+          id: "ffaeecbd-58a5-4235-95f5-f51c2471a842",
+          displayName: "Alex Smith",
+          avatar: getRandomFile("ffaeecbd-58a5-4235-95f5-f51c2471a842"),
         },
       ],
       count: 1,

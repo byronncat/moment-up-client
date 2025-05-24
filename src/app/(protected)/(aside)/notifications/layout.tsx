@@ -1,7 +1,7 @@
-import { ROUTE } from "@/constants/clientConfig";
 import { Metadata } from "@/constants/metadata";
+import { ROUTE } from "@/constants/clientConfig";
 
-import { cn } from "@/libraries/utils";
+import { ListLayout, PageHeader } from "../_components";
 import { NavigationBar, type NavItem } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
@@ -29,28 +29,18 @@ export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="flex flex-col border-x border-border h-full">
-      <div
-        className={cn(
-          "sticky top-0 z-10 bg-card transform translate-x-[0.03125rem] "
-        )}
-      >
-        <div
-          className={cn(
-            "flex justify-between items-center",
-            "pt-7 pl-4 pr-2 pb-4"
-          )}
-        >
-          <h1 className="text-2xl font-bold">Notifications</h1>
+    <ListLayout>
+      <PageHeader
+        title="Notifications"
+        sideButton={
           <Button variant="ghost" size="icon" className="rounded-full">
             <Settings className="size-5 text-muted-foreground" />
           </Button>
-        </div>
-
+        }
+      >
         <NavigationBar items={tabs} />
-      </div>
-
+      </PageHeader>
       <div className="overflow-y-auto">{children}</div>
-    </div>
+    </ListLayout>
   );
 }

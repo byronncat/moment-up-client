@@ -1,9 +1,10 @@
-import { mockSearches } from "@/__mocks__";
+import { mockMoments, mockSearches } from "@/__mocks__";
 
 import type { z } from "zod";
-import type { API, SearchItem } from "api";
+import type { API, HashtagSearchItem, SearchItem, SearchResult, UserSearchItem } from "api";
 
 import zodSchema from "@/libraries/zodSchema";
+import { SEARCH_CATEGORY } from "@/constants/clientConfig";
 
 export async function search(
   data: z.infer<typeof zodSchema.core.search>
@@ -47,7 +48,60 @@ export async function getSearchHistory(): Promise<API<SearchItem[]>> {
     return {
       success: true,
       message: "ok",
-      data: mockSearches,
+      data: mockSearches.slice(0, 5),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "internal error",
+    };
+  }
+}
+
+export async function detailSearch(
+  data: z.infer<typeof zodSchema.core.search>,
+  type: SEARCH_CATEGORY
+): Promise<API<SearchResult>> {
+  try {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 2000);
+    });
+
+    const result: SearchResult = {
+      posts: mockMoments.filter((moment) =>
+        moment.post.text?.toLowerCase().includes(data.query.toLowerCase())
+      ),
+      users: (mockSearches.filter((user) =>
+        user.type === "user" && user.username.toLowerCase().includes(data.query.toLowerCase())) as UserSearchItem[]
+      ),
+      hashtags: (mockSearches.filter((hashtag) =>
+        hashtag.type === "hashtag" && hashtag.id.toLowerCase().includes(data.query.toLowerCase())
+      ) as HashtagSearchItem[]),
+    };
+
+    if (type === SEARCH_CATEGORY.PEOPLE) {
+      delete result.posts;
+      delete result.hashtags;
+    }
+    if (type === SEARCH_CATEGORY.MEDIA) {
+      delete result.users;
+      delete result.hashtags;
+    }
+    if (type === SEARCH_CATEGORY.POSTS) {
+      delete result.users;
+      delete result.hashtags;
+    }
+    if (type === SEARCH_CATEGORY.HASHTAG) {
+      delete result.posts;
+      delete result.users;
+    }
+
+    return {
+      success: true,
+      message: "ok",
+      data: result,
     };
   } catch (error) {
     return {

@@ -59,6 +59,14 @@ declare module "api" {
 
   type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;
 
+  type ProfileCardInfo = Omit<ProfileInfo, "followers" | "following" | "hasFeed">
+
+  type SearchResult = {
+    posts?: DetailedMoment[];
+    users?: AccountInfo[];
+    hashtags?: HashtagItem[];
+  }
+
   // Core
   type FeedNotification = {
     id: Feed["id"];

@@ -5,11 +5,19 @@ import { RotateCw } from "lucide-react";
 
 export default function ErrorContent({
   onRefresh,
+  className,
 }: Readonly<{
   onRefresh: () => void;
+  className?: string;
 }>) {
   return (
-    <div className={cn("flex flex-col items-center justify-center", "h-full")}>
+    <div
+      className={cn(
+        "flex flex-col items-center justify-center",
+        "h-full",
+        className
+      )}
+    >
       <CircleExclamation className="size-12 fill-red-500 dark:fill-red-400" />
       <p className={cn("text-lg font-medium", "mt-4")}>Something went wrong!</p>
       <p className={cn("text-sm text-muted-foreground", "mt-1")}>
@@ -21,7 +29,7 @@ export default function ErrorContent({
         className={cn("mt-4")}
         onClick={onRefresh}
       >
-        <RotateCw />
+        <RotateCw className="size-4" />
         Refresh
       </Button>
     </div>

@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { MagnifyingGlass, XMark } from "@/components/icons";
 
 export default function SearchInput({
+  defaultValue = "",
   ...props
 }: React.ComponentProps<"input">) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(defaultValue);
 
   function changeQuery(e: React.ChangeEvent<HTMLInputElement>) {
     setQuery(e.target.value);
@@ -17,6 +18,7 @@ export default function SearchInput({
 
   function clearQuery() {
     setQuery("");
+    props.onChange?.({ target: { value: "" } } as React.ChangeEvent<HTMLInputElement>);
   }
 
   return (

@@ -1,6 +1,6 @@
-import { mockSuggestedUsers, mockTrendingTopics } from "@/__mocks__";
+import { mockPopularAccounts, mockSuggestedUsers, mockTrendingTopics } from "@/__mocks__";
 
-import type { API, UserCardInfo } from "api";
+import type { API, UserCardInfo, ProfileCardInfo } from "api";
 import { HashtagItem } from "schema";
 
 export async function getSuggestedUsers(): Promise<API<UserCardInfo[]>> {
@@ -11,15 +11,31 @@ export async function getSuggestedUsers(): Promise<API<UserCardInfo[]>> {
       }, 1000);
     });
 
-    const startIndex = Math.floor(
-      Math.random() * (mockSuggestedUsers.length - 5)
-    );
-    const endIndex = startIndex + 5;
+    return {
+      success: true,
+      message: "ok",
+      data: mockSuggestedUsers.slice(3),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "internal error",
+    };
+  }
+}
+
+export async function getPopularAccounts(): Promise<API<ProfileCardInfo[]>> {
+  try {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 1000);
+    });
 
     return {
       success: true,
       message: "ok",
-      data: mockSuggestedUsers.slice(startIndex, endIndex),
+      data: mockPopularAccounts,
     };
   } catch (error) {
     return {

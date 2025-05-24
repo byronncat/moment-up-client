@@ -8,6 +8,7 @@ export type MetadataMap = {
   verify: NextMetadata;
   home: NextMetadata;
   explore: NextMetadata;
+  search: NextMetadata;
   profile: (username: string) => NextMetadata;
   notifications: NextMetadata;
 };
@@ -44,6 +45,10 @@ export const Metadata: MetadataMap = {
   explore: {
     title: "Explore",
     description: "Explore page",
+  },
+  search: {
+    title: "Search",
+    description: "Search page",
   },
   profile: (username: string) => {
     return {

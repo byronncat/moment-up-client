@@ -17,7 +17,7 @@ export default function Layout({
         "max-w-[64rem] mx-auto min-h-screen"
       )}
     >
-      <main className="max-w-[37.5rem] w-full">{children}</main>
+      <main className="max-w-[calc(37.5rem+2px)] w-full">{children}</main>
       <aside
         className={cn(
           "sticky top-5",

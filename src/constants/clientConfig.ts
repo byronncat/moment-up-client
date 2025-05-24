@@ -1,3 +1,4 @@
+// === ROUTE ===
 export const ROUTE = {
   LOGIN: "/login",
   SIGNUP: "/signup",
@@ -9,8 +10,13 @@ export const ROUTE = {
     username: string,
     type: "default" | "media" | "likes" = "default"
   ) => `/profile/${username}${type !== "default" ? `/${type}` : ""}`,
-  SEARCH: (query?: string) =>
-    `/search${query ? `?q=${encodeURIComponent(query)}` : ""}`,
+  SEARCH: (query?: string, filter?: SEARCH_CATEGORY) => {
+    const params = new URLSearchParams();
+    if (query) params.set('q', query);
+    if (filter) params.set('f', filter);
+    const queryString = params.toString();
+    return `/search${queryString ? `?${queryString}` : ''}`;
+  },
   EXPLORE: (type: "media" | "moments" = "media") => `/explore/${type}`,
   FEED: (feedId: string) => `/feed/${feedId}`,
   MOMENT: (momentId: string) => `/moment/${momentId}`,
@@ -38,6 +44,7 @@ export const PUBLIC_ROUTES = [
   ROUTE.PROFILE(""),
 ];
 
+// === UI ===
 export const ASPECT_RATIO = {
   HORIZONTAL: 1.91 / 1,
   VERTICAL: 9 / 16,
@@ -49,3 +56,13 @@ export const PAGE_CONFIG = {
   MOMENT_CELL_PAGE: 24,
   MOMENT_CELL_CHUNK: 12,
 };
+
+export const SEARCH_DEBOUNCE_TIME = 500;
+export enum SEARCH_CATEGORY {
+  TOP = "top",
+  LATEST = "latest",
+  PEOPLE = "people",
+  HASHTAG = "tag",
+  POSTS = "posts",
+  MEDIA = "media",
+}

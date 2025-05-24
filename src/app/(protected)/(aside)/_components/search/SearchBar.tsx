@@ -7,15 +7,14 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { useOnClickOutside, useDebounceValue } from "usehooks-ts";
 import { toast } from "sonner";
 import { SearchApi } from "@/services";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE, SEARCH_DEBOUNCE_TIME } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import SearchInput from "./SearchInput";
 import Dropdown from "./Dropdown";
-const DEBOUNCE_TIME = 500;
 
 export default function SearchBar() {
-  const [query, setQuery] = useDebounceValue("", DEBOUNCE_TIME);
+  const [query, setQuery] = useDebounceValue("", SEARCH_DEBOUNCE_TIME);
   const [items, setItems] = useState<SearchItem[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
