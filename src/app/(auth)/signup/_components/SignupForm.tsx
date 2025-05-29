@@ -27,7 +27,6 @@ import { PasswordInput, SubmitButton } from "../../_components";
 import { CircleInfo } from "@/components/icons";
 
 export default function SignupForm() {
-  const { signup } = useAuth();
   const form = useForm<z.infer<typeof zodSchema.auth.signup>>({
     resolver: zodResolver(zodSchema.auth.signup),
     defaultValues: {
@@ -39,6 +38,7 @@ export default function SignupForm() {
 
   const [showDetails, setShowDetails] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { signup } = useAuth();
   async function signupHandler(values: z.infer<typeof zodSchema.auth.signup>) {
     setLoading(true);
     toast.promise(signup(values), {
@@ -59,7 +59,7 @@ export default function SignupForm() {
           variant="ghost"
           size="icon"
           onClick={() => setShowDetails(!showDetails)}
-          className="absolute top-7 right-3"
+          className="absolute top-1 right-0"
         >
           <CircleInfo className="fill-blue-500 dark:fill-blue-400 size-5" />
         </Button>
@@ -123,7 +123,7 @@ export default function SignupForm() {
                   </FormControl>
                   {showDetails && (
                     <FormDescription className="text-xs">
-                      Password must be at least 8 characters
+                      Password must be at least 8 characters and include at least three of: uppercase letter (A-Z), lowercase letter (a-z), number (0-9)
                     </FormDescription>
                   )}
                   <FormMessage />

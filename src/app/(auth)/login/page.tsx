@@ -9,11 +9,12 @@ import {
   PageTitle,
 } from "../_components";
 import { LoginForm } from "./_components";
+import { styles } from "../_constants/styles";
 
 export const metadata = Metadata.login;
 export default function LoginPage() {
   return (
-    <main className={cn("w-96 rounded-lg", "px-5 pt-6 pb-5")}>
+    <main className={styles.form}>
       <PageTitle title="Login" />
       <LoginForm />
       <Divider text="OR" className={cn("my-2", "text-xs")} />

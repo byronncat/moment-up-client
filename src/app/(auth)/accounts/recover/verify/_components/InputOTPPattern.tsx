@@ -5,7 +5,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 export default function InputOTPPattern({
   value,
@@ -17,7 +17,7 @@ export default function InputOTPPattern({
   return (
     <InputOTP
       maxLength={6}
-      pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+      pattern={REGEXP_ONLY_DIGITS}
       value={value}
       onChange={onChange}
     >

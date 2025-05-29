@@ -17,6 +17,9 @@ const signup = z.object({
     })
     .min(2, {
       message: "Username must be at least 2 characters",
+    })
+    .regex(/^[a-zA-Z0-9._-]+$/, {
+      message: "Only letters, numbers, dots, underscores, and hyphens are allowed",
     }),
   email: z
     .string()
@@ -33,7 +36,19 @@ const signup = z.object({
     })
     .min(8, {
       message: "Password must be at least 8 characters",
-    }),
+    })
+    .refine(
+      (password) => {
+        let conditionsMet = 0;
+        if (/[A-Z]/.test(password)) conditionsMet++;
+        if (/[a-z]/.test(password)) conditionsMet++;
+        if (/[0-9]/.test(password)) conditionsMet++;
+        return conditionsMet >= 3;
+      },
+      {
+        message: "Password must include at least three of the following: uppercase letter (A-Z), lowercase letter (a-z), number (0-9)",
+      }
+    ),
 });
 
 const sendRecoveryEmail = z.object({
@@ -67,7 +82,19 @@ const changePassword = z
       })
       .min(8, {
         message: "Password must be at least 8 characters",
-      }),
+      })
+      .refine(
+        (password) => {
+          let conditionsMet = 0;
+          if (/[A-Z]/.test(password)) conditionsMet++;
+          if (/[a-z]/.test(password)) conditionsMet++;
+          if (/[0-9]/.test(password)) conditionsMet++;
+          return conditionsMet >= 3;
+        },
+        {
+          message: "Password must include at least three of the following: uppercase letter (A-Z), lowercase letter (a-z), number (0-9)",
+        }
+      ),
     confirmPassword: z.string().nonempty({
       message: "Please confirm your password",
     }),

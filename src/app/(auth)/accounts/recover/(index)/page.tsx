@@ -4,11 +4,12 @@ import { Metadata } from "@/constants/metadata";
 
 import { PageTitle, ActionableText } from "../../../_components";
 import { RecoverPasswordForm } from "./_components";
+import { styles } from "../../../_constants/styles";
 
 export const metadata = Metadata.recover;
 export default function RecoverPasswordPage() {
   return (
-    <main className={cn("w-96 rounded-lg", "px-5 pt-6 pb-5")}>
+    <main className={styles.form}>
       <PageTitle title="Trouble logging in?" variant="secondary" />
       <p className="text-sm text-muted-foreground text-center mb-6">
         Please enter your email address to search for your account.

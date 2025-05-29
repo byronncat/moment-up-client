@@ -9,11 +9,12 @@ import {
   PageTitle,
 } from "../_components";
 import { SignupForm } from "./_components";
+import { styles } from "../_constants/styles";
 
 export const metadata = Metadata.signup;
 export default function SignUpPage() {
   return (
-    <main className={cn("w-96 rounded-lg", "px-5 pt-6 pb-5", "relative")}>
+    <main className={cn(styles.form, "relative")}>
       <PageTitle title="Sign up" />
       <SignupForm />
       <Divider text="OR" className={cn("my-2", "text-xs")} />

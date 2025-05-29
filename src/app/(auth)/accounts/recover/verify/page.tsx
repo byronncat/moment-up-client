@@ -1,14 +1,15 @@
 import { cn } from "@/libraries/utils";
 import { Metadata } from "@/constants/metadata";
 
+import Link from "next/link";
 import { PageTitle } from "../../../_components";
 import { ChangePasswordForm } from "./_components";
-import Link from "next/link";
+import { styles } from "../../../_constants/styles";
 
 export const metadata = Metadata.verify;
 export default function VerifyRecoveryPage() {
   return (
-    <div className={cn("w-96 rounded-lg", "px-5 pt-6 pb-5")}>
+    <div className={styles.form}>
       <PageTitle title="Change Password" variant="secondary" />
       <ChangePasswordForm className="mt-4" />
       <Link

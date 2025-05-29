@@ -23,7 +23,6 @@ import {
 import { PasswordInput, SubmitButton } from "../../../../_components";
 
 export default function ChangePasswordForm({ className }: ComponentProps) {
-  const { changePassword, sendRecoveryEmail } = useAuth();
   const form = useForm<z.infer<typeof zodSchema.auth.changePassword>>({
     resolver: zodResolver(zodSchema.auth.changePassword),
     defaultValues: {
@@ -34,6 +33,7 @@ export default function ChangePasswordForm({ className }: ComponentProps) {
   });
 
   const [loading, setLoading] = useState(false);
+  const { changePassword, sendRecoveryEmail } = useAuth();
   async function verifyHandler(
     values: z.infer<typeof zodSchema.auth.changePassword>
   ) {
