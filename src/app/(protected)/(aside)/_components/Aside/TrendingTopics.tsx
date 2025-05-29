@@ -10,7 +10,7 @@ import { ROUTE } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import SectionHeader from "./SectionHeader";
+import SectionHeader from "../SectionHeader";
 import {
   DropdownMenu,
   DropdownMenuContent,

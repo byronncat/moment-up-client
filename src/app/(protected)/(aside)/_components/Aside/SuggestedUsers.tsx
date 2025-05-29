@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/hover-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CircleCheck } from "@/components/icons";
-import SectionHeader from "./SectionHeader";
+import SectionHeader from "../SectionHeader";
 
 export default function SuggestedSection() {
   const [suggestedUsers, setSuggestedUsers] = useState<UserCardInfo[] | null>(

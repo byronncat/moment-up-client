@@ -2,6 +2,10 @@ import { mockFeed, mockFeeds, mockMoments } from "@/__mocks__";
 import type { API, FeedInfo, FeedNotification, DetailedMoment } from "api";
 import { PAGE_CONFIG } from "@/constants/clientConfig";
 
+const API = {
+  getMoments: "success" as "error" | "empty" | "success",
+};
+
 export async function getFeeds(): Promise<API<FeedNotification[]>> {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -39,20 +43,39 @@ export async function getFeed(feedId: string): Promise<API<FeedInfo>> {
   });
 }
 
-export async function getMoments(page: number): Promise<API<DetailedMoment[]>> {
+export async function getMoments(page: number): Promise<API<{
+  items: DetailedMoment[];
+  hasNextPage: boolean;
+}>> {
   const start = (page - 1) * PAGE_CONFIG.MOMENT_CARD_PAGE;
   const end = start + PAGE_CONFIG.MOMENT_CARD_PAGE;
   const moments = mockMoments.slice(start, end);
 
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        message: "ok",
-        data: moments,
-      });
-    }, 1000);
-  });
+  // await new Promise((resolve) => setTimeout(resolve, 12000));
+  if (API.getMoments === "error") {
+    return {
+      success: false,
+      message: "error",
+    };
+  }
+  if (API.getMoments === "empty") {
+    return {
+      success: true,
+      message: "ok",
+      data: {
+        items: [],
+        hasNextPage: false,
+      },
+    };
+  }
+  return {
+    success: true,
+    message: "ok",
+    data: {
+      items: moments,
+      hasNextPage: moments.length === PAGE_CONFIG.MOMENT_CARD_PAGE,
+    },
+  };
 }
 
 export async function getMoment(

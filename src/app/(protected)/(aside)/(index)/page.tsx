@@ -1,13 +1,16 @@
-import { cn } from "@/libraries/utils";
-import { Feeds, Moments } from "./_components";
-import { Metadata } from "@/constants/metadata";
+import { CoreApi } from "@/services";
+import { Suspense } from "react";
+import { Moments }from "./_components";
 
-export const metadata = Metadata.home;
 export default function HomePage() {
+  const momentsRes = CoreApi.getMoments(1);
   return (
-    <div className={cn("flex flex-col h-full", "pt-5 pb-5 sm:pb-10 px-3")}>
-      <Feeds className="mb-4" />
-      <Moments />
+    <div className="size-full">
+      {/* <Feeds className="mb-4" /> */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <Moments initialRes={momentsRes} />
+      </Suspense>
     </div>
   );
 }
+

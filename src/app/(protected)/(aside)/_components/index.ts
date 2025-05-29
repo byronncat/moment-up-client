@@ -1,11 +1,7 @@
-export { default as SwitchAccount } from "./SwitchAccount";
-export { default as SuggestedUsers } from "./SuggestedUsers";
-export { default as Footer } from "./Footer";
-export { default as TrendingTopics } from "./TrendingTopics";
+export { default as SearchBar } from "./Search/SearchBar";
+export { default as SearchInput } from "./Search/SearchInput";
+export { default as SearchItem } from "./Search/SearchItem";
 
-export { default as SearchBar } from "./search/SearchBar";
-export { default as SearchInput } from "./search/SearchInput";
-export { default as SearchItem } from "./search/SearchItem";
-
+export { default as Aside } from "./Aside/Aside";
 export { default as PageHeader } from "./PageHeader";
 export { default as ListLayout } from "./ListLayout";

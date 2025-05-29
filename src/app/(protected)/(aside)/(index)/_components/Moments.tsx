@@ -1,117 +1,16 @@
 "use client";
 
-import type { DetailedMoment } from "api";
-import { useEffect, useState, useRef, useCallback } from "react";
-import { CoreApi } from "@/services";
-import { useInfiniteScroll, useChunkRender } from "@/hooks";
-import { PAGE_CONFIG } from "@/constants/clientConfig";
+import type { API, DetailedMoment } from "api";
 
-import { cn } from "@/libraries/utils";
+import { useState, useRef, useEffect, useCallback, use } from "react";
+import { FixedSizeList } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
+import { CoreApi } from "@/services";
 import { NoContent, ErrorContent } from "@/components";
 import { MomentCard, MomentSkeleton } from "@/components/moment";
-import NoMoreMoments from "./NoMoreMoments";
+import NoMoreMoments from "./_components/NoMoreMoments";
 import { Loader2 } from "lucide-react";
-
-export default function Moments() {
-  const [isLoaded, setLoaded] = useState(false);
-  const isInitialLoading = useRef(false);
-
-  const {
-    items: moments,
-    isLoading: isLoadingMore,
-    hasMore,
-    loaderRef,
-    loadMore,
-    reset: resetInfiniteScroll,
-    error,
-  } = useInfiniteScroll<DetailedMoment>();
-
-  const {
-    itemsToShow,
-    hasMoreChunks,
-    chunkLoaderRef,
-    reset: resetChunks,
-  } = useChunkRender(moments ?? [], {
-    chunkSize: PAGE_CONFIG.MOMENT_CARD_CHUNK,
-  });
-
-  const visibleMoments = moments?.slice(0, itemsToShow) ?? [];
-
-  const fetchMomentsPage = useCallback(async (page: number) => {
-    const res = await CoreApi.getMoments(page);
-    if (res.success) {
-      return res.data ?? [];
-    }
-    throw new Error("Failed to fetch moments");
-  }, []);
-
-  const fetchInitialMoments = useCallback(async () => {
-    if (isInitialLoading.current || isLoaded) return;
-    isInitialLoading.current = true;
-
-    await loadMore(fetchMomentsPage);
-    setLoaded(true);
-    isInitialLoading.current = false;
-  }, [fetchMomentsPage, loadMore, isLoaded]);
-
-  async function handleRefresh() {
-    setLoaded(false);
-    resetChunks();
-    resetInfiniteScroll();
-    await fetchInitialMoments();
-  }
-
-  useEffect(() => {
-    fetchInitialMoments();
-  }, [fetchInitialMoments]);
-
-  let content = null;
-  if (!isLoaded) {
-    content = <MomentSkeletons />;
-  } else if (error) {
-    content = <ErrorContent onRefresh={handleRefresh} />;
-  } else if (moments && moments.length > 0) {
-    const footer = hasMore ? (
-      isLoadingMore && (
-        <div className={cn("w-full py-12", "flex justify-center items-center")}>
-          <Loader2 className="size-8 animate-spin text-muted-foreground" />
-        </div>
-      )
-    ) : (
-      <NoMoreMoments />
-    );
-
-    content = (
-      <>
-        {visibleMoments.map((moment) => (
-          <MomentCard data={moment} key={moment.id} />
-        ))}
-        <div
-          ref={chunkLoaderRef}
-          className={cn(hasMoreChunks ? "block" : "hidden")}
-        />
-        <div
-          ref={loaderRef}
-          className={cn(hasMore && !hasMoreChunks ? "block" : "hidden")}
-        />
-        {!hasMoreChunks && footer}
-      </>
-    );
-  } else {
-    content = (
-      <NoContent
-        title="No moments yet"
-        description="When anyone you follow posts, they'll show up here."
-      />
-    );
-  }
-
-  return <Wrapper>{content}</Wrapper>;
-}
-
-function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <div className={cn("flex flex-col gap-4", "grow")}>{children}</div>;
-}
+import InfiniteLoader from "react-window-infinite-loader";
 
 function MomentSkeletons() {
   return (
@@ -120,4 +19,162 @@ function MomentSkeletons() {
       <MomentSkeleton variant="square" />
     </>
   );
+}
+
+type MomentsProps = Readonly<{
+  initialRes: Promise<
+    API<{
+      items: DetailedMoment[];
+      hasNextPage: boolean;
+    }>
+  >;
+}>;
+
+export default function Moments({ initialRes }: MomentsProps) {
+  const response = use(initialRes);
+  const [moments, setMoments] = useState<DetailedMoment[]>(
+    response?.data?.items ?? []
+  );
+  const [hasNextPage, setHasNextPage] = useState(
+    response?.data?.hasNextPage ?? true
+  );
+  const [isLoaded, setLoaded] = useState(false);
+  const [isNextPageLoading, setIsNextPageLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const page = useRef(1);
+
+  console.log(moments);
+
+  const fetchMoments = useCallback(async () => {
+    const res = await CoreApi.getMoments(page.current);
+    if (res.success) {
+      setMoments((prev) => [...(prev ?? []), ...(res.data?.items ?? [])]);
+      setHasNextPage(res.data?.hasNextPage ?? false);
+      setIsNextPageLoading(false);
+      setError(null);
+      page.current++;
+    } else setError(res.message);
+  }, []);
+
+  // const {
+  //   items: moments,
+  //   isLoading: isLoadingMore,
+  //   hasMore,
+  //   loadMore,
+  //   reset: resetInfiniteScroll,
+  //   error,
+  // } = useInfiniteScroll<DetailedMoment>();
+
+  // const fetchInitialMoments = useCallback(async () => {
+  //   if (isInitialLoading.current || isLoaded) return;
+  //   isInitialLoading.current = true;
+
+  //   await loadMore(fetchMomentsPage);
+  //   setLoaded(true);
+  //   isInitialLoading.current = false;
+  // }, [fetchMomentsPage, loadMore, isLoaded]);
+
+  // async function handleRefresh() {
+  //   setLoaded(false);
+  //   resetInfiniteScroll();
+  //   await fetchInitialMoments();
+  // }
+
+  // useEffect(() => {
+  //   fetchInitialMoments();
+  // }, [fetchInitialMoments]);
+
+  // if (!isLoaded) {
+  //   return <MomentSkeletons />;
+  // }
+  // if (error) {
+  //   return <ErrorContent onRefresh={handleRefresh} />;
+  // }
+  // if (!moments || moments.length === 0) {
+  //   return (
+  //     <NoContent
+  //       title="No moments yet"
+  //       description="When anyone you follow posts, they'll show up here."
+  //     />
+  //   );
+  // }
+
+  if (!moments || moments.length === 0) {
+    return (
+      <NoContent
+        title="No moments yet"
+        description="When anyone you follow posts, they'll show up here."
+      />
+    );
+  }
+
+  return (
+    <MomentList
+      hasNextPage={hasNextPage}
+      isNextPageLoading={isNextPageLoading}
+      items={moments}
+      loadNextPage={fetchMoments}
+    />
+  );
+}
+
+type MomentListProps = Readonly<{
+  hasNextPage: boolean;
+  isNextPageLoading: boolean;
+  items: DetailedMoment[];
+  loadNextPage: () => void;
+}>;
+
+function MomentList({
+  hasNextPage,
+  isNextPageLoading,
+  items,
+  loadNextPage,
+}: MomentListProps) {
+  const itemCount = hasNextPage ? items.length + 1 : items.length;
+  const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
+  const isItemLoaded = (index: number) => !hasNextPage || index < items.length;
+
+  const Item = ({
+    index,
+    style,
+  }: Readonly<{ index: number; style: React.CSSProperties }>) => {
+    let content;
+    if (!isItemLoaded(index)) {
+      content = "Loading...";
+    } else {
+      content = <Row data={items[index]} />;
+    }
+
+    return <div style={style}>{content}</div>;
+  };
+
+  return (
+    <AutoSizer>
+      {({ height, width }) => (
+        // <InfiniteLoader
+        //   isItemLoaded={isItemLoaded}
+        //   itemCount={itemCount}
+        //   loadMoreItems={loadMoreItems}
+        // >
+        //   {({ onItemsRendered, ref }) => (
+        <FixedSizeList
+          itemCount={itemCount}
+          // onItemsRendered={onItemsRendered}
+          // ref={ref}
+          itemSize={740}
+          height={height}
+          width={400}
+        >
+          {Item}
+        </FixedSizeList>
+        //   )}
+        // </InfiniteLoader>
+      )}
+    </AutoSizer>
+  );
+}
+
+function Row({ data }: Readonly<{ data: DetailedMoment }>) {
+  return <MomentCard data={data} />;
 }

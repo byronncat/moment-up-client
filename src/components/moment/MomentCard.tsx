@@ -1,16 +1,14 @@
-"use client";
-
 import type { DetailedMoment, UserCardInfo } from "api";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cn } from "@/libraries/utils";
 import dayjs from "dayjs";
 import { UserApi } from "@/services";
 import format from "@/utilities/format";
 import { ROUTE } from "@/constants/clientConfig";
 
+import Image from "next/image";
+import Link from "next/link";
 import { Avatar, UserInfoCard } from "../common";
 import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
 import {
@@ -30,11 +28,12 @@ import { Heart, Comment, Play, Pause, Share, Repeat, Bookmark } from "../icons";
 
 type MomentCardProps = Readonly<{
   data: DetailedMoment;
+  className?: string;
 }>;
 
-export default function MomentCard({ data }: MomentCardProps) {
+export default function MomentCard({ data, className }: MomentCardProps) {
   return (
-    <Card className="overflow-hidden">
+    <Card className={cn("overflow-hidden", className)}>
       <Header data={data} />
       <Content momentId={data.id} postData={data.post} />
       <Footer postData={data.post} />
@@ -145,71 +144,100 @@ function Content({ momentId, postData }: ContentProps) {
       </CardContent>
     );
 
-  const MediaContent = () =>
-    postData.files && (
+  const MediaContent = React.memo(function MediaContent() {
+    const [isCarouselMounted, setIsCarouselMounted] = useState(false);
+
+    // Defer carousel mounting until after initial render
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsCarouselMounted(true);
+      }, 0);
+      return () => clearTimeout(timer);
+    }, []);
+
+    if (!postData.files) return null;
+
+    return (
       <CardContent className="p-0">
-        <Carousel className="w-full">
-          <CarouselContent>
-            {postData.files.map((file, index) => (
-              <CarouselItem key={index}>
-                <Link href={ROUTE.MOMENT(momentId)}>
-                  <div className="relative aspect-square">
-                    {file.type === "image" ? (
-                      <Image
-                        src={file.url}
-                        alt={`Moment ${index + 1}`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 574px"
-                        className="object-cover"
-                        loading="lazy"
-                        placeholder="blur"
-                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQrJyEwPDY2ODYyTEhMR0BGRlNCRkJHYGFjYWM4OTtBV0ZGUJJgdmBwoKD/2wBDARUXFx4aHh0eHCAdHyChOKE4oaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaH/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                      />
-                    ) : (
-                      <div
-                        className={cn("relative size-full", "cursor-pointer")}
-                      >
-                        <video
+        {isCarouselMounted ? (
+          <Carousel className="w-full">
+            <CarouselContent>
+              {postData.files.map((file, index) => (
+                <CarouselItem key={index}>
+                  <Link href={ROUTE.MOMENT(momentId)}>
+                    <div className="relative aspect-square">
+                      {file.type === "image" ? (
+                        <Image
                           src={file.url}
-                          className="size-full object-cover"
-                          controls
-                          playsInline
-                          preload="metadata"
-                          onPlay={() => setIsPlaying(true)}
-                          onPause={() => setIsPlaying(false)}
+                          alt={`Moment ${index + 1}`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 574px"
+                          className="object-cover"
+                          loading="lazy"
+                          placeholder="blur"
+                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQrJyEwPDY2ODYyTEhMR0BGRlNCRkJHYGFjYWM4OTtBV0ZGUJJgdmBwoKD/2wBDARUXFx4aHh0eHCAdHyChOKE4oaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaH/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                         />
+                      ) : (
                         <div
-                          className={cn(
-                            "absolute inset-0",
-                            "flex items-center justify-center",
-                            "pointer-events-none"
-                          )}
+                          className={cn("relative size-full", "cursor-pointer")}
                         >
-                          {isPlaying ? (
-                            <Pause className="size-12 fill-white/80" />
-                          ) : (
-                            <Play
-                              className="size-12 fill-white/80"
-                              type="solid"
-                            />
-                          )}
+                          <video
+                            src={file.url}
+                            className="size-full object-cover"
+                            controls
+                            playsInline
+                            preload="metadata"
+                            onPlay={() => setIsPlaying(true)}
+                            onPause={() => setIsPlaying(false)}
+                          />
+                          <div
+                            className={cn(
+                              "absolute inset-0",
+                              "flex items-center justify-center",
+                              "pointer-events-none"
+                            )}
+                          >
+                            {isPlaying ? (
+                              <Pause className="size-12 fill-white/80" />
+                            ) : (
+                              <Play
+                                className="size-12 fill-white/80"
+                                type="solid"
+                              />
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          {postData.files.length > 1 && (
-            <>
-              <CarouselPrevious className="left-2" />
-              <CarouselNext className="right-2" />
-            </>
-          )}
-        </Carousel>
+                      )}
+                    </div>
+                  </Link>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {postData.files.length > 1 && (
+              <>
+                <CarouselPrevious className="left-2" />
+                <CarouselNext className="right-2" />
+              </>
+            )}
+          </Carousel>
+        ) : (
+          // Show a placeholder while carousel is mounting
+          <div className="relative aspect-square">
+            <Image
+              src={postData.files[0].url}
+              alt="Moment"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 574px"
+              className="object-cover"
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQrJyEwPDY2ODYyTEhMR0BGRlNCRkJHYGFjYWM4OTtBV0ZGUJJgdmBwoKD/2wBDARUXFx4aHh0eHCAdHyChOKE4oaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaH/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+            />
+          </div>
+        )}
       </CardContent>
     );
+  });
 
   return (
     <div>

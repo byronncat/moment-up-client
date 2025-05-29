@@ -51,10 +51,8 @@ export const ASPECT_RATIO = {
 };
 
 export const PAGE_CONFIG = {
-  MOMENT_CARD_PAGE: 6,
-  MOMENT_CARD_CHUNK: 2,
+  MOMENT_CARD_PAGE: 50,
   MOMENT_CELL_PAGE: 24,
-  MOMENT_CELL_CHUNK: 12,
 };
 
 export const SEARCH_DEBOUNCE_TIME = 500;
