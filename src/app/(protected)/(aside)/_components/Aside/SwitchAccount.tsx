@@ -1,12 +1,16 @@
 "use client";
 
-import type { AccountInfo } from "api";
+import type { AccountInfo, API } from "api";
+import type { z } from "zod";
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/components/providers";
 import { AuthApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import zodSchema from "@/libraries/zodSchema";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -22,6 +26,15 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/app/(auth)/_components";
 
 export default function SwitchAccountt() {
   const { user } = useAuth();
@@ -86,105 +99,204 @@ function SwitchButton() {
           Switch
         </button>
       </DialogTrigger>
-      <ManagementModal onClose={() => setOpen(false)} />
+      <ManagementModal open={open} onClose={() => setOpen(false)} />
     </Dialog>
   );
 }
 
 function ManagementModal({
+  open,
   onClose,
 }: Readonly<{
+  open: boolean;
   onClose: () => void;
 }>) {
   const { user, changeAccount } = useAuth();
   const [accounts, setAccounts] = useState<AccountInfo[] | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
 
   async function switchAccount(accountId: AccountInfo["id"]) {
     if (user?.id === accountId || loading) return;
-    setLoading(true);
-
-    toast.promise(changeAccount(accountId), {
-      loading: "Switching account...",
-      success: (res) => {
-        setLoading(false);
-        if (res.success) {
-          onClose();
-          return "Account switched successfully";
-        }
-        throw new Error(res.message);
-      },
-      error: "Failed to switch account",
-    });
+    await changeAccount(accountId);
+    onClose();
   }
 
   useEffect(() => {
+    if (!open) return;
     async function fetchAccounts() {
+      setLoading(true);
       const res = await AuthApi.getAllAcounts();
       if (res.success) setAccounts(res.data ?? []);
+      else {
+        onClose();
+        toast.error("Something went wrong! Please try again later.");
+      }
       setLoading(false);
     }
     fetchAccounts();
-  }, []);
+  }, [open, onClose]);
 
   return (
-    <DialogContent className="sm:max-w-md p-0 pb-4">
-      <DialogHeader className={cn("text-lg", "px-6 pt-6")}>
-        <DialogTitle>Manage Accounts</DialogTitle>
-        <DialogDescription>
-          Select an account to switch to or add a new account.
-        </DialogDescription>
-      </DialogHeader>
-      <div className="flex flex-col">
-        {loading && !accounts ? (
-          <SkeletonAccount />
-        ) : (
-          accounts?.map((account) => (
-            <div
-              key={account.id}
-              onClick={() => switchAccount(account.id)}
-              className={cn(
-                "px-6 py-3",
-                "flex items-center gap-2",
-                !loading && "hover:bg-accent/[.07]",
-                user?.id !== account.id && "cursor-pointer",
-                "transition-colors duration-150 ease-in-out"
-              )}
-            >
-              <Avatar
-                src={account.avatar}
-                alt="Your profile picture"
-                size="12"
-              />
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold">{account.displayName}</span>
-                  {user?.id === account.id && (
-                    <span
-                      className={cn(
-                        "inline-block size-2 rounded-full",
-                        "bg-green-600 dark:bg-green-400"
-                      )}
-                    />
-                  )}
+    <>
+      <DialogContent className={cn("sm:max-w-md p-0 pb-4", showLoginDialog && "hidden")}>
+        <DialogHeader className={cn("text-lg", "px-6 pt-6")}>
+          <DialogTitle>Manage Accounts</DialogTitle>
+          <DialogDescription>
+            Select an account to switch to or add a new account.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex flex-col">
+          {loading ? (
+            <SkeletonAccount />
+          ) : (
+            accounts?.map((account) => (
+              <div
+                key={account.id}
+                onClick={() => switchAccount(account.id)}
+                className={cn(
+                  "px-6 py-3",
+                  "flex items-center gap-2",
+                  user?.id !== account.id && "cursor-pointer",
+                  "hover:bg-accent/[.07] transition-colors duration-150 ease-in-out"
+                )}
+              >
+                <Avatar
+                  src={account.avatar}
+                  alt="Your profile picture"
+                  size="12"
+                />
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold">{account.displayName}</span>
+                    {user?.id === account.id && (
+                      <span
+                        className={cn(
+                          "inline-block size-2 rounded-full",
+                          "bg-green-600 dark:bg-green-400"
+                        )}
+                      />
+                    )}
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    @{account.username}
+                  </span>
                 </div>
-                <span className="text-sm text-muted-foreground">
-                  @{account.username}
-                </span>
               </div>
-            </div>
-          ))
-        )}
-        <div className={cn("self-end mt-6 pr-4", "flex justify-center gap-3")}>
-          <DialogClose asChild>
-            <Button variant="outline" disabled={loading}>
-              Close
+            ))
+          )}
+          <div className={cn("self-end mt-6 pr-4", "flex justify-center gap-3")}>
+            <DialogClose asChild>
+              <Button variant="outline">Close</Button>
+            </DialogClose>
+            <Button 
+              disabled={loading}
+              onClick={() => setShowLoginDialog(true)}
+            >
+              Add an account
             </Button>
-          </DialogClose>
-          <Button disabled={loading}>Add an account</Button>
+          </div>
         </div>
-      </div>
-    </DialogContent>
+      </DialogContent>
+      <LoginDialog 
+        open={showLoginDialog} 
+        onClose={() => {
+          setShowLoginDialog(false);
+        }}
+        onSuccess={() => {
+          onClose();
+        }}
+      />
+    </>
+  );
+}
+
+function LoginDialog({
+  open,
+  onClose,
+  onSuccess,
+}: Readonly<{
+  open: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+}>) {
+  const form = useForm<z.infer<typeof zodSchema.auth.login>>({
+    resolver: zodResolver(zodSchema.auth.login),
+    defaultValues: {
+      identity: "",
+      password: "",
+    },
+  });
+
+  const { switchLogin } = useAuth();
+
+  async function loginHandler(values: z.infer<typeof zodSchema.auth.login>) {
+    const res = await switchLogin(values);
+    if (res.success) {
+      onClose();
+      onSuccess();
+    } else {
+      toast.error(res.message);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader className="mb-2">
+          <DialogTitle>Add Account</DialogTitle>
+          <DialogDescription>
+            Enter your credentials to add another account.
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(loginHandler)}>
+            <div className={cn("space-y-2", "mb-8")}>
+              <FormField
+                control={form.control}
+                name="identity"
+                render={({ field }) => (
+                  <FormItem className="space-y-1">
+                    <FormControl>
+                      <Input
+                        placeholder="Username or Email"
+                        className="h-10"
+                        autoComplete="username"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <PasswordInput
+                        placeholder="Password"
+                        className="h-10"
+                        autoComplete="current-password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex justify-end gap-3">
+              <DialogClose asChild>
+                <Button variant="outline" type="button">Cancel</Button>
+              </DialogClose>
+              <Button type="submit" className="w-24">Login</Button>
+            </div>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 }
 

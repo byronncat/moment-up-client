@@ -27,6 +27,7 @@ export default function SearchBar() {
     if ((event.target as HTMLElement).closest('[role="alertdialog"]')) return;
     setItems([]);
     setIsOpen(false);
+    setIsLoading(false);
   });
 
   function removeItem(itemId: SearchItem["id"]) {
@@ -41,7 +42,7 @@ export default function SearchBar() {
   function clickItem(item: SearchItem) {
     if (item.type === "user") router.push(ROUTE.PROFILE(item.username));
     else if (item.type === "search") router.push(ROUTE.SEARCH(item.query));
-    else if (item.type === "hashtag") router.push(ROUTE.SEARCH(item.id));
+    else if (item.type === "hashtag") router.push(ROUTE.SEARCH(`#${item.id}`));
     setIsOpen(false);
   }
 
@@ -51,8 +52,10 @@ export default function SearchBar() {
 
     const res = await SearchApi.search({ query });
     if (res.success) setItems(res.data ?? []);
-    else toast.error(res.message || "Failed to perform search");
-
+    else {
+      setItems([]);
+      toast.error("Failed to perform search");
+    }
     setIsLoading(false);
   }, []);
 
@@ -61,7 +64,7 @@ export default function SearchBar() {
 
     const res = await SearchApi.getSearchHistory();
     if (res.success) setItems(res.data ?? []);
-    else toast.error(res.message || "Failed to load search history");
+    else toast.error("Failed to load search history");
 
     setIsLoading(false);
   }, []);

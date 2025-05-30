@@ -1,10 +1,10 @@
 "use client";
 
-import type { UserCardInfo } from "api";
+import type { API, UserCardInfo } from "api";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { SuggestingApi, UserApi } from "@/services";
+import { useState, use } from "react";
+import { UserApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
@@ -15,58 +15,30 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { CircleCheck } from "@/components/icons";
-import SectionHeader from "../SectionHeader";
+import SectionHeader from "./SectionHeader";
 
-export default function SuggestedSection() {
-  const [suggestedUsers, setSuggestedUsers] = useState<UserCardInfo[] | null>(
-    null
-  );
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchSuggestedUsers() {
-      const res = await SuggestingApi.getSuggestedUsers();
-      if (res.success) setSuggestedUsers(res.data ?? []);
-      setLoading(false);
-    }
-    fetchSuggestedUsers();
-  }, []);
+export default function SuggestedSection({
+  initialRes,
+}: Readonly<{
+  initialRes: Promise<API<UserCardInfo[]>>;
+}>) {
+  const response = use(initialRes);
+  const suggestedUsers = response?.data ?? [];
 
   if (suggestedUsers?.length === 0) return null;
   return (
     <div className="w-full">
-      <SectionHeader className="mb-4" loading={loading}>
-        Suggested for you
-      </SectionHeader>
+      <SectionHeader className="mb-4">Suggested for you</SectionHeader>
       <div>
-        {loading
-          ? Array.from({ length: 5 }).map((_, index) => (
-              <SkeletonUserItem key={index} />
-            ))
-          : suggestedUsers?.map((user) => (
-              <SuggestedUserItem key={user.id} user={user} />
-            ))}
+        {suggestedUsers?.map((user) => (
+          <SuggestedUserItem key={user.id} user={user} />
+        ))}
       </div>
     </div>
   );
 }
 
-function SkeletonUserItem() {
-  return (
-    <div className={cn("flex items-center justify-between", "p-2")}>
-      <div className="flex items-center gap-2">
-        <Skeleton className="size-10 rounded-full" />
-        <div className="flex flex-col gap-1">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-3 w-32" />
-        </div>
-      </div>
-      <Skeleton className="h-4 w-12" />
-    </div>
-  );
-}
 
 function SuggestedUserItem({
   user,

@@ -1,6 +1,8 @@
+"use client";
+
 import type { DetailedMoment, UserCardInfo } from "api";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { cn } from "@/libraries/utils";
 import dayjs from "dayjs";
 import { UserApi } from "@/services";
@@ -144,7 +146,7 @@ function Content({ momentId, postData }: ContentProps) {
       </CardContent>
     );
 
-  const MediaContent = React.memo(function MediaContent() {
+  const MediaContent = memo(function MediaContent() {
     const [isCarouselMounted, setIsCarouselMounted] = useState(false);
 
     // Defer carousel mounting until after initial render

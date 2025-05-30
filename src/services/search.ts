@@ -1,7 +1,22 @@
 import { mockMoments, mockSearches } from "@/__mocks__";
+const apiRes = {
+  search: "Search successful" as "Search successful" | "Internal error",
+  getSearchHistory: "Search history loaded" as
+    | "Search history loaded"
+    | "Internal error",
+  detailSearch: "Search result loaded" as
+    | "Search result loaded"
+    | "Internal error",
+};
 
 import type { z } from "zod";
-import type { API, HashtagSearchItem, SearchItem, SearchResult, UserSearchItem } from "api";
+import type {
+  API,
+  HashtagSearchItem,
+  SearchItem,
+  SearchResult,
+  UserSearchItem,
+} from "api";
 
 import zodSchema from "@/libraries/zodSchema";
 import { SEARCH_CATEGORY } from "@/constants/clientConfig";
@@ -9,13 +24,13 @@ import { SEARCH_CATEGORY } from "@/constants/clientConfig";
 export async function search(
   data: z.infer<typeof zodSchema.core.search>
 ): Promise<API<SearchItem[]>> {
-  try {
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, 2000);
-    });
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 2000);
+  });
 
+  if (apiRes.search === "Search successful") {
     const filteredData = mockSearches.filter((item) => {
       if (item.type === "user")
         return item.username.toLowerCase().includes(data.query.toLowerCase());
@@ -29,33 +44,33 @@ export async function search(
       message: "ok",
       data: filteredData,
     };
-  } catch (error) {
-    return {
-      success: false,
-      message: "internal error",
-    };
   }
+
+  return {
+    success: false,
+    message: "Internal error",
+  };
 }
 
 export async function getSearchHistory(): Promise<API<SearchItem[]>> {
-  try {
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, 2000);
-    });
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 2000);
+  });
 
+  if (apiRes.getSearchHistory === "Search history loaded") {
     return {
       success: true,
       message: "ok",
       data: mockSearches.slice(0, 5),
     };
-  } catch (error) {
-    return {
-      success: false,
-      message: "internal error",
-    };
   }
+
+  return {
+    success: false,
+    message: "Internal error",
+  };
 }
 
 export async function detailSearch(
@@ -73,12 +88,16 @@ export async function detailSearch(
       posts: mockMoments.filter((moment) =>
         moment.post.text?.toLowerCase().includes(data.query.toLowerCase())
       ),
-      users: (mockSearches.filter((user) =>
-        user.type === "user" && user.username.toLowerCase().includes(data.query.toLowerCase())) as UserSearchItem[]
-      ),
-      hashtags: (mockSearches.filter((hashtag) =>
-        hashtag.type === "hashtag" && hashtag.id.toLowerCase().includes(data.query.toLowerCase())
-      ) as HashtagSearchItem[]),
+      users: mockSearches.filter(
+        (user) =>
+          user.type === "user" &&
+          user.username.toLowerCase().includes(data.query.toLowerCase())
+      ) as UserSearchItem[],
+      hashtags: mockSearches.filter(
+        (hashtag) =>
+          hashtag.type === "hashtag" &&
+          hashtag.id.toLowerCase().includes(data.query.toLowerCase())
+      ) as HashtagSearchItem[],
     };
 
     if (type === SEARCH_CATEGORY.PEOPLE) {

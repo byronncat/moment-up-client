@@ -1,6 +1,8 @@
 import type { SearchItem as SearchItemType } from "api";
+import { ROUTE } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
+import Link from "next/link";
 import SearchItem from "./SearchItem";
 import {
   AlertDialog,
@@ -44,7 +46,7 @@ export default function Dropdown({
     >
       {items.length > 0 ? (
         <ItemList
-          title={query ? "Search Results" : "Recent Searches"}
+          query={query}
           items={items}
           showClearButton={!query}
           showRemoveButtons={!query}
@@ -60,7 +62,7 @@ export default function Dropdown({
 }
 
 type ItemListProps = {
-  title: string;
+  query: string;
   showClearButton?: boolean;
   showRemoveButtons?: boolean;
   onClearAllItems: () => void;
@@ -70,7 +72,7 @@ type ItemListProps = {
 };
 
 function ItemList({
-  title,
+  query,
   items,
   showClearButton = false,
   showRemoveButtons = false,
@@ -83,7 +85,9 @@ function ItemList({
       <div
         className={cn("flex items-center justify-between", "pl-4 pr-6 mb-4")}
       >
-        <span className="text-sm font-semibold">{title}</span>
+        <span className="text-sm font-semibold">
+          {query ? "Search Results" : "Recent Searches"}
+        </span>
         {showClearButton && <ClearAllButton onClear={onClearAllItems} />}
       </div>
       <div className="space-y-1">
@@ -119,6 +123,28 @@ function ItemList({
             )}
           </div>
         ))}
+        {query && (
+          <button
+            className={cn(
+              "pl-4 pr-5 py-2 w-full",
+              "cursor-pointer hover:bg-accent/[.05]",
+              "transition-colors duration-150 ease-in-out"
+            )}
+            onClick={() => onClickItem({
+              id: query,
+              type: "search",
+              query: query,
+            })}
+          >
+            <SearchItem
+              data={{
+                id: query,
+                type: "search",
+                query: `Search for "${query}"`,
+              }}
+            />
+          </button>
+        )}
       </div>
     </ScrollArea>
   );
@@ -143,9 +169,10 @@ function EmptyState({ query }: Readonly<{ query: string }>) {
 
   return (
     <div className="space-y-2">
-      <div
+      <Link
+        href={ROUTE.SEARCH(query)}
         className={cn(
-          "pl-5 py-2",
+          "pl-5 py-2 block",
           "cursor-pointer hover:bg-accent/[.05]",
           "transition-colors duration-150 ease-in-out"
         )}
@@ -159,10 +186,11 @@ function EmptyState({ query }: Readonly<{ query: string }>) {
           <MagnifyingGlass className="size-4" />
           Search for {query}
         </div>
-      </div>
-      <div
+      </Link>
+      <Link
+        href={ROUTE.SEARCH(`@${query}`)}
         className={cn(
-          "pl-5 py-2",
+          "pl-5 py-2 block",
           "cursor-pointer hover:bg-accent/[.05]",
           "transition-colors duration-150 ease-in-out"
         )}
@@ -175,7 +203,7 @@ function EmptyState({ query }: Readonly<{ query: string }>) {
         >
           <User className="size-4" type="solid" /> Find user @{query}
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

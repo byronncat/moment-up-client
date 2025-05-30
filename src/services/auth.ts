@@ -5,11 +5,13 @@ import type { AccountInfo, API } from "api";
 
 import zodSchema from "@/libraries/zodSchema";
 
-const API = {
+const apiRes = {
   login: "Login successful" as "Login successful" | "Incorrect identity or password" | "Internal error",
   signup: "Signup successful" as "Signup successful" | "Internal error",
   sendRecoveryEmail: "Recovery email sent" as "Recovery email sent" | "Internal error",
   changePassword: "Password changed successfully" as "Password changed successfully" | "Internal error",
+  getAllAccounts: "Accounts fetched successfully" as "Accounts fetched successfully" | "Internal error",
+  switchAccount: "Account switched successfully" as "Account switched successfully" | "Internal error",
 };
 
 export async function login(
@@ -22,14 +24,14 @@ export async function login(
     }, 3000);
   });
 
-  if (API.login === "Login successful") {
+  if (apiRes.login === "Login successful") {
     document.cookie = "session=123456789; max-age=3600; path=/";
     return {
       success: true,
       message: "Login successful!",
     };
   }
-  if (API.login === "Incorrect identity or password") {
+  if (apiRes.login === "Incorrect identity or password") {
     return {
       success: false,
       message: "Incorrect identity or password",
@@ -40,7 +42,7 @@ export async function login(
     message: "Internal error" as const,
   };
 
-  // return await fetch(Api.auth.login, {
+  // return await fetch(apiRes.auth.login, {
   //   method: "POST",
   //   headers: {
   //     "Content-Type": "application/json",
@@ -70,7 +72,7 @@ export async function logout(): Promise<API> {
     success: true,
     message: "ok",
   };
-  // return await fetch(Api.auth.logout, {
+  // return await fetch(apiRes.auth.logout, {
   //   method: "DELETE",
   //   headers: {
   //     "Content-Type": "application/json",
@@ -103,7 +105,7 @@ export async function signup(
     }, 3000);
   });
 
-  if (API.signup === "Signup successful") {
+  if (apiRes.signup === "Signup successful") {
     document.cookie = "session=123456789; max-age=3600; path=/";
     return {
       success: true,
@@ -115,7 +117,7 @@ export async function signup(
     message: "Internal error" as const,
   };
 
-  // return await fetch(Api.auth.signup, {
+  // return await fetch(apiRes.auth.signup, {
   //   method: "POST",
   //   headers: {
   //     "Content-Type": "application/json",
@@ -152,7 +154,7 @@ export async function verify(): Promise<API<AccountInfo>> {
     data: mockCurrentUsers[0],
   };
 
-  // return await fetch(Api.auth.verify, {
+  // return await fetch(apiRes.auth.verify, {
   //   method: "GET",
   //   headers: {
   //     "Content-Type": "application/json",
@@ -185,7 +187,7 @@ export async function sendRecoveryEmail(
     }, 2000);
   });
 
-  if (API.sendRecoveryEmail === "Recovery email sent") {
+  if (apiRes.sendRecoveryEmail === "Recovery email sent") {
     return {
       success: true,
       message: "Recovery email sent",
@@ -207,7 +209,7 @@ export async function changePassword(
     }, 2000);
   });
 
-  if (API.changePassword === "Password changed successfully") {
+  if (apiRes.changePassword === "Password changed successfully") {
     return {
       success: true,
       message: "Password changed successfully",
@@ -220,15 +222,24 @@ export async function changePassword(
 }
 
 export async function getAllAcounts(): Promise<API<AccountInfo[]>> {
-  return new Promise((resolve) => {
+  await new Promise((resolve) => {
     setTimeout(() => {
-      resolve({
-        success: true,
-        message: "ok",
-        data: mockCurrentUsers,
-      });
-    }, 2000);
+      resolve(true);
+    }, 1000);
   });
+
+  if (apiRes.getAllAccounts === "Accounts fetched successfully") {
+    return {
+      success: true,
+      message: "Accounts fetched successfully",
+      data: mockCurrentUsers,
+    };
+  }
+
+  return {
+    success: false,
+    message: "Internal error" as const,
+  };
 }
 
 export async function switchAccount(

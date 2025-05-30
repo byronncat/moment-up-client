@@ -2,7 +2,7 @@ import { mockFeed, mockFeeds, mockMoments } from "@/__mocks__";
 import type { API, FeedInfo, FeedNotification, DetailedMoment } from "api";
 import { PAGE_CONFIG } from "@/constants/clientConfig";
 
-const API = {
+const apiRes = {
   getMoments: "success" as "error" | "empty" | "success",
 };
 
@@ -52,13 +52,13 @@ export async function getMoments(page: number): Promise<API<{
   const moments = mockMoments.slice(start, end);
 
   // await new Promise((resolve) => setTimeout(resolve, 12000));
-  if (API.getMoments === "error") {
+  if (apiRes.getMoments === "error") {
     return {
       success: false,
       message: "error",
     };
   }
-  if (API.getMoments === "empty") {
+  if (apiRes.getMoments === "empty") {
     return {
       success: true,
       message: "ok",

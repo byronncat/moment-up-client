@@ -13,7 +13,7 @@ export default async function Layout({
     <div className="w-screen h-screen relative">
       <SidebarProvider defaultOpen={defaultOpen}>
         <Sidebar />
-        <div className="h-screen w-full sm:w-[calc(100%-3rem)]">{children}</div>
+        <div className="h-screen w-full relative">{children}</div>
       </SidebarProvider>
       {modal}
     </div>

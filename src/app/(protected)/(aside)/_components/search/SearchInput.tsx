@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/libraries/utils";
 import { Input } from "@/components/ui/input";
 import { MagnifyingGlass, XMark } from "@/components/icons";
@@ -20,6 +20,10 @@ export default function SearchInput({
     setQuery("");
     props.onChange?.({ target: { value: "" } } as React.ChangeEvent<HTMLInputElement>);
   }
+
+  useEffect(() => {
+    setQuery(defaultValue);
+  }, [defaultValue]);
 
   return (
     <div className="relative">

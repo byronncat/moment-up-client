@@ -2,24 +2,13 @@
 
 import type { API, DetailedMoment } from "api";
 
-import { useState, useRef, useEffect, useCallback, use } from "react";
+import { useState, useRef, useCallback, use } from "react";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { CoreApi } from "@/services";
-import { NoContent, ErrorContent } from "@/components";
-import { MomentCard, MomentSkeleton } from "@/components/moment";
-import NoMoreMoments from "./_components/NoMoreMoments";
-import { Loader2 } from "lucide-react";
-import InfiniteLoader from "react-window-infinite-loader";
-
-function MomentSkeletons() {
-  return (
-    <>
-      <MomentSkeleton variant="horizontal" />
-      <MomentSkeleton variant="square" />
-    </>
-  );
-}
+import { NoContent } from "@/components";
+import { MomentCard } from "@/components/moment";
+import { VirtualScrollbar } from "@/components/VirtualScrollbar";
 
 type MomentsProps = Readonly<{
   initialRes: Promise<
@@ -43,8 +32,6 @@ export default function Moments({ initialRes }: MomentsProps) {
   const [error, setError] = useState<string | null>(null);
   const page = useRef(1);
 
-  console.log(moments);
-
   const fetchMoments = useCallback(async () => {
     const res = await CoreApi.getMoments(page.current);
     if (res.success) {
@@ -55,49 +42,6 @@ export default function Moments({ initialRes }: MomentsProps) {
       page.current++;
     } else setError(res.message);
   }, []);
-
-  // const {
-  //   items: moments,
-  //   isLoading: isLoadingMore,
-  //   hasMore,
-  //   loadMore,
-  //   reset: resetInfiniteScroll,
-  //   error,
-  // } = useInfiniteScroll<DetailedMoment>();
-
-  // const fetchInitialMoments = useCallback(async () => {
-  //   if (isInitialLoading.current || isLoaded) return;
-  //   isInitialLoading.current = true;
-
-  //   await loadMore(fetchMomentsPage);
-  //   setLoaded(true);
-  //   isInitialLoading.current = false;
-  // }, [fetchMomentsPage, loadMore, isLoaded]);
-
-  // async function handleRefresh() {
-  //   setLoaded(false);
-  //   resetInfiniteScroll();
-  //   await fetchInitialMoments();
-  // }
-
-  // useEffect(() => {
-  //   fetchInitialMoments();
-  // }, [fetchInitialMoments]);
-
-  // if (!isLoaded) {
-  //   return <MomentSkeletons />;
-  // }
-  // if (error) {
-  //   return <ErrorContent onRefresh={handleRefresh} />;
-  // }
-  // if (!moments || moments.length === 0) {
-  //   return (
-  //     <NoContent
-  //       title="No moments yet"
-  //       description="When anyone you follow posts, they'll show up here."
-  //     />
-  //   );
-  // }
 
   if (!moments || moments.length === 0) {
     return (
@@ -134,6 +78,14 @@ function MomentList({
   const itemCount = hasNextPage ? items.length + 1 : items.length;
   const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
   const isItemLoaded = (index: number) => !hasNextPage || index < items.length;
+  const [scrollTop, setScrollTop] = useState(0);
+  const listRef = useRef<FixedSizeList>(null);
+
+  const handleCustomScroll = useCallback((newScrollTop: number) => {
+    if (listRef.current) {
+      listRef.current.scrollTo(newScrollTop);
+    }
+  }, []);
 
   const Item = ({
     index,
@@ -149,29 +101,45 @@ function MomentList({
     return <div style={style}>{content}</div>;
   };
 
+  console.log(items);
   return (
-    <AutoSizer>
-      {({ height, width }) => (
-        // <InfiniteLoader
-        //   isItemLoaded={isItemLoaded}
-        //   itemCount={itemCount}
-        //   loadMoreItems={loadMoreItems}
-        // >
-        //   {({ onItemsRendered, ref }) => (
-        <FixedSizeList
-          itemCount={itemCount}
-          // onItemsRendered={onItemsRendered}
-          // ref={ref}
-          itemSize={740}
-          height={height}
-          width={400}
-        >
-          {Item}
-        </FixedSizeList>
-        //   )}
-        // </InfiniteLoader>
-      )}
-    </AutoSizer>
+    <>
+      <AutoSizer>
+        {({ height, width }) => {
+          console.log(height, width);
+          return (
+            // <InfiniteLoader
+            //   isItemLoaded={isItemLoaded}
+            //   itemCount={itemCount}
+            //   loadMoreItems={loadMoreItems}
+            // >
+            //   {({ onItemsRendered, ref }) => (
+            <>
+              <FixedSizeList
+                ref={listRef}
+                itemCount={itemCount}
+                // onItemsRendered={onItemsRendered}
+                // ref={ref}
+                itemSize={740}
+                height={height}
+                width={width}
+                onScroll={({ scrollOffset }) => setScrollTop(scrollOffset)}
+                className="scrollbar-hide"
+              >
+                {Item}
+              </FixedSizeList>
+              <VirtualScrollbar
+                height={height}
+                totalHeight={itemCount * 740}
+                width={8}
+                onScroll={handleCustomScroll}
+                scrollTop={scrollTop}
+              />
+            </>
+          );
+        }}
+      </AutoSizer>
+    </>
   );
 }
 

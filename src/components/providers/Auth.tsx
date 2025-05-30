@@ -26,6 +26,7 @@ const AuthContext = createContext(
     setLoaded: (loaded: boolean) => void;
     authenticate: () => Promise<void>;
     login: (values: z.infer<typeof zodSchema.auth.login>) => Promise<API>;
+    switchLogin: (values: z.infer<typeof zodSchema.auth.login>) => Promise<API>;
     signup: (values: z.infer<typeof zodSchema.auth.signup>) => Promise<API>;
     logout: () => Promise<API>;
     sendRecoveryEmail: (
@@ -34,7 +35,7 @@ const AuthContext = createContext(
     changePassword: (
       values: z.infer<typeof zodSchema.auth.changePassword>
     ) => Promise<API>;
-    changeAccount: (accountId: AccountInfo["id"]) => Promise<API<AccountInfo>>;
+    changeAccount: (accountId: AccountInfo["id"]) => Promise<void>;
   }
 );
 
@@ -62,6 +63,24 @@ export default function AuthProvider({
         setLogged(true);
         router.push(ROUTE.HOME);
       }
+      return res;
+    },
+    [router]
+  );
+
+  const switchLogin = useCallback(
+    async (values: z.infer<typeof zodSchema.auth.login>) => {
+      setLoaded(false);
+      const res = await AuthApi.login(values);
+      if (res.success) {
+        router.refresh();
+        router.push(ROUTE.HOME);
+      }
+
+      // Wait for the page to reload
+      setTimeout(() => {
+        setLoaded(true);
+      }, 1000);
       return res;
     },
     [router]
@@ -113,11 +132,16 @@ export default function AuthProvider({
 
   const changeAccount = useCallback(
     async (accountId: AccountInfo["id"]) => {
+      setLoaded(false);
       const res = await AuthApi.switchAccount(accountId);
-      if (res.success) setUser(res.data ?? null);
-      return res;
+      if (res.success) {
+        router.refresh();
+        router.push(ROUTE.HOME);
+        setUser(res.data ?? null);
+      }
+      setLoaded(true);
     },
-    [setUser]
+    [router]
   );
 
   useEffect(() => {
@@ -134,6 +158,7 @@ export default function AuthProvider({
         setLoaded,
         authenticate,
         login,
+        switchLogin,
         signup,
         logout,
         sendRecoveryEmail,
