@@ -4,18 +4,36 @@ import { PAGE_CONFIG } from "@/constants/clientConfig";
 
 const apiRes = {
   getMoments: "success" as "error" | "empty" | "success",
+  getFeeds: "success" as "error" | "empty" | "success",
 };
 
 export async function getFeeds(): Promise<API<FeedNotification[]>> {
-  return new Promise((resolve) => {
+  await new Promise((resolve) => {
     setTimeout(() => {
-      resolve({
-        success: true,
-        message: "ok",
-        data: mockFeeds,
-      });
-    }, 1000);
+      resolve(true);
+    }, 3000);
   });
+
+  if (apiRes.getFeeds === "error") {
+    return {
+      success: false,
+      message: "error",
+    };
+  }
+
+  if (apiRes.getFeeds === "empty") {
+    return {
+      success: true,
+      message: "ok",
+      data: [],
+    };
+  }
+
+  return {
+    success: true,
+    message: "ok",
+    data: mockFeeds,
+  };
 }
 
 export async function getFeed(feedId: string): Promise<API<FeedInfo>> {

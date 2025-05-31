@@ -1,16 +1,28 @@
 import { CoreApi } from "@/services";
+
+import { cn } from "@/libraries/utils";
 import { Suspense } from "react";
-import { Moments } from "./_components";
+import { Feeds, Moments } from "./_components";
 import { MomentSkeleton } from "@/components/moment";
+import { CreateFeedButton, FeedItemSkeleton } from "./_components/FeedItem";
 
 export default function HomePage() {
+  const feedsRes = CoreApi.getFeeds();
   const momentsRes = CoreApi.getMoments(1);
   return (
-    <div className="size-full">
-      {/* <Feeds className="mb-4" /> */}
-      <Suspense fallback={<MomentSkeletons />}>
-        <Moments initialRes={momentsRes} />
-      </Suspense>
+    <div className={cn("size-full", "border-x border-border")}>
+      <div className="relative">
+        <Suspense fallback={<FeedSkeletons />}>
+          <Feeds initialRes={feedsRes} />
+        </Suspense>
+      </div>
+      <div className="size-full">
+        <div className="max-w-[37.5rem] size-full mx-auto">
+          <Suspense fallback={<MomentSkeletons />}>
+            <Moments initialRes={momentsRes} />
+          </Suspense>
+        </div>
+      </div>
     </div>
   );
 }
@@ -21,5 +33,23 @@ function MomentSkeletons() {
       <MomentSkeleton variant="horizontal" />
       <MomentSkeleton variant="square" />
     </>
+  );
+}
+
+function FeedSkeletons() {
+  return (
+    <div className={cn("h-[9rem]", "flex flex-col")}>
+      <div className="flex grow">
+        <div className={cn("w-8", "border-r border-border")} />
+        <div className={cn("flex gap-3", "pt-4 pb-2 grow")}>
+          <CreateFeedButton />
+          <FeedItemSkeleton />
+          <FeedItemSkeleton />
+          <FeedItemSkeleton />
+        </div>
+        <div className={cn("w-8", "border-l border-border")} />
+      </div>
+      <div className={cn("h-6", "border-y border-border")} />
+    </div>
   );
 }

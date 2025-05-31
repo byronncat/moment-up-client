@@ -1,15 +1,14 @@
 "use client";
 
-import type { FeedNotification } from "api";
+import type { API, FeedNotification } from "api";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { CoreApi } from "@/services";
+import { useEffect, useRef, useState, useCallback, use } from "react";
 import throttle from "@/helpers/throttle";
 
 import { cn } from "@/libraries/utils";
-import FeedItem, { FeedItemSkeleton, CreateFeedButton } from "./FeedItem";
-import { Card } from "@/components/ui/card";
+import FeedItem, { CreateFeedButton } from "./FeedItem";
 import { Chevron } from "@/components/icons";
+import { ChevronsDown, ChevronsUp } from "lucide-react";
 
 type Direction = "left" | "right";
 const ITEMS_PER_VIEW = 3;
@@ -19,23 +18,17 @@ const SCROLL_DELAY = 150;
 
 export default function Feeds({
   className,
+  initialRes,
 }: Readonly<{
   className?: string;
+  initialRes: Promise<API<FeedNotification[]>>;
 }>) {
-  const [feeds, setFeeds] = useState<FeedNotification[]>([]);
-  const [loading, setLoading] = useState(true);
+  const response = use(initialRes);
+  const feeds = response?.data ?? [];
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [hideFeeds, setHideFeeds] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    async function fetchInitialFeeds() {
-      const res = await CoreApi.getFeeds();
-      if (res.success) setFeeds(res.data ?? []);
-      setLoading(false);
-    }
-    fetchInitialFeeds();
-  }, []);
 
   const handleScroll = throttle((direction: Direction) => {
     if (!scrollContainerRef.current) return;
@@ -72,9 +65,17 @@ export default function Feeds({
   }, [checkScrollability]);
 
   return (
-    <div className={className}>
-      <Card
-        className={cn("relative overflow-hidden", "w-full box-content", "flex")}
+    <div
+      className={cn(
+        className,
+        "absolute top-0 left-0 right-0 z-10",
+        "bg-background/[.93] backdrop-blur-sm",
+        hideFeeds && "-translate-y-[calc(100%-1.5rem)]",
+        "transition-all duration-200"
+      )}
+    >
+      <div
+        className={cn("overflow-hidden", "flex", "transition-all duration-200")}
       >
         <NavigationButton
           direction="left"
@@ -84,27 +85,40 @@ export default function Feeds({
         <div
           ref={scrollContainerRef}
           className={cn(
-            "max-w-[32rem] w-full pt-4 pb-2",
-            "flex gap-4",
+            "grow pt-4 pb-2",
+            "flex gap-3",
             "overflow-x-auto scrollbar-hide",
             "scroll-smooth snap-x snap-mandatory will-change-scroll transform-gpu"
           )}
         >
           <CreateFeedButton className="snap-start" />
-          {loading
-            ? Array.from({ length: 3 }).map((_, index) => (
-                <FeedItemSkeleton key={index} />
-              ))
-            : feeds.map((feed) => (
-                <FeedItem key={feed.id} data={feed} className="snap-start" />
-              ))}
+          {feeds.map((feed) => (
+            <FeedItem key={feed.id} data={feed} className="snap-start" />
+          ))}
         </div>
         <NavigationButton
           direction="right"
           onScroll={handleScroll}
           disabled={!canScrollRight}
         />
-      </Card>
+      </div>
+      <button
+        type="button"
+        className={cn(
+          "flex justify-center items-center",
+          "h-6 w-full",
+          "border-y border-border",
+          "transition-colors duration-200",
+          "hover:bg-accent/[.05] cursor-pointer"
+        )}
+        onClick={() => setHideFeeds(!hideFeeds)}
+      >
+        {hideFeeds ? (
+          <ChevronsDown className="size-4 text-muted-foreground" />
+        ) : (
+          <ChevronsUp className="size-4 text-muted-foreground" />
+        )}
+      </button>
     </div>
   );
 }
@@ -130,14 +144,32 @@ function NavigationButton({
       className={cn(
         "w-8 shrink-0",
         "transition-colors duration-200",
-        disabled ? "opacity-30" : "hover:bg-accent/[.05] cursor-pointer",
+        "flex items-center justify-center",
+        direction === "left"
+          ? "border-r border-border"
+          : "border-l border-border",
+        !disabled && "hover:bg-accent/[.05] cursor-pointer",
         className
       )}
     >
       {direction === "left" ? (
-        <Chevron direction="left" className="size-8 -mt-3" />
+        <Chevron
+          direction="left"
+          className={cn(
+            "size-6 -mt-3",
+            disabled ? "fill-muted-foreground/50" : "fill-foreground",
+            "transition-colors duration-200"
+          )}
+        />
       ) : (
-        <Chevron direction="right" className="size-8 -mt-3" />
+        <Chevron
+          direction="right"
+          className={cn(
+            "size-6 -mt-3",
+            disabled ? "fill-muted-foreground/50" : "fill-foreground",
+            "transition-colors duration-200"
+          )}
+        />
       )}
     </button>
   );

@@ -9,7 +9,7 @@ import { CoreApi } from "@/services";
 import { NoContent } from "@/components";
 import { MomentCard } from "@/components/moment";
 import { VirtualScrollbar } from "@/components/VirtualScrollbar";
-
+import { cn } from "@/libraries/utils";
 type MomentsProps = Readonly<{
   initialRes: Promise<
     API<{
