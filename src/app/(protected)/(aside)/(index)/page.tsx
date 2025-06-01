@@ -5,24 +5,27 @@ import { Suspense } from "react";
 import { Feeds, Moments } from "./_components";
 import { MomentSkeleton } from "@/components/moment";
 import { CreateFeedButton, FeedItemSkeleton } from "./_components/FeedItem";
+import HomeProvider from "./_providers/Home";
 
 export default function HomePage() {
   const feedsRes = CoreApi.getFeeds();
   const momentsRes = CoreApi.getMoments(1);
   return (
     <div className={cn("size-full", "border-x border-border")}>
-      <div className="relative">
-        <Suspense fallback={<FeedSkeletons />}>
-          <Feeds initialRes={feedsRes} />
-        </Suspense>
-      </div>
-      <div className="size-full">
-        <div className="max-w-[37.5rem] size-full mx-auto">
-          <Suspense fallback={<MomentSkeletons />}>
-            <Moments initialRes={momentsRes} />
+      <HomeProvider>
+        <div className="relative">
+          <Suspense fallback={<FeedSkeletons />}>
+            <Feeds initialRes={feedsRes} />
           </Suspense>
         </div>
-      </div>
+        <div className="size-full">
+          <div className="max-w-[37.5rem] size-full mx-auto">
+            <Suspense fallback={<MomentSkeletons />}>
+              <Moments initialRes={momentsRes} />
+            </Suspense>
+          </div>
+        </div>
+      </HomeProvider>
     </div>
   );
 }

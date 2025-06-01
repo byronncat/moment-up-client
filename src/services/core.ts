@@ -69,7 +69,7 @@ export async function getMoments(page: number): Promise<API<{
   const end = start + PAGE_CONFIG.MOMENT_CARD_PAGE;
   const moments = mockMoments.slice(start, end);
 
-  // await new Promise((resolve) => setTimeout(resolve, 12000));
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   if (apiRes.getMoments === "error") {
     return {
       success: false,

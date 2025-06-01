@@ -66,5 +66,6 @@ declare module "schema" {
     readonly id: string;
     readonly type: "image" | "video" | "audio";
     readonly url: string;
+    readonly aspect_ratio: "1:1" | "9:16" | "4:5" | "1.91:1";
   };
 }

@@ -2,7 +2,7 @@
 
 import type { DetailedMoment, UserCardInfo } from "api";
 
-import { useState, useEffect, memo } from "react";
+import { useState, useEffect, memo, useRef } from "react";
 import { cn } from "@/libraries/utils";
 import dayjs from "dayjs";
 import { UserApi } from "@/services";
@@ -113,43 +113,63 @@ type ContentProps = ComponentProps<{
 
 function Content({ momentId, postData }: ContentProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showFullText, setShowFullText] = useState(false);
 
-  const TextContent = () =>
-    postData.text && (
+  const TextContent = () => {
+    const textRef = useRef<HTMLParagraphElement>(null);
+    const [isTextClamped, setIsTextClamped] = useState(false);
+
+    useEffect(() => {
+      const checkClamping = () => {
+        const element = textRef.current;
+        if (element) {
+          setIsTextClamped(element.scrollHeight > element.clientHeight);
+        }
+      };
+
+      checkClamping();
+      window.addEventListener("resize", checkClamping);
+      return () => window.removeEventListener("resize", checkClamping);
+    }, [postData.text]);
+
+    if (!postData.text) return null;
+
+    return (
       <CardContent className="px-3 pb-2">
-        <p className={cn("wrap-break-word", !showFullText && "line-clamp-5")}>
-          {postData.text}
-        </p>
-        {postData.text.length > 280 && !showFullText && (
-          <button
-            onClick={() => setShowFullText(true)}
+        <div
+          className={cn(
+            "flex",
+            postData.files?.length
+              ? "flex-row items-center"
+              : "flex-col items-start gap-1"
+          )}
+        >
+          <p
+            ref={textRef}
             className={cn(
-              "font-semibold text-sm text-muted-foreground",
-              "cursor-pointer hover:underline"
+              "wrap-break-word",
+              postData.files?.length ? "line-clamp-1" : "line-clamp-2"
             )}
           >
-            Show more
-          </button>
-        )}
-        {showFullText && (
+            {postData.text}
+          </p>
           <button
-            onClick={() => setShowFullText(false)}
             className={cn(
               "font-semibold text-sm text-muted-foreground",
-              "cursor-pointer hover:underline"
+              "cursor-pointer hover:underline",
+              "shrink-0",
+              !isTextClamped && "opacity-0"
             )}
           >
-            Show less
+            Show details
           </button>
-        )}
+        </div>
       </CardContent>
     );
+  };
 
   const MediaContent = memo(function MediaContent() {
     const [isCarouselMounted, setIsCarouselMounted] = useState(false);
 
-    // Defer carousel mounting until after initial render
     useEffect(() => {
       const timer = setTimeout(() => {
         setIsCarouselMounted(true);
@@ -159,6 +179,21 @@ function Content({ momentId, postData }: ContentProps) {
 
     if (!postData.files) return null;
 
+    const getAspectRatioClass = (ratio: string) => {
+      switch (ratio) {
+        case "1:1":
+          return "aspect-square";
+        case "9:16":
+          return "aspect-[9/16]";
+        case "4:5":
+          return "aspect-[4/5]";
+        case "1.91:1":
+          return "aspect-[1.91/1]";
+        default:
+          return "aspect-square";
+      }
+    };
+
     return (
       <CardContent className="p-0">
         {isCarouselMounted ? (
@@ -167,7 +202,12 @@ function Content({ momentId, postData }: ContentProps) {
               {postData.files.map((file, index) => (
                 <CarouselItem key={index}>
                   <Link href={ROUTE.MOMENT(momentId)}>
-                    <div className="relative aspect-square">
+                    <div
+                      className={cn(
+                        "relative",
+                        getAspectRatioClass(file.aspect_ratio)
+                      )}
+                    >
                       {file.type === "image" ? (
                         <Image
                           src={file.url}
@@ -175,7 +215,8 @@ function Content({ momentId, postData }: ContentProps) {
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 574px"
                           className="object-cover"
-                          loading="lazy"
+                          loading={index === 0 ? "eager" : "lazy"}
+                          priority={index === 0}
                           placeholder="blur"
                           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQrJyEwPDY2ODYyTEhMR0BGRlNCRkJHYGFjYWM4OTtBV0ZGUJJgdmBwoKD/2wBDARUXFx4aHh0eHCAdHyChOKE4oaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaH/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                         />
@@ -223,8 +264,12 @@ function Content({ momentId, postData }: ContentProps) {
             )}
           </Carousel>
         ) : (
-          // Show a placeholder while carousel is mounting
-          <div className="relative aspect-square">
+          <div
+            className={cn(
+              "relative",
+              getAspectRatioClass(postData.files[0].aspect_ratio)
+            )}
+          >
             <Image
               src={postData.files[0].url}
               alt="Moment"

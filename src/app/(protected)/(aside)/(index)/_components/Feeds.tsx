@@ -9,6 +9,7 @@ import { cn } from "@/libraries/utils";
 import FeedItem, { CreateFeedButton } from "./FeedItem";
 import { Chevron } from "@/components/icons";
 import { ChevronsDown, ChevronsUp } from "lucide-react";
+import { useHome } from "../_providers/Home";
 
 type Direction = "left" | "right";
 const ITEMS_PER_VIEW = 3;
@@ -27,7 +28,7 @@ export default function Feeds({
   const feeds = response?.data ?? [];
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-  const [hideFeeds, setHideFeeds] = useState(false);
+  const { hideFeeds, setHideFeeds } = useHome();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = throttle((direction: Direction) => {
