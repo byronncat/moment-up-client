@@ -19,7 +19,7 @@ export default function HomePage() {
           </Suspense>
         </div>
         <div className="size-full">
-          <div className="max-w-[37.5rem] size-full mx-auto">
+          <div className="max-w-[600px] size-full mx-auto">
             <Suspense fallback={<MomentSkeletons />}>
               <Moments initialRes={momentsRes} />
             </Suspense>
@@ -41,7 +41,7 @@ function MomentSkeletons() {
 
 function FeedSkeletons() {
   return (
-    <div className={cn("h-[9rem]", "flex flex-col")}>
+    <div className={cn("h-[144px]", "flex flex-col")}>
       <div className="flex grow">
         <div className={cn("w-8", "border-r border-border")} />
         <div className={cn("flex gap-3", "pt-4 pb-2 grow")}>

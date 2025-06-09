@@ -32,7 +32,7 @@ export default function ChatSidebar() {
   return (
     <div
       className={cn(
-        "w-[20rem] box-content",
+        "w-[320px] box-content",
         "border-r border-border",
         "flex flex-col"
       )}

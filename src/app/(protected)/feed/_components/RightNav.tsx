@@ -27,7 +27,7 @@ export default function RightNav({ onClose, data, loading }: RightNavProps) {
       className={cn(
         "relative",
         "bg-card",
-        "w-[20rem] h-full",
+        "w-[320px] h-full",
         "border-l border-border",
         "box-content shrink-0",
         "flex flex-col overflow-hidden"
@@ -79,7 +79,7 @@ export default function RightNav({ onClose, data, loading }: RightNavProps) {
               className={cn(
                 "grow",
                 "overflow-y-auto scrollbar-hide",
-                "max-h-[calc(100vh-14rem)] pb-4"
+                "max-h-[calc(100vh-224px)] pb-4"
               )}
             >
               {data?.map((feed, index) => (

@@ -81,7 +81,7 @@ function Header({ data }: HeaderProps) {
             <span
               className={cn(
                 "font-semibold text-base/tight",
-                "truncate max-w-[12rem] md:max-w-[20rem]"
+                "truncate max-w-[192px] md:max-w-[320px]"
               )}
             >
               {data.user.displayName}
@@ -506,7 +506,7 @@ function HoverableComponent({
       >
         <Link href={ROUTE.PROFILE(userInfo.username)}>{children}</Link>
       </HoverCardTrigger>
-      <HoverCardContent className="w-[18rem]">
+      <HoverCardContent className="w-[288px]">
         <UserInfoCard
           user={userInfo}
           isFollowing={isFollowing}

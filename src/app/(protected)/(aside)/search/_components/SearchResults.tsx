@@ -78,10 +78,13 @@ function Header({ title }: Readonly<{ title: string }>) {
 }
 
 function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <div className="mt-[calc(2.75rem+1px)]">{children}</div>;
+  return <div className="mt-[calc(44px+1px)]">{children}</div>;
 }
 
-function CategoryResults({ type, results }: Readonly<{ type: SEARCH_CATEGORY; results: SearchResult }>) {
+function CategoryResults({
+  type,
+  results,
+}: Readonly<{ type: SEARCH_CATEGORY; results: SearchResult }>) {
   const { users, posts, hashtags } = results;
 
   switch (type) {
@@ -119,14 +122,14 @@ export default function SearchResults({
   loading,
   errorHandler,
 }: SearchResultsProps) {
-  if (loading) 
+  if (loading)
     return (
       <Wrapper>
         <LoadingIndicator />
       </Wrapper>
     );
-  
-  if (results === null) 
+
+  if (results === null)
     return <ErrorContent onRefresh={errorHandler} className="h-fit py-6" />;
 
   return (

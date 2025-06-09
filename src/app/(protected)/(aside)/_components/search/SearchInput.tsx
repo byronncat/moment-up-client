@@ -18,7 +18,9 @@ export default function SearchInput({
 
   function clearQuery() {
     setQuery("");
-    props.onChange?.({ target: { value: "" } } as React.ChangeEvent<HTMLInputElement>);
+    props.onChange?.({
+      target: { value: "" },
+    } as React.ChangeEvent<HTMLInputElement>);
   }
 
   useEffect(() => {

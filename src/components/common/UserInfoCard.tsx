@@ -59,7 +59,7 @@ export default function UserInfoCard({
                 "flex items-center gap-1.5"
               )}
             >
-              <span className="truncate max-w-[9rem]">{user.displayName}</span>
+              <span className="truncate max-w-[144px]">{user.displayName}</span>
               {user.verified && <CircleCheck className="size-3 fill-primary" />}
             </CardTitle>
           </Link>
@@ -71,7 +71,7 @@ export default function UserInfoCard({
             )}
           >
             <CardDescription
-              className={cn("leading-5", "truncate max-w-[9rem]")}
+              className={cn("leading-5", "truncate max-w-[144px]")}
             >
               @{user.username}
             </CardDescription>
@@ -165,10 +165,10 @@ function FollowedBy({
           "mt-0.5",
           "wrap-break-word",
           users.displayItems.length === 3
-            ? "max-w-[11.625rem]"
+            ? "max-w-[186px]"
             : users.displayItems.length === 2
-              ? "max-w-[12.625rem]"
-              : "max-w-[13.625rem]"
+              ? "max-w-[202px]"
+              : "max-w-[218px]"
         )}
       >
         {`Followed by ${DisplayUsers.map(

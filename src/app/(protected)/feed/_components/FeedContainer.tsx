@@ -12,7 +12,7 @@ export default function Wrapper({
     >
       <div
         className={cn(
-          "aspect-[9/16] h-[calc(100vh-1rem)]",
+          "aspect-[9/16] h-[calc(100vh-16px)]",
           "bg-card rounded-lg overflow-hidden shadow-lg",
           "relative"
         )}

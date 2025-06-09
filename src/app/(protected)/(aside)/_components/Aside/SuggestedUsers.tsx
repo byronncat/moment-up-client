@@ -39,7 +39,6 @@ export default function SuggestedSection({
   );
 }
 
-
 function SuggestedUserItem({
   user,
 }: Readonly<{
@@ -85,7 +84,7 @@ function SuggestedUserItem({
               />
             </Link>
           </HoverCardTrigger>
-          <HoverCardContent className="w-[18rem]">
+          <HoverCardContent className="w-[288px]">
             <UserInfoCard
               user={user}
               isFollowing={isFollowing}
@@ -112,7 +111,7 @@ function SuggestedUserItem({
                 </div>
               </Link>
             </HoverCardTrigger>
-            <HoverCardContent className="w-[18rem]">
+            <HoverCardContent className="w-[288px]">
               <UserInfoCard
                 user={user}
                 isFollowing={isFollowing}

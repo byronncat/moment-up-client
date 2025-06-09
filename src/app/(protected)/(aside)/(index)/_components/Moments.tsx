@@ -45,7 +45,7 @@ export default function Moments({ initialRes }: MomentsProps) {
 
   if (isNextPageLoading) {
     return (
-      <div className="flex flex-col gap-4 pt-[calc(9rem+1rem)]">
+      <div className="flex flex-col gap-4 pt-[calc(144px+16px)]">
         <MomentSkeleton variant="horizontal" />
         <MomentSkeleton variant="square" />
       </div>
@@ -59,7 +59,7 @@ export default function Moments({ initialRes }: MomentsProps) {
           setIsNextPageLoading(true);
           fetchMoments();
         }}
-        className="pt-[9rem]"
+        className="pt-[144px]"
       />
     );
   }
@@ -69,7 +69,7 @@ export default function Moments({ initialRes }: MomentsProps) {
       <NoContent
         title="No moments yet"
         description="When anyone you follow posts, they'll show up here."
-        className="pt-[9rem]"
+        className="pt-[144px]"
       />
     );
   }

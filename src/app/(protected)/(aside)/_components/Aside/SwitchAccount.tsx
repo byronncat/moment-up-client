@@ -139,7 +139,9 @@ function ManagementModal({
 
   return (
     <>
-      <DialogContent className={cn("sm:max-w-md p-0 pb-4", showLoginDialog && "hidden")}>
+      <DialogContent
+        className={cn("sm:max-w-md p-0 pb-4", showLoginDialog && "hidden")}
+      >
         <DialogHeader className={cn("text-lg", "px-6 pt-6")}>
           <DialogTitle>Manage Accounts</DialogTitle>
           <DialogDescription>
@@ -185,21 +187,20 @@ function ManagementModal({
               </div>
             ))
           )}
-          <div className={cn("self-end mt-6 pr-4", "flex justify-center gap-3")}>
+          <div
+            className={cn("self-end mt-6 pr-4", "flex justify-center gap-3")}
+          >
             <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose>
-            <Button 
-              disabled={loading}
-              onClick={() => setShowLoginDialog(true)}
-            >
+            <Button disabled={loading} onClick={() => setShowLoginDialog(true)}>
               Add an account
             </Button>
           </div>
         </div>
       </DialogContent>
-      <LoginDialog 
-        open={showLoginDialog} 
+      <LoginDialog
+        open={showLoginDialog}
         onClose={() => {
           setShowLoginDialog(false);
         }}
@@ -289,9 +290,13 @@ function LoginDialog({
             </div>
             <div className="flex justify-end gap-3">
               <DialogClose asChild>
-                <Button variant="outline" type="button">Cancel</Button>
+                <Button variant="outline" type="button">
+                  Cancel
+                </Button>
               </DialogClose>
-              <Button type="submit" className="w-24">Login</Button>
+              <Button type="submit" className="w-24">
+                Login
+              </Button>
             </div>
           </form>
         </Form>

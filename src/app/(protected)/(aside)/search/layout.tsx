@@ -5,9 +5,5 @@ export const metadata = Metadata.search;
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <ListLayout>
-      {children}
-    </ListLayout>
-  );
+  return <ListLayout>{children}</ListLayout>;
 }

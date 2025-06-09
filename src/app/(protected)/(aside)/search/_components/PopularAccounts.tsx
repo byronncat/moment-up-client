@@ -18,11 +18,11 @@ export default function PopularAccounts({
   return (
     users.length > 0 && (
       <div className={className}>
-          <Header />
-          <div className={cn("grid grid-cols-2", "px-2 gap-2")}>
-            {users.map((user) => (
-              <UserCard user={user} key={user.id} />
-            ))}
+        <Header />
+        <div className={cn("grid grid-cols-2", "px-2 gap-2")}>
+          {users.map((user) => (
+            <UserCard user={user} key={user.id} />
+          ))}
         </div>
       </div>
     )
@@ -33,7 +33,7 @@ function UserCard({ user }: Readonly<{ user: ProfileCardInfo }>) {
   return (
     <div
       className={cn(
-        "p-3 h-[12rem]",
+        "p-3 h-[192px]",
         "border border-border",
         "rounded-lg relative overflow-hidden"
       )}

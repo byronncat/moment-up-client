@@ -151,7 +151,7 @@ function Content({ onClose }: ContentProps) {
       className={cn(
         "relative",
         "flex flex-col",
-        "w-[22.5rem] h-full shrink-0 bg-card"
+        "w-[360px] h-full shrink-0 bg-card"
       )}
     >
       <div className="absolute top-0 right-0 p-4">

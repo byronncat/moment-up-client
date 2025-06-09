@@ -61,10 +61,12 @@ export async function getFeed(feedId: string): Promise<API<FeedInfo>> {
   });
 }
 
-export async function getMoments(page: number): Promise<API<{
-  items: DetailedMoment[];
-  hasNextPage: boolean;
-}>> {
+export async function getMoments(page: number): Promise<
+  API<{
+    items: DetailedMoment[];
+    hasNextPage: boolean;
+  }>
+> {
   const start = (page - 1) * PAGE_CONFIG.MOMENT_CARD_PAGE;
   const end = start + PAGE_CONFIG.MOMENT_CARD_PAGE;
   const moments = mockMoments.slice(start, end);

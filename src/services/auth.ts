@@ -6,12 +6,23 @@ import type { AccountInfo, API } from "api";
 import zodSchema from "@/libraries/zodSchema";
 
 const apiRes = {
-  login: "Login successful" as "Login successful" | "Incorrect identity or password" | "Internal error",
+  login: "Login successful" as
+    | "Login successful"
+    | "Incorrect identity or password"
+    | "Internal error",
   signup: "Signup successful" as "Signup successful" | "Internal error",
-  sendRecoveryEmail: "Recovery email sent" as "Recovery email sent" | "Internal error",
-  changePassword: "Password changed successfully" as "Password changed successfully" | "Internal error",
-  getAllAccounts: "Accounts fetched successfully" as "Accounts fetched successfully" | "Internal error",
-  switchAccount: "Account switched successfully" as "Account switched successfully" | "Internal error",
+  sendRecoveryEmail: "Recovery email sent" as
+    | "Recovery email sent"
+    | "Internal error",
+  changePassword: "Password changed successfully" as
+    | "Password changed successfully"
+    | "Internal error",
+  getAllAccounts: "Accounts fetched successfully" as
+    | "Accounts fetched successfully"
+    | "Internal error",
+  switchAccount: "Account switched successfully" as
+    | "Account switched successfully"
+    | "Internal error",
 };
 
 export async function login(

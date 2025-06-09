@@ -46,7 +46,7 @@ export default function ResendText({ onClick }: ComponentProps) {
         Resend
         {isDisabled && (
           <span
-            className={cn("inline-block", "absolute left-[calc(100%+0.25rem)]")}
+            className={cn("inline-block", "absolute left-[calc(100%+4px)]")}
           >{`(${resendTime}s)`}</span>
         )}
       </button>

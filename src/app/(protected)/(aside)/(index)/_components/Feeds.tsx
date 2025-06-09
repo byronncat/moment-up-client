@@ -71,7 +71,7 @@ export default function Feeds({
         className,
         "absolute top-0 left-0 right-0 z-10",
         "bg-background/[.93] backdrop-blur-sm",
-        hideFeeds && "-translate-y-[calc(100%-1.5rem)]",
+        hideFeeds && "-translate-y-[calc(100%-24px)]",
         "transition-all duration-200"
       )}
     >

@@ -114,7 +114,10 @@ export default function SearchPage() {
         ) : (
           <>
             <div
-              className={cn("absolute top-[8rem] z-10", "bg-background w-full")}
+              className={cn(
+                "absolute top-[128px] z-10",
+                "bg-background w-full"
+              )}
             >
               <NavigationBar items={categories} />
             </div>

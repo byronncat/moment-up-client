@@ -81,7 +81,7 @@ function ItemList({
   onRemoveItem,
 }: ItemListProps) {
   return (
-    <ScrollArea className="h-[20rem]">
+    <ScrollArea className="h-[320px]">
       <div
         className={cn("flex items-center justify-between", "pl-4 pr-6 mb-4")}
       >
@@ -130,11 +130,13 @@ function ItemList({
               "cursor-pointer hover:bg-accent/[.05]",
               "transition-colors duration-150 ease-in-out"
             )}
-            onClick={() => onClickItem({
-              id: query,
-              type: "search",
-              query: query,
-            })}
+            onClick={() =>
+              onClickItem({
+                id: query,
+                type: "search",
+                query: query,
+              })
+            }
           >
             <SearchItem
               data={{

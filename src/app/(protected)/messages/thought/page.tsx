@@ -62,7 +62,7 @@ function Content() {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center">
-      <div className="max-w-[20rem] w-full">
+      <div className="max-w-[320px] w-full">
         <BubbleTextarea
           value={thought}
           onChange={setThought}

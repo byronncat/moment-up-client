@@ -16,7 +16,7 @@ export default function Aside({ className }: Readonly<{ className?: string }>) {
   return (
     <aside
       className={cn(
-        "h-fit w-[20rem]",
+        "h-fit w-[320px]",
         "space-y-6",
         "hidden lg:block",
         className
@@ -26,7 +26,7 @@ export default function Aside({ className }: Readonly<{ className?: string }>) {
       <SwitchAccount />
       <div
         className={cn(
-          "overflow-y-auto max-h-[calc(100vh-10rem)]",
+          "overflow-y-auto max-h-[calc(100vh-160px)]",
           "space-y-6",
           "scrollbar-hide"
         )}

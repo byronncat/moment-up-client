@@ -28,7 +28,7 @@ export default function SubmitButton({
             className={cn(
               "[&&]:size-5",
               "animate-spin",
-              "absolute right-[calc(100%+0.25rem)]"
+              "absolute right-[calc(100%+4px)]"
             )}
           />
         )}

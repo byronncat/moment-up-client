@@ -123,7 +123,9 @@ export default function SignupForm() {
                   </FormControl>
                   {showDetails && (
                     <FormDescription className="text-xs">
-                      Password must be at least 8 characters and include at least three of: uppercase letter (A-Z), lowercase letter (a-z), number (0-9)
+                      Password must be at least 8 characters and include at
+                      least three of: uppercase letter (A-Z), lowercase letter
+                      (a-z), number (0-9)
                     </FormDescription>
                   )}
                   <FormMessage />

@@ -12,10 +12,10 @@ export const ROUTE = {
   ) => `/profile/${username}${type !== "default" ? `/${type}` : ""}`,
   SEARCH: (query?: string, filter?: SEARCH_CATEGORY) => {
     const params = new URLSearchParams();
-    if (query) params.set('q', query);
-    if (filter) params.set('f', filter);
+    if (query) params.set("q", query);
+    if (filter) params.set("f", filter);
     const queryString = params.toString();
-    return `/search${queryString ? `?${queryString}` : ''}`;
+    return `/search${queryString ? `?${queryString}` : ""}`;
   },
   EXPLORE: (type: "media" | "moments" = "media") => `/explore/${type}`,
   FEED: (feedId: string) => `/feed/${feedId}`,
