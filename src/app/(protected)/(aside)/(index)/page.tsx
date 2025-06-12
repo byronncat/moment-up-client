@@ -32,10 +32,10 @@ export default function HomePage() {
 
 function MomentSkeletons() {
   return (
-    <>
+    <div className="flex flex-col gap-4 pt-4">
       <MomentSkeleton variant="horizontal" />
       <MomentSkeleton variant="square" />
-    </>
+    </div>
   );
 }
 

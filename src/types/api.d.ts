@@ -96,6 +96,7 @@ declare module "api" {
     likes: number;
     comments: number;
     isLiked: boolean;
+    isBookmarked: boolean;
   };
 
   type DetailedMoment = {

@@ -1,6 +1,9 @@
-import React, { useCallback, useRef, useMemo } from "react";
+"use client";
 
-export const VirtualScrollbar = ({
+import { useCallback, useRef, useState } from "react";
+import { cn } from "@/libraries/utils";
+
+export default function VirtualScrollbar({
   height,
   totalHeight,
   width,
@@ -12,25 +15,22 @@ export const VirtualScrollbar = ({
   width: number;
   onScroll: (scrollTop: number) => void;
   scrollTop: number;
-}) => {
-  const isDragging = useRef<boolean>(false);
-  const animationFrame = useRef<number>(0);
+}) {
+  const [isDragging, setIsDragging] = useState(false);
+  const animationFrame = useRef(0);
 
-  const { thumbHeight, maxScrollTop, scrollRatio, thumbTop } = useMemo(() => {
-    const thumbHeight = Math.max(30, (height / totalHeight) * height);
+  const { thumbHeight, maxScrollTop, thumbTop } = (() => {
+    const thumbHeight = Math.max(40, (height / totalHeight) * height);
     const maxScrollTop = height - thumbHeight;
     const scrollRatio = scrollTop / (totalHeight - height);
     const thumbTop = scrollRatio * maxScrollTop;
 
-    return { thumbHeight, maxScrollTop, scrollRatio, thumbTop };
-  }, [height, totalHeight, scrollTop]);
+    return { thumbHeight, maxScrollTop, thumbTop };
+  })();
 
   const handleCustomScroll = useCallback(
     (newScrollTop: number) => {
-      if (animationFrame.current) {
-        cancelAnimationFrame(animationFrame.current);
-      }
-
+      if (animationFrame.current) cancelAnimationFrame(animationFrame.current);
       animationFrame.current = requestAnimationFrame(() => {
         onScroll(newScrollTop);
       });
@@ -41,14 +41,12 @@ export const VirtualScrollbar = ({
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
-      isDragging.current = true;
+      setIsDragging(true);
 
       const startY = e.pageY;
       const startScrollTop = thumbTop;
 
       const handleMouseMove = (e: MouseEvent) => {
-        if (!isDragging.current) return;
-
         const delta = e.pageY - startY;
         const newThumbTop = Math.max(
           0,
@@ -61,7 +59,7 @@ export const VirtualScrollbar = ({
       };
 
       const handleMouseUp = () => {
-        isDragging.current = false;
+        setIsDragging(false);
         document.removeEventListener("mousemove", handleMouseMove);
         document.removeEventListener("mouseup", handleMouseUp);
       };
@@ -74,48 +72,53 @@ export const VirtualScrollbar = ({
     [thumbTop, maxScrollTop, totalHeight, height, handleCustomScroll]
   );
 
-  const scrollbarStyle = useMemo(
-    () => ({
-      position: "absolute" as const,
-      right: 0,
-      top: 0,
-      width,
+  const handleFastScroll = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const track = e.currentTarget;
+      const rect = track.getBoundingClientRect();
+      const clickY = e.clientY - rect.top;
+      if (clickY >= thumbTop && clickY <= thumbTop + thumbHeight) return;
+      const newThumbTop = Math.max(
+        0,
+        Math.min(maxScrollTop, clickY - thumbHeight / 2)
+      );
+      const newScrollTop =
+        (newThumbTop / maxScrollTop) * (totalHeight - height);
+      handleCustomScroll(newScrollTop);
+    },
+    [
+      thumbTop,
+      thumbHeight,
+      maxScrollTop,
+      totalHeight,
       height,
-    }),
-    [width, height]
-  );
-
-  const thumbStyle = useMemo(
-    () => ({
-      position: "absolute" as const,
-      top: thumbTop,
-      left: 0,
-      width: "100%",
-      height: thumbHeight,
-      backgroundColor: isDragging.current
-        ? "rgba(255, 255, 255, 0.6)"
-        : "rgba(255, 255, 255, 0.4)",
-      cursor: "pointer",
-      willChange: "transform, top",
-      transition: isDragging.current ? "none" : "background-color 0.15s ease",
-    }),
-    [thumbTop, thumbHeight]
+      handleCustomScroll,
+    ]
   );
 
   if (totalHeight <= height) return null;
 
   return (
     <div
-      className="absolute right-0 top-0 bg-black/10 rounded-md"
+      className={cn("absolute right-0 top-0", "bg-black/10 dark:bg-white/10")}
       style={{ width, height }}
+      onMouseDown={handleFastScroll}
     >
       <div
-        className="absolute left-0 w-full rounded-md cursor-pointer transition-colors duration-150 ease-in-out"
+        className={cn(
+          "absolute left-0",
+          "w-full rounded-md",
+          "cursor-pointer transition-colors duration-150 ease-in-out",
+          "will-change-transform",
+          "bg-black/20 dark:bg-white/40",
+          isDragging && "bg-black/40 dark:bg-white/60"
+        )}
         style={{
-          ...thumbStyle,
+          top: thumbTop,
+          height: thumbHeight,
         }}
         onMouseDown={handleMouseDown}
       />
     </div>
   );
-};
+}

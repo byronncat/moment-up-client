@@ -18,7 +18,6 @@ export default function Aside({ className }: Readonly<{ className?: string }>) {
       className={cn(
         "h-fit w-[320px]",
         "space-y-6",
-        "hidden lg:block",
         className
       )}
     >

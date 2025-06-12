@@ -2,16 +2,17 @@
 
 import type { API, DetailedMoment } from "api";
 
-import { useState, useRef, useCallback, useEffect, use } from "react";
+import { useState, useRef, useCallback, use } from "react";
+import memoize from "memoize-one";
 import { CoreApi } from "@/services";
 import { useHome } from "../_providers/Home";
 
-import AutoSizer from "react-virtualized-auto-sizer";
-import { VariableSizeList } from "react-window";
-import { NoContent, ErrorContent } from "@/components";
-import { MomentCard, MomentSkeleton } from "@/components/moment";
-import { VirtualScrollbar } from "@/components/VirtualScrollbar";
 import { cn } from "@/libraries/utils";
+import AutoSizer from "react-virtualized-auto-sizer";
+import InfiniteLoader from "react-window-infinite-loader";
+import { VariableSizeList } from "react-window";
+import { NoContent, ErrorContent, VirtualScrollbar } from "@/components";
+import { MomentCard } from "@/components/moment";
 
 type MomentsProps = Readonly<{
   initialRes: Promise<
@@ -22,6 +23,11 @@ type MomentsProps = Readonly<{
   >;
 }>;
 
+type Actions = {
+  like: (momentId: string) => void;
+  bookmark: (momentId: string) => void;
+};
+
 export default function Moments({ initialRes }: MomentsProps) {
   const response = use(initialRes);
   const [moments, setMoments] = useState<DetailedMoment[]>(
@@ -31,24 +37,41 @@ export default function Moments({ initialRes }: MomentsProps) {
     response?.data?.hasNextPage ?? true
   );
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
-  const page = useRef(1);
+  const pageRef = useRef(1);
 
-  const fetchMoments = useCallback(async () => {
-    const res = await CoreApi.getMoments(page.current);
+  const fetchMoments = useCallback(async (page?: number) => {
+    const res = await CoreApi.getMoments(page ?? pageRef.current + 1);
     if (res.success) {
       setMoments((prev) => [...(prev ?? []), ...(res.data?.items ?? [])]);
       setHasNextPage(res.data?.hasNextPage ?? false);
-      page.current++;
+      pageRef.current = page ?? pageRef.current + 1;
     }
     setIsNextPageLoading(false);
   }, []);
 
-  if (isNextPageLoading) {
-    return (
-      <div className="flex flex-col gap-4 pt-[calc(144px+16px)]">
-        <MomentSkeleton variant="horizontal" />
-        <MomentSkeleton variant="square" />
-      </div>
+  function like(momentId: string) {
+    setMoments((prev) =>
+      prev.map((moment) =>
+        moment.id === momentId
+          ? {
+              ...moment,
+              post: { ...moment.post, isLiked: !moment.post.isLiked },
+            }
+          : moment
+      )
+    );
+  }
+
+  function bookmark(momentId: string) {
+    setMoments((prev) =>
+      prev.map((moment) =>
+        moment.id === momentId
+          ? {
+              ...moment,
+              post: { ...moment.post, isBookmarked: !moment.post.isBookmarked },
+            }
+          : moment
+      )
     );
   }
 
@@ -57,7 +80,7 @@ export default function Moments({ initialRes }: MomentsProps) {
       <ErrorContent
         onRefresh={() => {
           setIsNextPageLoading(true);
-          fetchMoments();
+          fetchMoments(1);
         }}
         className="pt-[144px]"
       />
@@ -79,74 +102,110 @@ export default function Moments({ initialRes }: MomentsProps) {
       hasNextPage={hasNextPage}
       isNextPageLoading={isNextPageLoading}
       items={moments}
-      loadNextPage={fetchMoments}
+      loadNextPage={() => fetchMoments()}
+      actions={{ like, bookmark }}
     />
   );
 }
 
+// Container
+const TOP_PADDING = 160;
+const BOTTOM_PADDING = 144;
+const PLACEHOLDER_ITEM_COUNT = 1;
+
+// Card
+const HEADER_HEIGHT = 72;
+const FOOTER_HEIGHT = 60;
+const BORDER_SIZE = 1;
+const ITEM_GAP = 16;
+
+type ItemProps = Readonly<{
+  index: number;
+  data: {
+    items: DetailedMoment[];
+    actions: Actions;
+    itemCount: number;
+    isItemLoaded: (index: number) => boolean;
+  };
+  style: React.CSSProperties;
+}>;
+
+const Item = ({ index, data, style }: ItemProps) => {
+  if (index === 0) return <div style={style} className="h-[160px]" />;
+  if (index === data.itemCount - 1)
+    return <div style={style} className="h-[120px]" />;
+
+  const { isItemLoaded, items, actions } = data;
+
+  let content;
+  const dataIndex = index - 1;
+  if (!isItemLoaded(dataIndex)) content = "Loading...";
+  else content = <Row data={items[dataIndex]} actions={actions} />;
+
+  return <div style={style}>{content}</div>;
+};
+
+function Row({
+  data,
+  actions,
+}: Readonly<{ data: DetailedMoment; actions: Actions }>) {
+  return <MomentCard data={data} actions={actions} />;
+}
+
+const createItem = memoize(
+  (
+    itemCount: number,
+    isItemLoaded: (index: number) => boolean,
+    items: DetailedMoment[],
+    actions: Actions
+  ) => ({
+    itemCount,
+    isItemLoaded,
+    items,
+    actions,
+  })
+);
+
 type MomentListProps = Readonly<{
+  actions: Actions;
+  items: DetailedMoment[];
   hasNextPage: boolean;
   isNextPageLoading: boolean;
-  items: DetailedMoment[];
   loadNextPage: () => void;
 }>;
 
-const TOP_PADDING = 160;
-const BOTTOM_PADDING = 120;
-const PLACEHOLDER_ITEM_COUNT = 1;
-const MOMENT_GAP = 16;
-const BORDER_SIZE = 1;
-
 function MomentList({
-  hasNextPage,
-  // isNextPageLoading,
   items,
-  // loadNextPage,
+  actions,
+  hasNextPage,
+  isNextPageLoading,
+  loadNextPage,
 }: MomentListProps) {
   const { hideFeeds } = useHome();
-  const itemCount =
-    (hideFeeds ? 0 : 1) +
-    PLACEHOLDER_ITEM_COUNT +
-    (hasNextPage ? items.length : items.length);
-  // const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
-  const isItemLoaded = (index: number) => !hasNextPage || index < items.length;
   const [scrollTop, setScrollTop] = useState(0);
   const listRef = useRef<VariableSizeList>(null);
 
-  const handleCustomScroll = useCallback((newScrollTop: number) => {
-    if (listRef.current) {
-      listRef.current.scrollTo(newScrollTop);
-    }
-  }, []);
+  const itemCount =
+    1 + PLACEHOLDER_ITEM_COUNT + (hasNextPage ? items.length : items.length);
+  const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
+  const isItemLoaded = (index: number) => !hasNextPage || index < items.length;
 
-  const getItemSize = useCallback(
-    (index: number) => {
-      if (!hideFeeds && index === 0) return TOP_PADDING;
-      if (index === itemCount - 1) return BOTTOM_PADDING;
+  const getItemSize = (index: number) => {
+    if (index === 0) return TOP_PADDING;
+    if (index === itemCount - 1) return BOTTOM_PADDING;
 
-      const dataIndex = hideFeeds ? index : index - 1;
-      const moment = items[dataIndex];
+    const moment = items[index - 1];
+    if (!moment) return 0;
 
-      if (!moment) return 0;
+    let height = HEADER_HEIGHT + FOOTER_HEIGHT + ITEM_GAP + 2 * BORDER_SIZE;
+    if (moment.post.files?.length) {
+      const maxWidth = 598;
 
-      // Base height: header (72px) + footer (72px) + padding between sections (16px)
-      let height = 72 + 60 + MOMENT_GAP + 2 * BORDER_SIZE;
-
-      if (moment.post.text) {
-        if (moment.post.files?.length) height += 32;
-        else height += 80;
-      }
-
-      if (moment.post.files?.length) {
+      if (moment.post.files.length === 1) {
         const file = moment.post.files[0];
-        const maxWidth = 598;
-
         switch (file.aspect_ratio) {
           case "1:1":
             height += maxWidth; // Square
-            break;
-          case "9:16":
-            height += (maxWidth * 16) / 9; // Tall
             break;
           case "4:5":
             height += (maxWidth * 5) / 4; // Portrait
@@ -154,71 +213,77 @@ function MomentList({
           case "1.91:1":
             height += maxWidth / 1.91; // Landscape
             break;
+          case "9:16":
+            height += (maxWidth * 16) / 9; // Vertical
+            break;
           default:
             height += maxWidth; // Default to square
         }
-
-        height += 16; // Add padding after media
+      } else {
+        height += maxWidth; // Square
       }
 
-      return height;
-    },
-    [hideFeeds, itemCount, items]
-  );
+      if (moment.post.text) height += 32;
+    } else if (moment.post.text) height += 80;
 
-  const Item = ({
-    index,
-    style,
-  }: Readonly<{ index: number; style: React.CSSProperties }>) => {
-    if (!hideFeeds && index === 0) return <div className="h-[160px]" />;
-    if (index === itemCount - 1) return <div className="h-[120px]" />;
-
-    let content;
-    const dataIndex = hideFeeds ? index : index - 1;
-    if (!isItemLoaded(dataIndex)) content = "Loading...";
-    else content = <Row data={items[dataIndex]} />;
-
-    return <div style={style}>{content}</div>;
+    return height;
   };
+
+  const ItemData = createItem(itemCount, isItemLoaded, items, actions);
+
+  const totalHeight = Array.from({ length: itemCount })
+    .map((_, i) => getItemSize(i))
+    .reduce((a, b) => a + b, 0);
 
   return (
     <>
       <AutoSizer>
         {({ height, width }) => (
-          // <InfiniteLoader
-          //   isItemLoaded={isItemLoaded}
-          //   itemCount={itemCount}
-          //   loadMoreItems={loadMoreItems}
-          // >
-          //   {({ onItemsRendered, ref }) => (
-          <>
-            <VariableSizeList
-              ref={listRef}
-              itemCount={itemCount}
-              // onItemsRendered={onItemsRendered}
-              // ref={ref}
-              itemSize={getItemSize}
-              height={height}
-              width={width}
-              onScroll={({ scrollOffset }) => setScrollTop(scrollOffset)}
-              className="scrollbar-hide"
-            >
-              {Item}
-            </VariableSizeList>
-            <VirtualScrollbar
-              height={height}
-              totalHeight={itemCount * 740}
-              width={8}
-              onScroll={handleCustomScroll}
-              scrollTop={scrollTop}
-            />
-          </>
+          <InfiniteLoader
+            isItemLoaded={isItemLoaded}
+            itemCount={itemCount}
+            loadMoreItems={loadMoreItems}
+          >
+            {({ onItemsRendered, ref }) => {
+              function handleCustomScroll(newScrollTop: number) {
+                listRef.current?.scrollTo(newScrollTop);
+              }
+
+              return (
+                <>
+                  <VariableSizeList
+                    ref={(list) => {
+                      ref(list);
+                      listRef.current = list;
+                    }}
+                    itemCount={itemCount}
+                    onItemsRendered={onItemsRendered}
+                    itemSize={getItemSize}
+                    height={height + 120}
+                    width={width}
+                    onScroll={({ scrollOffset }) => setScrollTop(scrollOffset)}
+                    itemData={ItemData}
+                    className={cn(
+                      "scrollbar-hide",
+                      "transform transition-transform duration-300",
+                      hideFeeds && "-translate-y-[120px]" // 160px (feed panel height) - 24px (hide button height) - 16px (gap)
+                    )}
+                  >
+                    {Item}
+                  </VariableSizeList>
+                  <VirtualScrollbar
+                    height={height}
+                    totalHeight={totalHeight}
+                    width={8}
+                    onScroll={handleCustomScroll}
+                    scrollTop={scrollTop}
+                  />
+                </>
+              );
+            }}
+          </InfiniteLoader>
         )}
       </AutoSizer>
     </>
   );
-}
-
-function Row({ data }: Readonly<{ data: DetailedMoment }>) {
-  return <MomentCard data={data} />;
 }

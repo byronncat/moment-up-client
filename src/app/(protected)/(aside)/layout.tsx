@@ -7,7 +7,9 @@ export default function Layout({
   return (
     <div className={cn("flex gap-10", "h-full w-fit mx-auto")}>
       <div className="h-full w-[640px]">{children}</div>
-      <Aside className="pt-5" />
+      <div className="hidden lg:block">
+        <Aside className="pt-5" />
+      </div>
     </div>
   );
 }

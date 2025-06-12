@@ -8,5 +8,6 @@ export { default as ModeSelection } from "./ModeSelection";
 export { default as NoContent } from "./NoContent";
 export { default as Tooltip } from "./Tooltip";
 export { default as UserInfoCard } from "./UserInfoCard";
+export { default as VirtualScrollbar } from "./VirtualScrollbar";
 
 export type { NavItem } from "./HorizontalNavigationBar";

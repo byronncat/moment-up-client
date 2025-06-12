@@ -51,7 +51,7 @@ export const ASPECT_RATIO = {
 };
 
 export const PAGE_CONFIG = {
-  MOMENT_CARD_PAGE: 50,
+  MOMENT_CARD_PAGE: 5,
   MOMENT_CELL_PAGE: 24,
 };
 

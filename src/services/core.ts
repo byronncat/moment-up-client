@@ -37,6 +37,7 @@ export async function getFeeds(): Promise<API<FeedNotification[]>> {
 }
 
 export async function getFeed(feedId: string): Promise<API<FeedInfo>> {
+  console.log("getFeed", feedId);
   return new Promise((resolve) => {
     setTimeout(() => {
       // Make sure mockFeed array exists and has elements
@@ -93,7 +94,7 @@ export async function getMoments(page: number): Promise<
     message: "ok",
     data: {
       items: moments,
-      hasNextPage: moments.length === PAGE_CONFIG.MOMENT_CARD_PAGE,
+      hasNextPage: mockMoments.length > PAGE_CONFIG.MOMENT_CARD_PAGE * page,
     },
   };
 }
