@@ -2,10 +2,13 @@
 
 import type { API, DetailedMoment } from "api";
 
-import { useState, useRef, useCallback, use } from "react";
+import { useState, useRef, use, useEffect } from "react";
 import memoize from "memoize-one";
 import { CoreApi } from "@/services";
 import { useHome } from "../_providers/Home";
+import { debounce } from "lodash";
+import { useMediaQuery } from "usehooks-ts";
+import { MOBILE_BREAKPOINT } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -39,7 +42,7 @@ export default function Moments({ initialRes }: MomentsProps) {
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
   const pageRef = useRef(1);
 
-  const fetchMoments = useCallback(async (page?: number) => {
+  async function fetchMoments(page?: number) {
     const res = await CoreApi.getMoments(page ?? pageRef.current + 1);
     if (res.success) {
       setMoments((prev) => [...(prev ?? []), ...(res.data?.items ?? [])]);
@@ -47,7 +50,7 @@ export default function Moments({ initialRes }: MomentsProps) {
       pageRef.current = page ?? pageRef.current + 1;
     }
     setIsNextPageLoading(false);
-  }, []);
+  };
 
   function like(momentId: string) {
     setMoments((prev) =>
@@ -111,13 +114,18 @@ export default function Moments({ initialRes }: MomentsProps) {
 // Container
 const TOP_PADDING = 160;
 const BOTTOM_PADDING = 144;
-const PLACEHOLDER_ITEM_COUNT = 1;
 
 // Card
 const HEADER_HEIGHT = 72;
 const FOOTER_HEIGHT = 60;
+const SINGLE_TEXT_HEIGHT = 32;
+const MULTI_TEXT_HEIGHT = 80;
 const BORDER_SIZE = 1;
 const ITEM_GAP = 16;
+
+// Mobile
+const MOBILE_TOP_PADDING = 56;
+const MOBILE_BOTTOM_PADDING = 40;
 
 type ItemProps = Readonly<{
   index: number;
@@ -183,106 +191,126 @@ function MomentList({
 }: MomentListProps) {
   const { hideFeeds } = useHome();
   const [scrollTop, setScrollTop] = useState(0);
+  const [isResizing, setIsResizing] = useState(false);
   const listRef = useRef<VariableSizeList>(null);
 
-  const itemCount =
-    1 + PLACEHOLDER_ITEM_COUNT + (hasNextPage ? items.length : items.length);
+  const isMobile = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT}px)`);
+  const itemCount = (hasNextPage ? items.length : items.length) + 2; // +2 for top and bottom padding
   const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
   const isItemLoaded = (index: number) => !hasNextPage || index < items.length;
+  const ItemData = createItem(itemCount, isItemLoaded, items, actions);
 
-  const getItemSize = (index: number) => {
-    if (index === 0) return TOP_PADDING;
-    if (index === itemCount - 1) return BOTTOM_PADDING;
+  const getItemSize = (index: number, width: number) => {
+    if (index === 0) return TOP_PADDING + (isMobile ? MOBILE_TOP_PADDING : 0);
+    if (index === itemCount - 1) return BOTTOM_PADDING + (isMobile ? MOBILE_BOTTOM_PADDING : 0);
 
     const moment = items[index - 1];
     if (!moment) return 0;
 
     let height = HEADER_HEIGHT + FOOTER_HEIGHT + ITEM_GAP + 2 * BORDER_SIZE;
     if (moment.post.files?.length) {
-      const maxWidth = 598;
-
       if (moment.post.files.length === 1) {
         const file = moment.post.files[0];
         switch (file.aspect_ratio) {
           case "1:1":
-            height += maxWidth; // Square
+            height += width; // Square
             break;
           case "4:5":
-            height += (maxWidth * 5) / 4; // Portrait
+            height += (width * 5) / 4; // Portrait
             break;
           case "1.91:1":
-            height += maxWidth / 1.91; // Landscape
+            height += width / 1.91; // Landscape
             break;
           case "9:16":
-            height += (maxWidth * 16) / 9; // Vertical
+            height += (width * 16) / 9; // Vertical
             break;
           default:
-            height += maxWidth; // Default to square
+            height += width; // Default to square
         }
       } else {
-        height += maxWidth; // Square
+        height += width; // Square
       }
 
-      if (moment.post.text) height += 32;
-    } else if (moment.post.text) height += 80;
+      if (moment.post.text) height += SINGLE_TEXT_HEIGHT;
+    } else if (moment.post.text) height += MULTI_TEXT_HEIGHT;
 
     return height;
   };
 
-  const ItemData = createItem(itemCount, isItemLoaded, items, actions);
 
-  const totalHeight = Array.from({ length: itemCount })
-    .map((_, i) => getItemSize(i))
-    .reduce((a, b) => a + b, 0);
+  useEffect(() => {
+    const handleResize = debounce(() => {
+      setIsResizing(false);
+    }, 500);
 
+    const onResize = () => {
+      setIsResizing(true);
+      handleResize();
+    };
+
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      handleResize.cancel();
+    };
+  }, []);
+
+  if (isResizing) return null;
   return (
     <>
       <AutoSizer>
-        {({ height, width }) => (
-          <InfiniteLoader
-            isItemLoaded={isItemLoaded}
-            itemCount={itemCount}
-            loadMoreItems={loadMoreItems}
-          >
-            {({ onItemsRendered, ref }) => {
-              function handleCustomScroll(newScrollTop: number) {
-                listRef.current?.scrollTo(newScrollTop);
-              }
+        {({ height, width }) => {
+          const totalHeight = Array.from({ length: itemCount })
+            .map((_, i) => getItemSize(i, width))
+            .reduce((a, b) => a + b, 0);
 
-              return (
-                <>
-                  <VariableSizeList
-                    ref={(list) => {
-                      ref(list);
-                      listRef.current = list;
-                    }}
-                    itemCount={itemCount}
-                    onItemsRendered={onItemsRendered}
-                    itemSize={getItemSize}
-                    height={height + 120}
-                    width={width}
-                    onScroll={({ scrollOffset }) => setScrollTop(scrollOffset)}
-                    itemData={ItemData}
-                    className={cn(
-                      "scrollbar-hide",
-                      "transform transition-transform duration-300",
-                      hideFeeds && "-translate-y-[120px]" // 160px (feed panel height) - 24px (hide button height) - 16px (gap)
-                    )}
-                  >
-                    {Item}
-                  </VariableSizeList>
-                  <VirtualScrollbar
-                    height={height}
-                    totalHeight={totalHeight}
-                    width={8}
-                    onScroll={handleCustomScroll}
-                    scrollTop={scrollTop}
-                  />
-                </>
-              );
-            }}
-          </InfiniteLoader>
-        )}
+          return (
+            <InfiniteLoader
+              isItemLoaded={isItemLoaded}
+              itemCount={itemCount}
+              loadMoreItems={loadMoreItems}
+            >
+              {({ onItemsRendered, ref }) => {
+                function handleCustomScroll(newScrollTop: number) {
+                  listRef.current?.scrollTo(newScrollTop);
+                }
+
+                return (
+                  <>
+                    <VariableSizeList
+                      ref={(list) => {
+                        ref(list);
+                        listRef.current = list;
+                      }}
+                      itemCount={itemCount}
+                      onItemsRendered={onItemsRendered}
+                      itemSize={(index) => getItemSize(index, width)}
+                      height={height + 120} // read comment below
+                      width={width}
+                      onScroll={({ scrollOffset }) => setScrollTop(scrollOffset)}
+                      itemData={ItemData}
+                      className={cn(
+                        "scrollbar-hide",
+                        "transform transition-transform duration-300",
+                        hideFeeds && "-translate-y-[120px]" // 120px = 160px (feed panel height) - 24px (hide button height) - 16px (gap)
+                      )}
+                    >
+                      {Item}
+                    </VariableSizeList>
+                    <VirtualScrollbar
+                      height={height}
+                      totalHeight={totalHeight}
+                      width={10}
+                      onScroll={handleCustomScroll}
+                      scrollTop={scrollTop}
+                      className="[@media(max-width:calc(640px+48px+32px))]:hidden"
+                    />
+                  </>
+                );
+              }}
+            </InfiniteLoader>
+          );
+        }}
       </AutoSizer>
     </>
   );

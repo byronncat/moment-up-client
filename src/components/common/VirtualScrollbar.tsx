@@ -3,24 +3,28 @@
 import { useCallback, useRef, useState } from "react";
 import { cn } from "@/libraries/utils";
 
+type VirtualScrollbarProps = Readonly<{
+  height: number;
+  totalHeight: number;
+  width: number;
+  onScroll: (scrollTop: number) => void;
+  scrollTop: number;
+  className?: string;
+}>;
+
 export default function VirtualScrollbar({
   height,
   totalHeight,
   width,
   onScroll,
   scrollTop,
-}: {
-  height: number;
-  totalHeight: number;
-  width: number;
-  onScroll: (scrollTop: number) => void;
-  scrollTop: number;
-}) {
+  className,
+}: VirtualScrollbarProps) {
   const [isDragging, setIsDragging] = useState(false);
   const animationFrame = useRef(0);
 
   const { thumbHeight, maxScrollTop, thumbTop } = (() => {
-    const thumbHeight = Math.max(40, (height / totalHeight) * height);
+    const thumbHeight = Math.max(30, (height / totalHeight) * height);
     const maxScrollTop = height - thumbHeight;
     const scrollRatio = scrollTop / (totalHeight - height);
     const thumbTop = scrollRatio * maxScrollTop;
@@ -100,14 +104,18 @@ export default function VirtualScrollbar({
 
   return (
     <div
-      className={cn("absolute right-0 top-0", "bg-black/10 dark:bg-white/10")}
+      className={cn(
+        "absolute right-0 top-0",
+        "bg-black/10 dark:bg-white/10",
+        className
+      )}
       style={{ width, height }}
       onMouseDown={handleFastScroll}
     >
       <div
         className={cn(
-          "absolute left-0",
-          "w-full rounded-md",
+          "absolute left-[2px]",
+          "w-[calc(100%-4px)] rounded-md",
           "cursor-pointer transition-colors duration-150 ease-in-out",
           "will-change-transform",
           "bg-black/20 dark:bg-white/40",

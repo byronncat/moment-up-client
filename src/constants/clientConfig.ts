@@ -64,3 +64,5 @@ export enum SEARCH_CATEGORY {
   POSTS = "posts",
   MEDIA = "media",
 }
+
+export const MOBILE_BREAKPOINT = 560;

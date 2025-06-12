@@ -11,7 +11,7 @@ export default function HomePage() {
   const feedsRes = CoreApi.getFeeds();
   const momentsRes = CoreApi.getMoments(1);
   return (
-    <div className={cn("size-full", "border-x border-border")}>
+    <div className={cn("size-full", "[@media(min-width:calc(640px+48px+1px))]:border-x border-border")}>
       <HomeProvider>
         <div className="relative">
           <Suspense fallback={<FeedSkeletons />}>

@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Avatar } from "@/components";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus } from "@/components/icons";
-import { toast } from "sonner";
 
 export default function FeedItem({
   data,
