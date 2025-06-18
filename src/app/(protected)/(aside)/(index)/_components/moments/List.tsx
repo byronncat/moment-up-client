@@ -31,7 +31,7 @@ const BORDER_SIZE = 1;
 const ITEM_GAP = 16;
 
 // == Other ==
-const SCROLLBAR_WIDTH = 10;
+const SCROLLBAR_WIDTH = 12;
 
 type MomentListProps = Readonly<{
   actions: Actions;
@@ -51,9 +51,9 @@ export default function MomentList({
   onItemClick,
 }: MomentListProps) {
   const { hideFeeds } = useHome();
-  const [scrollTop, setScrollTop] = useState(0);
   const [isResizing, setIsResizing] = useState(false);
   const listRef = useRef<VariableSizeList>(null);
+  const updateScrollbarRef = useRef<(scrollTop: number) => void>(() => {});
 
   const isMobile = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT}px)`);
   const itemCount = (hasNextPage ? items.length : items.length) + 2; // +2 for top and bottom padding
@@ -103,9 +103,7 @@ export default function MomentList({
           default:
             height += width; // Default to square
         }
-      } else {
-        height += width; // Square
-      }
+      } else height += width; // Square
 
       if (moment.post.text) height += SINGLE_TEXT_HEIGHT;
     } else if (moment.post.text) height += MULTI_TEXT_HEIGHT;
@@ -163,7 +161,7 @@ export default function MomentList({
                       height={height + 120} // read comment below
                       width={width}
                       onScroll={({ scrollOffset }) =>
-                        setScrollTop(scrollOffset)
+                        updateScrollbarRef.current?.(scrollOffset)
                       }
                       itemData={{
                         itemCount,
@@ -190,7 +188,9 @@ export default function MomentList({
                       totalHeight={totalHeight}
                       width={SCROLLBAR_WIDTH}
                       onScroll={handleCustomScroll}
-                      scrollTop={scrollTop}
+                      onScrollUpdate={(updateFn) => {
+                        updateScrollbarRef.current = updateFn;
+                      }}
                       className="[@media(max-width:calc(640px+48px+32px))]:hidden"
                     />
                   </>
