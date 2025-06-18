@@ -1,19 +1,12 @@
-import type { FeedInfo, FeedNotification } from "api";
+import type { FeedNotification } from "api";
 
-import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import { cn } from "@/libraries/utils";
-import { CoreApi } from "@/services";
-import { ASPECT_RATIO, ROUTE } from "@/constants/clientConfig";
 
-import { Avatar, Modal } from "@/components";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Avatar } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { X } from "lucide-react";
-import { FeedView } from "../_components";
 
 type RightNavProps = ComponentProps<{
   data: FeedNotification[] | null;

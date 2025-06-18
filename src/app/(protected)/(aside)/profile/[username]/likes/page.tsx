@@ -1,6 +1,6 @@
 "use client";
 
-import type { DetailedMoment } from "api";
+import type { DetailedMomentInfo } from "api";
 import { useState, useEffect, useCallback, useRef, use } from "react";
 import { useInfiniteScroll, useChunkRender } from "@/hooks";
 import { UserApi } from "@/services";
@@ -8,7 +8,10 @@ import { PAGE_CONFIG } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import { NoContent, ErrorContent } from "@/components";
-import { MomentCard, MomentSkeleton } from "@/components/moment";
+import {
+  //  MomentCard,
+  MomentSkeleton,
+} from "@/components/moment";
 import { Loader2 } from "lucide-react";
 
 export default function LikesPage({
@@ -28,18 +31,18 @@ export default function LikesPage({
     loadMore,
     reset: resetInfiniteScroll,
     error,
-  } = useInfiniteScroll<DetailedMoment>();
+  } = useInfiniteScroll<DetailedMomentInfo>();
 
   const {
-    itemsToShow,
+    // itemsToShow,
     hasMoreChunks,
     chunkLoaderRef,
     reset: resetChunks,
   } = useChunkRender(moments ?? [], {
-    chunkSize: PAGE_CONFIG.MOMENT_CARD_CHUNK,
+    chunkSize: PAGE_CONFIG.MOMENT_CARD_PAGE,
   });
 
-  const visibleMoments = moments?.slice(0, itemsToShow) ?? [];
+  // const visibleMoments = moments?.slice(0, itemsToShow) ?? [];
 
   const fetchMomentsPage = useCallback(
     async (page: number) => {
@@ -96,9 +99,9 @@ export default function LikesPage({
 
     content = (
       <>
-        {visibleMoments.map((moment) => (
+        {/* {visibleMoments.map((moment) => (
           <MomentCard key={moment.id} data={moment} />
-        ))}
+        ))} */}
         <div
           ref={chunkLoaderRef}
           className={cn(hasMoreChunks ? "block" : "hidden")}

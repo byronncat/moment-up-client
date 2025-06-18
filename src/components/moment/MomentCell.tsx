@@ -1,11 +1,11 @@
-import type { DetailedMoment } from "api";
+import type { DetailedMomentInfo } from "api";
 
 import Image from "next/image";
 import { cn } from "@/libraries/utils";
 import { Heart, Comment, Clone, Video } from "@/components/icons";
 
 type MomentCellProps = Readonly<{
-  data: DetailedMoment;
+  data: DetailedMomentInfo;
 }>;
 
 export default function MomentCell({ data }: MomentCellProps) {

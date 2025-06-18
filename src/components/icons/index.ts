@@ -6,6 +6,7 @@ export { default as Chevron } from "./Chevron";
 export { default as CircleInfo } from "./CircleInfo";
 export { default as Clone } from "./Clone";
 export { default as Comment } from "./Comment";
+export { default as Eye } from "./Eye";
 export { default as FaceSmile } from "./FaceSmile";
 export { default as Heart } from "./Heart";
 export { default as LaptopMinimal } from "./LaptopMinimal";

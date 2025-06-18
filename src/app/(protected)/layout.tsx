@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { Sidebar } from "./_components";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { MomentDataProvider } from "@/components/providers";
 
 export default async function Layout({
   children,
@@ -11,11 +12,13 @@ export default async function Layout({
 
   return (
     <div className="w-screen h-screen relative">
-      <SidebarProvider defaultOpen={defaultOpen}>
-        <Sidebar />
-        <div className="h-screen w-full relative">{children}</div>
-      </SidebarProvider>
-      {modal}
+      <MomentDataProvider>
+        <SidebarProvider defaultOpen={defaultOpen}>
+          <Sidebar />
+          <div className="h-screen w-full relative">{children}</div>
+        </SidebarProvider>
+        {modal}
+      </MomentDataProvider>
     </div>
   );
 }

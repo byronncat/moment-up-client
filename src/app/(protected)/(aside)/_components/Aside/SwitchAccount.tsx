@@ -1,6 +1,6 @@
 "use client";
 
-import type { AccountInfo, API } from "api";
+import type { UserAccountInfo } from "api";
 import type { z } from "zod";
 
 import { useEffect, useState } from "react";
@@ -15,6 +15,8 @@ import zodSchema from "@/libraries/zodSchema";
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Avatar } from "@/components";
+import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/app/(auth)/_components";
 import {
   Dialog,
   DialogClose,
@@ -33,8 +35,6 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/app/(auth)/_components";
 
 export default function SwitchAccountt() {
   const { user } = useAuth();
@@ -52,7 +52,7 @@ export default function SwitchAccountt() {
 function Content({
   user,
 }: Readonly<{
-  user: AccountInfo;
+  user: UserAccountInfo;
 }>) {
   return (
     <div className="flex items-center gap-2">
@@ -112,11 +112,11 @@ function ManagementModal({
   onClose: () => void;
 }>) {
   const { user, changeAccount } = useAuth();
-  const [accounts, setAccounts] = useState<AccountInfo[] | null>(null);
+  const [accounts, setAccounts] = useState<UserAccountInfo[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
 
-  async function switchAccount(accountId: AccountInfo["id"]) {
+  async function switchAccount(accountId: UserAccountInfo["id"]) {
     if (user?.id === accountId || loading) return;
     await changeAccount(accountId);
     onClose();

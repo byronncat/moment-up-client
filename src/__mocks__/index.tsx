@@ -1,17 +1,19 @@
 import type {
-  AccountInfo,
-  DetailedMoment,
+  UserProfileInfo,
+  UserCardDisplayInfo,
+  DetailedMomentInfo,
+  HashtagItem,
   SearchItem,
-  UserCardInfo,
   FeedNotification,
   FeedInfo,
-  ProfileInfo,
   Notification,
-  ProfileCardInfo,
+  ProfileSearchItem,
+  CommentInfo,
 } from "api";
-import { HashtagItem } from "schema";
 import sound1 from "./1.mp3";
 import sound2 from "./2.mp3";
+import video1 from "./car-riding.mp4";
+import video2 from "./and.mp4";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -476,7 +478,7 @@ export const mockFeed: FeedInfo[] = [
   // },
 ];
 
-export const mockMoments: DetailedMoment[] = isDev
+export const mockMoments: DetailedMomentInfo[] = isDev
   ? [
       {
         id: "b9a6a3a4-02e1-47f0-8cbe-73dc2a15735c",
@@ -488,15 +490,28 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
-          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan et diam vitae tincidunt. Integer lectus tortor, sollicitudin consequat est id, ultrices gravida neque. Etiam congue arcu quam.",
+          text: "Aliquam eget lectus eget felis aliquam rhoncus eget at augue. Ut quis tincidunt nibh. Fusce tincidunt tincidunt dui, et condimentum orci ornare non. Mauris laoreet ante nec mi rutrum, ac rhoncus lorem ultricies. In scelerisque ut ipsum ut viverra. Nullam posuere lectus eget odio mollis, ut varius enim tristique. Integer vitae nisl ac metus tempus vulputate non non diam. Cras cursus viverra feugiat. Nulla sed dolor est.\nQuisque et lectus id magna laoreet dapibus. Morbi feugiat libero non mattis bibendum. Morbi sem augue, pretium tristique nibh in, suscipit pulvinar arcu. Aenean ultrices tellus et sapien egestas pulvinar. Aenean ipsum risus, fringilla et luctus id, dignissim at tellus. Etiam aliquam posuere ultricies. Phasellus placerat nunc eget hendrerit dignissim. Mauris purus dolor, facilisis at nulla id, finibus tincidunt felis. In ullamcorper ullamcorper ligula, in ultricies justo faucibus ut. Aenean porttitor dictum nibh, eget mollis tellus pellentesque ut. Pellentesque luctus lorem et mi mollis, eget lacinia mauris viverra. Morbi sit amet commodo dolor. Cras orci enim, varius non molestie eu, facilisis in ligula. Ut ornare fermentum velit quis semper. Nam non viverra neque. Cras ac eros rhoncus, vehicula quam nec, eleifend arcu.\nCras sagittis quam id sem vehicula placerat. Nunc condimentum mattis leo, non mollis odio maximus luctus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Praesent semper, risus at faucibus varius, tellus orci semper ligula, nec posuere turpis mauris ac leo. Praesent sed ipsum volutpat, imperdiet lorem et, hendrerit diam. Proin ut auctor purus. Morbi porta neque at dui vestibulum posuere. Fusce nec velit et elit volutpat posuere id at velit. In nec accumsan lacus, in luctus purus. Quisque venenatis ac ipsum vel efficitur. Donec sed mauris vehicula, tempor nibh sed, fringilla magna. Integer ornare dui non libero tincidunt, quis pulvinar nunc porttitor. Ut efficitur sagittis pharetra. Ut in augue et turpis placerat pretium pulvinar vitae sapien.",
           files: [
+            {
+              id: "0",
+              type: "video",
+              url: video2,
+              aspect_ratio: "1.91:1",
+            },
             {
               id: "1",
               type: "image",
               url: "https://pbs.twimg.com/media/GgHsZ5vakAAz5jI?format=jpg&name=large",
+              aspect_ratio: "4:5",
+            },
+            {
+              id: "2",
+              type: "video",
+              url: video1,
               aspect_ratio: "4:5",
             },
           ],
@@ -504,7 +519,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -517,6 +532,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -533,7 +549,29 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
+        },
+      },
+      {
+        id: "b9b6a3a4-02e1-47f0-8cbe-73dc2a15735c",
+        user: {
+          id: "b9b6a3a4-02e1-47f0-8cbe-73dc2a15735c",
+          username: "anonymous",
+          displayName: "Anonymous",
+          avatar: getRandomFile("b9b6a3a4-02e1-47f0-8cbe-73dc2a15735c"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan et diam vitae tincidunt. Integer lectus tortor, sollicitudin consequat est id, ultrices gravida neque. Etiam congue arcu quam. Praesent quis interdum diam. Donec cursus nulla ligula, eget imperdiet neque posuere in. Nulla gravida, ipsum lacinia aliquet suscipit, magna leo tincidunt ligula, sed congue eros ipsum sit amet erat. Pellentesque elementum ultricies lorem, sed imperdiet enim. Cras et velit nunc. Aenean sem eros, vehicula ac mauris a, venenatis fringilla sapien. Integer posuere, dui ac posuere bibendum, magna massa sagittis ante, dignissim rutrum libero dui in libero.\nAliquam eget lectus eget felis aliquam rhoncus eget at augue. Ut quis tincidunt nibh. Fusce tincidunt tincidunt dui, et condimentum orci ornare non. Mauris laoreet ante nec mi rutrum, ac rhoncus lorem ultricies. In scelerisque ut ipsum ut viverra. Nullam posuere lectus eget odio mollis, ut varius enim tristique. Integer vitae nisl ac metus tempus vulputate non non diam. Cras cursus viverra feugiat. Nulla sed dolor est.",
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
         },
       },
       {
@@ -546,6 +584,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -568,7 +607,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -581,6 +620,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -597,7 +637,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -610,6 +650,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -638,7 +679,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -651,6 +692,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -697,7 +739,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -710,6 +752,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -750,7 +793,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -763,6 +806,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -779,7 +823,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -792,6 +836,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -820,7 +865,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -833,6 +878,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -848,7 +894,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -861,6 +907,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -876,7 +923,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -889,6 +936,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -904,7 +952,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -917,6 +965,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -932,7 +981,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -945,6 +994,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -966,7 +1016,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -979,6 +1029,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -994,7 +1045,7 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
         },
       },
       {
@@ -1007,6 +1058,7 @@ export const mockMoments: DetailedMoment[] = isDev
           verified: false,
           followers: 1000,
           following: 1000,
+          isFollowing: false,
           hasFeed: true,
         },
         post: {
@@ -1040,1061 +1092,290 @@ export const mockMoments: DetailedMoment[] = isDev
           comments: 1000,
           created_at: new Date(),
           isLiked: false,
-          isBookmarked: false
+          isBookmarked: false,
+        },
+      },
+      {
+        id: "0f5aeda5-7217-45c7-998c-3c8087bf8531",
+        user: {
+          id: "0f5aeda5-7217-45c7-998c-3c8087bf8531",
+          username: "anonymous",
+          displayName: "Anonymous",
+          avatar: getRandomFile("0f5aeda5-7217-45c7-998c-3c8087bf8531"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GsxybX8bQAEQ8sW?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+            {
+              id: "2",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GjPNWTNb0AAZvar?format=jpg&name=large",
+              aspect_ratio: "4:5",
+            },
+          ],
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
+        },
+      },
+      {
+        id: "0f6aeda5-7217-45c7-998c-3c8087bf8531",
+        user: {
+          id: "0f6aeda5-7217-45c7-998c-3c8087bf8531",
+          username: "anonymous",
+          displayName: "Anonymous",
+          avatar: getRandomFile("0f6aeda5-7217-45c7-998c-3c8087bf8531"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GgwpklCa0AA8MkD?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+            {
+              id: "2",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GKYSLwTaAAA7Uu9?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+            {
+              id: "3",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GEwApvjaMAAX2R6?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+          ],
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
+        },
+      },
+      {
+        id: "0f5aeda5-7217-45c7-998c-3c8087bf8532",
+        user: {
+          id: "0f5aeda5-7217-45c7-998c-3c8087bf8532",
+          username: "anonymous",
+          displayName: "Anonymous",
+          avatar: getRandomFile("0f5aeda5-7217-45c7-998c-3c8087bf8531"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          files: [
+            {
+              id: "3",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GnHpja0b0AAqHkB?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+            {
+              id: "4",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GiQ95fjbAAAL1ZK?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+          ],
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
+        },
+      },
+      {
+        id: "0f7aeda5-7217-45c7-998c-3c8087bf8531",
+        user: {
+          id: "0f7aeda5-7217-45c7-998c-3c8087bf8531",
+          username: "anonymous",
+          displayName: "Anonymous",
+          avatar: getRandomFile("0f7aeda5-7217-45c7-998c-3c8087bf8531"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          files: [
+            {
+              id: "5",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GjZDOyAa8AArPqh?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+          ],
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
+        },
+      },
+      {
+        id: "8e5bee7f-0df3-41fe-9c58-b62615bafd1b",
+        user: {
+          id: "8e5bee7f-0df3-41fe-9c58-b62615bafd1",
+          username: "sunny11___",
+          displayName: "sunny11",
+          avatar: getRandomFile("8e5bee7f-0df3-41fe-9c58-b62615bafd1"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: "https://pbs.twimg.com/media/Gryah3uXkAAvDtT?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+            {
+              id: "2",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GqpnuaVXAAAYrhH?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+            {
+              id: "3",
+              type: "image",
+              url: "https://pbs.twimg.com/media/Gs6j_R2bsAAL5cL?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+          ],
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
+        },
+      },
+      {
+        id: "8e5bee7f-0df3-41fe-9c58-b62615bafd1a",
+        user: {
+          id: "8e5bee7f-0df3-41fe-9c58-b62615bafd1a",
+          username: "sunny11___",
+          displayName: "sunny11",
+          avatar: getRandomFile("8e5bee7f-0df3-41fe-9c58-b62615bafd1a"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GaARflpbEAAGnmH?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+            {
+              id: "2",
+              type: "image",
+              url: "https://pbs.twimg.com/media/Gc6Be8_bkAAXjoB?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+          ],
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
         },
       },
     ]
-  : // ? [
-    //     {
-    //       id: "a9a6d7c2-1e20-2439-a50b-51a1deh131da1",
-    //       user: {
-    //         id: "a9a6d7c2-1e20-2439-a50b-51a1deh131da1",
-    //         username: "byronat445",
-    //         displayName: "Justin Severn",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
-    //         verified: false,
-    //         followers: 4235,
-    //         following: 423,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar nisl et turpis ultrices, nec convallis mauris ultricies. Morbi sed magna fringilla, pretium nisl non, ultricies diam. Ut euismod semper massa id convallis. Phasellus a viverra diam, ut tincidunt quam. Integer nulla risus, laoreet ut mattis non, suscipit sed ante. Mauris vehicula odio felis, ac convallis lacus posuere vitae. Integer a congue leo, vel finibus sem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-    //         likes: 4235,
-    //         comments: 423,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "a9a6d7c2-1e20-2439-a50b-51a1dtt45da1",
-    //       user: {
-    //         id: "a9a6d7c2-1e20-2439-a50b-51a1dtt45da1",
-    //         username: "byronat445",
-    //         displayName: "Justin Severn",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
-    //         verified: false,
-    //         followers: 4235,
-    //         following: 423,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar nisl et.",
-    //         likes: 4235,
-    //         comments: 423,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "a9a6d7c2-1e20-4439-a60b-51a188131da1",
-    //       user: {
-    //         id: "a9a6d7c2-1e20-4439-a60b-51a188131da1",
-    //         username: "gespine0",
-    //         displayName: "Guillema Espine",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
-    //         verified: false,
-    //         followers: 5533,
-    //         following: 30849,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GI7zp-magAAYFAr?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GTP4USoaYAMKWLD?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "3",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GmE2QNobcAE18qo?format=jpg&name=medium",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "f3d246a4-61f3-4b6e-a0ac-bac29a2b5b0e",
-    //       user: {
-    //         id: "f3d246a4-61f3-4b6e-a0ac-bac29a2b5b0e",
-    //         username: "rgland1",
-    //         displayName: "Rhodia Gland",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
-    //         verified: false,
-    //         followers: 825084,
-    //         following: 51202,
-    //         hasFeed: false,
-    //       },
-    //       post: {
-    //         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar nisl et turpis ultrices, nec convallis mauris ultricies. Morbi sed magna fringilla, pretium nisl non, ultricies diam. Ut euismod semper massa id convallis. Phasellus a viverra diam, ut tincidunt quam. Integer nulla risus, laoreet ut mattis non, suscipit sed ante. Mauris vehicula odio felis, ac convallis lacus posuere vitae. Integer a congue leo, vel finibus sem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GPwTSoQW8AA0aH2?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/Gn_pHDrbkAE1pt4?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 5678,
-    //         comments: 123,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "3",
-    //       user: {
-    //         id: "3",
-    //         username: "charlie",
-    //         displayName: "Charlie",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
-    //         verified: true,
-    //         followers: 1500000,
-    //         following: 2000,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/Ge83sUkbwAETM10?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1500000,
-    //         comments: 8760,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "4",
-    //       user: {
-    //         id: "4",
-    //         username: "dan",
-    //         displayName: "Dan",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
-    //         verified: false,
-    //         followers: 2750000,
-    //         following: 1500,
-    //         hasFeed: false,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 2750000,
-    //         comments: 12500,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "5",
-    //       user: {
-    //         id: "5",
-    //         username: "eve",
-    //         displayName: "Eve",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/Giqex77bEAA2Ig4?format=jpg&name=large",
-    //         verified: true,
-    //         followers: 4200000000,
-    //         following: 2500,
-    //         hasFeed: false,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GjPNWTNb0AAZvar?format=jpg&name=medium",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GateEGjaAAE601y?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 4200000000,
-    //         comments: 780000,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "6",
-    //       user: {
-    //         id: "6",
-    //         username: "byronat445",
-    //         displayName: "Frank",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
-    //         verified: false,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GatcCLqbAAA7dte?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GlLNYbPbIAANJjZ?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "aefa5f0b-ff4d-47a9-a6ad-25d5a0ef9ff6",
-    //       user: {
-    //         id: "aefa5f0b-ff4d-47a9-a6ad-25d5a0ef9ff6",
-    //         username: "oshirase_gan",
-    //         displayName: "千里GAN(活動縮小中",
-    //         avatar: getRandomFile("aefa5f0b-ff4d-47a9-a6ad-25d5a0ef9ff6"),
-    //         verified: true,
-    //         followers: 86,
-    //         following: 191,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: backgroundImg[1],
-    //             aspect_ratio: "1.91:1",
-    //           },
-    //         ],
-    //         likes: 943,
-    //         comments: 142,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "7",
-    //       user: {
-    //         id: "7",
-    //         username: "george",
-    //         displayName: "George",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
-    //         verified: true,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GE2MoDBbcAAMPYH?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "8",
-    //       user: {
-    //         id: "8",
-    //         username: "byronat445",
-    //         displayName: "Harry",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
-    //         verified: false,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "9",
-    //       user: {
-    //         id: "9",
-    //         username: "irene",
-    //         displayName: "Irene",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GgwpklCa0AA8MkD?format=jpg&name=4096x4096",
-    //         verified: true,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GgwpklCa0AA8MkD?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "10",
-    //       user: {
-    //         id: "10",
-    //         username: "byronat445",
-    //         displayName: "Jose",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
-    //         verified: false,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "11",
-    //       user: {
-    //         id: "11",
-    //         username: "kate",
-    //         displayName: "Kate",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
-    //         verified: true,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GgHsZ5vakAAz5jI?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "3",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GgHsVFvbYAU2ZpA?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "4",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GgHsRA8akAAeirJ?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "12",
-    //       user: {
-    //         id: "12",
-    //         username: "linda",
-    //         displayName: "Linda",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
-    //         verified: false,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "video",
-    //             url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    //             aspect_ratio: "1.91:1",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GgHsgp1bQAAZcyW?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "13",
-    //       user: {
-    //         id: "13",
-    //         username: "mary",
-    //         displayName: "Mary",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/F7_0tmmbMAAuv6G?format=jpg&name=large",
-    //         verified: true,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/F7_0tmmbMAAuv6G?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "14",
-    //       user: {
-    //         id: "14",
-    //         username: "nancy",
-    //         displayName: "Nancy",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GPYqzecbsAAy4Ie?format=jpg&name=4096x4096",
-    //         verified: false,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GCsUDkvaQAASmNU?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GPYqzecbsAAy4Ie?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "15",
-    //       user: {
-    //         id: "15",
-    //         username: "olivia",
-    //         displayName: "Olivia",
-    //         avatar:
-    //           "https://pbs.twimg.com/media/GgC22OAaMAAmA9I?format=jpg&name=large",
-    //         verified: true,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GgC22OAaMAAmA9I?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "ec85c1c0-0416-4bf9-82fc-f0a7bb3e492d",
-    //       user: {
-    //         id: "ec85c1c0-0416-4bf9-82fc-f0a7bb3e492d",
-    //         username: "pat",
-    //         displayName: "Pat",
-    //         avatar: getRandomFile("ec85c1c0-0416-4bf9-82fc-f0a7bb3e492d"),
-    //         verified: false,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GllqHMLa4AATGzZ?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "61561c89-eb6f-4b70-bb0a-0ff75c0f89a9",
-    //       user: {
-    //         id: "61561c89-eb6f-4b70-bb0a-0ff75c0f89a9",
-    //         username: "mharris5",
-    //         displayName: "Maggie Harris",
-    //         avatar: getRandomFile("61561c89-eb6f-4b70-bb0a-0ff75c0f89a9"),
-    //         verified: true,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GfxwRq7a4AAlY6S?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "b81ef1c7-dc91-484a-a38f-4efc3bcef406",
-    //       user: {
-    //         id: "b81ef1c7-dc91-484a-a38f-4efc3bcef406",
-    //         username: "owasielewskib",
-    //         displayName: "Osbourn Wasielewski",
-    //         avatar: getRandomFile("b81ef1c7-dc91-484a-a38f-4efc3bcef40"),
-    //         verified: false,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/Gdm5F3mboAgSG_x?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GNVppwoakAA3Yxq?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "3",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GCpqzHQbwAABMGr?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "4",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/F-I4FN2bgAAbsbE?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "5",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GLGU7XDbEAADwGY?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "741dba63-27a7-43b8-b6fd-2cecd4ad5a9b",
-    //       user: {
-    //         id: "741dba63-27a7-43b8-b6fd-2cecd4ad5a9b",
-    //         username: "imarchantc",
-    //         displayName: "Idalina Marchant",
-    //         avatar: getRandomFile("741dba63-27a7-43b8-b6fd-2cecd4ad5a9b"),
-    //         verified: true,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GfxwRq7a4AAlY6S?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "2b15a77e-fd97-445c-8056-344b7d1df5c2",
-    //       user: {
-    //         id: "2b15a77e-fd97-445c-8056-344b7d1df5c2",
-    //         username: "sabbat",
-    //         displayName: "Sam Abba",
-    //         avatar: getRandomFile("2b15a77e-fd97-445c-8056-344b7d1df5c2"),
-    //         verified: false,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GowgbJ9aIAADxvn?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GoXF5VOXcAA5W_F?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "3",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/Ghvkngoa0AAZBHM?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "4",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/Gj8UYDjbEAAVJeD?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 363127,
-    //         comments: 455,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "80a35216-a718-4238-b35d-e2ba95f6f43",
-    //       user: {
-    //         id: "80a35216-a718-4238-b35d-e2ba95f6f43",
-    //         username: "wcotmank",
-    //         displayName: "Wendie Cotman",
-    //         avatar: getRandomFile("80a35216-a718-4238-b35d-e2ba95f6f43"),
-    //         verified: true,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GmkyyAnaEAA3K9v?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/Gj_e2lNbEAAWF9u?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "3",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GjMsVS9a0AA66Tb?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "86843c49-8cff-4671-baf5-b3cafd66b9bb",
-    //       user: {
-    //         id: "86843c49-8cff-4671-baf5-b3cafd66b9bb",
-    //         username: "habelsf",
-    //         displayName: "Hildagard Abels",
-    //         avatar: getRandomFile("86843c49-8cff-4671-baf5-b3cafd66b9b"),
-    //         verified: false,
-    //         followers: 227776,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/FtEzdouaQAARPKN?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GgLvSHibYAMCR1k?format=jpg&name=medium",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 227776,
-    //         comments: 86168,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "4010887c-e1cc-47a7-abd4-616cdd80f3e5",
-    //       user: {
-    //         id: "4010887c-e1cc-47a7-abd4-616cdd80f3e5",
-    //         username: "alidgertwoodd",
-    //         displayName: "Allys Lidgertwood",
-    //         avatar: getRandomFile("4010887c-e1cc-47a7-abd4-616cdd80f3e5"),
-    //         verified: true,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: false,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GicHHmPaYAAfESg?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/FkXOfZCaEAAR2pX?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "3",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/FWHk8VgUIAANFcX?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "9010887c-e1cc-47a7-abd4-616cdd80f3e5",
-    //       user: {
-    //         id: "9010887c-e1cc-47a7-abd4-616cdd80f3e5",
-    //         username: "alidgertwoodd",
-    //         displayName: "Allys Lidgertwood",
-    //         avatar: getRandomFile("9010887c-e1cc-47a7-abd4-616cdd80f3e5"),
-    //         verified: true,
-    //         followers: 1234,
-    //         following: 567,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/FTwr23WVIAA9yL3?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/FgzKZewagAAtE2G?format=jpg&name=large",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "3",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/Fqcy-h5aYAEUvQ3?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 1234,
-    //         comments: 45,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "0c140867-69dc-4181-93de-f4aec644d1b0",
-    //       user: {
-    //         id: "0c140867-69dc-4181-93de-f4aec644d1b0",
-    //         username: "alidgertwoodd",
-    //         displayName: "Allys Lidgertwood",
-    //         avatar: getRandomFile("0c140867-69dc-4181-93de-f4aec644d1b0"),
-    //         verified: true,
-    //         followers: 186,
-    //         following: 26,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GKYSLwTaAAA7Uu9?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //           {
-    //             id: "2",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GEwApvjaMAAX2R6?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 2320,
-    //         comments: 3757,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "746c9f5c-1676-48e7-9fdc-cf5db40c2a3c",
-    //       user: {
-    //         id: "746c9f5c-1676-48e7-9fdc-cf5db40c2a3c",
-    //         username: "alidgertwoodd",
-    //         displayName: "Allys Lidgertwood",
-    //         avatar: getRandomFile("746c9f5c-1676-48e7-9fdc-cf5db40c2a3c"),
-    //         verified: true,
-    //         followers: 86,
-    //         following: 191,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GqGfFSebwAAxT4c?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 3234,
-    //         comments: 57,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "14d62a13-3a63-4486-9af4-dd149279c2db",
-    //       user: {
-    //         id: "14d62a13-3a63-4486-9af4-dd149279c2db",
-    //         username: "alidgertwoodd",
-    //         displayName: "Allys Lidgertwood",
-    //         avatar: getRandomFile("14d62a13-3a63-4486-9af4-dd149279c2db"),
-    //         verified: true,
-    //         followers: 86,
-    //         following: 191,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GqGfFSebwAAxT4c?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 943,
-    //         comments: 142,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "0be4e5fe-49ac-4d55-aee1-dab7d4b5a5bf",
-    //       user: {
-    //         id: "0be4e5fe-49ac-4d55-aee1-dab7d4b5a5bf",
-    //         username: "luts7602",
-    //         displayName: "manda",
-    //         avatar: getRandomFile("0be4e5fe-49ac-4d55-aee1-dab7d4b5a5bf"),
-    //         verified: true,
-    //         followers: 86,
-    //         following: 191,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: "https://pbs.twimg.com/media/GjZDOyAa8AArPqh?format=jpg&name=4096x4096",
-    //             aspect_ratio: "4:5",
-    //           },
-    //         ],
-    //         likes: 943,
-    //         comments: 142,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //     {
-    //       id: "e2f55ce8-f2fb-47e0-a739-40cba7885b62",
-    //       user: {
-    //         id: "e2f55ce8-f2fb-47e0-a739-40cba7885b62",
-    //         username: "n_n_nima",
-    //         displayName: "nima",
-    //         avatar: getRandomFile("e2f55ce8-f2fb-47e0-a739-40cba7885b62"),
-    //         verified: true,
-    //         followers: 86,
-    //         following: 191,
-    //         hasFeed: true,
-    //       },
-    //       post: {
-    //         text: "Beautiful day at the beach 🌊",
-    //         files: [
-    //           {
-    //             id: "1",
-    //             type: "image",
-    //             url: backgroundImg[0],
-    //             aspect_ratio: "1.91:1",
-    //           },
-    //         ],
-    //         likes: 943,
-    //         comments: 142,
-    //         created_at: new Date(),
-    //         isLiked: false,
-    //       },
-    //     },
-    //   ]
-    [];
+  : [];
 
-export const mockProfile: ProfileInfo = {
+export const mockComments: CommentInfo[] = [
+  {
+    id: "979491b0-13a7-41c7-9b5e-1c60c96684b2",
+    content:
+      "Aliquam eget lectus eget felis aliquam rhoncus eget at augue. Ut quis tincidunt nibh. Fusce tincidunt tincidunt dui, et condimentum orci ornare non. Mauris laoreet ante nec mi rutrum, ac rhoncus lorem ultricies. In scelerisque ut ipsum ut viverra. Nullam posuere lectus eget odio mollis, ut varius enim tristique. Integer vitae nisl ac metus tempus vulputate non non diam. Cras cursus viverra feugiat. Nulla sed dolor est./nQuisque et lectus id magna laoreet dapibus. Morbi feugiat libero non mattis bibendum. Morbi sem augue, pretium tristique nibh in, suscipit pulvinar arcu. Aenean ultrices tellus et sapien egestas pulvinar. Aenean ipsum risus, fringilla et luctus id, dignissim at tellus. Etiam aliquam posuere ultricies. Phasellus placerat nunc eget hendrerit dignissim. Mauris purus dolor, facilisis at nulla id, finibus tincidunt felis. In ullamcorper ullamcorper ligula, in ultricies justo faucibus ut. Aenean porttitor dictum nibh, eget mollis tellus pellentesque ut. Pellentesque luctus lorem et mi mollis, eget lacinia mauris viverra. Morbi sit amet commodo dolor. Cras orci enim, varius non molestie eu, facilisis in ligula. Ut ornare fermentum velit quis semper. Nam non viverra neque. Cras ac eros rhoncus, vehicula quam nec, eleifend arcu./nCras sagittis quam id sem vehicula placerat. Nunc condimentum mattis leo, non mollis odio maximus luctus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Praesent semper, risus at faucibus varius, tellus orci semper ligula, nec posuere turpis mauris ac leo. Praesent sed ipsum volutpat, imperdiet lorem et, hendrerit diam. Proin ut auctor purus. Morbi porta neque at dui vestibulum posuere. Fusce nec velit et elit volutpat posuere id at velit. In nec accumsan lacus, in luctus purus. Quisque venenatis ac ipsum vel efficitur. Donec sed mauris vehicula, tempor nibh sed, fringilla magna. Integer ornare dui non libero tincidunt, quis pulvinar nunc porttitor. Ut efficitur sagittis pharetra. Ut in augue et turpis placerat pretium pulvinar vitae sapien.",
+    user: {
+      id: "979491b0-13a7-41c7-9b5e-1c60c96684b2",
+      username: "anonymous",
+      displayName: "Anonymous",
+      avatar: getRandomFile("979491b0-13a7-41c7-9b5e-1c60c96684b2"),
+      verified: false,
+      followers: 1000,
+      following: 1000,
+      isFollowing: false,
+      hasFeed: true,
+    },
+    likes: 10000,
+    isLiked: true,
+    createdAt: new Date(),
+  },
+  {
+    id: "979491b0-13a7-41c7-9b5e-1c60c96684b3",
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan et diam vitae tincidunt. Integer lectus tortor, sollicitudin consequat est id, ultrices gravida neque. Etiam congue arcu quam. Praesent quis interdum diam. Donec cursus nulla ligula, eget imperdiet neque posuere in.",
+    user: {
+      id: "979491b0-13a7-41c7-9b5e-1c60c96684b3",
+      username: "anonymous",
+      displayName: "Anonymous",
+      avatar: getRandomFile("979491b0-13a7-41c7-9b5e-1c60c96684b3"),
+      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan et diam vitae tincidunt. Integer lectus tortor, sollicitudin consequat est id, ultrices gravida neque. Etiam congue arcu quam. Praesent quis interdum diam. Donec cursus nulla ligula, eget imperdiet neque posuere in.",
+      verified: false,
+      followers: 1000,
+      following: 1000,
+      isFollowing: false,
+      hasFeed: true,
+    },
+    likes: 30000,
+    isLiked: false,
+    createdAt: new Date("2004-07-12T00:00:00.000Z"),
+  },
+  {
+    id: "979491b0-13a7-41c7-9b5e-1c60c96684b4",
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan et diam vitae tincidunt. Integer lectus tortor, sollicitudin consequat est id, ultrices gravida neque. Etiam congue arcu quam. Praesent quis interdum diam. Donec cursus nulla ligula, eget imperdiet neque posuere in.",
+    user: {
+      id: "979491b0-13a7-41c7-9b5e-1c60c96684b4",
+      username: "anonymous",
+      displayName: "Anonymous",
+      avatar: getRandomFile("979491b0-13a7-41c7-9b5e-1c60c96684b4"),
+      verified: false,
+      followers: 1000,
+      following: 1000,
+      isFollowing: false,
+      hasFeed: true,
+    },
+    likes: 70000,
+    isLiked: false,
+    createdAt: new Date("2003-07-12T00:00:00.000Z"),
+  },
+];
+
+export const mockProfile: UserProfileInfo = {
   id: "a9a6d7c2-1e20-2439-a50b-51a1deh131da1",
   username: "byronat445",
   displayName: "Byron Atwood",
@@ -2107,6 +1388,7 @@ export const mockProfile: ProfileInfo = {
   verified: true,
   followers: 1234,
   following: 567,
+  isFollowing: false,
 };
 
 // Chat mocks
@@ -2461,8 +1743,9 @@ export const mockNotifications: Notification[] = [
 ];
 
 // Aside
-export const mockPopularAccounts: ProfileCardInfo[] = [
+export const mockPopularAccounts: ProfileSearchItem[] = [
   {
+    isFollowing: false,
     id: "057b50c5-4646-42bf-98ea-933c108f2671",
     username: "wbale0",
     displayName: "Werner Bale",
@@ -2472,6 +1755,7 @@ export const mockPopularAccounts: ProfileCardInfo[] = [
     backgroundImage: backgroundImg[0],
   },
   {
+    isFollowing: false,
     id: "ca0f9eb5-c789-4e50-9f8c-457ff3b9f964",
     username: "tech_jason",
     displayName: "Jason Chen",
@@ -2479,6 +1763,7 @@ export const mockPopularAccounts: ProfileCardInfo[] = [
     verified: false,
   },
   {
+    isFollowing: false,
     id: "90946704-51dc-4a73-9f56-99531bc3db7b",
     username: "foodie_sophie",
     displayName: "Sophie Rodriguez",
@@ -2488,6 +1773,7 @@ export const mockPopularAccounts: ProfileCardInfo[] = [
     backgroundImage: backgroundImg[1],
   },
   {
+    isFollowing: false,
     id: "92a1e004-8ddf-46ab-8811-28a6e1bb7a60",
     username: "fitness_marcus",
     displayName: "Marcus Johnson",
@@ -2498,7 +1784,7 @@ export const mockPopularAccounts: ProfileCardInfo[] = [
   },
 ];
 
-export const mockSuggestedUsers: UserCardInfo[] = [
+export const mockSuggestedUsers: UserCardDisplayInfo[] = [
   {
     id: "057b50c5-4646-42bf-98ea-933c108f2671",
     username: "wbale0",
@@ -2508,6 +1794,7 @@ export const mockSuggestedUsers: UserCardInfo[] = [
     bio: "Travel photographer | Adventure seeker | Coffee enthusiast",
     followers: 642249,
     following: 236261,
+    isFollowing: false,
     hasFeed: true,
     followedBy: {
       displayItems: [
@@ -2528,6 +1815,7 @@ export const mockSuggestedUsers: UserCardInfo[] = [
     verified: false,
     followers: 725940,
     following: 532,
+    isFollowing: false,
     hasFeed: true,
   },
   {
@@ -2539,6 +1827,7 @@ export const mockSuggestedUsers: UserCardInfo[] = [
     bio: "Food blogger | Recipe developer | Always hungry",
     followers: 80078,
     following: 208034,
+    isFollowing: false,
     hasFeed: false,
     followedBy: {
       displayItems: [
@@ -2565,6 +1854,7 @@ export const mockSuggestedUsers: UserCardInfo[] = [
     bio: "Personal trainer | Nutrition coach | Wellness advocate",
     followers: 28937,
     following: 21,
+    isFollowing: false,
     hasFeed: false,
   },
   {
@@ -2576,6 +1866,7 @@ export const mockSuggestedUsers: UserCardInfo[] = [
     bio: "Digital artist | Illustrator | Dreamer",
     followers: 9642,
     following: 65475,
+    isFollowing: false,
     hasFeed: true,
     followedBy: {
       displayItems: [
@@ -2607,6 +1898,7 @@ export const mockSuggestedUsers: UserCardInfo[] = [
     bio: "Music producer | DJ | Creating vibes",
     followers: 3500000000,
     following: 758,
+    isFollowing: false,
     hasFeed: true,
     followedBy: {
       displayItems: [
@@ -2633,6 +1925,7 @@ export const mockSuggestedUsers: UserCardInfo[] = [
     bio: "Novelist | Poet | Storyteller",
     followers: 17382,
     following: 623,
+    isFollowing: false,
     hasFeed: false,
     followedBy: {
       displayItems: [
@@ -2654,6 +1947,7 @@ export const mockSuggestedUsers: UserCardInfo[] = [
     bio: "Novelist | Poet | Storyteller",
     followers: 17382,
     following: 623,
+    isFollowing: false,
     hasFeed: false,
     followedBy: {
       displayItems: [
@@ -2670,34 +1964,45 @@ export const mockSuggestedUsers: UserCardInfo[] = [
 
 export const mockTrendingTopics: HashtagItem[] = [
   {
+    type: "hashtag",
     id: "hoyo",
     count: 8193,
   },
   {
+    type: "hashtag",
     id: "kuro",
     count: 1250000,
   },
   {
+    type: "hashtag",
     id: "genshin",
     count: 42400000,
   },
   {
+    type: "hashtag",
     id: "ardelle h'ad",
     count: 3500000000,
   },
   {
+    type: "hashtag",
     id: "grearye",
     count: 42400000,
   },
 ];
 
-export const mockCurrentUsers: AccountInfo[] = [
+export const mockCurrentUsers: Omit<
+  UserCardDisplayInfo,
+  "followedBy" | "isFollowing"
+>[] = [
   {
     id: "thinhngo",
     username: "byronat445",
     displayName: "Thinh Ngo",
     avatar: getRandomFile("byronat445"),
     verified: true,
+    followers: 1000,
+    following: 1000,
+    hasFeed: true,
   },
   {
     id: "anotherMe",
@@ -2705,5 +2010,8 @@ export const mockCurrentUsers: AccountInfo[] = [
     displayName: "Bao Trung",
     avatar: getRandomFile("hkbtrung"),
     verified: true,
+    followers: 1000,
+    following: 1000,
+    hasFeed: true,
   },
 ];

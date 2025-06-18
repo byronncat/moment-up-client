@@ -1,7 +1,7 @@
 import { mockCurrentUsers } from "@/__mocks__";
 
 import type { z } from "zod";
-import type { AccountInfo, API } from "api";
+import type { UserAccountInfo, API, UserCardDisplayInfo } from "api";
 
 import zodSchema from "@/libraries/zodSchema";
 
@@ -152,7 +152,9 @@ export async function signup(
   //   });
 }
 
-export async function verify(): Promise<API<AccountInfo>> {
+export async function verify(): Promise<
+  API<Omit<UserCardDisplayInfo, "followedBy" | "isFollowing">>
+> {
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -232,7 +234,7 @@ export async function changePassword(
   };
 }
 
-export async function getAllAcounts(): Promise<API<AccountInfo[]>> {
+export async function getAllAcounts(): Promise<API<UserAccountInfo[]>> {
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -254,8 +256,8 @@ export async function getAllAcounts(): Promise<API<AccountInfo[]>> {
 }
 
 export async function switchAccount(
-  accountId: AccountInfo["id"]
-): Promise<API<AccountInfo>> {
+  accountId: UserCardDisplayInfo["id"]
+): Promise<API<Omit<UserCardDisplayInfo, "followedBy" | "isFollowing">>> {
   console.log(accountId);
   const anotherUser = mockCurrentUsers.find((user) => user.id === accountId);
   return new Promise((resolve) => {

@@ -12,14 +12,14 @@ const apiRes = {
 import type { z } from "zod";
 import type {
   API,
-  HashtagSearchItem,
+  HashtagItem,
   SearchItem,
   SearchResult,
   UserSearchItem,
 } from "api";
 
 import zodSchema from "@/libraries/zodSchema";
-import { SEARCH_CATEGORY } from "@/constants/clientConfig";
+import { SearchCategory } from "@/constants/clientConfig";
 
 export async function search(
   data: z.infer<typeof zodSchema.core.search>
@@ -75,7 +75,7 @@ export async function getSearchHistory(): Promise<API<SearchItem[]>> {
 
 export async function detailSearch(
   data: z.infer<typeof zodSchema.core.search>,
-  type: SEARCH_CATEGORY
+  type: SearchCategory
 ): Promise<API<SearchResult>> {
   try {
     await new Promise((resolve) => {
@@ -97,22 +97,22 @@ export async function detailSearch(
         (hashtag) =>
           hashtag.type === "hashtag" &&
           hashtag.id.toLowerCase().includes(data.query.toLowerCase())
-      ) as HashtagSearchItem[],
+      ) as HashtagItem[],
     };
 
-    if (type === SEARCH_CATEGORY.PEOPLE) {
+    if (type === SearchCategory.PEOPLE) {
       delete result.posts;
       delete result.hashtags;
     }
-    if (type === SEARCH_CATEGORY.MEDIA) {
+    if (type === SearchCategory.MEDIA) {
       delete result.users;
       delete result.hashtags;
     }
-    if (type === SEARCH_CATEGORY.POSTS) {
+    if (type === SearchCategory.POSTS) {
       delete result.users;
       delete result.hashtags;
     }
-    if (type === SEARCH_CATEGORY.HASHTAG) {
+    if (type === SearchCategory.HASHTAG) {
       delete result.posts;
       delete result.users;
     }
@@ -123,6 +123,7 @@ export async function detailSearch(
       data: result,
     };
   } catch (error) {
+    console.error(error);
     return {
       success: false,
       message: "internal error",

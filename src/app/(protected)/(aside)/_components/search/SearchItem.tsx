@@ -2,7 +2,7 @@ import type {
   SearchItem,
   UserSearchItem,
   QuerySearchItem,
-  HashtagSearchItem,
+  HashtagItem,
 } from "api";
 
 import { cn } from "@/libraries/utils";
@@ -65,10 +65,10 @@ export default function SearchItem({ data }: SearchItemProps) {
         </div>
         <div className="flex flex-col">
           <span className="text-sm font-semibold">
-            {(data as HashtagSearchItem).id}
+            {(data as HashtagItem).id}
           </span>
           <span className="text-sm text-muted-foreground">
-            {`${(data as HashtagSearchItem).count} tagged`}
+            {`${(data as HashtagItem).count} tagged`}
           </span>
         </div>
       </>

@@ -6,10 +6,11 @@ import { useEffect, useRef, useState, useCallback, use } from "react";
 import throttle from "@/helpers/throttle";
 
 import { cn } from "@/libraries/utils";
-import FeedItem, { CreateFeedButton } from "./FeedItem";
+import FeedItem from "./FeedItem";
+import CreateFeedButton from "./CreateFeedButton";
 import { Chevron } from "@/components/icons";
 import { ChevronsDown, ChevronsUp } from "lucide-react";
-import { useHome } from "../_providers/Home";
+import { useHome } from "../../_providers/Home";
 
 type Direction = "left" | "right";
 const ITEMS_PER_VIEW = 3;
@@ -71,7 +72,8 @@ export default function Feeds({
         className,
         "absolute top-0 left-0 right-0 z-10",
         "bg-background/[.93] backdrop-blur-sm",
-        hideFeeds && "[@media(max-width:560px)]:-translate-y-[calc(100%-24px-56px)] -translate-y-[calc(100%-24px)]",
+        hideFeeds &&
+          "[@media(max-width:560px)]:-translate-y-[calc(100%-24px-56px)] -translate-y-[calc(100%-24px)]",
         "transition-all duration-200"
       )}
     >

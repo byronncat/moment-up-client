@@ -1,15 +1,18 @@
 "use client";
 
-import type { SearchResult, SearchItem, ProfileCardInfo } from "api";
+import type { SearchResult, SearchItem, ProfileSearchItem } from "api";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import {
+  // useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { SearchApi, SuggestingApi } from "@/services";
 import {
   SEARCH_DEBOUNCE_TIME,
-  SEARCH_CATEGORY,
-  ROUTE,
+  SearchCategory,
+  // ROUTE,
 } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
@@ -23,7 +26,7 @@ import {
 } from "./_components";
 
 export default function SearchPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
 
@@ -33,64 +36,64 @@ export default function SearchPage() {
   );
   const [results, setResults] = useState<SearchResult | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-  const [activeCategory, setCategory] = useState<SEARCH_CATEGORY>(
-    SEARCH_CATEGORY.TOP
+  const [activeCategory, setCategory] = useState<SearchCategory>(
+    SearchCategory.TOP
   );
 
   function isQueryEmpty() {
     return query.trim().length === 0;
   }
 
-  async function search(type: SEARCH_CATEGORY) {
-    if (isQueryEmpty()) return;
+  // async function search(type: SEARCH_CATEGORY) {
+  //   if (isQueryEmpty()) return;
 
-    setIsSearching(true);
-    const res = await SearchApi.detailSearch({ query }, type);
-    if (res.success) setResults(res.data ?? null);
-    setIsSearching(false);
-  }
+  //   setIsSearching(true);
+  //   const res = await SearchApi.detailSearch({ query }, type);
+  //   if (res.success) setResults(res.data ?? null);
+  //   setIsSearching(false);
+  // }
 
-  useEffect(() => {
-    if (!isSearching) {
-      const currentPath = ROUTE.SEARCH(
-        query,
-        isQueryEmpty() ? undefined : activeCategory
-      );
-      router.replace(currentPath);
-      search(activeCategory);
-    }
-  }, [query, activeCategory]);
+  // useEffect(() => {
+  //   if (!isSearching) {
+  //     const currentPath = ROUTE.SEARCH(
+  //       query,
+  //       isQueryEmpty() ? undefined : activeCategory
+  //     );
+  //     router.replace(currentPath);
+  //     search(activeCategory);
+  //   }
+  // }, [query, activeCategory,]);
 
   const categories: NavItem[] = [
     {
-      id: SEARCH_CATEGORY.TOP,
+      id: SearchCategory.TOP,
       label: "Top",
-      onSelect: () => setCategory(SEARCH_CATEGORY.TOP),
+      onSelect: () => setCategory(SearchCategory.TOP),
     },
     {
-      id: SEARCH_CATEGORY.LATEST,
+      id: SearchCategory.LATEST,
       label: "Latest",
-      onSelect: () => setCategory(SEARCH_CATEGORY.LATEST),
+      onSelect: () => setCategory(SearchCategory.LATEST),
     },
     {
-      id: SEARCH_CATEGORY.PEOPLE,
+      id: SearchCategory.PEOPLE,
       label: "People",
-      onSelect: () => setCategory(SEARCH_CATEGORY.PEOPLE),
+      onSelect: () => setCategory(SearchCategory.PEOPLE),
     },
     {
-      id: SEARCH_CATEGORY.MEDIA,
+      id: SearchCategory.MEDIA,
       label: "Media",
-      onSelect: () => setCategory(SEARCH_CATEGORY.MEDIA),
+      onSelect: () => setCategory(SearchCategory.MEDIA),
     },
     {
-      id: SEARCH_CATEGORY.HASHTAG,
+      id: SearchCategory.HASHTAG,
       label: "Hashtags",
-      onSelect: () => setCategory(SEARCH_CATEGORY.HASHTAG),
+      onSelect: () => setCategory(SearchCategory.HASHTAG),
     },
     {
-      id: SEARCH_CATEGORY.POSTS,
+      id: SearchCategory.POSTS,
       label: "Posts",
-      onSelect: () => setCategory(SEARCH_CATEGORY.POSTS),
+      onSelect: () => setCategory(SearchCategory.POSTS),
     },
   ];
 
@@ -141,7 +144,7 @@ function NoSearchState() {
   const [searchHistory, setSearchHistory] = useState<SearchItem[] | null>(null);
   const [isHistoryLoaded, setIsHistoryLoaded] = useState(false);
   const [popularAccounts, setPopularAccounts] = useState<
-    ProfileCardInfo[] | null
+    ProfileSearchItem[] | null
   >(null);
   const [isPopularLoaded, setIsPopularLoaded] = useState(false);
 

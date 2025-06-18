@@ -12,9 +12,23 @@ declare module "schema" {
     readonly created_at: Date;
   };
 
-  type HashtagItem = {
+  type Moment = {
     readonly id: string;
-    count: number;
+    readonly user_id: User["id"];
+    text?: string;
+    files?: File[];
+    readonly created_at: Date;
+  };
+
+  type File = {
+    readonly id: string;
+    readonly type: "image" | "video" | "audio";
+    readonly url: string;
+    readonly aspect_ratio: "1:1" | "9:16" | "4:5" | "1.91:1";
+  };
+
+  type Hashtag = {
+    readonly id: string;
   };
 
   type Feed = {
@@ -32,21 +46,6 @@ declare module "schema" {
     readonly created_at: Date;
   };
 
-  type Moment = {
-    readonly id: string;
-    readonly user_id: User["id"];
-    text?: string;
-    files?: File[];
-    readonly created_at: Date;
-  };
-
-  type MomentLike = {
-    readonly id: string;
-    readonly moment_id: Moment["id"];
-    readonly user_id: User["id"];
-    readonly created_at: Date;
-  };
-
   type Comment = {
     readonly id: string;
     readonly moment_id: Moment["id"];
@@ -60,12 +59,5 @@ declare module "schema" {
     readonly user_id: User["id"];
     readonly created_at: Date;
     type: "community" | "security" | "system";
-  };
-
-  type File = {
-    readonly id: string;
-    readonly type: "image" | "video" | "audio";
-    readonly url: string;
-    readonly aspect_ratio: "1:1" | "9:16" | "4:5" | "1.91:1";
   };
 }

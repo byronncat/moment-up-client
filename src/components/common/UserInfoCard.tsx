@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserCardInfo } from "api";
+import type { UserCardDisplayInfo } from "api";
 
 import { useState } from "react";
 import { cn } from "@/libraries/utils";
@@ -18,19 +18,18 @@ import {
   CardTitle,
 } from "../ui/card";
 import { CircleCheck } from "../icons";
-import { UserMinus, UserPlus, UserCheck } from "lucide-react";
+import { UserMinus, UserPlus, UserCheck, Settings } from "lucide-react";
+import { useAuth } from "../providers";
 
 type UserInfoCardProps = Readonly<{
-  user: UserCardInfo;
-  isFollowing?: boolean;
-  onFollow?: (e: React.MouseEvent) => void;
+  user: UserCardDisplayInfo;
+  onFollow?: (e: React.MouseEvent) => Promise<void>;
 }>;
 
-export default function UserInfoCard({
-  user,
-  isFollowing,
-  onFollow,
-}: UserInfoCardProps) {
+export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
+  const { user: currentUser } = useAuth();
+  const isCurrentUser = currentUser?.id === user.id;
+
   return (
     <div className="size-full">
       <CardHeader className={cn("p-0", "flex-row gap-3", "space-y-0")}>
@@ -81,46 +80,30 @@ export default function UserInfoCard({
       <CardContent className="p-0 mt-4">
         <p className="text-sm wrap-break-word">{user.bio}</p>
         <FollowSection following={user.following} followers={user.followers} />
-        {user.followedBy && <FollowedBy users={user.followedBy} />}
+        {!isCurrentUser && user.followedBy && (
+          <FollowedBy users={user.followedBy} />
+        )}
       </CardContent>
       <CardFooter className="p-0 mt-4">
-        <FollowButton isFollowing={isFollowing} followHandler={onFollow} />
+        {isCurrentUser ? (
+          <EditProfileButton />
+        ) : (
+          <FollowButton
+            isFollowing={user.isFollowing}
+            followHandler={onFollow}
+          />
+        )}
       </CardFooter>
     </div>
   );
 }
 
-function FollowButton({
-  isFollowing,
-  followHandler,
-}: Readonly<{
-  isFollowing?: boolean;
-  followHandler?: (e: React.MouseEvent) => void;
-}>) {
-  const [isHovering, setIsHovering] = useState(false);
-  return (
-    <Button
-      variant={
-        isFollowing ? (isHovering ? "destructive" : "default") : "outline"
-      }
-      className="text-sm w-full [&_svg]:size-4"
-      onClick={followHandler}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
-      {isFollowing ? isHovering ? <UserMinus /> : <UserCheck /> : <UserPlus />}
-      {isFollowing ? (isHovering ? "Unfollow" : "Following") : "Follow"}
-    </Button>
-  );
-}
+type FollowSectionProps = Readonly<{
+  following: UserCardDisplayInfo["following"];
+  followers: UserCardDisplayInfo["followers"];
+}>;
 
-function FollowSection({
-  following,
-  followers,
-}: Readonly<{
-  following: UserCardInfo["following"];
-  followers: UserCardInfo["followers"];
-}>) {
+function FollowSection({ following, followers }: FollowSectionProps) {
   return (
     <div className={cn("flex gap-3", "text-sm", "mt-3")}>
       <div className="flex items-center gap-1">
@@ -139,7 +122,7 @@ const MAX_FOLLOWED_BY_DISPLAY = 3;
 function FollowedBy({
   users,
 }: Readonly<{
-  users: UserCardInfo["followedBy"];
+  users: UserCardDisplayInfo["followedBy"];
 }>) {
   if (!users) return null;
   const DisplayUsers = users.displayItems;
@@ -181,5 +164,56 @@ function FollowedBy({
         }`}
       </div>
     </div>
+  );
+}
+
+type FollowButtonProps = Readonly<{
+  isFollowing?: boolean;
+  followHandler?: (e: React.MouseEvent) => Promise<void>;
+}>;
+
+function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleClick = async (e: React.MouseEvent) => {
+    if (!followHandler) return;
+    await followHandler(e);
+  };
+
+  const renderIcon = () => {
+    if (isFollowing) return isHovering ? <UserMinus /> : <UserCheck />;
+    return <UserPlus />;
+  };
+
+  return (
+    <Button
+      variant={
+        isFollowing ? (isHovering ? "destructive" : "default") : "outline"
+      }
+      className="text-sm w-full [&_svg]:size-4"
+      onClick={handleClick}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      {renderIcon()}
+      {isFollowing ? (isHovering ? "Unfollow" : "Following") : "Follow"}
+    </Button>
+  );
+}
+
+function EditProfileButton() {
+  const handleClick = async () => {
+    console.log("Edit Profile");
+  };
+
+  return (
+    <Button
+      variant="outline"
+      className="text-sm w-full [&_svg]:size-4"
+      onClick={handleClick}
+    >
+      <Settings />
+      Edit Profile
+    </Button>
   );
 }

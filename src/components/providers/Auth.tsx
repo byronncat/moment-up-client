@@ -1,7 +1,7 @@
 "use client";
 
 import type { z } from "zod";
-import type { API, AccountInfo } from "api";
+import type { API, UserCardDisplayInfo } from "api";
 
 import { useRouter } from "next/navigation";
 import {
@@ -19,7 +19,7 @@ import { ROUTE } from "@/constants/clientConfig";
 
 const AuthContext = createContext(
   {} as {
-    user: AccountInfo | null;
+    user: Omit<UserCardDisplayInfo, "followedBy" | "isFollowing"> | null;
     logged?: boolean;
     setLogged: (logged: boolean) => void;
     loaded: boolean;
@@ -35,7 +35,7 @@ const AuthContext = createContext(
     changePassword: (
       values: z.infer<typeof zodSchema.auth.changePassword>
     ) => Promise<API>;
-    changeAccount: (accountId: AccountInfo["id"]) => Promise<void>;
+    changeAccount: (accountId: UserCardDisplayInfo["id"]) => Promise<void>;
   }
 );
 
@@ -47,7 +47,10 @@ export default function AuthProvider({
   const router = useRouter();
   const [logged, setLogged] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [user, setUser] = useState<AccountInfo | null>(null);
+  const [user, setUser] = useState<Omit<
+    UserCardDisplayInfo,
+    "followedBy" | "isFollowing"
+  > | null>(null);
 
   const authenticate = useCallback(async () => {
     const { success, data } = await AuthApi.verify();
@@ -131,7 +134,7 @@ export default function AuthProvider({
   );
 
   const changeAccount = useCallback(
-    async (accountId: AccountInfo["id"]) => {
+    async (accountId: UserCardDisplayInfo["id"]) => {
       setLoaded(false);
       const res = await AuthApi.switchAccount(accountId);
       if (res.success) {

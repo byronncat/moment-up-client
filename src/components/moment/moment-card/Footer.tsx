@@ -1,21 +1,31 @@
 "use client";
 
+import type { DetailedMomentInfo } from "api";
+import type { Actions } from "../../providers/MomentData";
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { cn } from "@/libraries/utils";
-import format from "@/utilities/format";
-import { useData } from "./provider/Data";
+import { ROUTE } from "@/constants/clientConfig";
 
 import { CardFooter } from "../../ui/card";
-
-import Tooltip from "../../common/Tooltip";
+import ColorfulIconButton, {
+  buttonStyles,
+} from "../../common/ColorfulIconButton";
+import ShareDialog from "./ShareDialog";
 import { Heart, Comment, Share, Repeat, Bookmark } from "../../icons";
 
-const buttonStyles = {
-  iconSize: "size-5",
-  transition: "transition-colors duration-150 ease-in-out",
-};
+type FooterProps = Readonly<{
+  data: DetailedMomentInfo;
+  actions: Actions;
+}>;
 
-export default function Footer() {
-  const { postData: post, like, bookmark } = useData();
+export default function Footer({ data, actions }: FooterProps) {
+  const router = useRouter();
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+  const momentId = data.id;
+  const user = data.user;
+  const post = data.post;
 
   const buttons = [
     {
@@ -35,7 +45,7 @@ export default function Footer() {
       count: post.likes,
       tooltip: "Like",
       isActive: post.isLiked,
-      onClick: like,
+      onClick: () => actions.like(momentId),
     },
     {
       icon: (
@@ -51,6 +61,7 @@ export default function Footer() {
       color: "sky-500",
       count: post.comments,
       tooltip: "Comment",
+      onClick: () => router.push(ROUTE.MOMENT(momentId)),
     },
     {
       icon: (
@@ -65,6 +76,7 @@ export default function Footer() {
       color: "green-500",
       count: 73,
       tooltip: "Repost",
+      onClick: () => setIsShareDialogOpen(true),
     },
     {
       icon: (
@@ -75,14 +87,14 @@ export default function Footer() {
             buttonStyles.transition,
             post.isBookmarked
               ? "fill-yellow-500"
-              : "fill-muted-foreground group-hover:fill-yellow-500",
+              : "fill-muted-foreground group-hover:fill-yellow-500"
           )}
         />
       ),
       color: "yellow-500",
       tooltip: "Bookmark",
       isActive: post.isBookmarked,
-      onClick: bookmark,
+      onClick: () => actions.bookmark(momentId),
     },
     {
       icon: (
@@ -96,107 +108,38 @@ export default function Footer() {
       ),
       color: "blue-500",
       tooltip: "Share",
+      onClick: () => actions.share(momentId),
     },
   ];
 
   return (
-    <CardFooter className="p-3">
-      <div
-        className={cn(
-          "flex items-center justify-between",
-          "w-full",
-          "text-muted-foreground"
-        )}
-      >
-        {buttons.slice(0, 3).map((button) => (
-          <ActionButton key={button.tooltip} {...button} />
-        ))}
-
-        <div className="flex items-center gap-1">
-          {buttons.slice(3).map((button) => (
-            <ActionButton key={button.tooltip} {...button} />
-          ))}
-        </div>
-      </div>
-    </CardFooter>
-  );
-}
-
-type ActionButtonProps = {
-  icon: React.ReactNode;
-  color: string;
-  tooltip: string;
-  count?: number;
-  isActive?: boolean;
-  onClick?: () => void;
-};
-
-function ActionButton({
-  icon,
-  color,
-  count,
-  tooltip,
-  isActive = false,
-  onClick,
-}: ActionButtonProps) {
-  let textClass = "";
-  let hoverTextClass = "";
-  let bgHoverClass = "";
-  switch (color) {
-    case "pink-500":
-      textClass = "text-pink-500";
-      hoverTextClass = "hover:text-pink-500";
-      bgHoverClass = "group-hover:bg-pink-500/10";
-      break;
-    case "sky-500":
-      textClass = "text-sky-500";
-      hoverTextClass = "hover:text-sky-500";
-      bgHoverClass = "group-hover:bg-sky-500/10";
-      break;
-    case "green-500":
-      textClass = "text-green-500";
-      hoverTextClass = "hover:text-green-500";
-      bgHoverClass = "group-hover:bg-green-500/10";
-      break;
-    case "yellow-500":
-      textClass = "text-yellow-500";
-      hoverTextClass = "hover:text-yellow-500";
-      bgHoverClass = "group-hover:bg-yellow-500/10";
-      break;
-    case "blue-500":
-      textClass = "text-blue-500";
-      hoverTextClass = "hover:text-blue-500";
-      bgHoverClass = "group-hover:bg-blue-500/10";
-      break;
-    default:
-      textClass = "";
-      hoverTextClass = "";
-      bgHoverClass = "";
-  }
-
-  return (
-    <Tooltip content={tooltip} sideOffset={6}>
-      <button
-        type="button"
-        onClick={onClick}
-        className={cn(
-          "group flex items-center gap-1",
-          isActive ? textClass : hoverTextClass,
-          "cursor-pointer",
-          buttonStyles.transition
-        )}
-      >
+    <>
+      <CardFooter className="p-3">
         <div
           className={cn(
-            "p-2 rounded-full",
-            bgHoverClass,
-            buttonStyles.transition
+            "flex items-center justify-between",
+            "w-full",
+            "text-muted-foreground"
           )}
         >
-          {icon}
+          {buttons.slice(0, 3).map((button) => (
+            <ColorfulIconButton key={button.tooltip} {...button} />
+          ))}
+
+          <div className="flex items-center gap-1">
+            {buttons.slice(3).map((button) => (
+              <ColorfulIconButton key={button.tooltip} {...button} />
+            ))}
+          </div>
         </div>
-        {count && <span>{format.number(count)}</span>}
-      </button>
-    </Tooltip>
+      </CardFooter>
+
+      <ShareDialog
+        momentId={momentId}
+        userData={user}
+        open={isShareDialogOpen}
+        onOpenChange={setIsShareDialogOpen}
+      />
+    </>
   );
 }

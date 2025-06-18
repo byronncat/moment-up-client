@@ -1,25 +1,46 @@
-import type { DetailedMoment, ProfileInfo } from "api";
+import type { DetailedMomentInfo, UserProfileInfo } from "api";
 import { mockProfile, mockMoments } from "@/__mocks__";
 import type { API } from "api";
 import { PAGE_CONFIG } from "@/constants/clientConfig";
 
-export async function followUser(userId: string): Promise<API> {
-  console.log("followUser", userId);
+const apiRes = {
+  toggleFollow: "success" as "error" | "success",
+  toggleBlock: "success" as "error" | "success",
+};
+
+export async function toggleFollow(userId: string): Promise<API> {
+  console.log("toggleFollow", userId);
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  if (apiRes.toggleFollow === "error")
+    return {
+      success: false,
+      message: "error",
+    };
+
   return {
     success: true,
-    message: "User followed successfully",
+    message: "Follow updated successfully",
   };
 }
 
-export async function unfollowUser(userId: string): Promise<API> {
-  console.log("unfollowUser", userId);
+export async function toggleBlock(userId: string): Promise<API> {
+  console.log("toggleBlock", userId);
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  if (apiRes.toggleBlock === "error")
+    return {
+      success: false,
+      message: "error",
+    };
+
   return {
     success: true,
-    message: "User unfollowed successfully",
+    message: "Block updated successfully",
   };
 }
 
-export async function getProfile(username: string): Promise<API<ProfileInfo>> {
+export async function getProfile(
+  username: string
+): Promise<API<UserProfileInfo>> {
   console.log("getProfile", username);
   await new Promise((resolve) => setTimeout(resolve, 3000));
   return {
@@ -33,7 +54,7 @@ export async function getMoments(
   type: "moments" | "media" | "likes",
   username: string,
   page: number
-): Promise<API<DetailedMoment[]>> {
+): Promise<API<DetailedMomentInfo[]>> {
   console.log("getMoments", username);
   const start = (page - 1) * PAGE_CONFIG.MOMENT_CELL_PAGE;
   const end = start + PAGE_CONFIG.MOMENT_CELL_PAGE;

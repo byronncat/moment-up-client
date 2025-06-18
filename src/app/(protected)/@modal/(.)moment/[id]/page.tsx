@@ -1,170 +1,67 @@
 "use client";
 
-import type { DetailedMoment } from "api";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMoment } from "@/components/providers/MomentData";
 
-import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { cn } from "@/libraries/utils";
-import { CoreApi } from "@/services";
-
 import { Modal } from "@/components";
-import { CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselPrevious,
-  CarouselNext,
-  CarouselItem,
-} from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Pause, Play, X } from "lucide-react";
+import { MediaCarousel, Details } from "./_components";
+import { X } from "lucide-react";
 
 export default function MomentModal() {
   const router = useRouter();
-  const params = useParams();
-  const momentId = params.id as string;
-  const [moment, setMoment] = useState<DetailedMoment | null>(null);
-  const [mediaLoading, setMediaLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const { getCurrentMoment, like, bookmark, report, share, follow, block } =
+    useMoment();
 
-  function closeHandler() {
+  const page = searchParams.get("page");
+  const initialIndex = page ? parseInt(page) : 0;
+  const moment = getCurrentMoment();
+  const haveMedia = moment?.post.files && moment.post.files.length > 0;
+
+  function handleClose() {
     router.back();
   }
 
-  useEffect(() => {
-    async function fetchMoment() {
-      const res = await CoreApi.getMoment(momentId);
-      if (res.success) setMoment(res.data ?? null);
-      setMediaLoading(false);
-    }
-    fetchMoment();
-  }, [momentId]);
-
+  if (!moment) return null;
   return (
-    <Modal>
-      <MediaFiles data={moment?.post.files} loading={mediaLoading} />
-      <Content onClose={closeHandler} />
+    <Modal
+      onClose={haveMedia ? undefined : handleClose}
+      className="flex items-center justify-center"
+    >
+      {haveMedia && (
+        <>
+          <MediaCarousel
+            files={moment.post.files}
+            initialIndex={initialIndex}
+          />
+          <Button
+            variant="ghost"
+            size="icon"
+            className={cn("rounded-full", "absolute left-2 top-2")}
+            onClick={handleClose}
+          >
+            <X />
+          </Button>
+        </>
+      )}
+      <Details
+        data={moment}
+        actions={{
+          like,
+          bookmark,
+          report,
+          share,
+          follow,
+          block,
+        }}
+        onClose={haveMedia ? undefined : handleClose}
+        className={cn(
+          "border-l border-border shrink-0",
+          haveMedia ? "w-[360px]" : "w-full max-w-[600px] border-r"
+        )}
+      />
     </Modal>
-  );
-}
-
-type MediaFilesProps = ComponentProps<{
-  data: DetailedMoment["post"]["files"];
-  loading: boolean;
-}>;
-
-function MediaFiles({ data, loading }: MediaFilesProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const Wrapper = ({ children }: Readonly<{ children: React.ReactNode }>) => (
-    <div
-      className={cn(
-        "size-full bg-background",
-        "flex justify-center items-center"
-      )}
-    >
-      {children}
-    </div>
-  );
-
-  if (loading)
-    return (
-      <Wrapper>
-        <Skeleton className="size-full" />
-      </Wrapper>
-    );
-  if (!data)
-    return (
-      <Wrapper>
-        <Skeleton className="size-full" />
-      </Wrapper>
-    );
-  return (
-    <Wrapper>
-      <CardContent className="p-0">
-        <Carousel className="w-full">
-          <CarouselContent>
-            {data.map((file, index) => (
-              <CarouselItem key={index}>
-                <div className="relative aspect-square">
-                  {file.type === "image" ? (
-                    <Image
-                      src={file.url}
-                      alt={`Moment ${index + 1}`}
-                      fill
-                      sizes="574px"
-                      className="object-cover"
-                      priority={index === 0}
-                      loading={index === 0 ? "eager" : "lazy"}
-                    />
-                  ) : (
-                    <div className={cn("relative size-full", "cursor-pointer")}>
-                      <video
-                        src={file.url}
-                        className="size-full object-cover"
-                        controls
-                        playsInline
-                        preload="metadata"
-                        onPlay={() => setIsPlaying(true)}
-                        onPause={() => setIsPlaying(false)}
-                      />
-                      <div
-                        className={cn(
-                          "absolute inset-0",
-                          "flex items-center justify-center",
-                          "pointer-events-none"
-                        )}
-                      >
-                        {isPlaying ? (
-                          <Pause className="size-12 fill-white/80" />
-                        ) : (
-                          <Play
-                            className="size-12 fill-white/80"
-                            type="solid"
-                          />
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          {data.length > 1 && (
-            <>
-              <CarouselPrevious className="left-2" />
-              <CarouselNext className="right-2" />
-            </>
-          )}
-        </Carousel>
-      </CardContent>
-    </Wrapper>
-  );
-}
-
-type ContentProps = ComponentProps<{
-  onClose: () => void;
-}>;
-
-function Content({ onClose }: ContentProps) {
-  return (
-    <div
-      className={cn(
-        "relative",
-        "flex flex-col",
-        "w-[360px] h-full shrink-0 bg-card"
-      )}
-    >
-      <div className="absolute top-0 right-0 p-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full"
-          onClick={onClose}
-        >
-          <X />
-        </Button>
-      </div>
-    </div>
   );
 }

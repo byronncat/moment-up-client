@@ -30,9 +30,7 @@ export default function ContactProvider({
     mockContacts[0].id || null
   );
 
-  const [userStatuses, setUserStatuses] = useState<UserStatus[]>(
-    mockUserStatuses || []
-  );
+  const [userStatuses] = useState<UserStatus[]>(mockUserStatuses || []);
 
   return (
     <ContactContext.Provider

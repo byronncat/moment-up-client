@@ -1,6 +1,6 @@
 "use client";
 
-import type { HashtagItem } from "schema";
+import type { HashtagItem } from "api";
 import type { API } from "api";
 
 import { use } from "react";

@@ -1,6 +1,6 @@
 "use client";
 
-import type { DetailedMoment } from "api";
+import type { DetailedMomentInfo } from "api";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useInfiniteScroll, useChunkRender } from "@/hooks";
 import { CoreApi } from "@/services";
@@ -24,7 +24,7 @@ export default function MediaPage() {
     loadMore,
     reset: resetInfiniteScroll,
     error,
-  } = useInfiniteScroll<DetailedMoment>();
+  } = useInfiniteScroll<DetailedMomentInfo>();
 
   const {
     itemsToShow,
@@ -32,7 +32,7 @@ export default function MediaPage() {
     chunkLoaderRef,
     reset: resetChunks,
   } = useChunkRender(media ?? [], {
-    chunkSize: PAGE_CONFIG.MOMENT_CELL_CHUNK,
+    chunkSize: PAGE_CONFIG.MOMENT_CARD_PAGE,
   });
 
   const visibleMedia = media?.slice(0, itemsToShow) ?? [];

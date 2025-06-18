@@ -1,5 +1,9 @@
 export { default as Avatar } from "./Avatar";
 export { default as Brand } from "./Brand";
+export {
+  default as ColorfulIconButton,
+  buttonStyles,
+} from "./ColorfulIconButton";
 export { default as ErrorContent } from "./ErrorContent";
 export { default as NavigationBar } from "./HorizontalNavigationBar";
 export { default as Logo } from "./Logo";

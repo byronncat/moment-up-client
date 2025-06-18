@@ -1,11 +1,10 @@
-import type { UserCardInfo } from "api";
+import type { UserCardDisplayInfo } from "api";
 
 import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
 
 import Link from "next/link";
 import { UserInfoCard } from "../../common";
-
 import {
   HoverCard,
   HoverCardContent,
@@ -13,15 +12,13 @@ import {
 } from "../../ui/hover-card";
 
 type HoverableComponentProps = ComponentProps<{
-  userInfo: UserCardInfo;
-  isFollowing: boolean;
-  followHandler: (e: React.MouseEvent) => void;
+  userInfo: UserCardDisplayInfo;
+  followHandler: (e: React.MouseEvent) => Promise<void>;
 }>;
 
 export default function HoverableComponent({
   children,
   userInfo,
-  isFollowing,
   followHandler,
 }: HoverableComponentProps) {
   return (
@@ -36,11 +33,7 @@ export default function HoverableComponent({
         <Link href={ROUTE.PROFILE(userInfo.username)}>{children}</Link>
       </HoverCardTrigger>
       <HoverCardContent className="w-[288px]">
-        <UserInfoCard
-          user={userInfo}
-          isFollowing={isFollowing}
-          onFollow={followHandler}
-        />
+        <UserInfoCard user={userInfo} onFollow={followHandler} />
       </HoverCardContent>
     </HoverCard>
   );

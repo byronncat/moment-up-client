@@ -4,22 +4,26 @@ import {
   mockTrendingTopics,
 } from "@/__mocks__";
 const apiRes = {
-  getSuggestedUsers: "Ok" as "Ok" | "Internal error",
-  getTrendingTopics: "Ok" as "Ok" | "Internal error",
-  sendFeedback: "Internal error" as "Ok" | "Internal error",
+  getSuggestedUsers: "success" as "error" | "success",
+  getTrendingTopics: "success" as "error" | "success",
+  sendFeedback: "success" as "error" | "success",
 };
 
-import type { API, UserCardInfo, ProfileCardInfo } from "api";
-import { HashtagItem } from "schema";
+import type {
+  API,
+  UserCardDisplayInfo,
+  HashtagItem,
+  ProfileSearchItem,
+} from "api";
 
-export async function getSuggestedUsers(): Promise<API<UserCardInfo[]>> {
+export async function getSuggestedUsers(): Promise<API<UserCardDisplayInfo[]>> {
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
     }, 6000);
   });
 
-  if (apiRes.getSuggestedUsers === "Ok")
+  if (apiRes.getSuggestedUsers === "success")
     return {
       success: true,
       message: "ok",
@@ -32,7 +36,7 @@ export async function getSuggestedUsers(): Promise<API<UserCardInfo[]>> {
   };
 }
 
-export async function getPopularAccounts(): Promise<API<ProfileCardInfo[]>> {
+export async function getPopularAccounts(): Promise<API<ProfileSearchItem[]>> {
   try {
     await new Promise((resolve) => {
       setTimeout(() => {
@@ -46,6 +50,7 @@ export async function getPopularAccounts(): Promise<API<ProfileCardInfo[]>> {
       data: mockPopularAccounts,
     };
   } catch (error) {
+    console.error(error);
     return {
       success: false,
       message: "internal error",
@@ -60,7 +65,7 @@ export async function getTrendingTopics(): Promise<API<HashtagItem[]>> {
     }, 6000);
   });
 
-  if (apiRes.getTrendingTopics === "Ok") {
+  if (apiRes.getTrendingTopics === "success") {
     return {
       success: true,
       message: "ok",
@@ -82,7 +87,7 @@ export async function sendFeedback(feedbackId: number): Promise<API<void>> {
     }, 1000);
   });
 
-  if (apiRes.sendFeedback === "Ok") {
+  if (apiRes.sendFeedback === "success") {
     return {
       success: true,
       message: "ok",

@@ -1,11 +1,11 @@
 declare module "api" {
   import type {
-    Moment as MomentSchema,
+    Moment,
     User,
-    HashtagItem,
+    Hashtag,
     Feed,
-    File,
     Notification as NotificationSchema,
+    Comment,
   } from "schema";
 
   type API<T = void> = {
@@ -14,8 +14,8 @@ declare module "api" {
     data?: T;
   };
 
-  // User
-  type AccountInfo = {
+  // === User ===
+  type UserAccountInfo = {
     id: User["id"];
     username: User["username"];
     displayName: User["display_name"];
@@ -23,27 +23,48 @@ declare module "api" {
     verified: User["verified"];
   };
 
-  type ProfileInfo = AccountInfo & {
+  type UserProfileInfo = UserAccountInfo & {
     bio?: User["bio"];
     backgroundImage?: User["background_image"];
-    hasFeed: boolean;
     followers: number;
     following: number;
+    hasFeed: boolean;
+    isFollowing?: boolean;
   };
 
-  type UserCardInfo = Omit<ProfileInfo, "backgroundImage"> & {
+  type UserCardDisplayInfo = Omit<UserProfileInfo, "backgroundImage"> & {
     followedBy?: {
+      count: number;
       displayItems: {
         id: User["id"];
         displayName: User["display_name"];
         avatar: User["avatar"];
       }[];
-      count: number;
     };
   };
 
-  // Items
-  type UserSearchItem = AccountInfo & {
+  // === Core ===
+  type MomentInfo = Omit<Moment, "id" | "user_id"> & {
+    likes: number;
+    comments: number;
+    isLiked: boolean;
+    isBookmarked: boolean;
+  };
+
+  type DetailedMomentInfo = {
+    id: Moment["id"];
+    user: UserCardDisplayInfo;
+    post: MomentInfo;
+  };
+
+  // === Others ===
+  type HashtagItem = Hashtag & {
+    type: "hashtag";
+    count: number;
+  };
+
+  // Search
+  type UserSearchItem = UserAccountInfo & {
     type: "user";
   };
 
@@ -53,20 +74,16 @@ declare module "api" {
     query: string;
   };
 
-  type HashtagSearchItem = HashtagItem & {
-    type: "hashtag";
-  };
+  type SearchItem = UserSearchItem | QuerySearchItem | HashtagItem;
 
-  type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;
-
-  type ProfileCardInfo = Omit<
-    ProfileInfo,
+  type ProfileSearchItem = Omit<
+    UserProfileInfo,
     "followers" | "following" | "hasFeed"
   >;
 
   type SearchResult = {
-    posts?: DetailedMoment[];
-    users?: AccountInfo[];
+    posts?: DetailedMomentInfo[];
+    users?: UserAccountInfo[];
     hashtags?: HashtagItem[];
   };
 
@@ -81,7 +98,7 @@ declare module "api" {
   };
 
   type FeedInfo = {
-    user: AccountInfo & {
+    user: UserAccountInfo & {
       isViewed: boolean;
     };
     feeds: {
@@ -92,17 +109,13 @@ declare module "api" {
     }[];
   };
 
-  type MomentInfo = Omit<MomentSchema, "id" | "user_id"> & {
+  type CommentInfo = {
+    id: Comment["id"];
+    content: Comment["content"];
+    user: UserCardDisplayInfo;
     likes: number;
-    comments: number;
     isLiked: boolean;
-    isBookmarked: boolean;
-  };
-
-  type DetailedMoment = {
-    id: MomentSchema["id"];
-    user: UserCardInfo;
-    post: MomentInfo;
+    createdAt: Comment["created_at"];
   };
 
   // Others

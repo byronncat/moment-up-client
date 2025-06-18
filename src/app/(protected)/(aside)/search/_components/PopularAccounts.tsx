@@ -1,13 +1,13 @@
 "use client";
 
-import type { ProfileCardInfo } from "api";
+import type { ProfileSearchItem } from "api";
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components";
 import { Button } from "@/components/ui/button";
 import { CircleCheck } from "@/components/icons";
 
 interface PopularAccountsProps {
-  users: ProfileCardInfo[];
+  users: ProfileSearchItem[];
   className?: string;
 }
 
@@ -29,7 +29,7 @@ export default function PopularAccounts({
   );
 }
 
-function UserCard({ user }: Readonly<{ user: ProfileCardInfo }>) {
+function UserCard({ user }: Readonly<{ user: ProfileSearchItem }>) {
   return (
     <div
       className={cn(

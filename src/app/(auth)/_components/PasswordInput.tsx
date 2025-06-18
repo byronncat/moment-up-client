@@ -3,10 +3,10 @@
 import type { InputProps } from "@/components/ui/input";
 
 import { forwardRef, useState } from "react";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { cn } from "@/libraries/utils";
-import { Input } from "@/components/ui/input";
 import { Tooltip } from "@/components";
+import { Input } from "@/components/ui/input";
+import { Eye } from "@/components/icons";
 
 const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
   ({ className, ...props }, ref) => {
@@ -34,11 +34,11 @@ const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
               onClick={() => setShowPassword((prev) => !prev)}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {showPassword ? (
-                <EyeIcon className="size-4" aria-hidden="true" />
-              ) : (
-                <EyeOffIcon className="size-4" aria-hidden="true" />
-              )}
+              <Eye
+                isOpen={showPassword}
+                className="size-4"
+                aria-hidden="true"
+              />
               <span className="sr-only">
                 {showPassword ? "Hide password" : "Show password"}
               </span>

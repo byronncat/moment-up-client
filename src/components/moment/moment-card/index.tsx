@@ -1,30 +1,31 @@
-import type { DetailedMoment } from "api";
+import type { DetailedMomentInfo } from "api";
+import type { Actions } from "../../providers/MomentData";
 
 import { Card } from "../../ui/card";
 import { cn } from "@/libraries/utils";
-import DataProvider from "./provider/Data";
 
 import Header from "./Header";
 import Content from "./Content";
 import Footer from "./Footer";
 
 type MomentCardProps = Readonly<{
-  data: DetailedMoment;
+  data: DetailedMomentInfo;
   className?: string;
-  actions: {
-    like: (momentId: string) => void;
-    bookmark: (momentId: string) => void;
-  };
+  actions: Actions;
+  onClick: () => void;
 }>;
 
-export default function MomentCard({ data, className, actions }: MomentCardProps) {
+export default function MomentCard({
+  data,
+  className,
+  actions,
+  onClick,
+}: MomentCardProps) {
   return (
-    <DataProvider initialData={data} actions={actions}>
-      <Card className={cn("overflow-hidden", className)}>
-        <Header  />
-        <Content />
-        <Footer />
-      </Card>
-    </DataProvider>
+    <Card className={cn("overflow-hidden", className)} onClick={onClick}>
+      <Header data={data} actions={actions} />
+      <Content momentId={data.id} postData={data.post} actions={actions} />
+      <Footer data={data} actions={actions} />
+    </Card>
   );
 }

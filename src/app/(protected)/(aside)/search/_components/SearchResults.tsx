@@ -1,15 +1,18 @@
 import type { SearchResult } from "api";
-import { SEARCH_CATEGORY } from "@/constants/clientConfig";
+import { SearchCategory } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import { SearchItem } from "../../_components";
 import { ErrorContent } from "@/components";
-import { MomentCard, MomentCell } from "@/components/moment";
+import {
+  //  MomentCard,
+  MomentCell,
+} from "@/components/moment";
 import LoadingIndicator from "./LoadingIndicator";
 
 type SearchResultsProps = Readonly<{
   results: SearchResult | null;
-  type: SEARCH_CATEGORY;
+  type: SearchCategory;
   loading: boolean;
   errorHandler: () => void;
 }>;
@@ -51,9 +54,9 @@ function PostList({ posts }: { posts: SearchResult["posts"] }) {
   if (!posts?.length) return null;
   return (
     <div className="space-y-4 px-4 pt-4 pb-10">
-      {posts.map((post) => (
+      {/* {posts.map((post) => (
         <MomentCard key={post.id} data={post} />
-      ))}
+      ))} */}
     </div>
   );
 }
@@ -84,17 +87,17 @@ function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
 function CategoryResults({
   type,
   results,
-}: Readonly<{ type: SEARCH_CATEGORY; results: SearchResult }>) {
+}: Readonly<{ type: SearchCategory; results: SearchResult }>) {
   const { users, posts, hashtags } = results;
 
   switch (type) {
-    case SEARCH_CATEGORY.PEOPLE:
+    case SearchCategory.PEOPLE:
       return <UserList users={users} />;
-    case SEARCH_CATEGORY.HASHTAG:
+    case SearchCategory.HASHTAG:
       return <HashtagList hashtags={hashtags} />;
-    case SEARCH_CATEGORY.POSTS:
+    case SearchCategory.POSTS:
       return <PostList posts={posts} />;
-    case SEARCH_CATEGORY.MEDIA:
+    case SearchCategory.MEDIA:
       return <MediaGrid posts={posts} />;
     default:
       return (

@@ -10,7 +10,7 @@ export const ROUTE = {
     username: string,
     type: "default" | "media" | "likes" = "default"
   ) => `/profile/${username}${type !== "default" ? `/${type}` : ""}`,
-  SEARCH: (query?: string, filter?: SEARCH_CATEGORY) => {
+  SEARCH: (query?: string, filter?: SearchCategory) => {
     const params = new URLSearchParams();
     if (query) params.set("q", query);
     if (filter) params.set("f", filter);
@@ -19,7 +19,8 @@ export const ROUTE = {
   },
   EXPLORE: (type: "media" | "moments" = "media") => `/explore/${type}`,
   FEED: (feedId: string) => `/feed/${feedId}`,
-  MOMENT: (momentId: string) => `/moment/${momentId}`,
+  MOMENT: (momentId: string, page?: number) =>
+    `/moment/${momentId}${page ? `?page=${page}` : ""}`,
   MESSAGES: "/messages",
   MESSAGE: (contactId?: string) =>
     `/messages${contactId ? `/${contactId}` : ""}`,
@@ -44,19 +45,33 @@ export const PUBLIC_ROUTES = [
   ROUTE.PROFILE(""),
 ];
 
-// === UI ===
+// === Others ===
 export const ASPECT_RATIO = {
   HORIZONTAL: 1.91 / 1,
   VERTICAL: 9 / 16,
 };
 
 export const PAGE_CONFIG = {
-  MOMENT_CARD_PAGE: 5,
-  MOMENT_CELL_PAGE: 24,
+  MOMENT_CARD_PAGE: 50,
+  MOMENT_CELL_PAGE: 50,
+  COMMENT_PAGE: 20,
 };
 
+export enum Audience {
+  PUBLIC = "public",
+  FOLLOWERS = "followers",
+  FRIENDS = "friends",
+  VERIFIED = "verified",
+  ONLY_ME = "only_me",
+}
+
+export enum SortBy {
+  NEWEST = "newest",
+  MOST_LIKED = "most_liked",
+}
+
 export const SEARCH_DEBOUNCE_TIME = 500;
-export enum SEARCH_CATEGORY {
+export enum SearchCategory {
   TOP = "top",
   LATEST = "latest",
   PEOPLE = "people",

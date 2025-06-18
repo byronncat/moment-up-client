@@ -1,6 +1,6 @@
 "use client";
 
-import type { ProfileInfo } from "api";
+import type { UserProfileInfo } from "api";
 import { useState, useEffect } from "react";
 import { UserApi } from "@/services";
 import format from "@/utilities/format";
@@ -15,7 +15,7 @@ export default function Information({
   username,
 }: Readonly<{ username?: string }>) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [profile, setProfile] = useState<ProfileInfo | null>(null);
+  const [profile, setProfile] = useState<UserProfileInfo | null>(null);
 
   useEffect(() => {
     async function fetchProfile() {

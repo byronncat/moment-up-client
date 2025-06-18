@@ -1,6 +1,6 @@
 "use client";
 
-import type { DetailedMoment } from "api";
+import type { DetailedMomentInfo } from "api";
 
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
@@ -24,7 +24,7 @@ export default function MomentModal() {
   const router = useRouter();
   const params = useParams();
   const momentId = params.id as string;
-  const [moment, setMoment] = useState<DetailedMoment | null>(null);
+  const [moment, setMoment] = useState<DetailedMomentInfo | null>(null);
   const [mediaLoading, setMediaLoading] = useState(true);
 
   function closeHandler() {
@@ -59,7 +59,7 @@ export default function MomentModal() {
 }
 
 type MediaFilesProps = ComponentProps<{
-  data: DetailedMoment["post"]["files"];
+  data: DetailedMomentInfo["post"]["files"];
   loading: boolean;
 }>;
 

@@ -14,13 +14,7 @@ export default function Aside({ className }: Readonly<{ className?: string }>) {
   const suggestedUsersRes = SuggestingApi.getSuggestedUsers();
 
   return (
-    <aside
-      className={cn(
-        "h-fit w-[320px]",
-        "space-y-6",
-        className
-      )}
-    >
+    <aside className={cn("h-fit w-[320px]", "space-y-6", className)}>
       <SearchBar />
       <SwitchAccount />
       <div

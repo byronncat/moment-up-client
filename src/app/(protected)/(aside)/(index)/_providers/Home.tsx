@@ -2,12 +2,12 @@
 
 import { createContext, useContext, useState } from "react";
 
-type HomeContextType = {
-  hideFeeds: boolean;
-  setHideFeeds: (hide: boolean) => void;
-};
-
-const HomeContext = createContext({} as HomeContextType);
+const HomeContext = createContext(
+  {} as {
+    hideFeeds: boolean;
+    setHideFeeds: (hide: boolean) => void;
+  }
+);
 
 export const useHome = () => useContext(HomeContext);
 

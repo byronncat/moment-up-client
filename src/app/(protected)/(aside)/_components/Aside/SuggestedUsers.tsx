@@ -1,6 +1,6 @@
 "use client";
 
-import type { API, UserCardInfo } from "api";
+import type { API, UserCardDisplayInfo } from "api";
 
 import { useRouter } from "next/navigation";
 import { useState, use } from "react";
@@ -15,13 +15,13 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { CircleCheck } from "@/components/icons";
 import SectionHeader from "./SectionHeader";
+import { CircleCheck } from "@/components/icons";
 
 export default function SuggestedSection({
   initialRes,
 }: Readonly<{
-  initialRes: Promise<API<UserCardInfo[]>>;
+  initialRes: Promise<API<UserCardDisplayInfo[]>>;
 }>) {
   const response = use(initialRes);
   const suggestedUsers = response?.data ?? [];
@@ -42,16 +42,16 @@ export default function SuggestedSection({
 function SuggestedUserItem({
   user,
 }: Readonly<{
-  user: UserCardInfo;
+  user: UserCardDisplayInfo;
 }>) {
   const [isFollowing, setIsFollowing] = useState(false);
   const router = useRouter();
 
-  function followHandler(e: React.MouseEvent) {
+  async function followHandler(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    if (isFollowing) UserApi.unfollowUser(user.id);
-    else UserApi.followUser(user.id);
+    if (isFollowing) await UserApi.toggleFollow(user.id);
+    else await UserApi.toggleFollow(user.id);
     setIsFollowing((prev) => !prev);
   }
 
@@ -85,11 +85,7 @@ function SuggestedUserItem({
             </Link>
           </HoverCardTrigger>
           <HoverCardContent className="w-[288px]">
-            <UserInfoCard
-              user={user}
-              isFollowing={isFollowing}
-              onFollow={followHandler}
-            />
+            <UserInfoCard user={user} onFollow={followHandler} />
           </HoverCardContent>
         </HoverCard>
         <div className="flex flex-col">
@@ -112,11 +108,7 @@ function SuggestedUserItem({
               </Link>
             </HoverCardTrigger>
             <HoverCardContent className="w-[288px]">
-              <UserInfoCard
-                user={user}
-                isFollowing={isFollowing}
-                onFollow={followHandler}
-              />
+              <UserInfoCard user={user} onFollow={followHandler} />
             </HoverCardContent>
           </HoverCard>
           <span className="text-xs text-muted-foreground">
@@ -148,11 +140,7 @@ function FollowText({
         "cursor-pointer hover:opacity-80",
         "transition-opacity duration-150 ease-in-out"
       )}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        followHandler(e);
-      }}
+      onClick={followHandler}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >

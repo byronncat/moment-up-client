@@ -1,8 +1,8 @@
 "use client";
 
-import type { DetailedMoment, ProfileInfo } from "api";
+import type { DetailedMomentInfo, UserProfileInfo } from "api";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useCallback, useRef, use } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useInfiniteScroll, useChunkRender } from "@/hooks";
 import { UserApi } from "@/services";
 import { PAGE_CONFIG } from "@/constants/clientConfig";
@@ -18,7 +18,7 @@ export default function MediaPage() {
   const isInitialLoading = useRef(false);
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
-  const username = segments.at(-2) as ProfileInfo["username"];
+  const username = segments.at(-2) as UserProfileInfo["username"];
 
   const {
     items: media,
@@ -28,7 +28,7 @@ export default function MediaPage() {
     loadMore,
     reset: resetInfiniteScroll,
     error,
-  } = useInfiniteScroll<DetailedMoment>();
+  } = useInfiniteScroll<DetailedMomentInfo>();
 
   const {
     itemsToShow,
@@ -36,7 +36,7 @@ export default function MediaPage() {
     chunkLoaderRef,
     reset: resetChunks,
   } = useChunkRender(media ?? [], {
-    chunkSize: PAGE_CONFIG.MOMENT_CELL_CHUNK,
+    chunkSize: PAGE_CONFIG.MOMENT_CARD_PAGE,
   });
 
   const visibleMedia = media?.slice(0, itemsToShow) ?? [];
