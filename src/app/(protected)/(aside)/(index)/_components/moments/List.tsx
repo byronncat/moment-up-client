@@ -7,7 +7,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { useHome } from "../../_providers/Home";
 import { debounce } from "lodash";
-import { MOBILE_BREAKPOINT } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import AutoSizer from "react-virtualized-auto-sizer";
