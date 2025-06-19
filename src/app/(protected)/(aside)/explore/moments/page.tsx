@@ -10,7 +10,7 @@ import { cn } from "@/libraries/utils";
 import { NoContent, ErrorContent } from "@/components";
 // import { MomentCard } from "@/components/moment";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2 } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
 
 export default function MomentsPage() {
   const [isLoaded, setLoaded] = useState(false);
@@ -108,6 +108,7 @@ export default function MomentsPage() {
   } else {
     content = (
       <NoContent
+        icon={<Camera className="size-16 text-muted-foreground" />}
         title="No moments found"
         description="Wait for someone to post a moment."
       />

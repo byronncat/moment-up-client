@@ -17,6 +17,7 @@ import type {
 } from "api";
 
 export async function getSuggestedUsers(): Promise<API<UserCardDisplayInfo[]>> {
+  console.log("getSuggestedUsers");
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -37,6 +38,7 @@ export async function getSuggestedUsers(): Promise<API<UserCardDisplayInfo[]>> {
 }
 
 export async function getPopularAccounts(): Promise<API<ProfileSearchItem[]>> {
+  console.log("getPopularAccounts");
   try {
     await new Promise((resolve) => {
       setTimeout(() => {
@@ -59,6 +61,7 @@ export async function getPopularAccounts(): Promise<API<ProfileSearchItem[]>> {
 }
 
 export async function getTrendingTopics(): Promise<API<HashtagItem[]>> {
+  console.log("getTrendingTopics");
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -80,7 +83,7 @@ export async function getTrendingTopics(): Promise<API<HashtagItem[]>> {
 }
 
 export async function sendFeedback(feedbackId: number): Promise<API<void>> {
-  console.log(feedbackId);
+  console.log("sendFeedback", feedbackId);
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);

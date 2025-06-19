@@ -1,13 +1,14 @@
-import { Logo } from "@/components";
 import { cn } from "@/libraries/utils";
 
 type NoContentProps = Readonly<{
+  icon: React.ReactNode;
   title: string;
   description: string;
   className?: string;
 }>;
 
 export default function NoContent({
+  icon,
   title,
   description,
   className,
@@ -16,15 +17,13 @@ export default function NoContent({
     <div
       className={cn(
         "flex flex-col items-center justify-center",
-        "h-full",
+        "h-full text-muted-foreground",
         className
       )}
     >
-      <Logo className="size-12" />
-      <p className={cn("text-lg font-medium", "mt-4")}>{title}</p>
-      <p className={cn("text-sm text-muted-foreground", "mt-1")}>
-        {description}
-      </p>
+      {icon}
+      <p className={cn("text-lg font-semibold", "mt-3")}>{title}</p>
+      <p className="text-sm text-center">{description}</p>
     </div>
   );
 }

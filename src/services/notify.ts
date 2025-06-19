@@ -4,6 +4,7 @@ import type { API, Notification } from "api";
 export const getNotifications = async (
   type: "all" | "requests" | "information" = "all"
 ): Promise<API<Notification[]>> => {
+  console.log("getNotifications", type);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const filteredNotifications = mockNotifications.filter((notification) => {
     if (type === "all") return true;

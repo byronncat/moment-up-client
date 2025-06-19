@@ -12,7 +12,7 @@ import {
   //  MomentCard,
   MomentSkeleton,
 } from "@/components/moment";
-import { Loader2 } from "lucide-react";
+import { Heart, Loader2 } from "lucide-react";
 
 export default function LikesPage({
   params,
@@ -117,6 +117,7 @@ export default function LikesPage({
     content = (
       <div className="mt-32">
         <NoContent
+          icon={<Heart className="size-16 text-muted-foreground" />}
           title="No liked moments"
           description="When this user likes moments, they'll show up here."
         />

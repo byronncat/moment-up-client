@@ -12,7 +12,7 @@ import {
   //  MomentCard,
   MomentSkeleton,
 } from "@/components/moment";
-import { Loader2 } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
 
 export default function ProfilePage({
   params,
@@ -117,6 +117,7 @@ export default function ProfilePage({
     content = (
       <div className="mt-32">
         <NoContent
+          icon={<Camera className="size-16 text-muted-foreground" />}
           title="No moments yet"
           description="When this user posts moments, they'll show up here."
         />

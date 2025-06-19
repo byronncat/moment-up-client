@@ -1,8 +1,23 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CommentSkeletons() {
-  return Array.from({ length: 2 }).map((_, index) => (
-    <div key={index} className="flex flex-col gap-2 p-3">
+  return (
+    <div className="px-4 py-3">
+      <div className="mb-5">
+        <Skeleton className="h-4 w-20 rounded" />
+      </div>
+      <div className="space-y-5">
+        {Array.from({ length: 2 }).map((_, index) => (
+          <CommentSkeleton key={index} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function CommentSkeleton() {
+  return (
+    <div className="flex flex-col gap-2">
       <div className="flex items-start gap-2">
         <Skeleton className="size-12 rounded-full" />
         <div className="flex flex-col flex-1 gap-2">
@@ -23,5 +38,5 @@ export default function CommentSkeletons() {
         </div>
       </div>
     </div>
-  ));
+  );
 }

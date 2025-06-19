@@ -28,7 +28,7 @@ const apiRes = {
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>
 ): Promise<API> {
-  console.log(data);
+  console.log("login", data);
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -78,6 +78,7 @@ export async function login(
 }
 
 export async function logout(): Promise<API> {
+  console.log("logout");
   document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   return {
     success: true,
@@ -109,7 +110,7 @@ export async function logout(): Promise<API> {
 export async function signup(
   data: z.infer<typeof zodSchema.auth.signup>
 ): Promise<API> {
-  console.log(data);
+  console.log("signup", data);
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -155,6 +156,7 @@ export async function signup(
 export async function verify(): Promise<
   API<Omit<UserCardDisplayInfo, "followedBy" | "isFollowing">>
 > {
+  console.log("verify");
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -193,7 +195,7 @@ export async function verify(): Promise<
 export async function sendRecoveryEmail(
   data: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
 ): Promise<API> {
-  console.log(data);
+  console.log("sendRecoveryEmail", data);
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -215,7 +217,7 @@ export async function sendRecoveryEmail(
 export async function changePassword(
   data: z.infer<typeof zodSchema.auth.changePassword>
 ): Promise<API> {
-  console.log(data);
+  console.log("changePassword", data);
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -235,6 +237,7 @@ export async function changePassword(
 }
 
 export async function getAllAcounts(): Promise<API<UserAccountInfo[]>> {
+  console.log("getAllAcounts");
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -258,7 +261,7 @@ export async function getAllAcounts(): Promise<API<UserAccountInfo[]>> {
 export async function switchAccount(
   accountId: UserCardDisplayInfo["id"]
 ): Promise<API<Omit<UserCardDisplayInfo, "followedBy" | "isFollowing">>> {
-  console.log(accountId);
+  console.log("switchAccount", accountId);
   const anotherUser = mockCurrentUsers.find((user) => user.id === accountId);
   return new Promise((resolve) => {
     setTimeout(() => {

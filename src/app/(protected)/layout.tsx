@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
-import { Sidebar } from "./_components";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { MomentDataProvider } from "@/components/providers";
+import { cn } from "@/libraries/utils";
+import { Sidebar } from "./_components";
 
 export default async function Layout({
   children,
@@ -11,14 +12,23 @@ export default async function Layout({
   const defaultOpen = cookieStore.get("sidebar-state")?.value === "true";
 
   return (
-    <div className="w-screen h-screen relative">
-      <MomentDataProvider>
-        <SidebarProvider defaultOpen={defaultOpen}>
-          <Sidebar />
-          <div className="h-screen w-full relative">{children}</div>
-        </SidebarProvider>
-        {modal}
-      </MomentDataProvider>
-    </div>
+    <SidebarProvider defaultOpen={defaultOpen}>
+      <div
+        className={cn(
+          "w-screen h-screen relative",
+          "pt-14 pb-[57px] [@media(min-width:560px)]:py-0"
+        )}
+      >
+        <div className="size-full">
+          <MomentDataProvider>
+            <div className="size-full flex flex-row">
+              <Sidebar />
+              <div className="size-full relative">{children}</div>
+              {modal}
+            </div>
+          </MomentDataProvider>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 }

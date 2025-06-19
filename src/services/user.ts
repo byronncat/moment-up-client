@@ -55,7 +55,7 @@ export async function getMoments(
   username: string,
   page: number
 ): Promise<API<DetailedMomentInfo[]>> {
-  console.log("getMoments", username);
+  console.log("getMoments", type, username, page);
   const start = (page - 1) * PAGE_CONFIG.MOMENT_CELL_PAGE;
   const end = start + PAGE_CONFIG.MOMENT_CELL_PAGE;
   const filteredMoments =

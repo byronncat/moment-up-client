@@ -114,7 +114,7 @@ export default function Footer({ data, actions }: FooterProps) {
 
   return (
     <>
-      <CardFooter className="p-3">
+      <CardFooter className="px-4 py-3">
         <div
           className={cn(
             "flex items-center justify-between",

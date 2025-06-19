@@ -147,7 +147,7 @@ function SecondGroup({
   ];
 
   return (
-    <div className={cn("flex justify-end gap-2", "py-1 pr-4", className)}>
+    <div className={cn("flex justify-end gap-2", "py-1 pr-2", className)}>
       {buttons.map((button) => (
         <div key={button.tooltip}>
           <ColorfulIconButton {...button} />

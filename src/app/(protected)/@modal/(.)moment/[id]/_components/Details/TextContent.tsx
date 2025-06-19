@@ -10,7 +10,7 @@ export default function TextContent({
   const [isExpanded, setIsExpanded] = useState(false);
   const isTextClamped = useTextClamp(textRef);
 
-  if (!data) return null;
+  if (!data) return <div className="h-2" />;
 
   const formattedText = data
     .split("\n")
@@ -21,7 +21,7 @@ export default function TextContent({
   };
 
   return (
-    <div className="px-3 pb-3">
+    <div className="px-4 pb-3">
       <div
         ref={textRef}
         className={cn(!isExpanded && "line-clamp-5", "space-y-2")}

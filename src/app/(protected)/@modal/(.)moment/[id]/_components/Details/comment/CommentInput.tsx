@@ -2,24 +2,32 @@ import type { CommentInfo } from "api";
 
 import { useState } from "react";
 import { useAuth } from "@/components/providers";
+import { isEmpty } from "lodash";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 
 type CommentInputProps = Readonly<{
   ref: React.RefObject<HTMLTextAreaElement | null>;
-  onComment: (comment: CommentInfo) => void;
+  onComment: (comment: CommentInfo) => Promise<boolean>;
+  className?: string;
 }>;
 
-export default function CommentInput({ ref, onComment }: CommentInputProps) {
+export default function CommentInput({
+  ref,
+  onComment,
+  className,
+}: CommentInputProps) {
   const [comment, setComment] = useState("");
   const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSendComment() {
+  async function handleSendComment() {
     if (!comment || !user) return;
-    onComment({
+    setIsLoading(true);
+    const success = await onComment({
       id: crypto.randomUUID(),
       content: comment,
       createdAt: new Date(),
@@ -27,11 +35,12 @@ export default function CommentInput({ ref, onComment }: CommentInputProps) {
       isLiked: false,
       user,
     });
-    setComment("");
+    if (success) setComment("");
+    setIsLoading(false);
   }
 
   return (
-    <div className="h-[120px] relative">
+    <div className={cn("h-[120px] relative", className)}>
       <Textarea
         ref={ref}
         id="comment-input"
@@ -49,12 +58,23 @@ export default function CommentInput({ ref, onComment }: CommentInputProps) {
         variant="ghost"
         className={cn(
           "absolute top-2 right-2",
-          "size-10 rounded-full",
-          "flex items-center justify-center"
+          "size-9 rounded-full",
+          "flex items-center justify-center",
+          "transition-opacity duration-150"
         )}
         onClick={handleSendComment}
+        disabled={isEmpty(comment) || isLoading}
       >
-        <Send className="size-5 translate-y-[1px] translate-x-[-1px]" />
+        {isLoading ? (
+          <Loader2 className="size-5 animate-spin" />
+        ) : (
+          <Send
+            className={cn(
+              "size-5 translate-y-[1px] translate-x-[-1px]",
+              isEmpty(comment) && "opacity-50"
+            )}
+          />
+        )}
       </Button>
     </div>
   );

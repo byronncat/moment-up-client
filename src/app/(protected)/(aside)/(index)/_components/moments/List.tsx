@@ -4,7 +4,6 @@ import type { DetailedMomentInfo } from "api";
 import type { Actions } from "@/components/providers/MomentData";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useMediaQuery } from "usehooks-ts";
 import { useHome } from "../../_providers/Home";
 import { debounce } from "lodash";
 
@@ -17,12 +16,10 @@ import { MomentCard } from "@/components/moment";
 
 // Container
 const TOP_PADDING = 160;
-const BOTTOM_PADDING = 144;
-const MOBILE_TOP_PADDING = 56;
-const MOBILE_BOTTOM_PADDING = 40;
+const BOTTOM_PADDING = 121;
 
 // Card
-const HEADER_HEIGHT = 72;
+const HEADER_HEIGHT = 76;
 const FOOTER_HEIGHT = 60;
 const SINGLE_TEXT_HEIGHT = 32;
 const MULTI_TEXT_HEIGHT = 80;
@@ -54,7 +51,6 @@ export default function MomentList({
   const listRef = useRef<VariableSizeList>(null);
   const updateScrollbarRef = useRef<(scrollTop: number) => void>(() => {});
 
-  const isMobile = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT}px)`);
   const itemCount = (hasNextPage ? items.length : items.length) + 2; // +2 for top and bottom padding
   const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
   const isItemLoaded = (index: number) => !hasNextPage || index < items.length;
@@ -75,9 +71,8 @@ export default function MomentList({
   }, [actions, resetList]);
 
   const getItemSize = (index: number, width: number) => {
-    if (index === 0) return TOP_PADDING + (isMobile ? MOBILE_TOP_PADDING : 0);
-    if (index === itemCount - 1)
-      return BOTTOM_PADDING + (isMobile ? MOBILE_BOTTOM_PADDING : 0);
+    if (index === 0) return TOP_PADDING;
+    if (index === itemCount - 1) return BOTTOM_PADDING;
 
     const moment = items[index - 1];
     if (!moment) return 0;

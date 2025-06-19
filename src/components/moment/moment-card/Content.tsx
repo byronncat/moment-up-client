@@ -26,7 +26,7 @@ function TextContent({ text, hasFiles, momentId }: TextContentProps) {
 
   if (!text) return null;
   return (
-    <CardContent className="px-3 pb-2">
+    <CardContent className="px-4 pb-2">
       <div
         className={cn(
           "flex",

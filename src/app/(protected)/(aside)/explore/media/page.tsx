@@ -10,7 +10,7 @@ import { cn } from "@/libraries/utils";
 import { NoContent, ErrorContent } from "@/components";
 import { MomentCell } from "@/components/moment";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2 } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
 
 export default function MediaPage() {
   const [isLoaded, setLoaded] = useState(false);
@@ -112,6 +112,7 @@ export default function MediaPage() {
     content = (
       <div className="h-full grow flex justify-center items-center">
         <NoContent
+          icon={<Camera className="size-16 text-muted-foreground" />}
           title="No media found"
           description="Wait for someone to post a media."
         />

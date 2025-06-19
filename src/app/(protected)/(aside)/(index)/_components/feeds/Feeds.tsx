@@ -72,8 +72,7 @@ export default function Feeds({
         className,
         "absolute top-0 left-0 right-0 z-10",
         "bg-background/[.93] backdrop-blur-sm",
-        hideFeeds &&
-          "[@media(max-width:560px)]:-translate-y-[calc(100%-24px-56px)] -translate-y-[calc(100%-24px)]",
+        hideFeeds && "-translate-y-[calc(100%-24px)]",
         "transition-all duration-200"
       )}
     >
@@ -82,8 +81,7 @@ export default function Feeds({
           "overflow-hidden",
           "flex",
           "transition-all duration-200",
-          "border-b border-border",
-          "[@media(max-width:560px)]:pt-14"
+          "border-b border-border"
         )}
       >
         <NavigationButton

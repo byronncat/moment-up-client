@@ -8,7 +8,6 @@ import { ROUTE } from "@/constants/clientConfig";
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Carousel,
   CarouselContent,
@@ -19,10 +18,17 @@ import {
 } from "@/components/ui/carousel";
 import { Pause, Play } from "lucide-react";
 
+type MediaCarouselProps = Readonly<{
+  files: File[];
+  initialIndex?: number;
+  className?: string;
+}>;
+
 export default function MediaCarousel({
   files,
   initialIndex = 0,
-}: Readonly<{ files?: File[]; initialIndex?: number }>) {
+  className,
+}: MediaCarouselProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
   const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
@@ -59,14 +65,8 @@ export default function MediaCarousel({
     }
   }, [api, initialIndex, files]);
 
-  if (!files)
-    return (
-      <Wrapper>
-        <Skeleton className="size-full rounded-none" />
-      </Wrapper>
-    );
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <CardContent className="p-0 size-full">
         <Carousel
           className="size-full"
@@ -80,7 +80,7 @@ export default function MediaCarousel({
             {files.map((file, index) => (
               <CarouselItem key={index}>
                 {file.type === "image" ? (
-                  <div className="relative h-screen w-full">
+                  <div className="relative h-[50vh] md:h-screen w-full">
                     <Image
                       src={file.url}
                       alt={`Moment ${index + 1}`}
@@ -93,7 +93,10 @@ export default function MediaCarousel({
                   </div>
                 ) : (
                   <div
-                    className={cn("relative h-screen w-full", "cursor-pointer")}
+                    className={cn(
+                      "relative h-[50vh] md:h-screen w-full",
+                      "cursor-pointer"
+                    )}
                   >
                     <video
                       ref={(el) => {
@@ -136,6 +139,19 @@ export default function MediaCarousel({
   );
 }
 
-function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <div className={cn("size-full bg-background")}>{children}</div>;
+function Wrapper({
+  children,
+  className,
+}: Readonly<{ children: React.ReactNode; className?: string }>) {
+  return (
+    <div
+      className={cn(
+        "size-full bg-background",
+        "max-h-[50vh] md:max-h-none",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
 }

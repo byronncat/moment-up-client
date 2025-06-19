@@ -15,8 +15,8 @@ export default function MomentModal() {
   const { getCurrentMoment, like, bookmark, report, share, follow, block } =
     useMoment();
 
-  const page = searchParams.get("page");
-  const initialIndex = page ? parseInt(page) : 0;
+  const imgIndex = searchParams.get("imgIndex");
+  const initialIndex = imgIndex ? parseInt(imgIndex) : 0;
   const moment = getCurrentMoment();
   const haveMedia = moment?.post.files && moment.post.files.length > 0;
 
@@ -28,12 +28,16 @@ export default function MomentModal() {
   return (
     <Modal
       onClose={haveMedia ? undefined : handleClose}
-      className="flex items-center justify-center"
+      className={cn(
+        "flex",
+        "flex-col md:flex-row md:items-center md:justify-center",
+        "overflow-y-auto"
+      )}
     >
       {haveMedia && (
         <>
           <MediaCarousel
-            files={moment.post.files}
+            files={moment.post.files!}
             initialIndex={initialIndex}
           />
           <Button
@@ -48,6 +52,8 @@ export default function MomentModal() {
       )}
       <Details
         data={moment}
+        onClose={handleClose}
+        haveMedia={haveMedia}
         actions={{
           like,
           bookmark,
@@ -56,11 +62,7 @@ export default function MomentModal() {
           follow,
           block,
         }}
-        onClose={haveMedia ? undefined : handleClose}
-        className={cn(
-          "border-l border-border shrink-0",
-          haveMedia ? "w-[360px]" : "w-full max-w-[600px] border-r"
-        )}
+        className="shrink-0"
       />
     </Modal>
   );

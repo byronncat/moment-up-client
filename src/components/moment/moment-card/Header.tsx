@@ -22,14 +22,17 @@ import { MoreHorizontal, UserMinus, UserPlus, Ban, Flag } from "lucide-react";
 type HeaderProps = Readonly<{
   data: DetailedMomentInfo;
   actions: Actions;
+  sideButton?: React.ReactNode;
 }>;
 
-export default function Header({ data, actions }: HeaderProps) {
+export default function Header({ data, actions, sideButton }: HeaderProps) {
   const user = data.user;
   const post = data.post;
 
   return (
-    <CardHeader className={cn("p-3 space-y-0", "flex flex-row gap-2")}>
+    <CardHeader
+      className={cn("px-4 pt-4 pb-3 space-y-0", "flex flex-row gap-2")}
+    >
       <HoverableComponent
         userInfo={user}
         followHandler={() => actions.follow(data.id)}
@@ -77,7 +80,7 @@ export default function Header({ data, actions }: HeaderProps) {
         </div>
       </div>
 
-      <div className="ml-auto">
+      <div className="ml-auto flex gap-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -126,6 +129,7 @@ export default function Header({ data, actions }: HeaderProps) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        {sideButton}
       </div>
     </CardHeader>
   );

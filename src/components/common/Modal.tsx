@@ -10,9 +10,9 @@ export default function Modal({ children, onClose, className }: ModalProps) {
   return (
     <div
       className={cn(
-        "top-0 right-0 absolute z-10",
-        "w-screen h-screen",
-        "bg-black/50",
+        "top-0 right-0 absolute z-30",
+        "size-full",
+        "bg-black/80",
         className
       )}
       onClick={onClose}

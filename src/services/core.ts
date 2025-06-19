@@ -11,7 +11,7 @@ import { PAGE_CONFIG, Audience, SortBy } from "@/constants/clientConfig";
 const apiRes = {
   getMoments: "success" as "error" | "empty" | "success",
   getMoment: "success" as "error" | "empty" | "success",
-  getMomentComments: "success" as "error" | "success",
+  getComments: "success" as "error" | "success" | "empty",
   getFeeds: "success" as "error" | "empty" | "success",
   repost: "success" as "error" | "success",
   comment: "success" as "error" | "success",
@@ -22,6 +22,7 @@ const apiRes = {
 };
 
 export async function getFeeds(): Promise<API<FeedNotification[]>> {
+  console.log("getFeeds");
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -116,6 +117,7 @@ export async function getMoments(page: number): Promise<
 export async function getMoment(
   momentId: string
 ): Promise<API<DetailedMomentInfo | null>> {
+  console.log("getMoment", momentId);
   await new Promise((resolve) => setTimeout(resolve, 3000));
   if (apiRes.getMoment === "error") {
     return {
@@ -149,33 +151,50 @@ export async function getComments(
   }>
 > {
   console.log("getComments", momentId, page, sortBy);
-  const start = (page - 1) * PAGE_CONFIG.COMMENT_PAGE;
-  const end = start + PAGE_CONFIG.COMMENT_PAGE;
-  const comments = mockComments.slice(start, end).sort((a, b) => {
+  const comments = mockComments.sort((a, b) => {
     if (sortBy === SortBy.NEWEST) {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     }
     return b.likes - a.likes;
   });
 
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        message: "ok",
-        data: {
-          items: comments,
-          hasNextPage: mockComments.length > PAGE_CONFIG.COMMENT_PAGE * page,
-        },
-      });
-    }, 1000);
-  });
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  if (apiRes.getComments === "empty") {
+    return {
+      success: true,
+      message: "ok",
+      data: {
+        items: [],
+        hasNextPage: false,
+      },
+    };
+  }
+
+  if (apiRes.getComments === "error") {
+    return {
+      success: false,
+      message: "error",
+    };
+  }
+
+  return {
+    success: true,
+    message: "ok",
+    data: {
+      items: comments.map((comment) => ({
+        ...comment,
+        id: `${comment.id}-${page}`,
+      })),
+      hasNextPage: page <= 3,
+    },
+  };
 }
 
 export async function explore(
   type: "media" | "moments",
   page: number
 ): Promise<API<DetailedMomentInfo[]>> {
+  console.log("explore", type, page);
   const start =
     (page - 1) *
     (type === "media"
@@ -207,11 +226,9 @@ export async function explore(
 
 export async function comment(
   momentId: string,
-  data: {
-    content: string;
-  }
+  data: CommentInfo
 ): Promise<API> {
-  console.log("Comment feature is not implemented yet", momentId, data);
+  console.log("comment", momentId, data);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (apiRes.comment === "error") {
     return {

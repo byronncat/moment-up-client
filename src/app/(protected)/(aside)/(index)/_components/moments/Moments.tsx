@@ -8,6 +8,7 @@ import { CoreApi } from "@/services";
 
 import { NoContent, ErrorContent } from "@/components";
 import MomentList from "./List";
+import { Camera } from "lucide-react";
 
 type MomentsProps = Readonly<{
   initialRes: Promise<
@@ -79,6 +80,7 @@ export default function Moments({ initialRes }: MomentsProps) {
   if (moments.length === 0)
     return (
       <NoContent
+        icon={<Camera className="size-16 text-muted-foreground" />}
         title="No moments yet"
         description="When anyone you follow posts, they'll show up here."
         className="pt-[144px]"
