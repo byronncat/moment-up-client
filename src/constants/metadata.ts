@@ -11,6 +11,7 @@ export type MetadataMap = {
   search: NextMetadata;
   profile: (username: string) => NextMetadata;
   notifications: NextMetadata;
+  moment: (username: string, content?: string) => NextMetadata;
 };
 
 export const Metadata: MetadataMap = {
@@ -60,5 +61,11 @@ export const Metadata: MetadataMap = {
   notifications: {
     title: "Notifications",
     description: "Notifications page",
+  },
+  moment: (username: string, content?: string) => {
+    return {
+      title: `@${username}${content ? ` | ${content}` : ""}`,
+      description: `Moment page of ${username}${content ? ` | ${content}` : ""}`,
+    };
   },
 };

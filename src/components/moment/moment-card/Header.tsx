@@ -79,16 +79,18 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
 
       <div className="ml-auto flex gap-2">
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className={cn("size-8 rounded-full", "text-muted-foreground")}
-            >
-              <MoreHorizontal className="size-5" />
-              <span className="sr-only">More options</span>
-            </Button>
-          </DropdownMenuTrigger>
+          <Tooltip content="More options">
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn("size-8 rounded-full", "text-muted-foreground")}
+              >
+                <MoreHorizontal className="size-5" />
+                <span className="sr-only">More options</span>
+              </Button>
+            </DropdownMenuTrigger>
+          </Tooltip>
           <DropdownMenuContent align="end" className="w-48">
             <DropdownMenuGroup>
               {user.isFollowing ? (
