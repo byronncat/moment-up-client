@@ -4,9 +4,9 @@ import type { Actions } from "../../providers/MomentData";
 import { Card } from "../../ui/card";
 import { cn } from "@/libraries/utils";
 
-import Header from "./Header";
-import Content from "./Content";
-import Footer from "./Footer";
+import MomentHeader from "./Header";
+import MomentContent from "./Content";
+import MomentButtonGroup from "./ButtonGroup";
 
 type MomentCardProps = Readonly<{
   data: DetailedMomentInfo;
@@ -23,9 +23,13 @@ export default function MomentCard({
 }: MomentCardProps) {
   return (
     <Card className={cn("overflow-hidden", className)} onClick={onClick}>
-      <Header data={data} actions={actions} />
-      <Content momentId={data.id} postData={data.post} actions={actions} />
-      <Footer data={data} actions={actions} />
+      <MomentHeader data={data} actions={actions} />
+      <MomentContent
+        momentId={data.id}
+        postData={data.post}
+        actions={actions}
+      />
+      <MomentButtonGroup data={data} actions={actions} />
     </Card>
   );
 }

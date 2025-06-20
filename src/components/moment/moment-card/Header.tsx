@@ -7,7 +7,6 @@ import format from "@/utilities/format";
 import { cn } from "@/libraries/utils";
 import HoverableComponent from "./HoverInfo";
 import { Avatar, Tooltip } from "../../common";
-import { CardHeader } from "../../ui/card";
 import { Button } from "../../ui/button";
 import {
   DropdownMenu,
@@ -21,7 +20,7 @@ import { MoreHorizontal, UserMinus, UserPlus, Ban, Flag } from "lucide-react";
 
 type HeaderProps = Readonly<{
   data: DetailedMomentInfo;
-  actions: Actions;
+  actions: Pick<Actions, "follow" | "block" | "report">;
   sideButton?: React.ReactNode;
 }>;
 
@@ -30,9 +29,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
   const post = data.post;
 
   return (
-    <CardHeader
-      className={cn("px-4 pt-4 pb-3 space-y-0", "flex flex-row gap-2")}
-    >
+    <div className={cn("px-4 pt-4 pb-3 space-y-0", "flex flex-row gap-2")}>
       <HoverableComponent
         userInfo={user}
         followHandler={() => actions.follow(data.id)}
@@ -131,6 +128,6 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
         </DropdownMenu>
         {sideButton}
       </div>
-    </CardHeader>
+    </div>
   );
 }

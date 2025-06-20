@@ -2,11 +2,12 @@
 
 import type { UserCardDisplayInfo } from "api";
 
-import { useState } from "react";
-import { cn } from "@/libraries/utils";
+import { useRef } from "react";
+import { useHover } from "usehooks-ts";
 import format from "@/utilities/format";
 import { ROUTE } from "@/constants/clientConfig";
 
+import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import Avatar from "./Avatar";
 import { Button } from "../ui/button";
@@ -173,7 +174,8 @@ type FollowButtonProps = Readonly<{
 }>;
 
 function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
-  const [isHovering, setIsHovering] = useState(false);
+  const hoverRef = useRef<HTMLButtonElement>(null);
+  const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
 
   const handleClick = async (e: React.MouseEvent) => {
     if (!followHandler) return;
@@ -181,22 +183,19 @@ function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
   };
 
   const renderIcon = () => {
-    if (isFollowing) return isHovering ? <UserMinus /> : <UserCheck />;
+    if (isFollowing) return isHover ? <UserMinus /> : <UserCheck />;
     return <UserPlus />;
   };
 
   return (
     <Button
-      variant={
-        isFollowing ? (isHovering ? "destructive" : "default") : "outline"
-      }
+      variant={isFollowing ? (isHover ? "destructive" : "default") : "outline"}
       className="text-sm w-full [&_svg]:size-4"
       onClick={handleClick}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      ref={hoverRef}
     >
       {renderIcon()}
-      {isFollowing ? (isHovering ? "Unfollow" : "Following") : "Follow"}
+      {isFollowing ? (isHover ? "Unfollow" : "Following") : "Follow"}
     </Button>
   );
 }

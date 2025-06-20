@@ -522,6 +522,28 @@ export const mockMoments: DetailedMomentInfo[] = isDev
         },
       },
       {
+        id: "b9a6a3a4-02e1-47f0-8cbe-69dc2a15735b9",
+        user: {
+          id: "b9a6a3a4-02e1-47f0-8cbe-69dc2a15735b9",
+          username: "anonymous",
+          displayName: "Anonymous",
+          avatar: getRandomFile("b9a6a3a4-02e1-47f0-8cbe-69dc2a15735b9"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nProin dignissim iaculis posuere. Nulla facilisi.\nIn ultrices, tortor quis ultrices pharetra, mauris tortor tempor turpis, sed pretium nisl nibh ac risus.\nSed elementum justo at arcu gravida aliquet et vitae nulla.",
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
+        },
+      },
+      {
         id: "b9a6a3a4-02e1-47f0-8cbe-73dc2a15735c8",
         user: {
           id: "b9a6a3a4-02e1-47f0-8cbe-73dc2a15735c8",
@@ -1541,6 +1563,47 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           isBookmarked: false,
         },
       },
+      {
+        id: "8e5bee7f-0df3-tsrehj44s-9c58-b62615bafd1c",
+        user: {
+          id: "8e5bee7f-0df3-tsrehj44s-9c58-b62615bafd1c",
+          username: "sunny11___",
+          displayName: "sunny11",
+          avatar: getRandomFile("8e5bee7f-0df3-tsrehj44s-9c58-b62615bafd1c"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: "https://pbs.twimg.com/media/FrZfFNvaQAAxuxq?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+            {
+              id: "3",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GFEigYqa0AAqYjf?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+            {
+              id: "2",
+              type: "image",
+              url: "https://pbs.twimg.com/media/GHvc3k-bEAAtwWN?format=jpg&name=large",
+              aspect_ratio: "4:5",
+            },
+          ],
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
+        },
+      },
     ]
   : [];
 
@@ -1602,6 +1665,24 @@ export const mockComments: CommentInfo[] = [
     likes: 70000,
     isLiked: false,
     createdAt: new Date("2003-07-12T00:00:00.000Z"),
+  },
+  {
+    id: "979491b0-13a7-41c7-9b5e-1c60c9668467",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    user: {
+      id: "979491b0-13a7-41c7-9b5e-1c60c9668467",
+      username: "anonymous",
+      displayName: "Anonymous",
+      avatar: getRandomFile("979491b0-13a7-41c7-9b5e-1c60c9668467"),
+      verified: false,
+      followers: 1000,
+      following: 1000,
+      isFollowing: false,
+      hasFeed: true,
+    },
+    likes: 70000,
+    isLiked: false,
+    createdAt: new Date("2025-07-12T00:00:00.000Z"),
   },
 ];
 

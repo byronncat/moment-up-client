@@ -51,9 +51,12 @@ export default function Moments({ initialRes }: MomentsProps) {
 
   const resetFnRef = useRef<(() => void) | null>(null);
   async function handleBlock(momentId: string) {
-    await block(momentId, () => {
-      if (resetFnRef.current) resetFnRef.current();
-      else console.error("resetFnRef is not set");
+    await block(momentId, {
+      remove: true,
+      onChange: () => {
+        if (resetFnRef.current) resetFnRef.current();
+        else console.error("resetFnRef is not set");
+      },
     });
   }
 

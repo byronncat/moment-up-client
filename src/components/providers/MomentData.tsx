@@ -1,6 +1,7 @@
 "use client";
 
 import type { DetailedMomentInfo } from "api";
+
 import { createContext, useContext, useRef, useState } from "react";
 import { toast } from "sonner";
 import { CoreApi, UserApi } from "@/services";
@@ -17,7 +18,10 @@ const MomentDataContext = createContext(
     like: (momentId: string) => Promise<void>;
     bookmark: (momentId: string) => Promise<void>;
     follow: (momentId: string) => Promise<void>;
-    block: (momentId: string, onChange?: () => void) => Promise<void>;
+    block: (
+      momentId: string,
+      options?: { onChange?: () => void; remove?: boolean }
+    ) => Promise<void>;
     share: (momentId: string) => void;
     report: (momentId: string) => Promise<void>;
   }
@@ -61,31 +65,31 @@ export default function MomentDataProvider({
   }
 
   function like(momentId: DetailedMomentInfo["id"]) {
-    const moment = moments?.find((moment) => moment.id === momentId);
-    if (moment) {
-      moment.post.isLiked = !moment.post.isLiked;
+    const foundMoment = moments?.find((moment) => moment.id === momentId);
+    if (foundMoment) {
+      foundMoment.post.isLiked = !foundMoment.post.isLiked;
       setMoments((prev) =>
-        prev?.map((moment) => (moment.id === momentId ? moment : moment))
+        prev?.map((moment) => (moment.id === momentId ? foundMoment : moment))
       );
     }
   }
 
   function follow(momentId: DetailedMomentInfo["id"]) {
-    const moment = moments?.find((moment) => moment.id === momentId);
-    if (moment) {
-      moment.user.isFollowing = !moment.user.isFollowing;
+    const foundMoment = moments?.find((moment) => moment.id === momentId);
+    if (foundMoment) {
+      foundMoment.user.isFollowing = !foundMoment.user.isFollowing;
       setMoments((prev) =>
-        prev?.map((moment) => (moment.id === momentId ? moment : moment))
+        prev?.map((moment) => (moment.id === momentId ? foundMoment : moment))
       );
     }
   }
 
   function bookmark(momentId: DetailedMomentInfo["id"]) {
-    const moment = moments?.find((moment) => moment.id === momentId);
-    if (moment) {
-      moment.post.isBookmarked = !moment.post.isBookmarked;
+    const foundMoment = moments?.find((moment) => moment.id === momentId);
+    if (foundMoment) {
+      foundMoment.post.isBookmarked = !foundMoment.post.isBookmarked;
       setMoments((prev) =>
-        prev?.map((moment) => (moment.id === momentId ? moment : moment))
+        prev?.map((moment) => (moment.id === momentId ? foundMoment : moment))
       );
     }
   }
@@ -98,9 +102,10 @@ export default function MomentDataProvider({
 
   function block(
     userId: DetailedMomentInfo["user"]["id"],
-    undo: boolean = false
+    options?: { undo?: boolean; remove?: boolean }
   ) {
-    if (undo) {
+    if (!options?.remove) return;
+    if (options?.undo) {
       const lastState = undoBuffer.current.pop();
       if (lastState)
         setMoments((prev) => {
@@ -147,8 +152,8 @@ export default function MomentDataProvider({
   async function handleLike(momentId: string) {
     if (actionLoading.current.like) return;
     actionLoading.current.like = true;
-    const moment = moments?.find((moment) => moment.id === momentId);
-    if (!moment) return;
+    const foundMoment = moments?.find((moment) => moment.id === momentId);
+    if (!foundMoment) return;
     like(momentId);
     const res = await CoreApi.toggleLike(momentId);
     if (!res.success) {
@@ -161,14 +166,14 @@ export default function MomentDataProvider({
   async function handleBookmark(momentId: string) {
     if (actionLoading.current.bookmark) return;
     actionLoading.current.bookmark = true;
-    const moment = moments?.find((moment) => moment.id === momentId);
-    if (!moment) return;
+    const foundMoment = moments?.find((moment) => moment.id === momentId);
+    if (!foundMoment) return;
     toast.promise(CoreApi.toggleBookmark(momentId), {
       loading: "Saving...",
       success: (res) => {
         if (res.success) {
           bookmark(momentId);
-          return moment.post.isBookmarked ? "Bookmarked" : "Unbookmarked";
+          return foundMoment.post.isBookmarked ? "Bookmarked" : "Unbookmarked";
         } else throw new Error(res.message);
       },
       error: () => "Something went wrong!",
@@ -202,10 +207,10 @@ export default function MomentDataProvider({
   async function handleFollow(momentId: string) {
     if (actionLoading.current.follow) return;
     actionLoading.current.follow = true;
-    const moment = moments?.find((moment) => moment.id === momentId);
-    if (!moment) return;
+    const foundMoment = moments?.find((moment) => moment.id === momentId);
+    if (!foundMoment) return;
     follow(momentId);
-    const res = await UserApi.toggleFollow(moment.user.id);
+    const res = await UserApi.toggleFollow(foundMoment.user.id);
     if (!res.success) {
       follow(momentId);
       toast.error("Something went wrong!");
@@ -213,14 +218,17 @@ export default function MomentDataProvider({
     actionLoading.current.follow = false;
   }
 
-  async function handleBlock(momentId: string, onChange?: () => void) {
+  async function handleBlock(
+    momentId: string,
+    options?: { onChange?: () => void; remove?: boolean }
+  ) {
     if (actionLoading.current.block) return;
     actionLoading.current.block = true;
 
     const userId = moments?.find((moment) => moment.id === momentId)?.user.id;
     if (!userId) return;
-    block(userId);
-    onChange?.();
+    block(userId, { remove: options?.remove });
+    options?.onChange?.();
     toast.loading("Waiting...");
     const res = await UserApi.toggleBlock(userId);
     toast.dismiss();
@@ -232,8 +240,8 @@ export default function MomentDataProvider({
             toast.loading("Unblocking...");
             const res = await UserApi.toggleBlock(userId);
             if (res.success) {
-              block(userId, true);
-              onChange?.();
+              block(userId, { undo: true, remove: options?.remove });
+              options?.onChange?.();
               toast.dismiss();
               toast.success("Unblocked");
             } else toast.error("Something went wrong!");
@@ -241,8 +249,8 @@ export default function MomentDataProvider({
         },
       });
     } else {
-      block(userId, true);
-      onChange?.();
+      block(userId, { undo: true, remove: options?.remove });
+      options?.onChange?.();
       toast.error("Something went wrong!");
     }
     actionLoading.current.block = false;

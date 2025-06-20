@@ -8,7 +8,6 @@ import { useState } from "react";
 import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
 
-import { CardFooter } from "../../ui/card";
 import ColorfulIconButton, {
   buttonStyles,
 } from "../../common/ColorfulIconButton";
@@ -17,10 +16,13 @@ import { Heart, Comment, Share, Repeat, Bookmark } from "../../icons";
 
 type FooterProps = Readonly<{
   data: DetailedMomentInfo;
-  actions: Actions;
+  actions: Pick<Actions, "like" | "bookmark" | "share"> & {
+    comment?: () => void;
+  };
+  className?: string;
 }>;
 
-export default function Footer({ data, actions }: FooterProps) {
+export default function Footer({ data, actions, className }: FooterProps) {
   const router = useRouter();
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const momentId = data.id;
@@ -61,7 +63,10 @@ export default function Footer({ data, actions }: FooterProps) {
       color: "sky-500",
       count: post.comments,
       tooltip: "Comment",
-      onClick: () => router.push(ROUTE.MOMENT(momentId)),
+      onClick: () =>
+        actions.comment
+          ? actions.comment()
+          : router.push(ROUTE.MOMENT(momentId)),
     },
     {
       icon: (
@@ -114,7 +119,7 @@ export default function Footer({ data, actions }: FooterProps) {
 
   return (
     <>
-      <CardFooter className="px-4 py-3">
+      <div className={cn("px-4 py-3", className)}>
         <div
           className={cn(
             "flex items-center justify-between",
@@ -132,7 +137,7 @@ export default function Footer({ data, actions }: FooterProps) {
             ))}
           </div>
         </div>
-      </CardFooter>
+      </div>
 
       <ShareDialog
         momentId={momentId}

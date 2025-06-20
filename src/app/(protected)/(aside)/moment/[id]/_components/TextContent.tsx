@@ -1,6 +1,7 @@
 import type { DetailedMomentInfo } from "api";
 import { useRef, useState } from "react";
 import { useTextClamp } from "@/hooks";
+import { parseText } from "@/helpers/parser";
 import { cn } from "@/libraries/utils";
 
 export default function TextContent({
@@ -10,23 +11,18 @@ export default function TextContent({
   const [isExpanded, setIsExpanded] = useState(false);
   const isTextClamped = useTextClamp(textRef);
 
-  if (!data) return <div className="h-2" />;
-
-  const formattedText = data
-    .split("\n")
-    .map((line, index) => <p key={index}>{line}</p>);
-
   const handleToggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
+  if (!data) return <div className="h-2" />;
   return (
-    <div className="px-4 pb-3">
+    <div className={cn("px-4 pb-3", "text-sm")}>
       <div
         ref={textRef}
         className={cn(!isExpanded && "line-clamp-5", "space-y-2")}
       >
-        {formattedText}
+        {parseText(data)}
       </div>
       {isTextClamped && !isExpanded && (
         <button
@@ -41,19 +37,34 @@ export default function TextContent({
           Show more
         </button>
       )}
-      {isExpanded && (
-        <button
+      {isTextClamped && isExpanded && (
+        <ShowToggle
           onClick={handleToggleExpand}
-          className={cn(
-            "pt-1",
-            "font-semibold text-sm text-muted-foreground",
-            "cursor-pointer hover:underline",
-            "transition-opacity duration-150"
-          )}
-        >
-          Show less
-        </button>
+          text={isExpanded ? "Show less" : "Show more"}
+        />
       )}
     </div>
+  );
+}
+
+function ShowToggle({
+  onClick,
+  text,
+}: Readonly<{
+  onClick: () => void;
+  text: string;
+}>) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "pt-1",
+        "font-semibold text-sm text-muted-foreground",
+        "cursor-pointer hover:underline",
+        "transition-opacity duration-150"
+      )}
+    >
+      {text}
+    </button>
   );
 }

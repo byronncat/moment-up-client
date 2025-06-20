@@ -11,13 +11,13 @@ type ButtonsProps = Readonly<{
   postData: MomentInfo;
   momentId: string;
   className?: string;
-  actions: Actions;
 }>;
 
 type FirstGroupProps = ButtonsProps &
   Readonly<{
     userData: UserCardDisplayInfo;
     onCommentClick?: () => void;
+    actions: Pick<Actions, "like" | "bookmark" | "share">;
   }>;
 
 function FirstGroup({
@@ -105,12 +105,17 @@ function FirstGroup({
   );
 }
 
+type SecondGroupProps = ButtonsProps &
+  Readonly<{
+    actions: Pick<Actions, "bookmark" | "share">;
+  }>;
+
 function SecondGroup({
   postData: data,
   momentId,
   className,
   actions,
-}: ButtonsProps) {
+}: SecondGroupProps) {
   const buttons = [
     {
       icon: (

@@ -3,20 +3,18 @@
 import type { API, FeedNotification } from "api";
 
 import { useEffect, useRef, useState, useCallback, use } from "react";
-import throttle from "@/helpers/throttle";
+import { useHome } from "../../_providers/Home";
 
 import { cn } from "@/libraries/utils";
 import FeedItem from "./FeedItem";
 import CreateFeedButton from "./CreateFeedButton";
 import { Chevron } from "@/components/icons";
 import { ChevronsDown, ChevronsUp } from "lucide-react";
-import { useHome } from "../../_providers/Home";
 
 type Direction = "left" | "right";
 const ITEMS_PER_VIEW = 3;
 const ITEM_WIDTH = 88; // size-18 (72px) + gap (16px)
 const ROUNDING_ERROR = 1;
-const SCROLL_DELAY = 150;
 
 export default function Feeds({
   className,
@@ -32,7 +30,7 @@ export default function Feeds({
   const { hideFeeds, setHideFeeds } = useHome();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = throttle((direction: Direction) => {
+  function handleScroll(direction: Direction) {
     if (!scrollContainerRef.current) return;
 
     const scrollAmount = direction === "left" ? -1 : 1;
@@ -42,7 +40,7 @@ export default function Feeds({
       left: scrollDistance,
       behavior: "smooth",
     });
-  }, SCROLL_DELAY);
+  }
 
   const checkScrollability = useCallback(() => {
     if (!scrollContainerRef.current) return;
@@ -58,11 +56,8 @@ export default function Feeds({
     checkScrollability();
 
     scrollContainer.addEventListener("scroll", checkScrollability);
-    window.addEventListener("resize", checkScrollability);
-
     return () => {
       scrollContainer.removeEventListener("scroll", checkScrollability);
-      window.removeEventListener("resize", checkScrollability);
     };
   }, [checkScrollability]);
 

@@ -21,8 +21,8 @@ const BOTTOM_PADDING = 121;
 // Card
 const HEADER_HEIGHT = 76;
 const FOOTER_HEIGHT = 60;
-const SINGLE_TEXT_HEIGHT = 32;
-const MULTI_TEXT_HEIGHT = 80;
+const SINGLE_TEXT_HEIGHT = 28;
+const MULTI_TEXT_HEIGHT = 72;
 const BORDER_SIZE = 1;
 const ITEM_GAP = 16;
 
@@ -179,8 +179,8 @@ export default function MomentList({
                     </VariableSizeList>
                     <VirtualScrollbar
                       height={height}
-                      totalHeight={totalHeight}
                       width={SCROLLBAR_WIDTH}
+                      totalHeight={totalHeight}
                       onScroll={handleCustomScroll}
                       onScrollUpdate={(updateFn) => {
                         updateScrollbarRef.current = updateFn;

@@ -12,8 +12,7 @@ import { X } from "lucide-react";
 export default function MomentModal() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { getCurrentMoment, like, bookmark, report, share, follow, block } =
-    useMoment();
+  const { getCurrentMoment } = useMoment();
 
   const imgIndex = searchParams.get("imgIndex");
   const initialIndex = imgIndex ? parseInt(imgIndex) : 0;
@@ -54,14 +53,6 @@ export default function MomentModal() {
         data={moment}
         onClose={handleClose}
         haveMedia={haveMedia}
-        actions={{
-          like,
-          bookmark,
-          report,
-          share,
-          follow,
-          block,
-        }}
         className="shrink-0"
       />
     </Modal>

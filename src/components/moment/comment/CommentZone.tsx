@@ -1,7 +1,10 @@
-import type { CommentInfo, API } from "api";
+"use client";
 
-import { use, useRef, useState, useEffect } from "react";
+import type { CommentInfo } from "api";
+
+import { useRef, useState } from "react";
 import { useTextClamp } from "@/hooks";
+import { useComment } from "./provider/CommentData";
 import dayjs from "dayjs";
 import format from "@/utilities/format";
 import { toast } from "sonner";
@@ -10,13 +13,7 @@ import { ROUTE, SortBy } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import {
-  Avatar,
-  NoContent,
-  UserInfoCard,
-  Tooltip,
-  ErrorContent,
-} from "@/components";
+import { Avatar, UserInfoCard, Tooltip } from "@/components";
 import { Heart } from "@/components/icons";
 import {
   HoverCard,
@@ -30,7 +27,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, MessageSquareText } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { CommentSkeleton } from "./CommentSkeletons";
 
 const sortOptions = [
@@ -48,94 +45,30 @@ const sortOptions = [
 
 type CommentZoneProps = Readonly<{
   className?: string;
-  data: Promise<API<{ items: CommentInfo[]; hasNextPage: boolean }>>;
-  comments: CommentInfo[] | undefined;
-  hasNextPage: boolean;
-  setComments: (comment: CommentInfo[]) => void;
-  onRefresh: () => void;
-  onFetchMore: () => Promise<void>;
 }>;
 
-export default function CommentZone({
-  className,
-  data,
-  comments,
-  hasNextPage,
-  setComments,
-  onRefresh,
-  onFetchMore,
-}: CommentZoneProps) {
-  const response = use(data);
-  const [sort, setSort] = useState<SortBy>(SortBy.MOST_LIKED);
-  const [loading, setLoading] = useState(false);
-  const [expandedComments, setExpandedComments] = useState<Set<string>>(
-    new Set()
-  );
+export default function CommentZone({ className }: CommentZoneProps) {
+  const {
+    comments,
+    loading,
+    sort,
+    sortBy,
+    isExpanded,
+    toggleExpansion,
+    hasNextPage,
+    fetchMore,
+  } = useComment();
 
-  const toggleCommentExpansion = (commentId: string) => {
-    const newExpanded = new Set(expandedComments);
-    if (newExpanded.has(commentId)) newExpanded.delete(commentId);
-    else newExpanded.add(commentId);
-    setExpandedComments(newExpanded);
-  };
-
-  function handleSortChange(value: SortBy) {
-    if (!comments) return;
-    setSort(value);
-    const orderedComments = comments.sort((a, b) => {
-      if (sort === SortBy.NEWEST)
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-      return a.likes - b.likes;
-    });
-    setComments(orderedComments);
-  }
-
-  async function handleFetchMore() {
-    setLoading(true);
-    await onFetchMore();
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    if (response.success) setComments(response.data?.items || []);
-  }, [response.data?.items, setComments, response.success]);
-
-  if (response.success === false)
-    return (
-      <div className="pt-12 px-6 pb-6">
-        <ErrorContent
-          onRefresh={onRefresh}
-          className="h-full flex justify-center items-center grow"
-        />
-      </div>
-    );
-  if (!comments) return null;
-  if (comments.length === 0)
-    return (
-      <div className="pt-12 px-6 pb-6">
-        <NoContent
-          icon={<MessageSquareText className="size-12 text-muted-foreground" />}
-          title="No comments"
-          description="Be the first to comment on this moment."
-        />
-      </div>
-    );
   return (
     <div className={cn("px-4 py-3", className)}>
-      <SortByDropdown
-        sort={sort}
-        handleSortChange={handleSortChange}
-        className="mb-4"
-      />
+      <SortByDropdown sort={sort} handleSortChange={sortBy} className="mb-4" />
       <div className="flex flex-col gap-4">
         {comments.map((comment) => (
           <CommentItem
             key={comment.id}
             comment={comment}
-            isExpanded={expandedComments.has(comment.id)}
-            onToggleExpand={() => toggleCommentExpansion(comment.id)}
+            isExpanded={isExpanded(comment.id)}
+            onToggleExpand={() => toggleExpansion(comment.id)}
           />
         ))}
         {loading && (
@@ -147,7 +80,7 @@ export default function CommentZone({
       </div>
       {!loading && hasNextPage && (
         <button
-          onClick={handleFetchMore}
+          onClick={fetchMore}
           className={cn(
             "mt-3",
             "text-sm text-muted-foreground font-semibold",

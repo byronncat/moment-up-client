@@ -3,7 +3,9 @@
 import type { API, UserCardDisplayInfo } from "api";
 
 import { useRouter } from "next/navigation";
-import { useState, use } from "react";
+import { useState, use, useRef } from "react";
+import { useHover } from "usehooks-ts";
+import { toast } from "sonner";
 import { UserApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";
 
@@ -50,9 +52,12 @@ function SuggestedUserItem({
   async function followHandler(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    if (isFollowing) await UserApi.toggleFollow(user.id);
-    else await UserApi.toggleFollow(user.id);
     setIsFollowing((prev) => !prev);
+    const res = await UserApi.toggleFollow(user.id);
+    if (!res.success) {
+      setIsFollowing((prev) => !prev);
+      toast.error("Something went wrong");
+    }
   }
 
   return (
@@ -130,21 +135,20 @@ function FollowText({
   isFollowing: boolean;
   followHandler: (e: React.MouseEvent) => void;
 }>) {
-  const [isHovering, setIsHovering] = useState(false);
-
+  const hoverRef = useRef<HTMLButtonElement>(null);
+  const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
   return (
     <button
+      ref={hoverRef}
+      onClick={followHandler}
       className={cn(
         "text-xs font-semibold",
-        isFollowing && isHovering ? "text-red-400" : "text-primary",
+        isFollowing && isHover ? "text-red-400" : "text-primary",
         "cursor-pointer hover:opacity-80",
         "transition-opacity duration-150 ease-in-out"
       )}
-      onClick={followHandler}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
     >
-      {isFollowing ? (isHovering ? "Unfollow" : "Following") : "Follow"}
+      {isFollowing ? (isHover ? "Unfollow" : "Following") : "Follow"}
     </button>
   );
 }
