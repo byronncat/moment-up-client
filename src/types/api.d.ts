@@ -6,6 +6,7 @@ declare module "api" {
     Feed,
     Notification as NotificationSchema,
     Comment,
+    File,
   } from "schema";
 
   type API<T = void> = {
@@ -57,10 +58,26 @@ declare module "api" {
     post: MomentInfo;
   };
 
+  type CommentInfo = {
+    id: Comment["id"];
+    content: Comment["content"];
+    user: UserCardDisplayInfo;
+    likes: number;
+    isLiked: boolean;
+    createdAt: Comment["created_at"];
+  };
+
   // === Others ===
   type HashtagItem = Hashtag & {
     type: "hashtag";
     count: number;
+  };
+
+  type FileInfo = {
+    id: File["id"];
+    type: File["type"];
+    url: File["url"];
+    aspectRatio: File["aspect_ratio"];
   };
 
   // Search
@@ -107,15 +124,6 @@ declare module "api" {
       sound?: Feed["sound"];
       createdAt: Feed["created_at"];
     }[];
-  };
-
-  type CommentInfo = {
-    id: Comment["id"];
-    content: Comment["content"];
-    user: UserCardDisplayInfo;
-    likes: number;
-    isLiked: boolean;
-    createdAt: Comment["created_at"];
   };
 
   // Others

@@ -11,9 +11,10 @@ import {
   HoverCardTrigger,
 } from "../../ui/hover-card";
 
-type HoverableComponentProps = ComponentProps<{
+type HoverableComponentProps = Readonly<{
   userInfo: UserCardDisplayInfo;
   followHandler: (e: React.MouseEvent) => Promise<void>;
+  children: React.ReactNode;
 }>;
 
 export default function HoverableComponent({

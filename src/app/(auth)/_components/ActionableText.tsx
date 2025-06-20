@@ -1,10 +1,12 @@
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 
-type ActionableTextProps = ComponentProps<{
+type ActionableTextProps = Readonly<{
   mutedText?: string;
   path?: string;
   highlightedText: string;
+  onClick?: () => void;
+  className?: string;
 }>;
 
 export default function ActionableText({

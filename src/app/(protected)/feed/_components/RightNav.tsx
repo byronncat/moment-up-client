@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { X } from "lucide-react";
 
-type RightNavProps = ComponentProps<{
+type RightNavProps = Readonly<{
   data: FeedNotification[] | null;
   loading: boolean;
   onClose: () => void;

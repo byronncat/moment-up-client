@@ -4,8 +4,9 @@ import { ROUTE } from "@/constants/clientConfig";
 import Logo from "./Logo";
 import { sourceCodePro } from "@/styles/fonts";
 
-type BrandProps = ComponentProps<{
+type BrandProps = Readonly<{
   hyperlink?: boolean;
+  className?: string;
 }>;
 
 export default function Brand({ hyperlink = true, className }: BrandProps) {
@@ -18,7 +19,7 @@ export default function Brand({ hyperlink = true, className }: BrandProps) {
   return <Content className={className} />;
 }
 
-function Content({ className }: ComponentProps) {
+function Content({ className }: Readonly<{ className?: string }>) {
   return (
     <div className={cn("flex items-center", className)}>
       <Logo className="h-full mr-2" />

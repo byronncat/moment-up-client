@@ -1,7 +1,7 @@
 import { cn } from "@/libraries/utils";
 import styles from "@/styles/loader.module.css";
 
-function BoxSpin({ className }: ComponentProps) {
+function BoxSpin({ className }: Readonly<{ className?: string }>) {
   return (
     <div className={cn("flex flex-col justify-center items-center", className)}>
       <div>

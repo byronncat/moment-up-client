@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { cn } from "@/libraries/utils";
 
 const RESEND_TIME = 60; // seconds
-export default function ResendText({ onClick }: ComponentProps) {
+export default function ResendText({
+  onClick,
+}: Readonly<{ onClick?: () => void }>) {
   const [resendTime, setResendTime] = useState(0);
   const isDisabled = resendTime > 0;
 

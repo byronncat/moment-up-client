@@ -2,7 +2,7 @@ import { cn } from "@/libraries/utils";
 import { Avatar as AvatarUI, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { User } from "../icons";
 
-type AvatarProps = ComponentProps<{
+type AvatarProps = Readonly<{
   src?: string;
   alt?: string;
   size: "7" | "10" | "12" | "14" | "26";
@@ -48,7 +48,13 @@ export default function Avatar({
   className,
 }: AvatarProps) {
   const sizeStyles = sizeClass[size];
-  const Ring = ({ children, className }: ComponentProps) => (
+  const Ring = ({
+    children,
+    className,
+  }: Readonly<{
+    children: React.ReactNode;
+    className?: string;
+  }>) => (
     <div
       className={cn(
         sizeStyles.ring,
@@ -63,7 +69,7 @@ export default function Avatar({
     </div>
   );
 
-  const CircleImage = ({ className }: ComponentProps) => (
+  const CircleImage = ({ className }: Readonly<{ className?: string }>) => (
     <AvatarUI className={cn(sizeStyles.avatar, className)}>
       <AvatarImage src={src} alt={alt} className="object-cover object-top" />
       <AvatarFallback className="bg-primary">

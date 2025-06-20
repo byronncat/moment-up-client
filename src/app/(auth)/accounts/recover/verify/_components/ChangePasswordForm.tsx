@@ -22,7 +22,11 @@ import {
 } from "@/components/ui/form";
 import { PasswordInput, SubmitButton } from "../../../../_components";
 
-export default function ChangePasswordForm({ className }: ComponentProps) {
+export default function ChangePasswordForm({
+  className,
+}: Readonly<{
+  className?: string;
+}>) {
   const form = useForm<z.infer<typeof zodSchema.auth.changePassword>>({
     resolver: zodResolver(zodSchema.auth.changePassword),
     defaultValues: {

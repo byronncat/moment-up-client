@@ -2,8 +2,10 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 
-type SubmitButtonProps = ComponentProps<{
+type SubmitButtonProps = Readonly<{
   loading?: boolean;
+  className?: string;
+  children: React.ReactNode;
 }>;
 
 export default function SubmitButton({

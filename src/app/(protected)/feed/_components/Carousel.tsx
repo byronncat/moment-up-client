@@ -22,7 +22,7 @@ const CAROUSEL_OPTIONS = {
   AUTOPLAY_DELAY: 10000,
 };
 
-type ContentProps = ComponentProps<{
+type ContentProps = Readonly<{
   data: FeedInfo | null;
   loading: boolean;
   onClose: () => void;

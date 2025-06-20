@@ -2,7 +2,7 @@ import { cn } from "@/libraries/utils";
 import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 
-type MomentSkeletonProps = ComponentProps<{
+type MomentSkeletonProps = Readonly<{
   variant: "vertical" | "horizontal" | "square";
 }>;
 

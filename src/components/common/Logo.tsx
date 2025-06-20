@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/libraries/utils";
 
-export default function Logo({ className }: ComponentProps) {
+export default function Logo({ className }: Readonly<{ className?: string }>) {
   return (
     <span
       className={cn(

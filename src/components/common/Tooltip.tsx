@@ -24,12 +24,14 @@ const tooltipStyles = {
   ),
 };
 
-type TooltipProps = ComponentProps<{
+type TooltipProps = Readonly<{
+  children: React.ReactNode;
   content: React.ReactNode;
   sideOffset?: number;
   side?: "top" | "right" | "bottom" | "left";
   variant?: "default" | "borderless";
   align?: "start" | "center" | "end";
+  className?: string;
 }>;
 
 export default function Tooltip({

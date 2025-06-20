@@ -1,7 +1,8 @@
 import { cn } from "@/libraries/utils";
 
-type DividerProps = ComponentProps<{
+type DividerProps = Readonly<{
   text?: string;
+  className?: string;
 }>;
 
 export default function Divider({ text, className }: DividerProps) {
