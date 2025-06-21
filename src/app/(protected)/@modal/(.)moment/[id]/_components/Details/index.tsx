@@ -37,7 +37,7 @@ export default function Content({
   }
 
   return (
-    <div
+    <ScrollArea
       className={cn(
         "flex flex-col",
         "md:h-full bg-card",
@@ -78,42 +78,32 @@ export default function Content({
           }
         />
       </div>
-      <CommentDataProvider momentId={data.id}>
-        {/* 72px: header height, 120px: comment input height, 44px: button group height, 1px: border */}
-        <ScrollArea className="md:h-[calc(100%-76px-120px-44px-1px)]">
-          <div className="flex flex-col">
-            <TextContent data={data.post.text} />
-            <ButtonGroup.FirstGroup
-              momentId={data.id}
-              postData={data.post}
-              userData={data.user}
-              actions={{
-                like,
-                bookmark,
-                share,
-              }}
-              onCommentClick={focusCommentInput}
-            />
-            <CommentZone className="grow" />
-          </div>
-        </ScrollArea>
-        <div className="sticky bottom-0 md:static bg-card">
-          <ButtonGroup.SecondGroup
-            postData={data.post}
-            momentId={data.id}
-            actions={{
-              bookmark,
-              share,
-            }}
-            className="border-t border-border"
-          />
-          <CommentInput
-            ref={commentInputRef}
-            className="h-[120px]"
-            haveMedia={haveMedia}
-          />
-        </div>
-      </CommentDataProvider>
-    </div>
+      <div className="flex flex-col">
+        <TextContent data={data.post.text} />
+        <ButtonGroup.SecondGroup
+          postData={data.post}
+          momentId={data.id}
+          actions={{
+            bookmark,
+            share,
+          }}
+        />
+        <ButtonGroup.FirstGroup
+          momentId={data.id}
+          postData={data.post}
+          userData={data.user}
+          actions={{
+            like,
+            bookmark,
+            share,
+          }}
+          onCommentClick={focusCommentInput}
+        />
+        <CommentDataProvider momentId={data.id}>
+          <CommentInput ref={commentInputRef} className="min-h-[68px]" />
+          <CommentZone className="grow" />
+        </CommentDataProvider>
+      </div>
+    </ScrollArea>
   );
 }
