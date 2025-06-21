@@ -40,7 +40,6 @@ export default function Moments({ initialRes }: MomentsProps) {
   );
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
   const pageRef = useRef(1);
-  const resetFnRef = useRef<(() => void) | null>(null);
 
   async function fetchMoments(page?: number) {
     const response = await CoreApi.explore(
@@ -88,9 +87,6 @@ export default function Moments({ initialRes }: MomentsProps) {
         share,
         block: (momentId) => block(momentId, { remove: true }),
         report,
-        resetList: (resetFn: () => void) => {
-          resetFnRef.current = resetFn;
-        },
       }}
       styles={{
         topPadding: TOP_PADDING,

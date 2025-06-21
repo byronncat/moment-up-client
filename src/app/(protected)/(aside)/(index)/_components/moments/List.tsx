@@ -3,7 +3,7 @@
 import type { DetailedMomentInfo } from "api";
 import type { Actions } from "@/components/providers/MomentData";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { debounce } from "lodash";
 
 import { cn } from "@/libraries/utils";
@@ -27,12 +27,12 @@ const BORDER_SIZE = 1;
 const ITEM_GAP = 16;
 
 type MomentListProps = Readonly<{
-  actions: Actions;
   items: DetailedMomentInfo[];
   hasNextPage: boolean;
   isNextPageLoading: boolean;
   loadNextPage: () => void;
   onItemClick: (index: number) => void;
+  actions: Actions;
   styles: {
     topPadding?: number;
     bottomPadding?: number;
@@ -42,11 +42,11 @@ type MomentListProps = Readonly<{
 
 export default function MomentList({
   items,
-  actions,
   hasNextPage,
   isNextPageLoading,
   loadNextPage,
   onItemClick,
+  actions,
   styles,
 }: MomentListProps) {
   const [isResizing, setIsResizing] = useState(false);
@@ -58,33 +58,15 @@ export default function MomentList({
     PLACEHOLDER_ITEM_COUNT +
     (hasNextPage ? LOADING_INDICATOR_COUNT : 0);
   const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
+
   function isItemLoaded(index: number) {
     if (!hasNextPage) return true;
     return index !== itemCount - 2;
   }
 
-  const ActionHandler = {
-    ...actions,
-    block: async (momentId: string) => {
-      await actions.block?.(momentId);
-    },
-  };
-
-  const resetList = useCallback(() => {
-    listRef.current?.resetAfterIndex(0);
-  }, []);
-
   function handleCustomScroll(newScrollTop: number) {
     listRef.current?.scrollTo(newScrollTop);
   }
-
-  useEffect(() => {
-    actions.resetList?.(resetList);
-  }, [actions, resetList]);
-
-  useEffect(() => {
-    if (items.length > 0) resetList();
-  }, [items, resetList]);
 
   const getItemSize = (index: number, width: number) => {
     if (index === 0) return styles.topPadding ?? 0;
@@ -123,9 +105,13 @@ export default function MomentList({
   };
 
   useEffect(() => {
+    if (items.length > 0) listRef.current?.resetAfterIndex(0);
+  }, [items]);
+
+  useEffect(() => {
     const handleResize = debounce(() => {
       setIsResizing(false);
-    }, 500);
+    }, 1000);
 
     const onResize = () => {
       setIsResizing(true);
@@ -173,7 +159,7 @@ export default function MomentList({
                       itemCount,
                       isItemLoaded,
                       items,
-                      actions: ActionHandler,
+                      actions,
                       onClick: onItemClick,
                     }}
                     itemKey={(index) => {

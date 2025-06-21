@@ -56,7 +56,6 @@ export default function Moments({ initialRes }: MomentsProps) {
     setIsNextPageLoading(false);
   }
 
-  const resetFnRef = useRef<(() => void) | null>(null);
   function handleClick(index: number) {
     setCurrentIndex(index);
   }
@@ -102,9 +101,6 @@ export default function Moments({ initialRes }: MomentsProps) {
         share,
         block: (momentId) => block(momentId, { remove: true }),
         report,
-        resetList: (resetFn) => {
-          resetFnRef.current = resetFn;
-        },
       }}
       styles={{
         topPadding: TOP_PADDING,

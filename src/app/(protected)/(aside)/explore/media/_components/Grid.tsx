@@ -1,5 +1,6 @@
 import type { DetailedMomentInfo } from "api";
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import { debounce } from "lodash";
 
 import { MomentCell } from "@/components/moment";
 
@@ -20,9 +21,6 @@ type GridProps = Readonly<{
   isNextPageLoading: boolean;
   loadNextPage: () => void;
   onItemClick: (index: number) => void;
-  actions?: {
-    resetList?: (resetFn: () => void) => void;
-  };
 }>;
 
 export default function Grid({
@@ -31,8 +29,8 @@ export default function Grid({
   isNextPageLoading,
   loadNextPage,
   onItemClick,
-  actions,
 }: GridProps) {
+  const [isResizing, setIsResizing] = useState(false);
   const listRef = useRef<VariableSizeGrid>(null);
   const updateScrollbarRef = useRef<(scrollTop: number) => void>(() => {});
 
@@ -51,22 +49,33 @@ export default function Grid({
     return index < items.length;
   };
 
-  const resetGrid = useCallback(() => {
-    listRef.current?.resetAfterIndices({ rowIndex: 0, columnIndex: 0 });
-  }, []);
-
   function handleCustomScroll(newScrollTop: number) {
     listRef.current?.scrollTo({ scrollTop: newScrollTop });
   }
 
   useEffect(() => {
-    actions?.resetList?.(resetGrid);
-  }, [actions, resetGrid]);
+    if (items.length > 0)
+      listRef.current?.resetAfterIndices({ rowIndex: 0, columnIndex: 0 });
+  }, [items]);
 
   useEffect(() => {
-    resetGrid();
-  }, [items, resetGrid]);
+    const handleResize = debounce(() => {
+      setIsResizing(false);
+    }, 1000);
 
+    const onResize = () => {
+      setIsResizing(true);
+      handleResize();
+    };
+
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      handleResize.cancel();
+    };
+  }, []);
+
+  if (isResizing) return null;
   return (
     <AutoSizer>
       {({ height, width }) => {

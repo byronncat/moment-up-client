@@ -33,7 +33,6 @@ export type Actions = {
   block: (momentId: DetailedMomentInfo["id"]) => Promise<void>;
   share: (momentId: DetailedMomentInfo["id"]) => void;
   report: (momentId: DetailedMomentInfo["id"]) => Promise<void>;
-  resetList?: (resetFn: () => void) => void;
 };
 
 type MomentDataProviderProps = Readonly<{

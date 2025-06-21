@@ -31,7 +31,6 @@ export default function Media({ initialRes }: MediaGridProps) {
   );
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
   const pageRef = useRef(1);
-  const resetFnRef = useRef<(() => void) | null>(null);
 
   async function fetchMedia(page?: number) {
     const response = await CoreApi.explore(
@@ -68,11 +67,6 @@ export default function Media({ initialRes }: MediaGridProps) {
       isNextPageLoading={isNextPageLoading}
       loadNextPage={() => fetchMedia()}
       onItemClick={setCurrentIndex}
-      actions={{
-        resetList: (resetFn) => {
-          resetFnRef.current = resetFn;
-        },
-      }}
     />
   );
 }
