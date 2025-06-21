@@ -18,10 +18,7 @@ const MomentDataContext = createContext(
     like: (momentId: string) => Promise<void>;
     bookmark: (momentId: string) => Promise<void>;
     follow: (momentId: string) => Promise<void>;
-    block: (
-      momentId: string,
-      options?: { onChange?: () => void; remove?: boolean }
-    ) => Promise<void>;
+    block: (momentId: string, options?: { remove?: boolean }) => Promise<void>;
     share: (momentId: string) => void;
     report: (momentId: string) => Promise<void>;
   }
@@ -218,17 +215,13 @@ export default function MomentDataProvider({
     actionLoading.current.follow = false;
   }
 
-  async function handleBlock(
-    momentId: string,
-    options?: { onChange?: () => void; remove?: boolean }
-  ) {
+  async function handleBlock(momentId: string, options?: { remove?: boolean }) {
     if (actionLoading.current.block) return;
     actionLoading.current.block = true;
 
     const userId = moments?.find((moment) => moment.id === momentId)?.user.id;
     if (!userId) return;
     block(userId, { remove: options?.remove });
-    options?.onChange?.();
     toast.loading("Waiting...");
     const res = await UserApi.toggleBlock(userId);
     toast.dismiss();
@@ -241,7 +234,6 @@ export default function MomentDataProvider({
             const res = await UserApi.toggleBlock(userId);
             if (res.success) {
               block(userId, { undo: true, remove: options?.remove });
-              options?.onChange?.();
               toast.dismiss();
               toast.success("Unblocked");
             } else toast.error("Something went wrong!");
@@ -250,7 +242,6 @@ export default function MomentDataProvider({
       });
     } else {
       block(userId, { undo: true, remove: options?.remove });
-      options?.onChange?.();
       toast.error("Something went wrong!");
     }
     actionLoading.current.block = false;

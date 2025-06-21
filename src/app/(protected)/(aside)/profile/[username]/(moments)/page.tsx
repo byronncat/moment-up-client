@@ -8,10 +8,9 @@ import { PAGE_CONFIG } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import { NoContent, ErrorContent } from "@/components";
-import {
-  //  MomentCard,
-  MomentSkeleton,
-} from "@/components/moment";
+import {} from //  MomentCard,
+// MomentSkeleton,
+"@/components/moment";
 import { Camera, Loader2 } from "lucide-react";
 
 export default function ProfilePage({
@@ -80,8 +79,8 @@ export default function ProfilePage({
   if (!isLoaded) {
     content = (
       <>
-        <MomentSkeleton variant="horizontal" />
-        <MomentSkeleton variant="square" />
+        {/* <MomentSkeleton variant="horizontal" /> */}
+        {/* <MomentSkeleton variant="square" /> */}
       </>
     );
   } else if (error) {

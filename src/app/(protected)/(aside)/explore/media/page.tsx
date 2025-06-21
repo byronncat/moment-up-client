@@ -1,132 +1,26 @@
-"use client";
-
-import type { DetailedMomentInfo } from "api";
-import { useState, useEffect, useCallback, useRef } from "react";
-import { useInfiniteScroll, useChunkRender } from "@/hooks";
 import { CoreApi } from "@/services";
-import { PAGE_CONFIG } from "@/constants/clientConfig";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { cn } from "@/libraries/utils";
-import { NoContent, ErrorContent } from "@/components";
-import { MomentCell } from "@/components/moment";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Camera, Loader2 } from "lucide-react";
+import { Suspense } from "react";
+import Media from "./_components/Media";
 
 export default function MediaPage() {
-  const [isLoaded, setLoaded] = useState(false);
-  const isInitialLoading = useRef(false);
+  const mediaRes = CoreApi.explore("media", 0);
 
-  const {
-    items: media,
-    isLoading: isLoadingMore,
-    hasMore,
-    loaderRef,
-    loadMore,
-    reset: resetInfiniteScroll,
-    error,
-  } = useInfiniteScroll<DetailedMomentInfo>();
-
-  const {
-    itemsToShow,
-    hasMoreChunks,
-    chunkLoaderRef,
-    reset: resetChunks,
-  } = useChunkRender(media ?? [], {
-    chunkSize: PAGE_CONFIG.MOMENT_CARD_PAGE,
-  });
-
-  const visibleMedia = media?.slice(0, itemsToShow) ?? [];
-
-  const fetchMediaPage = useCallback(async (page: number) => {
-    const res = await CoreApi.explore("media", page);
-    if (res.success) {
-      return res.data ?? [];
-    }
-    throw new Error("Failed to fetch media");
-  }, []);
-
-  const fetchInitialMedia = useCallback(async () => {
-    if (isInitialLoading.current || isLoaded) return;
-    isInitialLoading.current = true;
-
-    await loadMore(fetchMediaPage);
-    setLoaded(true);
-    isInitialLoading.current = false;
-  }, [fetchMediaPage, loadMore, isLoaded]);
-
-  async function handleRefresh() {
-    setLoaded(false);
-    resetChunks();
-    resetInfiniteScroll();
-    await fetchInitialMedia();
-  }
-
-  useEffect(() => {
-    fetchInitialMedia();
-  }, [fetchInitialMedia]);
-
-  let content = null;
-  if (!isLoaded) {
-    content = (
-      <Wrapper>
-        {Array(9)
-          .fill(0)
-          .map((_, i) => (
-            <Skeleton key={i} className="aspect-square" />
-          ))}
-      </Wrapper>
-    );
-  } else if (error) {
-    content = <ErrorContent onRefresh={handleRefresh} />;
-  } else if (media && media.length > 0) {
-    const footer = hasMore
-      ? isLoadingMore && (
-          <div
-            className={cn(
-              "col-span-3 py-4",
-              "flex justify-center items-center"
-            )}
-          >
-            <Loader2 className="size-8 animate-spin text-muted-foreground" />
-          </div>
-        )
-      : null;
-
-    content = (
-      <Wrapper>
-        {visibleMedia.map((item) => (
-          <MomentCell key={item.id} data={item} />
-        ))}
-        <div
-          ref={chunkLoaderRef}
-          className={cn(hasMoreChunks ? "block" : "hidden")}
-        />
-        <div
-          ref={loaderRef}
-          className={cn(hasMore && !hasMoreChunks ? "block" : "hidden")}
-        />
-        {!hasMoreChunks && footer}
-      </Wrapper>
-    );
-  } else {
-    content = (
-      <div className="h-full grow flex justify-center items-center">
-        <NoContent
-          icon={<Camera className="size-16 text-muted-foreground" />}
-          title="No media found"
-          description="Wait for someone to post a media."
-        />
-      </div>
-    );
-  }
-
-  return content;
+  return (
+    <Suspense fallback={<MediaSkeleton />}>
+      <Media initialRes={mediaRes} />
+    </Suspense>
+  );
 }
 
-function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
+function MediaSkeleton() {
   return (
-    <div className={cn("grid grid-cols-3", "gap-1", "px-1 sm:px-0")}>
-      {children}
+    <div className={cn("grid grid-cols-3", "gap-1 px-1 pt-[calc(49px+4px)]")}>
+      {Array.from({ length: 9 }).map((_, index) => (
+        <Skeleton key={index} className="aspect-square rounded-none" />
+      ))}
     </div>
   );
 }

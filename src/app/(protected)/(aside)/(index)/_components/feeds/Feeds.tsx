@@ -27,7 +27,7 @@ export default function Feeds({
   const feeds = response?.data ?? [];
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-  const { hideFeeds, setHideFeeds } = useHome();
+  const { hideFeeds, setHideFeeds, momentLoaded } = useHome();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   function handleScroll(direction: Direction) {
@@ -111,9 +111,11 @@ export default function Feeds({
           "h-6 w-full",
           "border-b border-border",
           "transition-colors duration-200",
-          "hover:bg-accent/[.05] cursor-pointer"
+          "hover:bg-accent/[.05] cursor-pointer",
+          "disabled:hover:bg-transparent disabled:cursor-default"
         )}
         onClick={() => setHideFeeds(!hideFeeds)}
+        disabled={!momentLoaded}
       >
         {hideFeeds ? (
           <ChevronsDown className="size-4 text-muted-foreground" />

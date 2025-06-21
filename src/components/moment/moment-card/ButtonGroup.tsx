@@ -14,7 +14,7 @@ import ColorfulIconButton, {
 import ShareDialog from "./ShareDialog";
 import { Heart, Comment, Share, Repeat, Bookmark } from "../../icons";
 
-type FooterProps = Readonly<{
+type ButtonGroupProps = Readonly<{
   data: DetailedMomentInfo;
   actions: Pick<Actions, "like" | "bookmark" | "share"> & {
     comment?: () => void;
@@ -22,7 +22,11 @@ type FooterProps = Readonly<{
   className?: string;
 }>;
 
-export default function Footer({ data, actions, className }: FooterProps) {
+export default function ButtonGroup({
+  data,
+  actions,
+  className,
+}: ButtonGroupProps) {
   const router = useRouter();
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const momentId = data.id;

@@ -6,13 +6,14 @@ import type {
   DetailedMomentInfo,
   CommentInfo,
 } from "api";
-import { PAGE_CONFIG, Audience, SortBy } from "@/constants/clientConfig";
+import { Audience, SortBy } from "@/constants/clientConfig";
 
 const apiRes = {
   getMoments: "success" as "error" | "empty" | "success",
   getMoment: "success" as "error" | "empty" | "success",
   getComments: "success" as "error" | "success" | "empty",
   getFeeds: "success" as "error" | "empty" | "success",
+  explore: "success" as "error" | "empty" | "success",
   repost: "success" as "error" | "success",
   comment: "success" as "error" | "success",
   report: "success" as "error" | "success",
@@ -83,11 +84,9 @@ export async function getMoments(page: number): Promise<
     hasNextPage: boolean;
   }>
 > {
-  const start = (page - 1) * PAGE_CONFIG.MOMENT_CARD_PAGE;
-  const end = start + PAGE_CONFIG.MOMENT_CARD_PAGE;
-  const moments = mockMoments.slice(start, end);
-
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log("getMoments", page);
+  const moments = mockMoments;
+  await new Promise((resolve) => setTimeout(resolve, 12000));
   if (apiRes.getMoments === "error") {
     return {
       success: false,
@@ -109,7 +108,7 @@ export async function getMoments(page: number): Promise<
     message: "ok",
     data: {
       items: moments,
-      hasNextPage: mockMoments.length > PAGE_CONFIG.MOMENT_CARD_PAGE * page,
+      hasNextPage: page <= 3,
     },
   };
 }
@@ -193,35 +192,49 @@ export async function getComments(
 export async function explore(
   type: "media" | "moments",
   page: number
-): Promise<API<DetailedMomentInfo[]>> {
+): Promise<
+  API<{
+    items: DetailedMomentInfo[];
+    hasNextPage: boolean;
+  }>
+> {
   console.log("explore", type, page);
-  const start =
-    (page - 1) *
-    (type === "media"
-      ? PAGE_CONFIG.MOMENT_CELL_PAGE
-      : PAGE_CONFIG.MOMENT_CARD_PAGE);
-  const end =
-    start +
-    (type === "media"
-      ? PAGE_CONFIG.MOMENT_CELL_PAGE
-      : PAGE_CONFIG.MOMENT_CARD_PAGE);
   const filteredMoments =
     type === "media"
       ? mockMoments.filter(
           (moment) => moment.post.files && moment.post.files.length > 0
         )
       : mockMoments;
-  const moments = filteredMoments.slice(start, end);
+  const moments = filteredMoments;
 
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        message: "ok",
-        data: moments,
-      });
-    }, 1000);
-  });
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
+  if (apiRes.explore === "error") {
+    return {
+      success: false,
+      message: "error",
+    };
+  }
+
+  if (apiRes.explore === "empty") {
+    return {
+      success: true,
+      message: "ok",
+      data: {
+        items: [],
+        hasNextPage: false,
+      },
+    };
+  }
+
+  return {
+    success: true,
+    message: "ok",
+    data: {
+      items: moments,
+      hasNextPage: page <= 5,
+    },
+  };
 }
 
 export async function comment(

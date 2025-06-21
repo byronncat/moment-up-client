@@ -1,36 +1,34 @@
 import type { DetailedMomentInfo } from "api";
+import format from "@/utilities/format";
+import { ROUTE } from "@/constants/clientConfig";
 
+import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/libraries/utils";
 import { Heart, Comment, Clone, Video } from "@/components/icons";
 
 type MomentCellProps = Readonly<{
   data: DetailedMomentInfo;
+  onClick?: () => void;
 }>;
 
-export default function MomentCell({ data }: MomentCellProps) {
+export default function MomentCell({ data, onClick }: MomentCellProps) {
   if (!data.post.files || data.post.files.length === 0) return null;
   const coverFile = data.post.files[0];
+  const isLiked = data.post.isLiked;
 
   return (
     <div
-      key={data.id}
-      className={cn("relative group", "rounded-lg shadow-lg overflow-hidden")}
+      className={cn("relative group", "shadow-lg overflow-hidden")}
+      onClick={onClick}
     >
-      <div
-        className={cn(
-          "aspect-square overflow-hidden",
-          "bg-card",
-          "hover:cursor-pointer",
-          "relative"
-        )}
-      >
+      <div className={cn("bg-card aspect-square", "relative")}>
         {coverFile.type === "image" ? (
           <Image
             src={coverFile.url}
             alt={data.post.text || "Moment image"}
             fill
-            sizes="33vw"
+            sizes="240px"
             className="size-full object-cover object-top"
             loading="lazy"
             placeholder="blur"
@@ -55,36 +53,47 @@ export default function MomentCell({ data }: MomentCellProps) {
           </span>
         ) : null}
 
-        <HoverOverlay likes={data.post.likes} comments={data.post.comments} />
+        <HoverOverlay
+          id={data.id}
+          isLiked={isLiked}
+          likes={data.post.likes}
+          comments={data.post.comments}
+        />
       </div>
     </div>
   );
 }
 
 type HoverOverlayProps = Readonly<{
+  id: DetailedMomentInfo["id"];
+  isLiked: boolean;
   likes: number;
   comments: number;
 }>;
 
-function HoverOverlay({ likes, comments }: HoverOverlayProps) {
+function HoverOverlay({ id, isLiked, likes, comments }: HoverOverlayProps) {
   return (
-    <div
+    <Link
+      href={ROUTE.MOMENT(id)}
       className={cn(
         "absolute inset-0 bg-black/50",
-        "opacity-0 group-hover:opacity-100 transition-opacity duration-200",
-        "flex items-center justify-center"
+        "hidden group-hover:flex",
+        "items-center justify-center"
       )}
     >
       <div className="flex gap-6 text-white font-semibold">
         <div className="flex items-center gap-2">
-          <Heart className="size-6 fill-red-500" type="solid" />
-          <span>{likes}</span>
+          <Heart
+            className="size-6 fill-red-500"
+            type={isLiked ? "solid" : "regular"}
+          />
+          <span>{format.number(likes)}</span>
         </div>
         <div className="flex items-center gap-2">
           <Comment className="size-6 fill-white" type="solid" />
-          <span>{comments}</span>
+          <span>{format.number(comments)}</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

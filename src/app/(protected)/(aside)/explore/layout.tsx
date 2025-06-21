@@ -24,8 +24,16 @@ export default function ExploreLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className={cn("flex flex-col h-full", "pt-0 sm:pt-2 pb-10")}>
-      <NavigationBar items={tabs} className="mb-8" />
+    <div className="flex flex-col h-full">
+      <div className="relative">
+        <NavigationBar
+          items={tabs}
+          className={cn(
+            "absolute top-0 left-0 z-10",
+            "bg-background/90 backdrop-blur-sm"
+          )}
+        />
+      </div>
       <div className="flex-1">{children}</div>
     </div>
   );

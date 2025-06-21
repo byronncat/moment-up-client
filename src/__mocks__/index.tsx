@@ -1604,6 +1604,28 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           isBookmarked: false,
         },
       },
+      {
+        id: "b9a6a3a4-02e1-470-8cbe-69dc2a15735b9",
+        user: {
+          id: "b9a6a3a4-02e1-470-8cbe-69dc2a15735b9",
+          username: "anonymous",
+          displayName: "Anonymous",
+          avatar: getRandomFile("b9a6a3a4-02e1-470-8cbe-69dc2a15735b9"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nProin dignissim iaculis posuere. Nulla facilisi.\nIn ultrices, tortor quis ultrices pharetra, mauris tortor tempor turpis, sed pretium nisl nibh ac risus.\nSed elementum justo at arcu gravida aliquet et vitae nulla.",
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
+        },
+      },
     ]
   : [];
 

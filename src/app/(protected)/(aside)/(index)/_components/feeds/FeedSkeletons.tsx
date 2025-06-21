@@ -4,7 +4,13 @@ import CreateFeedButton from "./CreateFeedButton";
 
 export default function FeedSkeletons() {
   return (
-    <div className={cn("h-[144px]", "flex flex-col")}>
+    <div
+      className={cn(
+        "h-[144px]",
+        "flex flex-col",
+        "absolute top-0 left-0 right-0 z-10"
+      )}
+    >
       <div className="flex grow">
         <div className={cn("w-8", "border-r border-border")} />
         <div className={cn("flex gap-3", "pt-4 pb-2 grow")}>

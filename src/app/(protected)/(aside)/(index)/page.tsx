@@ -7,7 +7,7 @@ import { MomentSkeleton } from "@/components/moment";
 
 export default function HomePage() {
   const feedsRes = CoreApi.getFeeds();
-  const momentsRes = CoreApi.getMoments(1);
+  const momentsRes = CoreApi.getMoments(0);
   return (
     <HomeProvider>
       <div className="relative">
@@ -28,9 +28,9 @@ export default function HomePage() {
 
 function MomentSkeletons() {
   return (
-    <div className="flex flex-col gap-4 pt-4">
-      <MomentSkeleton variant="horizontal" />
-      <MomentSkeleton variant="square" />
+    <div className="flex flex-col gap-4 pt-[160px]">
+      <MomentSkeleton haveText={true} media="none" />
+      <MomentSkeleton haveText={false} media="square" />
     </div>
   );
 }

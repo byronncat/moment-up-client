@@ -3,9 +3,11 @@
 import { useCallback, useRef, useState, useEffect } from "react";
 import { cn } from "@/libraries/utils";
 
+const SCROLLBAR_WIDTH = 12;
+
 type VirtualScrollbarProps = Readonly<{
   height: number;
-  width: number;
+  width?: number;
   totalHeight: number;
   onScroll: (scrollTop: number) => void;
   onScrollUpdate?: (updateFn: (scrollTop: number) => void) => void;
@@ -15,7 +17,7 @@ type VirtualScrollbarProps = Readonly<{
 export default function VirtualScrollbar({
   height,
   totalHeight,
-  width,
+  width = SCROLLBAR_WIDTH,
   onScroll,
   onScrollUpdate,
   className,
