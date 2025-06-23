@@ -1,11 +1,12 @@
 import type { DetailedMomentInfo, UserProfileInfo } from "api";
 import { mockProfile, mockMoments } from "@/__mocks__";
 import type { API } from "api";
-import { PAGE_CONFIG } from "@/constants/clientConfig";
 
 const apiRes = {
   toggleFollow: "success" as "error" | "success",
   toggleBlock: "success" as "error" | "success",
+  getProfile: "success" as "error" | "success" | "not-found",
+  getMoments: "success" as "error" | "success" | "empty",
 };
 
 export async function toggleFollow(userId: string): Promise<API> {
@@ -42,7 +43,19 @@ export async function getProfile(
   username: string
 ): Promise<API<UserProfileInfo>> {
   console.log("getProfile", username);
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  if (apiRes.getProfile === "not-found")
+    return {
+      success: false,
+      message: "error",
+    };
+
+  if (apiRes.getProfile === "error")
+    return {
+      success: false,
+      message: "error",
+    };
+
+  await new Promise((resolve) => setTimeout(resolve, 6000));
   return {
     success: true,
     message: "User fetched successfully",
@@ -54,25 +67,37 @@ export async function getMoments(
   type: "moments" | "media" | "likes",
   username: string,
   page: number
-): Promise<API<DetailedMomentInfo[]>> {
+): Promise<API<{ items: DetailedMomentInfo[]; hasNextPage: boolean }>> {
   console.log("getMoments", type, username, page);
-  const start = (page - 1) * PAGE_CONFIG.MOMENT_CELL_PAGE;
-  const end = start + PAGE_CONFIG.MOMENT_CELL_PAGE;
+  await new Promise((resolve) => setTimeout(resolve, 12000));
+
+  if (apiRes.getMoments === "empty")
+    return {
+      success: true,
+      message: "Moments fetched successfully",
+      data: {
+        items: [],
+        hasNextPage: false,
+      },
+    };
+
+  if (apiRes.getMoments === "error")
+    return {
+      success: false,
+      message: "Failed to fetch moments",
+    };
+
   const filteredMoments =
     type === "moments" || type === "likes"
-      ? mockMoments.filter((moment) => moment.user.username === username)
-      : mockMoments.filter(
-          (moment) =>
-            moment.user.username === username &&
-            moment.post.files &&
-            moment.post.files.length > 0
-        );
-  const moments = filteredMoments.slice(start, end);
+      ? mockMoments
+      : mockMoments.filter((moment) => moment.post.files && moment.post.files.length > 0);
 
-  await new Promise((resolve) => setTimeout(resolve, 3000));
   return {
     success: true,
     message: "Moments fetched successfully",
-    data: moments,
+    data: {
+      items: filteredMoments,
+      hasNextPage: page < 10,
+    },
   };
 }

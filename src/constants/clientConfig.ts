@@ -8,7 +8,7 @@ export const ROUTE = {
   HOME: "/",
   PROFILE: (
     username: string,
-    type: "default" | "media" | "likes" = "default"
+    type: "default" | "media" | "tagged" = "default"
   ) => `/profile/${username}${type !== "default" ? `/${type}` : ""}`,
   SEARCH: (query?: string, filter?: SearchCategory) => {
     const params = new URLSearchParams();

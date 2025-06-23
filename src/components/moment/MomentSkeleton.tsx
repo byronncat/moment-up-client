@@ -9,7 +9,7 @@ type MomentSkeletonProps = Readonly<{
 
 export default function MomentSkeleton({
   media = "square",
-  haveText = true,
+  haveText = false,
 }: MomentSkeletonProps) {
   let aspectRatio;
   switch (media) {
