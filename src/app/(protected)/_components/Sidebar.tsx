@@ -21,6 +21,7 @@ import {
   Menu,
   Palette,
   LogOut,
+  Archive,
 } from "lucide-react";
 import {
   Sidebar as SidebarUI,
@@ -95,6 +96,12 @@ export default function Sidebar() {
       url: ROUTE.MESSAGES,
       icon: MessagesSquare,
       matchPath: (pathname: string) => pathname === ROUTE.MESSAGES,
+    },
+    {
+      title: "Archive",
+      url: ROUTE.ARCHIVE,
+      icon: Archive,
+      matchPath: (pathname: string) => pathname.startsWith(ROUTE.ARCHIVE),
     },
     {
       title: "Notifications",

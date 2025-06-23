@@ -28,6 +28,7 @@ export const ROUTE = {
   NOTIFICATION: (type: "all" | "requests" | "information" = "all") =>
     `/notifications${type === "all" ? "" : `/${type}`}`,
   SETTINGS: "/settings",
+  ARCHIVE: "/archive",
 };
 
 export const PROTECTED_ROUTES = [ROUTE.HOME];
