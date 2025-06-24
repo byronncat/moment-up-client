@@ -4,10 +4,13 @@ import type { API, DetailedMomentInfo } from "api";
 import { use, useEffect, useState, useRef } from "react";
 import { useMoment } from "@/components/providers";
 import { CoreApi } from "@/services";
+import { TOP_PADDING, BOTTOM_PADDING } from "./constants/spacing";
 
 import { ErrorContent, NoContent } from "@/components";
 import { MomentGrid } from "@/components/moment";
 import { Images } from "lucide-react";
+
+const CELL_GAP = 4;
 
 type MediaGridProps = Readonly<{
   initialRes: Promise<
@@ -67,6 +70,10 @@ export default function Media({ initialRes }: MediaGridProps) {
       isNextPageLoading={isNextPageLoading}
       loadNextPage={() => fetchMedia()}
       onItemClick={setCurrentIndex}
+      listOptions={{
+        topPadding: TOP_PADDING + CELL_GAP,
+        bottomPadding: BOTTOM_PADDING,
+      }}
     />
   );
 }

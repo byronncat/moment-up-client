@@ -1,6 +1,7 @@
 import { Metadata } from "@/constants/metadata";
 import { ROUTE } from "@/constants/clientConfig";
 import { cn } from "@/libraries/utils";
+import { PageHeader } from "../_components";
 import { NavigationBar, type NavItem } from "@/components";
 import { Image, Users } from "lucide-react";
 
@@ -26,13 +27,15 @@ export default function ExploreLayout({
   return (
     <div className="flex flex-col h-full">
       <div className="relative">
-        <NavigationBar
-          items={tabs}
+        <PageHeader
+          title="Explore"
           className={cn(
+            "w-full",
             "absolute top-0 left-0 z-10",
-            "bg-background/90 backdrop-blur-sm"
           )}
-        />
+        >
+          <NavigationBar items={tabs} />
+        </PageHeader>
       </div>
       <div className="flex-1">{children}</div>
     </div>

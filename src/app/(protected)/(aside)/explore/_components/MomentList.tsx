@@ -4,13 +4,13 @@ import type { API, DetailedMomentInfo } from "api";
 import { use, useEffect, useState, useRef } from "react";
 import { useMoment } from "@/components/providers";
 import { CoreApi } from "@/services";
+import { TOP_PADDING, BOTTOM_PADDING } from "./constants/spacing";
 
 import { ErrorContent, NoContent } from "@/components";
 import { MomentList } from "@/components/moment";
 import { Camera } from "lucide-react";
 
-const TOP_PADDING = 49 + 16; // 49px (header height) + 16px (gap)
-const BOTTOM_PADDING = 36; // 36px (footer height)
+const ITEM_GAP = 16;
 
 type MomentsProps = Readonly<{
   initialRes: Promise<
@@ -89,7 +89,7 @@ export default function Moments({ initialRes }: MomentsProps) {
         report,
       }}
       listOptions={{
-        topPadding: TOP_PADDING,
+        topPadding: TOP_PADDING + ITEM_GAP,
         bottomPadding: BOTTOM_PADDING,
       }}
     />
