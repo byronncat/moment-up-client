@@ -34,7 +34,7 @@ export default function Layout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="size-full">
-      <div className="relative w-full">
+      <div className="relative">
         <PageHeader
           title="Notifications"
           className="absolute top-0 z-10 w-full"

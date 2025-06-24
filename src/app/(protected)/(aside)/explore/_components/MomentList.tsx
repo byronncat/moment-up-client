@@ -4,13 +4,11 @@ import type { API, DetailedMomentInfo } from "api";
 import { use, useEffect, useState, useRef } from "react";
 import { useMoment } from "@/components/providers";
 import { CoreApi } from "@/services";
-import { TOP_PADDING, BOTTOM_PADDING } from "./constants/spacing";
+import { TOP_PADDING, BOTTOM_PADDING, ITEM_GAP } from "./constants/spacing";
 
 import { ErrorContent, NoContent } from "@/components";
 import { MomentList } from "@/components/moment";
 import { Camera } from "lucide-react";
-
-const ITEM_GAP = 16;
 
 type MomentsProps = Readonly<{
   initialRes: Promise<
