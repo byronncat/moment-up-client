@@ -79,7 +79,7 @@ function MomentGrid({ username, initialRes }: MomentGridProps) {
       onItemClick={handleClick}
       listOptions={{
         topChildren: <ProfileZone data={profile} />,
-        topPadding: 446 + 4,
+        topPadding: 442 + 4,
         bottomPadding: 16,
       }}
     />

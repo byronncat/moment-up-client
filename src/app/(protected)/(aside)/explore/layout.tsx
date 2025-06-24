@@ -8,13 +8,13 @@ import { Image, Users } from "lucide-react";
 const tabs: NavItem[] = [
   {
     id: "media",
-    icon: <Image aria-label="Media" />,
+    icon: <Image aria-label="Media" className="size-5" />,
     label: "Media",
     href: ROUTE.EXPLORE("media"),
   },
   {
     id: "moments",
-    icon: <Users />,
+    icon: <Users className="size-5" />,
     label: "Moments",
     href: ROUTE.EXPLORE("moments"),
   },

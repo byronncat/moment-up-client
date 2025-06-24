@@ -16,19 +16,19 @@ export default function ProfileZone({ data, className }: ProfileZoneProps) {
     {
       id: "moments",
       label: "Moments",
-      icon: <TableOfContents />,
+      icon: <TableOfContents className="size-4" />,
       href: ROUTE.PROFILE(data.username),
     },
     {
       id: "media",
       label: "Media",
-      icon: <Image aria-label="User's media" />,
+      icon: <Image aria-label="User's media" className="size-4" />,
       href: ROUTE.PROFILE(data.username, "media"),
     },
     {
       id: "tagged",
       label: "Tagged",
-      icon: <Tag />,
+      icon: <Tag className="size-4" />,
       href: ROUTE.PROFILE(data.username, "tagged"),
     },
   ];

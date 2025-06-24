@@ -103,7 +103,7 @@ function MomentList({ username, initialRes }: MomentListProps) {
       }}
       listOptions={{
         topChildren: <ProfileZone data={profile} />,
-        topPadding: 446 + 16,
+        topPadding: 442 + 16,
         bottomPadding: 121,
       }}
       itemOptions={{
