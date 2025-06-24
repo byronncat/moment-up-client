@@ -4,7 +4,7 @@ declare module "api" {
     User,
     Hashtag,
     Feed,
-    Notification as NotificationSchema,
+    Notification,
     Comment,
     File,
   } from "schema";
@@ -67,6 +67,31 @@ declare module "api" {
     createdAt: Comment["created_at"];
   };
 
+  // === Notification ===
+  type SecurityNotification = {
+    id: Notification["id"];
+    type: "security";
+    userId: Notification["user_id"];
+    createdAt: Notification["created_at"];
+  };
+
+  type CommunityNotification = {
+    id: Notification["id"];
+    type: "social";
+    user: UserCardDisplayInfo;
+    createdAt: Notification["created_at"];
+    information:
+      | {
+          type: "post" | "mention";
+          content: string;
+        }
+      | {
+          type: "follow";
+        };
+  };
+
+  type NotificationInfo = SecurityNotification | CommunityNotification;
+
   // === Others ===
   type HashtagItem = Hashtag & {
     type: "hashtag";
@@ -125,28 +150,4 @@ declare module "api" {
       createdAt: Feed["created_at"];
     }[];
   };
-
-  // Others
-  type SecurityNotification = NotificationSchema & {
-    type: "security";
-    information: "login";
-  };
-
-  type CommunityNotification = NotificationSchema & {
-    type: "community";
-    information:
-      | {
-          type: "post" | "mention";
-          avatar: User["avatar"];
-          displayName: User["display_name"];
-          content: string;
-        }
-      | {
-          type: "follow";
-          avatar: User["avatar"];
-          displayName: User["display_name"];
-        };
-  };
-
-  type Notification = SecurityNotification | CommunityNotification;
 }

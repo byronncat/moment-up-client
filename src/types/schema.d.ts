@@ -20,6 +20,21 @@ declare module "schema" {
     readonly created_at: Date;
   };
 
+  type Comment = {
+    readonly id: string;
+    readonly moment_id: Moment["id"];
+    readonly user_id: User["id"];
+    content: string;
+    readonly created_at: Date;
+  };
+
+  type Notification = {
+    readonly id: string;
+    readonly user_id: User["id"];
+    readonly created_at: Date;
+    type: "social" | "system";
+  };
+
   type File = {
     readonly id: string;
     readonly type: "image" | "video" | "audio";
@@ -44,20 +59,5 @@ declare module "schema" {
     readonly feed_id: Feed["id"];
     readonly user_id: User["id"];
     readonly created_at: Date;
-  };
-
-  type Comment = {
-    readonly id: string;
-    readonly moment_id: Moment["id"];
-    readonly user_id: User["id"];
-    content: string;
-    readonly created_at: Date;
-  };
-
-  type Notification = {
-    readonly id: string;
-    readonly user_id: User["id"];
-    readonly created_at: Date;
-    type: "community" | "security" | "system";
   };
 }

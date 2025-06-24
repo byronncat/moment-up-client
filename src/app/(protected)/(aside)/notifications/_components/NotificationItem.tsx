@@ -1,43 +1,19 @@
 "use client";
 
-import type { Notification } from "api";
+import type {
+  NotificationInfo,
+  CommunityNotification,
+  UserCardDisplayInfo,
+} from "api";
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components";
 import { Button } from "@/components/ui/button";
 import { ShieldAlert, UserPlus, UserX } from "lucide-react";
 
-type FormattedContentProps = {
-  content: string;
-};
-
-function FormattedContent({ content }: FormattedContentProps) {
-  const parts = content.split(/(\*\*.*?\*\*)/g);
-  return (
-    <>
-      {parts.map((part, index) => {
-        if (part.startsWith("**") && part.endsWith("**")) {
-          return (
-            <span className="font-semibold" key={index}>
-              {part.slice(2, -2)}
-            </span>
-          );
-        }
-        return <span key={index}>{part}</span>;
-      })}
-    </>
-  );
-}
-
-type SecurityNotificationProps = {
-  information: "login";
-};
-
-const SecurityNotification = ({ information }: SecurityNotificationProps) => {
+function SecurityNotification() {
   const title = "Security Alert";
   const description =
-    information === "login"
-      ? "We noticed a new login from a device or location you don't usually use. Please review."
-      : "";
+    "We noticed a new login from a device or location you don't usually use. Please review.";
 
   return (
     <>
@@ -57,28 +33,26 @@ const SecurityNotification = ({ information }: SecurityNotificationProps) => {
       </div>
     </>
   );
-};
-
-type CommunityInformation = {
-  type: "follow" | "post" | "mention";
-  displayName: string;
-  avatar?: string;
-} & ({ type: "follow" } | { type: "post" | "mention"; content: string });
+}
 
 type CommunityNotificationProps = {
-  information: CommunityInformation;
+  user: UserCardDisplayInfo;
+  information: CommunityNotification["information"];
 };
 
-const CommunityNotification = ({ information }: CommunityNotificationProps) => {
+const CommunityNotification = ({
+  user,
+  information,
+}: CommunityNotificationProps) => {
   const title =
     information.type === "follow"
-      ? `${information.displayName} requested to follow you`
-      : information.displayName;
+      ? `${user.displayName} requested to follow you`
+      : user.displayName;
 
   return (
     <>
       <div className="mr-3">
-        <Avatar src={information.avatar} size="12" />
+        <Avatar src={user.avatar} size="12" />
       </div>
       <div className="grow min-w-0">
         <div className="font-semibold">{title}</div>
@@ -103,19 +77,51 @@ const CommunityNotification = ({ information }: CommunityNotificationProps) => {
   );
 };
 
+type NotificationItemProps = Readonly<{
+  data: NotificationInfo;
+  className?: string;
+  onClick?: () => void;
+}>;
+
 export default function NotificationItem({
   data,
-}: Readonly<{
-  data: Notification;
-}>) {
+  className,
+  onClick,
+}: NotificationItemProps) {
   return (
-    <div className={cn("p-4", "border-b border-border", "flex")}>
-      {data.type === "security" && (
-        <SecurityNotification information={data.information} />
-      )}
-      {data.type === "community" && (
-        <CommunityNotification information={data.information} />
+    <div
+      className={cn("p-4 flex", "border-b border-border", className)}
+      onClick={onClick}
+    >
+      {data.type === "security" && <SecurityNotification />}
+      {data.type === "social" && (
+        <CommunityNotification
+          user={data.user}
+          information={data.information}
+        />
       )}
     </div>
+  );
+}
+
+type FormattedContentProps = {
+  content: string;
+};
+
+function FormattedContent({ content }: FormattedContentProps) {
+  const parts = content.split(/(\*\*.*?\*\*)/g);
+  return (
+    <>
+      {parts.map((part, index) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return (
+            <span className="font-semibold" key={index}>
+              {part.slice(2, -2)}
+            </span>
+          );
+        }
+        return <span key={index}>{part}</span>;
+      })}
+    </>
   );
 }
