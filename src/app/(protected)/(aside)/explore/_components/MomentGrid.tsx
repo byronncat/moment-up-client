@@ -6,7 +6,7 @@ import { useMoment } from "@/components/providers";
 import { CoreApi } from "@/services";
 
 import { ErrorContent, NoContent } from "@/components";
-import Grid from "./Grid";
+import { MomentGrid } from "@/components/moment";
 import { Images } from "lucide-react";
 
 type MediaGridProps = Readonly<{
@@ -61,7 +61,7 @@ export default function Media({ initialRes }: MediaGridProps) {
     );
 
   return (
-    <Grid
+    <MomentGrid
       items={media}
       hasNextPage={hasNextPage}
       isNextPageLoading={isNextPageLoading}

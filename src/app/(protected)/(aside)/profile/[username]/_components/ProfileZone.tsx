@@ -8,9 +8,10 @@ import { TableOfContents, Image, Tag } from "lucide-react";
 
 type ProfileZoneProps = Readonly<{
   data: UserProfileInfo;
+  className?: string;
 }>;
 
-export default function ProfileZone({ data }: ProfileZoneProps) {
+export default function ProfileZone({ data, className }: ProfileZoneProps) {
   const tabs: NavItem[] = [
     {
       id: "moments",
@@ -33,7 +34,7 @@ export default function ProfileZone({ data }: ProfileZoneProps) {
   ];
 
   return (
-    <div>
+    <div className={className}>
       <UserInfo data={data} />
       <NavigationBar
         items={tabs}

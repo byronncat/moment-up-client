@@ -3,14 +3,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import { cn } from "@/libraries/utils";
 import { Suspense } from "react";
-import Media from "./_components/Media";
+import { MomentGrid } from "../_components";
 
 export default function MediaPage() {
   const mediaRes = CoreApi.explore("media", 0);
 
   return (
     <Suspense fallback={<MediaSkeleton />}>
-      <Media initialRes={mediaRes} />
+      <MomentGrid initialRes={mediaRes} />
     </Suspense>
   );
 }

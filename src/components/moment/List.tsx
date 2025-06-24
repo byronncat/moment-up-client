@@ -33,10 +33,15 @@ type MomentListProps = Readonly<{
   loadNextPage: () => void;
   onItemClick: (index: number) => void;
   actions: Actions;
-  styles: {
+  listOptions: {
+    topChildren?: React.ReactNode;
     topPadding?: number;
     bottomPadding?: number;
     listClassName?: string;
+  };
+  itemOptions?: {
+    maxWidth?: number;
+    className?: string;
   };
 }>;
 
@@ -47,7 +52,8 @@ export default function MomentList({
   loadNextPage,
   onItemClick,
   actions,
-  styles,
+  listOptions,
+  itemOptions,
 }: MomentListProps) {
   const [isResizing, setIsResizing] = useState(false);
   const listRef = useRef<VariableSizeList>(null);
@@ -68,11 +74,14 @@ export default function MomentList({
     listRef.current?.scrollTo(newScrollTop);
   }
 
-  const getItemSize = (index: number, width: number) => {
-    if (index === 0) return styles.topPadding ?? 0;
-    if (index === itemCount - 1) return styles.bottomPadding ?? 0;
+  const getItemSize = (index: number, _width: number) => {
+    if (index === 0) return listOptions.topPadding ?? 0;
+    if (index === itemCount - 1) return listOptions.bottomPadding ?? 0;
     if (index === itemCount - 2) return LOADING_INDICATOR_HEIGHT;
 
+    let width = _width;
+    if (itemOptions?.maxWidth && _width > itemOptions.maxWidth)
+      width = itemOptions.maxWidth;
     const moment = items[index - 1];
     if (!moment) return 0;
 
@@ -157,10 +166,12 @@ export default function MomentList({
                     }
                     itemData={{
                       itemCount,
+                      topChildren: listOptions.topChildren,
                       isItemLoaded,
                       items,
                       actions,
                       onClick: onItemClick,
+                      itemOptions,
                     }}
                     itemKey={(index) => {
                       if (index === 0) return "top";
@@ -168,11 +179,7 @@ export default function MomentList({
                       if (index === itemCount - 2) return "loading-indicator";
                       return items[index - 1].id;
                     }}
-                    className={cn(
-                      "scrollbar-hide",
-
-                      styles.listClassName
-                    )}
+                    className={cn("scrollbar-hide", listOptions.listClassName)}
                   >
                     {Item}
                   </VariableSizeList>
@@ -201,14 +208,19 @@ type ItemProps = Readonly<{
     items: DetailedMomentInfo[];
     actions: Actions;
     itemCount: number;
+    topChildren?: React.ReactNode;
     isItemLoaded: (index: number) => boolean;
     onClick: (index: number) => void;
+    itemOptions?: {
+      maxWidth?: number;
+      className?: string;
+    };
   };
   style: React.CSSProperties;
 }>;
 
 function Item({ index, data, style }: ItemProps) {
-  if (index === 0) return <div style={style} />;
+  if (index === 0) return data.topChildren;
   if (index === data.itemCount - 1) return <div style={style} />;
 
   const { isItemLoaded, items, actions, onClick } = data;
@@ -221,9 +233,17 @@ function Item({ index, data, style }: ItemProps) {
         data={items[dataIndex]}
         actions={actions}
         onClick={() => onClick(dataIndex)}
+        className={data.itemOptions?.className}
       />
     );
-  } else content = <MomentSkeleton haveText media="none" />;
+  } else
+    content = (
+      <MomentSkeleton
+        haveText
+        media="none"
+        className={data.itemOptions?.className}
+      />
+    );
 
   return <div style={style}>{content}</div>;
 }

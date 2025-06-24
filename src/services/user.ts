@@ -55,7 +55,7 @@ export async function getProfile(
       message: "error",
     };
 
-  await new Promise((resolve) => setTimeout(resolve, 6000));
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   return {
     success: true,
     message: "User fetched successfully",
@@ -64,12 +64,12 @@ export async function getProfile(
 }
 
 export async function getMoments(
-  type: "moments" | "media" | "likes",
+  type: "moments" | "media" | "tagged",
   username: string,
   page: number
 ): Promise<API<{ items: DetailedMomentInfo[]; hasNextPage: boolean }>> {
   console.log("getMoments", type, username, page);
-  await new Promise((resolve) => setTimeout(resolve, 12000));
+  await new Promise((resolve) => setTimeout(resolve, 4000));
 
   if (apiRes.getMoments === "empty")
     return {
@@ -88,9 +88,11 @@ export async function getMoments(
     };
 
   const filteredMoments =
-    type === "moments" || type === "likes"
+    type === "moments" || type === "tagged"
       ? mockMoments
-      : mockMoments.filter((moment) => moment.post.files && moment.post.files.length > 0);
+      : mockMoments.filter(
+          (moment) => moment.post.files && moment.post.files.length > 0
+        );
 
   return {
     success: true,

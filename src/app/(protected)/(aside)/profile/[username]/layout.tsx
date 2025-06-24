@@ -1,4 +1,7 @@
 import { Metadata, type MetadataMap } from "@/constants/metadata";
+import { use } from "react";
+import { UserApi } from "@/services";
+import ProfileProvider from "./_providers/ProfileProvider";
 
 export async function generateMetadata({
   params,
@@ -7,8 +10,18 @@ export async function generateMetadata({
   return (Metadata.profile as MetadataMap["profile"])(username);
 }
 
-export default async function Layout({
+export default function Layout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
-  return <>{children}</>;
+  params,
+}: Readonly<{
+  children: React.ReactNode;
+  params: Promise<{ username: string }>;
+}>) {
+  const username = use(params).username;
+  const profileRes = UserApi.getProfile(username);
+  return (
+    <ProfileProvider username={username} initialRes={profileRes}>
+      {children}
+    </ProfileProvider>
+  );
 }

@@ -8,11 +8,11 @@ export default function Layout({
     <div className={cn("flex gap-10", "size-full flex justify-center")}>
       <div
         className={cn(
-          "size-full max-w-[640px]",
+          "size-full max-w-[642px] ",
           "[@media(min-width:calc(640px+48px+1px))]:border-x border-border"
         )}
       >
-        {children}
+        <div className={cn("size-full max-w-[640px]")}>{children}</div>
       </div>
       <div className="hidden lg:block">
         <Aside className="pt-5" />

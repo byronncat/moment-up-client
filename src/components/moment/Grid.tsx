@@ -1,3 +1,5 @@
+"use client";
+
 import type { DetailedMomentInfo } from "api";
 import { useRef, useEffect, useState } from "react";
 import { debounce } from "lodash";
@@ -6,14 +8,11 @@ import { MomentCell } from "@/components/moment";
 
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
-import { VariableSizeGrid } from "react-window";
+import { VariableSizeList } from "react-window";
 import { VirtualScrollbar } from "@/components";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const COLUMN_COUNT = 3;
-const GAP_SIZE = 4;
-const TOP_PADDING = 49 + GAP_SIZE; // 49px (header height)
-const BOTTOM_PADDING = 36;
 
 type GridProps = Readonly<{
   items: DetailedMomentInfo[];
@@ -21,6 +20,11 @@ type GridProps = Readonly<{
   isNextPageLoading: boolean;
   loadNextPage: () => void;
   onItemClick: (index: number) => void;
+  listOptions?: {
+    topChildren?: React.ReactNode;
+    topPadding?: number;
+    bottomPadding?: number;
+  };
 }>;
 
 export default function Grid({
@@ -29,9 +33,10 @@ export default function Grid({
   isNextPageLoading,
   loadNextPage,
   onItemClick,
+  listOptions,
 }: GridProps) {
   const [isResizing, setIsResizing] = useState(false);
-  const listRef = useRef<VariableSizeGrid>(null);
+  const listRef = useRef<VariableSizeList>(null);
   const updateScrollbarRef = useRef<(scrollTop: number) => void>(() => {});
 
   const remainder = items.length % COLUMN_COUNT;
@@ -40,22 +45,21 @@ export default function Grid({
   const needsSkeletonRow = hasNextPage && remainder === 0;
   const skeletonRowCount = needsSkeletonRow ? 1 : 0;
 
-  const rowCount = 1 + dataRowCount + skeletonRowCount + 1; // First & Last padding
-  const itemCount = items.length + (hasNextPage ? COLUMN_COUNT : 0);
+  const itemCount = 1 + dataRowCount + skeletonRowCount + 1; // First & Last padding
   const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
 
   const isItemLoaded = (index: number) => {
     if (!hasNextPage) return true;
-    return index < items.length;
+    const itemIndex = (index - 1) * COLUMN_COUNT;
+    return itemIndex < items.length;
   };
 
   function handleCustomScroll(newScrollTop: number) {
-    listRef.current?.scrollTo({ scrollTop: newScrollTop });
+    listRef.current?.scrollTo(newScrollTop);
   }
 
   useEffect(() => {
-    if (items.length > 0)
-      listRef.current?.resetAfterIndices({ rowIndex: 0, columnIndex: 0 });
+    if (items.length > 0) listRef.current?.resetAfterIndex(0);
   }, [items]);
 
   useEffect(() => {
@@ -81,18 +85,16 @@ export default function Grid({
       {({ height, width }) => {
         const baseColumnWidth = Math.floor(width / COLUMN_COUNT);
         const baseRowHeight = baseColumnWidth;
-        const totalHeight =
-          TOP_PADDING + (rowCount - 2) * baseRowHeight + BOTTOM_PADDING;
 
-        function getColumnWidth() {
-          return baseColumnWidth;
-        }
-
-        function getRowHeight(index: number) {
-          if (index === 0) return TOP_PADDING;
-          if (index === rowCount - 1) return BOTTOM_PADDING;
+        function getItemSize(index: number) {
+          if (index === 0) return listOptions?.topPadding ?? 0;
+          if (index === itemCount - 1) return listOptions?.bottomPadding ?? 0;
           return baseRowHeight;
         }
+
+        const totalHeight = Array.from({ length: itemCount })
+          .map((_, i) => getItemSize(i))
+          .reduce((a, b) => a + b, 0);
 
         return (
           <InfiniteLoader
@@ -102,51 +104,33 @@ export default function Grid({
           >
             {({ onItemsRendered, ref }) => (
               <>
-                <VariableSizeGrid
-                  ref={(grid) => {
-                    ref(grid);
-                    listRef.current = grid;
+                <VariableSizeList
+                  ref={(list) => {
+                    ref(list);
+                    listRef.current = list;
                   }}
-                  columnCount={COLUMN_COUNT}
-                  columnWidth={getColumnWidth}
-                  rowCount={rowCount}
-                  rowHeight={getRowHeight}
+                  itemCount={itemCount}
+                  itemSize={getItemSize}
                   height={height}
                   width={width}
-                  onItemsRendered={(gridProps) => {
-                    const { visibleRowStopIndex } = gridProps;
-                    const lastVisibleItemIndex = Math.min(
-                      itemCount - 1,
-                      (visibleRowStopIndex - 1) * COLUMN_COUNT +
-                        COLUMN_COUNT -
-                        1
-                    );
-
-                    onItemsRendered({
-                      overscanStartIndex: 0,
-                      overscanStopIndex: lastVisibleItemIndex,
-                      visibleStartIndex: Math.max(
-                        0,
-                        (gridProps.visibleRowStartIndex - 1) * COLUMN_COUNT
-                      ),
-                      visibleStopIndex: lastVisibleItemIndex,
-                    });
-                  }}
-                  onScroll={({ scrollTop }) =>
-                    updateScrollbarRef.current?.(scrollTop)
+                  onItemsRendered={onItemsRendered}
+                  onScroll={({ scrollOffset }) =>
+                    updateScrollbarRef.current?.(scrollOffset)
                   }
                   itemData={{
                     items,
                     onClick: onItemClick,
-                    rowCount,
+                    itemCount,
                     hasNextPage,
                     dataRowCount,
                     remainder,
+                    topChildren: listOptions?.topChildren,
+                    baseColumnWidth,
                   }}
                   className="scrollbar-hide"
                 >
-                  {Cell}
-                </VariableSizeGrid>
+                  {Row}
+                </VariableSizeList>
                 <VirtualScrollbar
                   height={height}
                   totalHeight={totalHeight}
@@ -165,47 +149,72 @@ export default function Grid({
   );
 }
 
-type CellProps = Readonly<{
-  columnIndex: number;
-  rowIndex: number;
+type RowProps = Readonly<{
+  index: number;
   style: React.CSSProperties;
   data: {
     items: DetailedMomentInfo[];
     onClick: (index: number) => void;
-    rowCount: number;
+    itemCount: number;
     hasNextPage: boolean;
     dataRowCount: number;
     remainder: number;
+    topChildren?: React.ReactNode;
+    baseColumnWidth: number;
   };
 }>;
 
-function Cell({ columnIndex, rowIndex, style, data }: CellProps) {
-  const { items, onClick, rowCount, hasNextPage, dataRowCount, remainder } =
-    data;
+function Row({ index, style, data }: RowProps) {
+  const {
+    items,
+    onClick,
+    itemCount,
+    hasNextPage,
+    dataRowCount,
+    remainder,
+    topChildren,
+    baseColumnWidth,
+  } = data;
 
-  if (rowIndex === 0) return <div style={style} />;
-  if (rowIndex === rowCount - 1) return <div style={style} />;
+  if (index === 0) return <div style={style}>{topChildren}</div>;
+  if (index === itemCount - 1) return <div style={style} />;
 
-  const dataIndex = (rowIndex - 1) * COLUMN_COUNT + columnIndex;
+  const rowIndex = index - 1;
+  const startIndex = rowIndex * COLUMN_COUNT;
 
-  let content = null;
-  if (rowIndex <= dataRowCount) {
-    if (dataIndex < items.length)
-      content = (
-        <MomentCell
-          data={items[dataIndex]}
-          onClick={() => onClick(dataIndex)}
-        />
-      );
-    else if (hasNextPage && remainder > 0 && rowIndex === dataRowCount)
-      content = <Skeleton className="aspect-square rounded-none" />;
-  } else if (hasNextPage)
-    content = <Skeleton className="aspect-square rounded-none" />;
+  return (
+    <div style={style} className="flex justify-around gap-1 px-1">
+      {Array.from({ length: COLUMN_COUNT }).map((_, columnIndex) => {
+        const dataIndex = startIndex + columnIndex;
+        let content = null;
 
-  const cellStyle = {
-    ...style,
-    paddingLeft: GAP_SIZE,
-  };
+        if (rowIndex < dataRowCount) {
+          if (dataIndex < items.length)
+            content = (
+              <MomentCell
+                data={items[dataIndex]}
+                onClick={() => onClick(dataIndex)}
+              />
+            );
+          else if (
+            hasNextPage &&
+            remainder > 0 &&
+            rowIndex === dataRowCount - 1
+          )
+            content = <Skeleton className="aspect-square rounded-none" />;
+        } else if (hasNextPage)
+          content = <Skeleton className="aspect-square rounded-none" />;
 
-  return <div style={cellStyle}>{content}</div>;
+        const cellStyle = {
+          width: baseColumnWidth,
+        };
+
+        return (
+          <div key={columnIndex} style={cellStyle}>
+            {content}
+          </div>
+        );
+      })}
+    </div>
+  );
 }

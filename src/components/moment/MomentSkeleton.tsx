@@ -5,11 +5,13 @@ import { Skeleton } from "../ui/skeleton";
 type MomentSkeletonProps = Readonly<{
   media?: "vertical" | "horizontal" | "square" | "none";
   haveText?: boolean;
+  className?: string;
 }>;
 
 export default function MomentSkeleton({
   media = "square",
   haveText = false,
+  className,
 }: MomentSkeletonProps) {
   let aspectRatio;
   switch (media) {
@@ -28,7 +30,7 @@ export default function MomentSkeleton({
   }
 
   return (
-    <Card className="overflow-hidden">
+    <Card className={cn("overflow-hidden", className)}>
       <CardHeader className="px-4 pt-4 pb-3">
         <div className="flex gap-2">
           <Skeleton className="size-12 rounded-full" />

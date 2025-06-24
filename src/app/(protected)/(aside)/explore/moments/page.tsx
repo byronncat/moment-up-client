@@ -2,7 +2,7 @@ import { CoreApi } from "@/services";
 import { MomentSkeleton } from "@/components/moment";
 
 import { Suspense } from "react";
-import { Moments } from "./_components";
+import { MomentList } from "../_components";
 
 export default function MomentsPage() {
   const momentsRes = CoreApi.explore("moments", 0);
@@ -10,7 +10,7 @@ export default function MomentsPage() {
   return (
     <div className="max-w-[600px] size-full mx-auto">
       <Suspense fallback={<MomentsSkeleton />}>
-        <Moments initialRes={momentsRes} />
+        <MomentList initialRes={momentsRes} />
       </Suspense>
     </div>
   );

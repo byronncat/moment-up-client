@@ -1703,6 +1703,35 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           isBookmarked: false,
         },
       },
+      {
+        id: "b9a6a3a4-02e1-470-8cbe-69dc2a15735b12",
+        user: {
+          id: "b9a6a3a4-02e1-470-8cbe-69dc2a15735b12",
+          username: "anonymous",
+          displayName: "Anonymous",
+          avatar: getRandomFile("b9a6a3a4-02e1-470-8cbe-69dc2a15735b12"),
+          verified: false,
+          followers: 1000,
+          following: 1000,
+          isFollowing: false,
+          hasFeed: true,
+        },
+        post: {
+          files: [
+            {
+              id: "1",
+              type: "image",
+              url: "https://pbs.twimg.com/media/FJrSq89UUAIGhDT?format=jpg&name=4096x4096",
+              aspect_ratio: "4:5",
+            },
+          ],
+          likes: 1000,
+          comments: 1000,
+          created_at: new Date(),
+          isLiked: false,
+          isBookmarked: false,
+        },
+      },
     ]
   : [];
 
