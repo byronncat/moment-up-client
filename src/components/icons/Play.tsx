@@ -1,4 +1,8 @@
-export default function Play({ className }: IconProps) {
+type PlayProps = Readonly<{
+  className?: string;
+}>;
+
+export default function Play({ className }: PlayProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

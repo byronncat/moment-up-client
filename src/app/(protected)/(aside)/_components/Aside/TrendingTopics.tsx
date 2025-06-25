@@ -18,7 +18,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, XCircle, AlertCircle, Ban, Copy } from "lucide-react";
+import {
+  MoreHorizontal,
+  Circle,
+  AlertCircle,
+  Ban,
+  Copy,
+} from "@/components/icons";
 
 export default function TrendingSection({
   initialRes,
@@ -44,32 +50,32 @@ export default function TrendingSection({
 const FEEDBACK_OPTIONS = [
   {
     label: "The associated content is not relevant",
-    icon: XCircle,
+    icon: <Circle variant="x" className="mr-2 size-4" />,
     value: 0,
   },
   {
     label: "This trend is spam",
-    icon: AlertCircle,
+    icon: <AlertCircle className="mr-2 size-4" />,
     value: 1,
   },
   {
     label: "This trend is abusive or harmful",
-    icon: AlertCircle,
+    icon: <AlertCircle className="mr-2 size-4" />,
     value: 2,
   },
   {
     label: "Not interested in this",
-    icon: Ban,
+    icon: <Ban className="mr-2 size-4" />,
     value: 3,
   },
   {
     label: "This trend is a duplicate",
-    icon: Copy,
+    icon: <Copy className="mr-2 size-4" />,
     value: 4,
   },
   {
     label: "This trend is harmful or spammy",
-    icon: AlertCircle,
+    icon: <AlertCircle className="mr-2 size-4" />,
     value: 5,
   },
 ];
@@ -143,7 +149,7 @@ function FeedbackButton() {
             onClick={() => sendFeedback(option.value)}
             className="cursor-pointer"
           >
-            <option.icon className="mr-2 h-4 w-4" />
+            {option.icon}
             {option.label}
           </DropdownMenuItem>
         ))}

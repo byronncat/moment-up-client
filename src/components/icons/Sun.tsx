@@ -1,4 +1,9 @@
-export default function Sun({ className, type = "regular" }: IconProps) {
+type SunProps = Readonly<{
+  className?: string;
+  type?: "regular" | "solid";
+}>;
+
+export default function Sun({ className, type = "regular" }: SunProps) {
   if (type === "solid")
     return (
       <svg

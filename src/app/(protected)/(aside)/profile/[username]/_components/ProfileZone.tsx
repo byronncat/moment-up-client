@@ -4,7 +4,7 @@ import { ROUTE } from "@/constants/clientConfig";
 import { cn } from "@/libraries/utils";
 import UserInfo from "./UserInfo";
 import { NavigationBar, type NavItem } from "@/components";
-import { TableOfContents, Image, Tag } from "lucide-react";
+import { TableOfContents, Image, Tag } from "@/components/icons";
 
 type ProfileZoneProps = Readonly<{
   data: UserProfileInfo;

@@ -10,7 +10,7 @@ import { useContact } from "../_provider/Contact";
 import { NavigationBar, type NavItem } from "@/components";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { MagnifyingGlass, XMark } from "@/components/icons";
+import { MagnifyingGlass, X } from "@/components/icons";
 import { ROUTE } from "@/constants/clientConfig";
 
 export default function ChatSidebar() {
@@ -106,7 +106,7 @@ function SearchBar({ query, setQuery }: SearchBarProps) {
               "transition-colors duration-150 ease-in-out"
             )}
           >
-            <XMark className="size-3 fill-muted-foreground" />
+            <X className="size-3 fill-muted-foreground" />
           </button>
         )}
       </div>

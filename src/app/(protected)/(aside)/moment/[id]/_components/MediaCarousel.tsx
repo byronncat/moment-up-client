@@ -12,7 +12,7 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { Pause, Play } from "lucide-react";
+import { Pause, Play } from "@/components/icons";
 
 type MediaCarouselProps = Readonly<{
   files: File[] | undefined;
@@ -101,7 +101,7 @@ export default function MediaCarousel({
                   {isPlaying ? (
                     <Pause className="size-12 fill-white/80" />
                   ) : (
-                    <Play className="size-12 fill-white/80" type="solid" />
+                    <Play className="size-12 fill-white/80" />
                   )}
                 </div>
               </div>

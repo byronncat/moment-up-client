@@ -18,8 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { CircleCheck } from "../icons";
-import { UserMinus, UserPlus, UserCheck, Settings } from "lucide-react";
+import { Circle, User, Settings } from "@/components/icons";
 import { useAuth } from "../providers";
 
 type UserInfoCardProps = Readonly<{
@@ -60,7 +59,9 @@ export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
               )}
             >
               <span className="truncate max-w-[144px]">{user.displayName}</span>
-              {user.verified && <CircleCheck className="size-3 fill-primary" />}
+              {user.verified && (
+                <Circle variant="check" className="size-3 fill-primary" />
+              )}
             </CardTitle>
           </Link>
           <Link
@@ -183,8 +184,9 @@ function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
   };
 
   const renderIcon = () => {
-    if (isFollowing) return isHover ? <UserMinus /> : <UserCheck />;
-    return <UserPlus />;
+    if (isFollowing)
+      return isHover ? <User variant="minus" /> : <User variant="check" />;
+    return <User variant="plus" />;
   };
 
   return (

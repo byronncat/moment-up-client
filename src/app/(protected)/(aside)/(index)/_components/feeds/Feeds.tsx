@@ -9,7 +9,6 @@ import { cn } from "@/libraries/utils";
 import FeedItem from "./FeedItem";
 import CreateFeedButton from "./CreateFeedButton";
 import { Chevron } from "@/components/icons";
-import { ChevronsDown, ChevronsUp } from "lucide-react";
 
 type Direction = "left" | "right";
 const ITEMS_PER_VIEW = 3;
@@ -118,9 +117,17 @@ export default function Feeds({
         disabled={!momentLoaded}
       >
         {hideFeeds ? (
-          <ChevronsDown className="size-4 text-muted-foreground" />
+          <Chevron
+            direction="down"
+            multiple
+            className="size-4 text-muted-foreground"
+          />
         ) : (
-          <ChevronsUp className="size-4 text-muted-foreground" />
+          <Chevron
+            direction="up"
+            multiple
+            className="size-4 text-muted-foreground"
+          />
         )}
       </button>
     </div>

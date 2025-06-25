@@ -6,7 +6,7 @@ import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { X } from "lucide-react";
+import { X } from "@/components/icons";
 
 type RightNavProps = Readonly<{
   data: FeedNotification[] | null;

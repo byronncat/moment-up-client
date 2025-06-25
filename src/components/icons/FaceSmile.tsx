@@ -1,4 +1,8 @@
-export default function FaceSmile({ className }: Pick<IconProps, "className">) {
+type FaceSmileProps = Readonly<{
+  className?: string;
+}>;
+
+export default function FaceSmile({ className }: FaceSmileProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

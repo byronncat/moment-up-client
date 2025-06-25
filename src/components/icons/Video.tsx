@@ -1,4 +1,9 @@
-export default function Video({ className, type = "regular" }: IconProps) {
+type VideoProps = Readonly<{
+  className?: string;
+  type?: "regular" | "solid";
+}>;
+
+export default function Video({ className, type = "regular" }: VideoProps) {
   if (type === "solid")
     return (
       <svg

@@ -5,7 +5,7 @@ import { type Contact } from "@/__mocks__";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Phone, Video, CircleInfo, User } from "@/components/icons";
+import { Phone, Video, Circle, User } from "@/components/icons";
 
 type HeaderProps = {
   contact?: Contact;
@@ -68,7 +68,7 @@ function HeaderRight() {
         <Video className="size-5 fill-muted-foreground" />
       </Button>
       <Button variant="ghost" size="icon">
-        <CircleInfo className="size-5 fill-muted-foreground" />
+        <Circle variant="info" className="size-5 fill-muted-foreground" />
       </Button>
     </div>
   );

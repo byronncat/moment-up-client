@@ -9,7 +9,7 @@ import { SortBy } from "@/constants/clientConfig";
 
 import CommentSkeletons from "../CommentSkeletons";
 import { ErrorContent, NoContent } from "@/components";
-import { MessageSquareText } from "lucide-react";
+import { Message } from "@/components/icons";
 
 const CommentDataContext = createContext(
   {} as {
@@ -131,7 +131,11 @@ export default function CommentDataProvider({
         <InformationWrapper>
           <NoContent
             icon={
-              <MessageSquareText className="size-12 text-muted-foreground" />
+              <Message
+                variant="square"
+                text
+                className="size-12 text-muted-foreground"
+              />
             }
             title="No comments"
             description="Be the first to comment on this moment."

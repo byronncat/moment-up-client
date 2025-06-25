@@ -1,6 +1,6 @@
-import { Loader2 } from "lucide-react";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
+import { Loader } from "@/components/icons";
 
 type SubmitButtonProps = Readonly<{
   loading?: boolean;
@@ -26,7 +26,7 @@ export default function SubmitButton({
     >
       <span className="relative">
         {loading && (
-          <Loader2
+          <Loader
             className={cn(
               "[&&]:size-5",
               "animate-spin",

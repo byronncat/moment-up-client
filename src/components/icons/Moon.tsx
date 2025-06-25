@@ -1,4 +1,9 @@
-export default function Moon({ className, type = "regular" }: IconProps) {
+type MoonProps = Readonly<{
+  className?: string;
+  type?: "regular" | "solid";
+}>;
+
+export default function Moon({ className, type = "regular" }: MoonProps) {
   if (type === "solid")
     return (
       <svg

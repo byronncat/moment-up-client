@@ -1,7 +1,7 @@
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
-import { CircleExclamation } from "@/components/icons";
-import { RotateCw } from "lucide-react";
+import { Circle } from "@/components/icons";
+import { RotateCw } from "@/components/icons";
 
 export default function ErrorContent({
   onRefresh,
@@ -18,7 +18,10 @@ export default function ErrorContent({
         className
       )}
     >
-      <CircleExclamation className="size-12 fill-red-500 dark:fill-red-400" />
+      <Circle
+        variant="exclamation"
+        className="size-12 fill-red-500 dark:fill-red-400"
+      />
       <p className={cn("text-lg font-medium", "mt-4")}>Something went wrong!</p>
       <p className={cn("text-sm text-muted-foreground", "mt-1")}>
         Please try again later.

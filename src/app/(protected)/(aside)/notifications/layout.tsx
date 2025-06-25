@@ -5,7 +5,7 @@ import Link from "next/link";
 import { PageHeader } from "../_components";
 import { NavigationBar, type NavItem } from "@/components";
 import { Button } from "@/components/ui/button";
-import { Bell, Settings, UserPlus, Users } from "lucide-react";
+import { Bell, Settings, User } from "@/components/icons";
 
 const tabs: NavItem[] = [
   {
@@ -17,13 +17,13 @@ const tabs: NavItem[] = [
   {
     id: "requests",
     label: "Requests",
-    icon: <UserPlus className="size-4" />,
+    icon: <User variant="plus" className="size-4" />,
     href: ROUTE.NOTIFICATION("requests"),
   },
   {
     id: "social",
     label: "Social",
-    icon: <Users className="size-4" />,
+    icon: <User multiple className="size-4" />,
     href: ROUTE.NOTIFICATION("social"),
   },
 ];

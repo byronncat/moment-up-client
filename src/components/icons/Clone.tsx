@@ -1,4 +1,9 @@
-export default function Clone({ className, type = "regular" }: IconProps) {
+type CloneProps = Readonly<{
+  className?: string;
+  type?: "regular" | "solid";
+}>;
+
+export default function Clone({ className, type = "regular" }: CloneProps) {
   if (type === "solid")
     return (
       <svg

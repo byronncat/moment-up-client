@@ -1,4 +1,8 @@
-export default function Pause({ className }: Pick<IconProps, "className">) {
+type PauseProps = Readonly<{
+  className?: string;
+}>;
+
+export default function Pause({ className }: PauseProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

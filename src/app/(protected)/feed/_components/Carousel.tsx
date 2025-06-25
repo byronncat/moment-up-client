@@ -12,7 +12,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import Autoplay from "embla-carousel-autoplay";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TriangleAlert, Loader2, Volume2, VolumeX } from "lucide-react";
+import { TriangleAlert, Loader, Volume } from "@/components/icons";
 import { Progress } from "@/components/ui/progress";
 import Container from "./FeedContainer";
 import useEmblaCarousel from "embla-carousel-react";
@@ -244,7 +244,7 @@ export default function Content({
     return (
       <Container>
         <Skeleton className="size-full flex items-center justify-center">
-          <Loader2 className="size-10 animate-spin text-muted-foreground" />
+          <Loader className="size-10 animate-spin text-muted-foreground" />
         </Skeleton>
       </Container>
     );
@@ -396,7 +396,11 @@ export default function Content({
         className="absolute bottom-12 left-4 z-10 size-10 rounded-full bg-background/80 flex items-center justify-center text-foreground"
         onClick={toggleSound}
       >
-        {isSoundOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
+        {isSoundOn ? (
+          <Volume className="size-6" />
+        ) : (
+          <Volume variant="x" className="size-6" />
+        )}
       </button>
 
       {/* Autoplay control */}

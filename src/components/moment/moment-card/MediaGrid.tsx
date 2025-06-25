@@ -227,7 +227,7 @@ const VideoItem = memo(function VideoItem({ url }: { url: string }) {
           "bg-black/50"
         )}
       >
-        <Play className="size-12 fill-white/80" type="solid" />
+        <Play className="size-12 fill-white/80" />
       </div>
     </>
   );

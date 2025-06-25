@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { XMark } from "@/components/icons";
+import { X } from "@/components/icons";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 // import { cn } from "@/libraries/utils";
 import { useRef } from "react";
@@ -29,7 +29,7 @@ export default function CreateFeedModal() {
               onClick={handleClose}
               className="rounded-full p-1.5 hover:bg-accent/20 transition-colors"
             >
-              <XMark className="size-5" />
+              <X className="size-5" />
             </button>
           </div>
 

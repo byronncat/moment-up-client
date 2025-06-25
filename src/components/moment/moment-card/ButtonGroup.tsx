@@ -12,7 +12,7 @@ import ColorfulIconButton, {
   buttonStyles,
 } from "../../common/ColorfulIconButton";
 import ShareDialog from "./ShareDialog";
-import { Heart, Comment, Share, Repeat, Bookmark } from "../../icons";
+import { Heart, Message, Share, Repeat, Bookmark } from "../../icons";
 
 type ButtonGroupProps = Readonly<{
   data: DetailedMomentInfo;
@@ -55,7 +55,7 @@ export default function ButtonGroup({
     },
     {
       icon: (
-        <Comment
+        <Message
           className={cn(
             buttonStyles.iconSize,
             buttonStyles.transition,

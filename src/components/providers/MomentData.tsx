@@ -5,7 +5,7 @@ import type { DetailedMomentInfo } from "api";
 import { createContext, useContext, useRef, useState } from "react";
 import { toast } from "sonner";
 import { CoreApi, UserApi } from "@/services";
-import { Link } from "lucide-react";
+import { Link } from "@/components/icons";
 
 const MomentDataContext = createContext(
   {} as {

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/libraries/utils";
 import { Input } from "@/components/ui/input";
-import { MagnifyingGlass, XMark } from "@/components/icons";
+import { MagnifyingGlass, X } from "@/components/icons";
 
 export default function SearchInput({
   defaultValue = "",
@@ -62,7 +62,7 @@ function ClearButton({ onClear }: Readonly<{ onClear: () => void }>) {
         "transition-colors duration-150 ease-in-out"
       )}
     >
-      <XMark className="size-3 fill-muted-foreground" />
+      <X className="size-3 fill-muted-foreground" />
     </button>
   );
 }

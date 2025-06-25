@@ -1,4 +1,8 @@
-export default function Plus({ className }: Pick<IconProps, "className">) {
+type PlusProps = Readonly<{
+  className?: string;
+}>;
+
+export default function Plus({ className }: PlusProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

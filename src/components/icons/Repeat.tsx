@@ -1,4 +1,8 @@
-export default function Repeat({ className }: IconProps) {
+type RepeatProps = Readonly<{
+  className?: string;
+}>;
+
+export default function Repeat({ className }: RepeatProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

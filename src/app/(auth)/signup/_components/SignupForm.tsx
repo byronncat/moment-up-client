@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form";
 
 import { PasswordInput, SubmitButton } from "../../_components";
-import { CircleInfo } from "@/components/icons";
+import { Circle } from "@/components/icons";
 
 export default function SignupForm() {
   const form = useForm<z.infer<typeof zodSchema.auth.signup>>({
@@ -61,7 +61,10 @@ export default function SignupForm() {
           onClick={() => setShowDetails(!showDetails)}
           className="absolute top-1 right-0"
         >
-          <CircleInfo className="fill-blue-500 dark:fill-blue-400 size-5" />
+          <Circle
+            variant="info"
+            className="fill-blue-500 dark:fill-blue-400 size-5"
+          />
         </Button>
       </Tooltip>
 

@@ -8,7 +8,7 @@ import { TOP_PADDING, BOTTOM_PADDING, ITEM_GAP } from "./constants/spacing";
 
 import { ErrorContent, NoContent } from "@/components";
 import { MomentList } from "@/components/moment";
-import { Camera } from "lucide-react";
+import { Camera } from "@/components/icons";
 
 type MomentsProps = Readonly<{
   initialRes: Promise<

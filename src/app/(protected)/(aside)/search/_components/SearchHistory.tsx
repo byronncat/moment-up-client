@@ -5,7 +5,7 @@ import type { SearchItem as SearchItemType } from "api";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { SearchItem } from "../../_components";
-import { XMark } from "@/components/icons";
+import { X } from "@/components/icons";
 
 interface SearchHistoryProps {
   history: SearchItemType[];
@@ -35,7 +35,7 @@ export default function SearchHistory({
                 size="icon"
                 className="size-6 rounded-full"
               >
-                <XMark className="size-4 fill-muted-foreground" />
+                <X className="size-4 fill-muted-foreground" />
               </Button>
             </div>
           ))}

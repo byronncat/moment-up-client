@@ -25,17 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "../../ui/dropdown-menu";
-import {
-  Globe,
-  Users,
-  UserCheck,
-  ShieldCheck,
-  Lock,
-  ChevronDown,
-  UserPlus,
-  UserMinus,
-  Loader2,
-} from "lucide-react";
+import { Globe, User, Shield, Lock, Chevron, Loader } from "@/components/icons";
 
 type AudienceOption = {
   label: string;
@@ -54,19 +44,19 @@ const AUDIENCE_OPTIONS: AudienceOption[] = [
   {
     label: "Friends",
     value: Audience.FRIENDS,
-    icon: <Users className="size-4" />,
+    icon: <User multiple className="size-4" />,
     description: "Only your friends",
   },
   {
     label: "Followers",
     value: Audience.FOLLOWERS,
-    icon: <UserCheck className="size-4" />,
+    icon: <User variant="check" className="size-4" />,
     description: "People who follow you",
   },
   {
     label: "Verified",
     value: Audience.VERIFIED,
-    icon: <ShieldCheck className="size-4" />,
+    icon: <Shield variant="check" className="size-4" />,
     description: "Only verified accounts",
   },
   {
@@ -170,7 +160,7 @@ export default function ShareDialog({
                     >
                       {selectedOption?.icon}
                       {selectedOption?.label}
-                      <ChevronDown className="size-3" />
+                      <Chevron direction="down" className="size-3" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
@@ -214,7 +204,7 @@ export default function ShareDialog({
                         onClick={openIncludeDialog}
                       >
                         <MenuItem
-                          icon={<UserPlus className="size-4" />}
+                          icon={<User variant="plus" className="size-4" />}
                           label="Include specific people"
                         />
                       </DropdownMenuItem>
@@ -227,7 +217,7 @@ export default function ShareDialog({
                         onClick={openExcludeDialog}
                       >
                         <MenuItem
-                          icon={<UserMinus className="size-4" />}
+                          icon={<User variant="minus" className="size-4" />}
                           label="Exclude specific people"
                         />
                       </DropdownMenuItem>
@@ -261,7 +251,7 @@ export default function ShareDialog({
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <Loader2 className="size-4 animate-spin" />
+                  <Loader className="size-4 animate-spin" />
                 ) : (
                   "Share"
                 )}

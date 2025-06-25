@@ -5,7 +5,7 @@ import { ROUTE } from "@/constants/clientConfig";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/libraries/utils";
-import { Heart, Comment, Clone, Video } from "@/components/icons";
+import { Heart, Message, Clone, Video } from "@/components/icons";
 
 type MomentCellProps = Readonly<{
   data: DetailedMomentInfo;
@@ -90,7 +90,7 @@ function HoverOverlay({ id, isLiked, likes, comments }: HoverOverlayProps) {
           <span>{format.number(likes)}</span>
         </div>
         <div className="flex items-center gap-2">
-          <Comment className="size-6 fill-white" type="solid" />
+          <Message className="size-6 fill-white" type="solid" />
           <span>{format.number(comments)}</span>
         </div>
       </div>

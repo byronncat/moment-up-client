@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CirclePlus, FaceSmile, PaperPlane } from "@/components/icons";
+import { Circle, FaceSmile, PaperPlane } from "@/components/icons";
 
 type MessageInputProps = {
   onSendMessage: (message: string) => void;
@@ -32,7 +32,7 @@ export default function MessageInput({ onSendMessage }: MessageInputProps) {
       className={cn("p-3", "flex items-center gap-2", "border-t border-border")}
     >
       <Button variant="ghost" className="rounded-full" size="icon">
-        <CirclePlus className="size-5 fill-primary" type="solid" />
+        <Circle variant="plus" type="solid" className="size-5 fill-primary" />
       </Button>
       <div className="grow relative">
         <Input

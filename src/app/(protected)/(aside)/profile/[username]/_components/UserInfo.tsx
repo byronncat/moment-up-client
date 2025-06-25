@@ -11,7 +11,7 @@ import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Avatar } from "@/components";
 import { Button } from "@/components/ui/button";
-import { Settings, UserPlus, UserMinus, UserCheck } from "lucide-react";
+import { Settings, User } from "@/components/icons";
 
 type UserInformationProps = Readonly<{
   data: UserProfileInfo;
@@ -91,8 +91,9 @@ function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
   };
 
   const renderIcon = () => {
-    if (isFollowing) return isHover ? <UserMinus /> : <UserCheck />;
-    return <UserPlus />;
+    if (isFollowing)
+      return isHover ? <User variant="minus" /> : <User variant="check" />;
+    return <User variant="plus" />;
   };
 
   return (

@@ -8,7 +8,7 @@ import type {
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components";
 import { Button } from "@/components/ui/button";
-import { ShieldAlert, UserPlus, UserX } from "lucide-react";
+import { Shield, User } from "@/components/icons";
 
 function SecurityNotification() {
   const title = "Security Alert";
@@ -24,7 +24,7 @@ function SecurityNotification() {
             "flex items-center justify-center"
           )}
         >
-          <ShieldAlert className="size-7 text-muted-foreground" />
+          <Shield variant="alert" className="size-7 text-muted-foreground" />
         </div>
       </div>
       <div className="grow min-w-0">
@@ -59,11 +59,11 @@ const CommunityNotification = ({
         {information.type === "follow" ? (
           <div className="flex items-center gap-2 mt-2">
             <Button variant="outline" size="sm">
-              <UserPlus className="size-4" />
+              <User variant="plus" className="size-4" />
               Accept
             </Button>
             <Button variant="outline" size="sm">
-              <UserX className="size-4" />
+              <User variant="x" className="size-4" />
               Decline
             </Button>
           </div>

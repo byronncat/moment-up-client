@@ -1,4 +1,8 @@
-export default function Phone({ className }: Pick<IconProps, "className">) {
+type PhoneProps = Readonly<{
+  className?: string;
+}>;
+
+export default function Phone({ className }: PhoneProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -10,7 +10,7 @@ import { CoreApi } from "@/services";
 import { cn } from "@/libraries/utils";
 import { NoContent, ErrorContent } from "@/components";
 import { MomentList } from "@/components/moment";
-import { Camera } from "lucide-react";
+import { Camera } from "@/components/icons";
 
 // Container
 const TOP_PADDING = 160;

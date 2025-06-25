@@ -5,9 +5,14 @@ import { NotificationList, NotificationSkeleton } from "../_components";
 export default function NotificationsPage() {
   const notificationRes = NotifyApi.getNotifications("requests");
   return (
-    <Suspense fallback={<div className="pt-[125px]"><NotificationSkeleton /></div>}>
+    <Suspense
+      fallback={
+        <div className="pt-[125px]">
+          <NotificationSkeleton />
+        </div>
+      }
+    >
       <NotificationList type="requests" initialRes={notificationRes} />
     </Suspense>
   );
 }
-  

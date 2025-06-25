@@ -1,4 +1,8 @@
-export default function Share({ className }: IconProps) {
+type ShareProps = Readonly<{
+  className?: string;
+}>;
+
+export default function Share({ className }: ShareProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

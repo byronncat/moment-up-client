@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { cn } from "@/libraries/utils";
 import { ColorfulIconButton, buttonStyles } from "@/components";
-import { Heart, Comment, Share, Repeat, Bookmark } from "@/components/icons";
+import { Heart, Message, Share, Repeat, Bookmark } from "@/components/icons";
 import ShareDialog from "@/components/moment/moment-card/ShareDialog";
 
 type ButtonsProps = Readonly<{
@@ -52,7 +52,7 @@ function FirstGroup({
     },
     {
       icon: (
-        <Comment
+        <Message
           className={cn(
             buttonStyles.iconSize,
             buttonStyles.transition,

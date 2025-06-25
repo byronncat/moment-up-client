@@ -8,7 +8,7 @@ import { TOP_PADDING, BOTTOM_PADDING, CELL_GAP } from "./constants/spacing";
 
 import { ErrorContent, NoContent } from "@/components";
 import { MomentGrid } from "@/components/moment";
-import { Images } from "lucide-react";
+import { Image } from "@/components/icons";
 
 type MediaGridProps = Readonly<{
   initialRes: Promise<
@@ -55,7 +55,8 @@ export default function Media({ initialRes }: MediaGridProps) {
   if (media.length === 0)
     return (
       <NoContent
-        icon={<Images className="size-16 text-muted-foreground" />}
+        // eslint-disable-next-line jsx-a11y/alt-text
+        icon={<Image multiple className="size-16 text-muted-foreground" />}
         title="No media found"
         description="Wait for someone to post a media."
       />

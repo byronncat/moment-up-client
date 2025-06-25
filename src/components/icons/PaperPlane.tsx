@@ -1,6 +1,8 @@
-export default function PaperPlane({
-  className,
-}: Pick<IconProps, "className">) {
+type PaperPlaneProps = Readonly<{
+  className?: string;
+}>;
+
+export default function PaperPlane({ className }: PaperPlaneProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

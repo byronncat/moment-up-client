@@ -7,7 +7,7 @@ import { cn } from "@/libraries/utils";
 import { Modal } from "@/components";
 import { Button } from "@/components/ui/button";
 import { MediaCarousel, Details } from "./_components";
-import { X } from "lucide-react";
+import { X } from "@/components/icons";
 
 export default function MomentModal() {
   const router = useRouter();

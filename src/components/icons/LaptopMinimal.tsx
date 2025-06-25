@@ -1,4 +1,8 @@
-export default function LaptopMinimal({ className }: Omit<IconProps, "type">) {
+type LaptopMinimalProps = Readonly<{
+  className?: string;
+}>;
+
+export default function LaptopMinimal({ className }: LaptopMinimalProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

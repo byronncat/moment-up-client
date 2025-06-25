@@ -1,4 +1,12 @@
-export default function Heart({ className, type = "regular" }: IconProps) {
+type BookmarkProps = Readonly<{
+  className?: string;
+  type?: "regular" | "solid";
+}>;
+
+export default function Bookmark({
+  className,
+  type = "regular",
+}: BookmarkProps) {
   if (type === "solid")
     return (
       <svg

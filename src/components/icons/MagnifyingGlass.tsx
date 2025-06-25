@@ -1,6 +1,8 @@
-export default function MagnifyingGlass({
-  className,
-}: Pick<IconProps, "className">) {
+type MagnifyingGlassProps = Readonly<{
+  className?: string;
+}>;
+
+export default function MagnifyingGlass({ className }: MagnifyingGlassProps) {
   return (
     <svg
       className={className}

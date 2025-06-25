@@ -14,7 +14,7 @@ import {
 import ButtonGroup from "./ButtonGroup";
 import CommentInput from "./CommentInput";
 import TextContent from "@/app/(protected)/(aside)/moment/[id]/_components/TextContent";
-import { X } from "lucide-react";
+import { X } from "@/components/icons";
 
 type ContentProps = Readonly<{
   data: DetailedMomentInfo;

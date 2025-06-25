@@ -7,7 +7,7 @@ import type {
 
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components";
-import { CircleCheck, MagnifyingGlass } from "@/components/icons";
+import { Circle, MagnifyingGlass } from "@/components/icons";
 
 type SearchItemProps = Readonly<{
   data: SearchItem;
@@ -29,7 +29,7 @@ export default function SearchItem({ data }: SearchItemProps) {
               {(data as UserSearchItem).username}
             </span>
             {(data as UserSearchItem).verified && (
-              <CircleCheck className="size-3.5 fill-primary" />
+              <Circle variant="check" className="size-3.5 fill-primary" />
             )}
           </div>
           <span className="text-sm text-muted-foreground">

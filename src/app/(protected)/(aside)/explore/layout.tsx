@@ -3,7 +3,7 @@ import { ROUTE } from "@/constants/clientConfig";
 import { cn } from "@/libraries/utils";
 import { PageHeader } from "../_components";
 import { NavigationBar, type NavItem } from "@/components";
-import { Image, Users } from "lucide-react";
+import { Image, User } from "@/components/icons";
 
 const tabs: NavItem[] = [
   {
@@ -14,7 +14,7 @@ const tabs: NavItem[] = [
   },
   {
     id: "moments",
-    icon: <Users className="size-5" />,
+    icon: <User multiple className="size-5" />,
     label: "Moments",
     href: ROUTE.EXPLORE("moments"),
   },
@@ -29,10 +29,7 @@ export default function ExploreLayout({
       <div className="relative">
         <PageHeader
           title="Explore"
-          className={cn(
-            "w-full",
-            "absolute top-0 left-0 z-10",
-          )}
+          className={cn("w-full", "absolute top-0 left-0 z-10")}
         >
           <NavigationBar items={tabs} />
         </PageHeader>

@@ -6,7 +6,7 @@ import { isEmpty } from "lodash";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Loader2 } from "lucide-react";
+import { PaperPlane, Loader } from "@/components/icons";
 
 type CommentInputProps = Readonly<{
   ref: React.RefObject<HTMLTextAreaElement | null>;
@@ -64,9 +64,9 @@ export default function CommentInput({ ref, className }: CommentInputProps) {
           disabled={isEmpty(comment) || isLoading}
         >
           {isLoading ? (
-            <Loader2 className="size-5 animate-spin" />
+            <Loader className="size-5 animate-spin" />
           ) : (
-            <Send
+            <PaperPlane
               className={cn(
                 "size-5 translate-y-[1px] translate-x-[-1px]",
                 isEmpty(comment) && "opacity-50"

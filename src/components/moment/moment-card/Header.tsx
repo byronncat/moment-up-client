@@ -16,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { MoreHorizontal, UserMinus, UserPlus, Ban, Flag } from "lucide-react";
+import { MoreHorizontal, User, Ban, Flag } from "@/components/icons";
 
 type HeaderProps = Readonly<{
   data: DetailedMomentInfo;
@@ -98,7 +98,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
                   onClick={() => actions.follow(data.id)}
                   className="cursor-pointer"
                 >
-                  <UserMinus className="size-4 shrink-0" />
+                  <User variant="minus" className="size-4 shrink-0" />
                   <span className="truncate">Unfollow @{user.username}</span>
                 </DropdownMenuItem>
               ) : (
@@ -106,7 +106,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
                   onClick={() => actions.follow(data.id)}
                   className="cursor-pointer"
                 >
-                  <UserPlus className="size-4 shrink-0" />
+                  <User variant="plus" className="size-4 shrink-0" />
                   <span className="truncate">Follow @{user.username}</span>
                 </DropdownMenuItem>
               )}

@@ -4,7 +4,7 @@ import type { ProfileSearchItem } from "api";
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components";
 import { Button } from "@/components/ui/button";
-import { CircleCheck } from "@/components/icons";
+import { Circle } from "@/components/icons";
 
 interface PopularAccountsProps {
   users: ProfileSearchItem[];
@@ -54,7 +54,9 @@ function UserCard({ user }: Readonly<{ user: ProfileSearchItem }>) {
           <p className={cn("font-semibold", "truncate max-w-32")}>
             {user.username}
           </p>
-          {user.verified && <CircleCheck className="size-3.5 fill-primary" />}
+          {user.verified && (
+            <Circle variant="check" className="size-3.5 fill-primary" />
+          )}
         </div>
         <div className="grow">
           <div className="px-2 text-sm text-muted-foreground line-clamp-2">

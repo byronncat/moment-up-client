@@ -6,7 +6,7 @@ import { cn } from "@/libraries/utils";
 
 import BubbleTextarea from "@/components/BubbleTextarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Chevron, ArrowLeft } from "@/components/icons";
+import { Chevron, Arrow } from "@/components/icons";
 import { ROUTE } from "@/constants/clientConfig";
 
 export default function ThoughtPage() {
@@ -49,7 +49,7 @@ function Header() {
         )}
         onClick={handleBack}
       >
-        <ArrowLeft className="size-5 fill-muted-foreground" />
+        <Arrow direction="left" className="size-5 fill-muted-foreground" />
       </button>
     </div>
   );
@@ -108,7 +108,7 @@ function ShareButton() {
         className="flex items-center gap-1 text-sm font-medium text-white py-2 px-4"
         onClick={() => setIsOpenShare(!isOpenShare)}
       >
-        {/* <ArrowUpRight className="w-4 h-4" /> */}
+        <Arrow direction="right" className="size-5 fill-muted-foreground" />
         Shared with followers you follow back
         <Chevron
           direction="down"

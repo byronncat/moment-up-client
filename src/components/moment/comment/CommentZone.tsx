@@ -27,7 +27,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { Chevron } from "@/components/icons";
 import { CommentSkeleton } from "./CommentSkeletons";
 
 const sortOptions = [
@@ -117,7 +117,7 @@ function SortByDropdown({
             )}
           >
             {sortOptions.find((option) => option.value === sort)?.label}
-            <ChevronDown className="size-4" />
+            <Chevron direction="down" className="size-4" />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-80 p-2">

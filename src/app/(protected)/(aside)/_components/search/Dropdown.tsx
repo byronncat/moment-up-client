@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { XMark, MagnifyingGlass, User } from "@/components/icons";
+import { X, MagnifyingGlass, User } from "@/components/icons";
 
 type DropdownProps = {
   query: string;
@@ -118,7 +118,7 @@ function ItemList({
                   "transition-all duration-150 ease-in-out"
                 )}
               >
-                <XMark className="size-4 fill-muted-foreground" />
+                <X className="size-4 fill-muted-foreground" />
               </button>
             )}
           </div>
