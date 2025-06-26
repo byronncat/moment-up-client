@@ -3,8 +3,9 @@
 import type { API, DetailedMomentInfo } from "api";
 import { use, useEffect, useState, useRef } from "react";
 import { useMoment } from "@/components/providers";
+import { useSidebar } from "@/components/ui/sidebar";
 import { CoreApi } from "@/services";
-import { TOP_PADDING, BOTTOM_PADDING, CELL_GAP } from "./constants/spacing";
+import { TOP_PADDING, BOTTOM_PADDING, CELL_GAP, HEADER_HEIGHT } from "./constants/spacing";
 
 import { ErrorContent, NoContent } from "@/components";
 import { MomentGrid } from "@/components/moment";
@@ -32,7 +33,8 @@ export default function Media({ initialRes }: MediaGridProps) {
   );
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
   const pageRef = useRef(1);
-
+  const { isMobile } = useSidebar();
+    
   async function fetchMedia(page?: number) {
     const response = await CoreApi.explore(
       "media",
@@ -70,7 +72,7 @@ export default function Media({ initialRes }: MediaGridProps) {
       loadNextPage={() => fetchMedia()}
       onItemClick={setCurrentIndex}
       listOptions={{
-        topPadding: TOP_PADDING + CELL_GAP,
+        topPadding: TOP_PADDING + CELL_GAP  - (isMobile ? HEADER_HEIGHT : 0),
         bottomPadding: BOTTOM_PADDING,
       }}
     />

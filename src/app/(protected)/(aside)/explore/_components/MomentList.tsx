@@ -3,8 +3,14 @@
 import type { API, DetailedMomentInfo } from "api";
 import { use, useEffect, useState, useRef } from "react";
 import { useMoment } from "@/components/providers";
+import { useSidebar } from "@/components/ui/sidebar";
 import { CoreApi } from "@/services";
-import { TOP_PADDING, BOTTOM_PADDING, ITEM_GAP } from "./constants/spacing";
+import {
+  TOP_PADDING,
+  BOTTOM_PADDING,
+  ITEM_GAP,
+  HEADER_HEIGHT,
+} from "./constants/spacing";
 
 import { ErrorContent, NoContent } from "@/components";
 import { MomentList } from "@/components/moment";
@@ -37,6 +43,7 @@ export default function Moments({ initialRes }: MomentsProps) {
     response?.data?.hasNextPage ?? true
   );
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
+  const { isMobile } = useSidebar();
   const pageRef = useRef(1);
 
   async function fetchMoments(page?: number) {
@@ -87,7 +94,7 @@ export default function Moments({ initialRes }: MomentsProps) {
         report,
       }}
       listOptions={{
-        topPadding: TOP_PADDING + ITEM_GAP,
+        topPadding: TOP_PADDING + ITEM_GAP - (isMobile ? HEADER_HEIGHT : 0),
         bottomPadding: BOTTOM_PADDING,
       }}
     />

@@ -19,7 +19,7 @@ export default function MediaPage() {
 function MediaSkeleton() {
   return (
     <div
-      className={cn("grid grid-cols-3", "gap-1 px-1")}
+      className={cn("grid grid-cols-3", "gap-1 px-1 max-laptop:pt-[49px]!")}
       style={{ paddingTop: TOP_PADDING + CELL_GAP }}
     >
       {Array.from({ length: 9 }).map((_, index) => (

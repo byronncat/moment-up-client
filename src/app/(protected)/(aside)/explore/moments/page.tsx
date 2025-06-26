@@ -20,7 +20,7 @@ export default function MomentsPage() {
 function MomentsSkeleton() {
   return (
     <div
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-4 max-laptop:pt-[61px]!"
       style={{ paddingTop: TOP_PADDING + ITEM_GAP }}
     >
       {Array.from({ length: 3 }).map((_, index) => (

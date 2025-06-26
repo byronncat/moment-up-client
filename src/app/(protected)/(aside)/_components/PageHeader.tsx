@@ -18,7 +18,8 @@ export default function PageHeader({
       <div
         className={cn(
           "flex justify-between items-center",
-          "pt-7 pl-4 pr-2 pb-4"
+          "pt-7 pl-4 pr-2 pb-4",
+          "hidden laptop:block"
         )}
       >
         <h1 className="text-2xl font-bold tracking-wide">{title}</h1>
