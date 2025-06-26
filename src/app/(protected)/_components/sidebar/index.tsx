@@ -57,9 +57,7 @@ export default function Sidebar() {
     {
       title: "Search",
       url: ROUTE.SEARCH(),
-      icon: () => (
-        <MagnifyingGlass className="size-5 laptop:size-4" />
-      ),
+      icon: () => <MagnifyingGlass className="size-5 laptop:size-4" />,
       matchPath: () => pathname.startsWith(ROUTE.SEARCH()),
     },
     {
@@ -76,28 +74,20 @@ export default function Sidebar() {
     {
       title: "Create",
       url: "#",
-      icon: () => (
-        <SquarePlus className="size-5 laptop:size-4" />
-      ),
+      icon: () => <SquarePlus className="size-5 laptop:size-4" />,
     },
     {
       title: "Messages",
       url: ROUTE.MESSAGES,
       icon: () => (
-        <Message
-          variant="square"
-          multiple
-          className="size-5 laptop:size-4"
-        />
+        <Message variant="square" multiple className="size-5 laptop:size-4" />
       ),
       matchPath: () => pathname === ROUTE.MESSAGES,
     },
     {
       title: "Archive",
       url: ROUTE.ARCHIVE,
-      icon: () => (
-        <Archive className="size-5 laptop:size-4" />
-      ),
+      icon: () => <Archive className="size-5 laptop:size-4" />,
       matchPath: () => pathname.startsWith(ROUTE.ARCHIVE),
     },
     {

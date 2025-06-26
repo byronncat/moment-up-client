@@ -5,12 +5,8 @@ import { use, useEffect, useState, useRef } from "react";
 import { useMoment } from "@/components/providers";
 import { useSidebar } from "@/components/ui/sidebar";
 import { CoreApi } from "@/services";
-import {
-  TOP_PADDING,
-  BOTTOM_PADDING,
-  ITEM_GAP,
-  HEADER_HEIGHT,
-} from "./constants/spacing";
+import { TOP_PADDING, BOTTOM_PADDING, ITEM_GAP } from "./constants/spacing";
+import { HEADER_HEIGHT } from "../../_components";
 
 import { ErrorContent, NoContent } from "@/components";
 import { MomentList } from "@/components/moment";

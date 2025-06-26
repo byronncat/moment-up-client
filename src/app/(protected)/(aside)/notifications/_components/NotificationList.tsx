@@ -2,7 +2,9 @@
 
 import type { API, NotificationInfo } from "api";
 import { use, useEffect, useRef, useState } from "react";
+import { useSidebar } from "@/components/ui/sidebar";
 import { NotifyApi } from "@/services";
+import { HEADER_HEIGHT } from "../../_components";
 import VirtualizedList from "./VirtualizedList";
 
 type NotificationListProps = Readonly<{
@@ -27,6 +29,7 @@ export default function NotificationList({
     response?.data?.hasNextPage ?? true
   );
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
+  const { isMobile } = useSidebar();
   const pageRef = useRef(1);
 
   async function fetchNotifications(page?: number) {
@@ -54,7 +57,7 @@ export default function NotificationList({
       isNextPageLoading={isNextPageLoading}
       loadNextPage={fetchNotifications}
       listOptions={{
-        topPadding: 125,
+        topPadding: 121 - (isMobile ? HEADER_HEIGHT : 0),
         bottomPadding: 48,
       }}
     />

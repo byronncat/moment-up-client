@@ -7,7 +7,7 @@ export default function NotificationsPage() {
   return (
     <Suspense
       fallback={
-        <div className="pt-[125px]">
+        <div className="pt-[121px]">
           <NotificationSkeleton />
         </div>
       }

@@ -2,6 +2,7 @@
 
 import type { NotificationInfo } from "api";
 import { useRef, useEffect } from "react";
+import { useSidebar } from "@/components/ui/sidebar";
 
 import { cn } from "@/libraries/utils";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -50,6 +51,7 @@ export default function NotificationList({
 }: NotificationListProps) {
   const listRef = useRef<VariableSizeList>(null);
   const updateScrollbarRef = useRef<(scrollTop: number) => void>(() => {});
+  const { isMobile } = useSidebar();
 
   const itemCount =
     items.length +
@@ -87,7 +89,8 @@ export default function NotificationList({
 
   useEffect(() => {
     if (items.length > 0) listRef.current?.resetAfterIndex(0);
-  }, [items]);
+  }, [items, isMobile]);
+
   return (
     <>
       <AutoSizer>

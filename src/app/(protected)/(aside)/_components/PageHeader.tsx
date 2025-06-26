@@ -7,6 +7,8 @@ type PageHeaderProps = Readonly<{
   className?: string;
 }>;
 
+export const HEADER_HEIGHT = 76;
+
 export default function PageHeader({
   title,
   sideButton,
@@ -15,15 +17,9 @@ export default function PageHeader({
 }: PageHeaderProps) {
   return (
     <div className={cn("bg-background/90 backdrop-blur-md", className)}>
-      <div
-        className={cn(
-          "flex justify-between items-center",
-          "pt-7 pl-4 pr-2 pb-4",
-          "hidden laptop:block"
-        )}
-      >
+      <div className={cn("hidden laptop:block", "pt-7 pl-4 pb-4", "relative")}>
         <h1 className="text-2xl font-bold tracking-wide">{title}</h1>
-        {sideButton}
+        <div className="absolute top-6 right-4">{sideButton}</div>
       </div>
       {children}
     </div>
