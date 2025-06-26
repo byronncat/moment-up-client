@@ -68,7 +68,7 @@ export default function MediaCarousel({
                   alt={`Moment ${index + 1}`}
                   fill
                   sizes="80vw"
-                  className="object-contain"
+                  className="object-contain select-none"
                   priority={index === initialIndex}
                   loading={index === initialIndex ? "eager" : "lazy"}
                 />

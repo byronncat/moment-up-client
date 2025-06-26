@@ -71,7 +71,7 @@ export default function Avatar({
 
   const CircleImage = ({ className }: Readonly<{ className?: string }>) => (
     <AvatarUI className={cn(sizeStyles.avatar, className)}>
-      <AvatarImage src={src} alt={alt} className="object-cover object-top" />
+      <AvatarImage src={src} alt={alt} className="object-cover object-top select-none" />
       <AvatarFallback className="bg-primary">
         <User
           className={cn(sizeStyles.userFallback, "fill-card")}
