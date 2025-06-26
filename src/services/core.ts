@@ -86,7 +86,7 @@ export async function getMoments(page: number): Promise<
 > {
   console.log("getMoments", page);
   const moments = mockMoments;
-  await new Promise((resolve) => setTimeout(resolve, 12000));
+  await new Promise((resolve) => setTimeout(resolve, 4000));
   if (apiRes.getMoments === "error") {
     return {
       success: false,

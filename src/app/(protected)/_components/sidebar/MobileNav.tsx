@@ -16,19 +16,24 @@ export default function MobileNav({ items }: MobileNavProps) {
         "p-2"
       )}
     >
-      {items.map((item) => (
-        <Link
-          key={item.title}
-          href={item.url}
-          className={cn(
-            "flex items-center justify-center p-2",
-            "hover:bg-accent/[.1] rounded-md",
-            "transition-colors duration-150 ease-in-out"
-          )}
-        >
-          {item.icon}
-        </Link>
-      ))}
+      {items.map((item) => {
+        const isActive = item.matchPath?.() ?? false;
+
+        return (
+          <Link
+            key={item.title}
+            href={item.url}
+            className={cn(
+              "flex items-center justify-center size-10",
+              "hover:bg-accent/[.1] rounded-md",
+              "transition-colors duration-150 ease-in-out",
+              isActive && "pointer-events-none"
+            )}
+          >
+            {item.icon(isActive)}
+          </Link>
+        );
+      })}
     </div>
   );
 }

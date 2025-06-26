@@ -1,8 +1,6 @@
 import type { NavItem } from "./types";
 
-import { usePathname } from "next/navigation";
 import { cn } from "@/libraries/utils";
-
 import Link from "next/link";
 import { Tooltip } from "@/components";
 import {
@@ -20,46 +18,60 @@ type SidebarBodyProps = Readonly<{
 }>;
 
 export default function SidebarBody({ items, open }: SidebarBodyProps) {
-  const pathname = usePathname();
-
   return (
     <SidebarContent>
       <SidebarGroup>
         <SidebarGroupContent>
           <SidebarMenu>
-            {items.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                {!open ? (
-                  <Tooltip content={item.title} side="right" sideOffset={6}>
+            {items.map((item) => {
+              const isActive = item.matchPath?.() ?? false;
+
+              return (
+                <SidebarMenuItem key={item.title}>
+                  {open ? (
                     <SidebarMenuButton
                       asChild
                       className={cn(
-                        item.matchPath(pathname) &&
-                          "font-semibold bg-primary text-white hover:bg-primary/80 hover:text-white"
+                        "px-2",
+                        isActive
+                          ? "font-bold bg-sidebar-accent text-sidebar-accent-foreground pointer-events-none"
+                          : "text-foreground dark:text-foreground/[.9]"
                       )}
                     >
                       <Link href={item.url}>
-                        {item.icon}
+                        <span className="flex items-center justify-center w-5">
+                          {item.icon(isActive)}
+                        </span>
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
-                  </Tooltip>
-                ) : (
-                  <SidebarMenuButton
-                    asChild
-                    className={cn(
-                      item.matchPath(pathname) &&
-                        "font-semibold bg-primary text-white hover:bg-primary/80 hover:text-white"
-                    )}
-                  >
-                    <Link href={item.url}>
-                      {item.icon}
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                )}
-              </SidebarMenuItem>
-            ))}
+                  ) : (
+                    <Tooltip content={item.title} side="right" sideOffset={6}>
+                      <SidebarMenuButton
+                        asChild
+                        className={cn(
+                          isActive
+                            ? "font-bold bg-sidebar-accent text-sidebar-accent-foreground pointer-events-none"
+                            : "text-foreground dark:text-foreground/[.9]"
+                        )}
+                      >
+                        <Link href={item.url}>
+                          <span
+                            className={cn(
+                              "flex items-center justify-center",
+                              item.title === "Home" ? "px-1.5" : "px-2"
+                            )}
+                          >
+                            {item.icon(isActive)}
+                          </span>
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </Tooltip>
+                  )}
+                </SidebarMenuItem>
+              );
+            })}
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>

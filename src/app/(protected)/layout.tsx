@@ -16,7 +16,7 @@ export default async function Layout({
       <div
         className={cn(
           "w-screen h-screen relative",
-          "pt-14 pb-[57px] [@media(min-width:560px)]:py-0"
+          "pt-14 pb-[57px] laptop:py-0"
         )}
       >
         <div className="size-full">

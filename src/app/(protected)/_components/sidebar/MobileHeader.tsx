@@ -1,9 +1,19 @@
+import type { NavItem } from "./types";
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { ROUTE } from "@/constants/clientConfig";
-import { Bell, User } from "@/components/icons";
 
-export default function MobileHeader() {
+type MobileHeaderProps = Readonly<{
+  notificationItem: NavItem;
+  profileItem: NavItem;
+}>;
+
+export default function MobileHeader({
+  notificationItem,
+  profileItem,
+}: MobileHeaderProps) {
+  const isNotificationActive = notificationItem.matchPath?.() ?? false;
+  const isProfileActive = profileItem.matchPath?.() ?? false;
+
   return (
     <div
       className={cn(
@@ -13,12 +23,12 @@ export default function MobileHeader() {
         "p-2 px-4 h-14"
       )}
     >
-      <Link href={ROUTE.HOME} className="text-primary font-semibold text-lg">
+      <Link href="/" className="text-primary font-semibold text-lg">
         MomentUp
       </Link>
       <div className="flex items-center">
         <Link
-          href="#"
+          href={notificationItem.url}
           className={cn(
             "flex items-center justify-center",
             "p-2",
@@ -26,10 +36,12 @@ export default function MobileHeader() {
             "transition-colors duration-150 ease-in-out"
           )}
         >
-          <Bell className="size-6" />
+          <span className="flex items-center justify-center size-5">
+            {notificationItem.icon(isNotificationActive)}
+          </span>
         </Link>
         <Link
-          href="#"
+          href={profileItem.url}
           className={cn(
             "flex items-center justify-center",
             "p-2 ml-2",
@@ -37,7 +49,9 @@ export default function MobileHeader() {
             "transition-colors duration-150 ease-in-out"
           )}
         >
-          <User className="size-6" />
+          <span className="flex items-center justify-center size-5">
+            {profileItem.icon(isProfileActive)}
+          </span>
         </Link>
       </div>
     </div>

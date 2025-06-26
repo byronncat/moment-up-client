@@ -2,6 +2,7 @@
 
 import type { NavItem } from "./types";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/components/providers";
 import { cn } from "@/libraries/utils";
@@ -12,6 +13,13 @@ import MobileNav from "./MobileNav";
 import SidebarHeader from "./SidebarHeader";
 import SidebarBody from "./SidebarBody";
 import SidebarFooter from "./SidebarFooter";
+
+import {
+  Sidebar as SidebarUI,
+  SidebarTrigger,
+  useSidebar,
+  SIDEBAR_COOKIE_NAME,
+} from "@/components/ui/sidebar";
 import {
   Message,
   Compass,
@@ -19,21 +27,17 @@ import {
   Bell,
   Archive,
   MagnifyingGlass,
+  User,
+  House,
 } from "@/components/icons";
-import { User } from "lucide-react";
-import { House } from "@/components/icons";
-import {
-  Sidebar as SidebarUI,
-  SidebarTrigger,
-  useSidebar,
-  SIDEBAR_COOKIE_NAME,
-} from "@/components/ui/sidebar";
 
 const XL_BREAKPOINT = 1280;
 
 export default function Sidebar() {
   const { user } = useAuth();
   const { open, setOpen, isMobile } = useSidebar();
+  const pathname = usePathname();
+
   const [isAboveXl, setIsAboveXl] = useState(false);
   const userPreferenceRef = useRef<boolean | null>(null);
   const isFirstRender = useRef(true);
@@ -42,51 +46,81 @@ export default function Sidebar() {
     {
       title: "Home",
       url: ROUTE.HOME,
-      icon: <House className="size-6" />,
-      matchPath: (pathname: string) => pathname === ROUTE.HOME,
+      icon: (open) => (
+        <House
+          type={open ? "solid" : "regular"}
+          className="size-7 laptop:size-5"
+        />
+      ),
+      matchPath: () => pathname === ROUTE.HOME,
     },
     {
       title: "Search",
       url: ROUTE.SEARCH(),
-      icon: <MagnifyingGlass className="size-6" />,
-      matchPath: (pathname: string) => pathname.startsWith(ROUTE.SEARCH()),
+      icon: () => (
+        <MagnifyingGlass className="size-5 laptop:size-4" />
+      ),
+      matchPath: () => pathname.startsWith(ROUTE.SEARCH()),
     },
     {
       title: "Explore",
       url: ROUTE.EXPLORE(),
-      icon: <Compass className="size-6" />,
-      matchPath: (pathname: string) => pathname.startsWith(ROUTE.EXPLORE()),
+      icon: (open) => (
+        <Compass
+          type={open ? "solid" : "regular"}
+          className="size-5 laptop:size-4"
+        />
+      ),
+      matchPath: () => pathname.startsWith(ROUTE.EXPLORE()),
     },
     {
       title: "Create",
       url: "#",
-      icon: <SquarePlus className="size-6" />,
-      matchPath: () => false,
+      icon: () => (
+        <SquarePlus className="size-5 laptop:size-4" />
+      ),
     },
     {
       title: "Messages",
       url: ROUTE.MESSAGES,
-      icon: <Message variant="square" multiple className="size-6" />,
-      matchPath: (pathname: string) => pathname === ROUTE.MESSAGES,
+      icon: () => (
+        <Message
+          variant="square"
+          multiple
+          className="size-5 laptop:size-4"
+        />
+      ),
+      matchPath: () => pathname === ROUTE.MESSAGES,
     },
     {
       title: "Archive",
       url: ROUTE.ARCHIVE,
-      icon: <Archive className="size-6" />,
-      matchPath: (pathname: string) => pathname.startsWith(ROUTE.ARCHIVE),
+      icon: () => (
+        <Archive className="size-5 laptop:size-4" />
+      ),
+      matchPath: () => pathname.startsWith(ROUTE.ARCHIVE),
     },
     {
       title: "Notifications",
       url: ROUTE.NOTIFICATION(),
-      icon: <Bell className="size-6" />,
-      matchPath: (pathname: string) =>
-        pathname.startsWith(ROUTE.NOTIFICATION()),
+      icon: (open) => (
+        <Bell
+          variant={open ? "solid" : "regular"}
+          className="size-5 laptop:size-4"
+        />
+      ),
+      matchPath: () => pathname.startsWith(ROUTE.NOTIFICATION()),
     },
     {
       title: "Profile",
       url: user?.username ? ROUTE.PROFILE(user.username) : "#",
-      icon: <User className="size-6" />,
-      matchPath: (pathname: string) => pathname.startsWith("/profile"),
+      icon: (open) => (
+        <User
+          type={open ? "solid" : "regular"}
+          className="size-5 laptop:size-4"
+        />
+      ),
+      matchPath: () => pathname.startsWith("/profile"),
     },
   ];
 
@@ -171,7 +205,7 @@ export default function Sidebar() {
 
       {isMobile && (
         <>
-          <MobileHeader />
+          <MobileHeader notificationItem={items[6]} profileItem={items[7]} />
           <MobileNav items={items.slice(0, 5)} />
         </>
       )}

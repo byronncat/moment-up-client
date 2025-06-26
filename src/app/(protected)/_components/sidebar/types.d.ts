@@ -1,8 +1,8 @@
 type NavItem = {
   title: string;
   url: string;
-  icon: React.ReactNode;
-  matchPath: (pathname: string) => boolean;
+  icon: (open: boolean) => React.ReactNode;
+  matchPath?: () => boolean;
 };
 
 export type { NavItem };
