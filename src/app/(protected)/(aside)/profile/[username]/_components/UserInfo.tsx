@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Avatar } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Settings, User } from "@/components/icons";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type UserInformationProps = Readonly<{
   data: UserProfileInfo;
@@ -106,5 +107,31 @@ function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
       {renderIcon()}
       {isFollowing ? (isHover ? "Unfollow" : "Following") : "Follow"}
     </Button>
+  );
+}
+
+export function UserInfoSkeleton() {
+  return (
+    <div className={cn("w-full relative", "flex flex-col items-center")}>
+      <Skeleton className={cn("w-full h-40 -mb-15", "rounded-none")} />
+      <Skeleton className="size-28 rounded-full" />
+
+      <div className={cn("mt-3 mb-7", "flex flex-col items-center")}>
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-4 w-24 mt-2" />
+        <Skeleton className="h-4 w-48 mt-4" />
+      </div>
+
+      <div className={cn("grid grid-cols-2 gap-12", "text-sm", "mb-6")}>
+        <div className="flex flex-col items-center gap-1">
+          <Skeleton className="h-4 w-8" />
+          <Skeleton className="h-4 w-16" />
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <Skeleton className="h-4 w-8" />
+          <Skeleton className="h-4 w-16" />
+        </div>
+      </div>
+    </div>
   );
 }

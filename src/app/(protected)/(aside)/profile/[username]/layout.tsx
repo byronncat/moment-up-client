@@ -1,7 +1,8 @@
 import { Metadata, type MetadataMap } from "@/constants/metadata";
-import { use } from "react";
+import { Suspense, use } from "react";
 import { UserApi } from "@/services";
 import ProfileProvider from "./_providers/ProfileProvider";
+import { ProfileZoneSkeleton } from "./_components";
 
 export async function generateMetadata({
   params,
@@ -20,8 +21,11 @@ export default function Layout({
   const username = use(params).username;
   const profileRes = UserApi.getProfile(username);
   return (
-    <ProfileProvider username={username} initialRes={profileRes}>
-      {children}
-    </ProfileProvider>
+    <Suspense fallback={<ProfileZoneSkeleton />}>
+      <ProfileProvider username={username} initialRes={profileRes}>
+        {children}
+      </ProfileProvider>
+    </Suspense>
   );
 }
+
