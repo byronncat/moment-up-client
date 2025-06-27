@@ -7,8 +7,6 @@ type PageHeaderProps = Readonly<{
   className?: string;
 }>;
 
-export const HEADER_HEIGHT = 76;
-
 export default function PageHeader({
   title,
   sideButton,

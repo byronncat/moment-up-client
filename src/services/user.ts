@@ -64,7 +64,7 @@ export async function getProfile(
 }
 
 export async function getMoments(
-  type: "moments" | "media" | "tagged",
+  type: "all" | "media" | "tagged" | "likes" | "bookmarks",
   username: string,
   page: number
 ): Promise<API<{ items: DetailedMomentInfo[]; hasNextPage: boolean }>> {
@@ -88,7 +88,10 @@ export async function getMoments(
     };
 
   const filteredMoments =
-    type === "moments" || type === "tagged"
+    type === "all" ||
+    type === "tagged" ||
+    type === "likes" ||
+    type === "bookmarks"
       ? mockMoments
       : mockMoments.filter(
           (moment) => moment.post.files && moment.post.files.length > 0

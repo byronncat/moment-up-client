@@ -8,7 +8,8 @@ import { Image, User } from "@/components/icons";
 const tabs: NavItem[] = [
   {
     id: "media",
-    icon: <Image aria-label="Media" className="size-5" />,
+    // eslint-disable-next-line jsx-a11y/alt-text
+    icon: <Image className="size-5" />,
     label: "Media",
     href: ROUTE.EXPLORE("media"),
   },

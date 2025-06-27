@@ -1,12 +1,12 @@
-import { CoreApi } from "@/services";
+import { UserApi } from "@/services";
 
 import { Suspense } from "react";
 import { MomentList } from "../../_components";
 import { MomentSkeleton } from "@/components/moment";
 import { TOP_PADDING, ITEM_GAP } from "../../_constants/spacing";
 
-export default function MomentPage() {
-  const momentsRes = CoreApi.explore("moments", 0);
+export default function BookmarkPage() {
+  const momentsRes = UserApi.getMoments("bookmarks", "username", 0);
 
   return (
     <div className="max-w-[600px] size-full mx-auto">

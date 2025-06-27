@@ -66,7 +66,7 @@ function MomentList({ username, initialRes }: MomentListProps) {
 
   async function fetchMoments(page?: number) {
     const response = await UserApi.getMoments(
-      "moments",
+      "all",
       username,
       page ?? pageRef.current + 1
     );

@@ -25,7 +25,6 @@ import {
   Compass,
   SquarePlus,
   Bell,
-  Archive,
   MagnifyingGlass,
   User,
   House,
@@ -83,12 +82,6 @@ export default function Sidebar() {
         <Message variant="square" multiple className="size-5 laptop:size-4" />
       ),
       matchPath: () => pathname === ROUTE.MESSAGES,
-    },
-    {
-      title: "Archive",
-      url: ROUTE.ARCHIVE,
-      icon: () => <Archive className="size-5 laptop:size-4" />,
-      matchPath: () => pathname.startsWith(ROUTE.ARCHIVE),
     },
     {
       title: "Notifications",
@@ -195,7 +188,10 @@ export default function Sidebar() {
 
       {isMobile && (
         <>
-          <MobileHeader notificationItem={items[6]} profileItem={items[7]} />
+          <MobileHeader
+            notificationItem={items[items.length - 2]}
+            profileItem={items[items.length - 1]}
+          />
           <MobileNav items={items.slice(0, 5)} />
         </>
       )}

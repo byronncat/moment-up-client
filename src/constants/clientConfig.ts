@@ -28,7 +28,7 @@ export const ROUTE = {
   NOTIFICATION: (type: "all" | "requests" | "social" = "all") =>
     `/notifications${type === "all" ? "" : `/${type}`}`,
   SETTINGS: "/settings",
-  ARCHIVE: "/archive",
+  ARCHIVE: (type: "bookmarks" | "likes" = "bookmarks") => `/archive/${type}`,
 };
 
 export const PROTECTED_ROUTES = [ROUTE.HOME];

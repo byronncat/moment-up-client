@@ -5,14 +5,18 @@ import { use, useEffect, useState, useRef } from "react";
 import { useMoment } from "@/components/providers";
 import { useSidebar } from "@/components/ui/sidebar";
 import { CoreApi } from "@/services";
-import { TOP_PADDING, BOTTOM_PADDING, ITEM_GAP } from "./constants/spacing";
-import { HEADER_HEIGHT } from "../../_components";
+import {
+  TOP_PADDING,
+  BOTTOM_PADDING,
+  CELL_GAP,
+  HEADER_HEIGHT,
+} from "../_constants/spacing";
 
 import { ErrorContent, NoContent } from "@/components";
-import { MomentList } from "@/components/moment";
-import { Camera } from "@/components/icons";
+import { MomentGrid } from "@/components/moment";
+import { Image } from "@/components/icons";
 
-type MomentsProps = Readonly<{
+type MediaGridProps = Readonly<{
   initialRes: Promise<
     API<{
       items: DetailedMomentInfo[];
@@ -21,30 +25,24 @@ type MomentsProps = Readonly<{
   >;
 }>;
 
-export default function Moments({ initialRes }: MomentsProps) {
+export default function Media({ initialRes }: MediaGridProps) {
   const response = use(initialRes);
   const {
-    moments,
-    setMoments,
+    moments: media,
+    setMoments: setMedia,
     setCurrentIndex,
     addMoments,
-    like,
-    bookmark,
-    report,
-    share,
-    follow,
-    block,
   } = useMoment();
   const [hasNextPage, setHasNextPage] = useState(
     response?.data?.hasNextPage ?? true
   );
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
-  const { isMobile } = useSidebar();
   const pageRef = useRef(1);
+  const { isMobile } = useSidebar();
 
-  async function fetchMoments(page?: number) {
+  async function fetchMedia(page?: number) {
     const response = await CoreApi.explore(
-      "moments",
+      "media",
       page ?? pageRef.current + 1
     );
     if (response.success) {
@@ -55,42 +53,31 @@ export default function Moments({ initialRes }: MomentsProps) {
     setIsNextPageLoading(false);
   }
 
-  function handleClick(index: number) {
-    setCurrentIndex(index);
-  }
-
   useEffect(() => {
-    if (response.data) setMoments(response.data.items);
-  }, [response.success, response.data, setMoments]);
+    if (response.data) setMedia(response.data.items);
+  }, [response.success, response.data, setMedia]);
 
   if (!response.success) return <ErrorContent onRefresh={() => {}} />;
-  if (!moments) return null;
-  if (moments.length === 0)
+  if (!media) return null;
+  if (media.length === 0)
     return (
       <NoContent
-        icon={<Camera className="size-16 text-muted-foreground" />}
-        title="No moments found"
-        description="Wait for someone to post a moment."
+        // eslint-disable-next-line jsx-a11y/alt-text
+        icon={<Image multiple className="size-16 text-muted-foreground" />}
+        title="No media found"
+        description="Wait for someone to post a media."
       />
     );
 
   return (
-    <MomentList
-      items={moments}
+    <MomentGrid
+      items={media}
       hasNextPage={hasNextPage}
       isNextPageLoading={isNextPageLoading}
-      loadNextPage={() => fetchMoments()}
-      onItemClick={handleClick}
-      actions={{
-        like,
-        bookmark,
-        follow,
-        share,
-        block: (momentId) => block(momentId, { remove: true }),
-        report,
-      }}
+      loadNextPage={() => fetchMedia()}
+      onItemClick={setCurrentIndex}
       listOptions={{
-        topPadding: TOP_PADDING + ITEM_GAP - (isMobile ? HEADER_HEIGHT : 0),
+        topPadding: TOP_PADDING + CELL_GAP - (isMobile ? HEADER_HEIGHT : 0),
         bottomPadding: BOTTOM_PADDING,
       }}
     />

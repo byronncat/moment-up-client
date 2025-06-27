@@ -3,7 +3,7 @@ import { ROUTE } from "@/constants/clientConfig";
 
 import Link from "next/link";
 import { ModeSelection, Tooltip } from "@/components";
-import { Settings, Menu, Palette, LogOut } from "@/components/icons";
+import { Settings, Menu, Palette, LogOut, Archive } from "@/components/icons";
 import {
   SidebarFooter as SidebarFooterUI,
   SidebarMenu,
@@ -82,10 +82,10 @@ export default function SidebarFooter({ open }: SidebarFooterProps) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" side="top" className="w-56">
                   <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href={ROUTE.SETTINGS}>
+                    <Link href={ROUTE.ARCHIVE("bookmarks")}>
                       <div className="flex items-center gap-2">
-                        <Settings className="size-4" />
-                        <span>Settings</span>
+                        <Archive className="size-4" />
+                        <span>Archive</span>
                       </div>
                     </Link>
                   </DropdownMenuItem>
@@ -102,6 +102,14 @@ export default function SidebarFooter({ open }: SidebarFooterProps) {
                       </div>
                     </DropdownMenuItem>
                   </ModeSelection>
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href={ROUTE.SETTINGS}>
+                      <div className="flex items-center gap-2">
+                        <Settings className="size-4" />
+                        <span>Settings</span>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>
@@ -150,11 +158,13 @@ export default function SidebarFooter({ open }: SidebarFooterProps) {
                   </DropdownMenuTrigger>
                 </Tooltip>
                 <DropdownMenuContent align="start" side="top" className="w-56">
-                  <DropdownMenuItem asChild>
-                    <div className="flex items-center gap-2">
-                      <Settings className="size-4" />
-                      <span>Settings</span>
-                    </div>
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href={ROUTE.ARCHIVE("bookmarks")}>
+                      <div className="flex items-center gap-2">
+                        <Archive className="size-4" />
+                        <span>Archive</span>
+                      </div>
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <ModeSelection
@@ -170,6 +180,14 @@ export default function SidebarFooter({ open }: SidebarFooterProps) {
                         </div>
                       </DropdownMenuItem>
                     </ModeSelection>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href={ROUTE.SETTINGS}>
+                      <div className="flex items-center gap-2">
+                        <Settings className="size-4" />
+                        <span>Settings</span>
+                      </div>
+                    </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

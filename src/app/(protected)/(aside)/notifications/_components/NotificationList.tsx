@@ -4,7 +4,7 @@ import type { API, NotificationInfo } from "api";
 import { use, useEffect, useRef, useState } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
 import { NotifyApi } from "@/services";
-import { HEADER_HEIGHT } from "../../_components";
+import { HEADER_HEIGHT } from "../../_constants/spacing";
 import VirtualizedList from "./VirtualizedList";
 
 type NotificationListProps = Readonly<{
