@@ -11,7 +11,7 @@ import { ROUTE } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { Avatar, UserInfoCard } from "@/components";
+import { Avatar, UserInfoCard } from "@/components/common";
 import {
   HoverCard,
   HoverCardContent,

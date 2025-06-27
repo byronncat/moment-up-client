@@ -6,7 +6,7 @@ import type {
   UserCardDisplayInfo,
 } from "api";
 import { cn } from "@/libraries/utils";
-import { Avatar } from "@/components";
+import { Avatar } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Shield, User } from "@/components/icons";
 

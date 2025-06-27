@@ -8,7 +8,7 @@ import { useHome } from "../_providers/Home";
 import { CoreApi } from "@/services";
 
 import { cn } from "@/libraries/utils";
-import { NoContent, ErrorContent } from "@/components";
+import { NoContent, ErrorContent } from "@/components/common";
 import { MomentList } from "@/components/moment";
 import { Camera } from "@/components/icons";
 

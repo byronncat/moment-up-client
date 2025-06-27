@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { VirtualScrollbar } from "@/components";
+import { VirtualScrollbar } from "@/components/common";
 import { useWindowSize, useResizeObserver } from "usehooks-ts";
 
 export default function ScrollArea({

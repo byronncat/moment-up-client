@@ -12,7 +12,7 @@ import {
   HEADER_HEIGHT,
 } from "../_constants/spacing";
 
-import { ErrorContent, NoContent } from "@/components";
+import { ErrorContent, NoContent } from "@/components/common";
 import { MomentGrid } from "@/components/moment";
 import { Image } from "@/components/icons";
 

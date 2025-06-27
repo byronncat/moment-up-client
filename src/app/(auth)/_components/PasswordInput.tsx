@@ -4,7 +4,7 @@ import type { InputProps } from "@/components/ui/input";
 
 import { forwardRef, useState } from "react";
 import { cn } from "@/libraries/utils";
-import { Tooltip } from "@/components";
+import { Tooltip } from "@/components/common";
 import { Input } from "@/components/ui/input";
 import { Eye } from "@/components/icons";
 

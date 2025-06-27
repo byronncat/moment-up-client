@@ -12,7 +12,7 @@ import {
   HEADER_HEIGHT,
 } from "../_constants/spacing";
 
-import { ErrorContent, NoContent } from "@/components";
+import { ErrorContent, NoContent } from "@/components/common";
 import { MomentList } from "@/components/moment";
 import { Camera } from "@/components/icons";
 

@@ -2,7 +2,7 @@ import { useAuth } from "@/components/providers";
 import { ROUTE } from "@/constants/clientConfig";
 
 import Link from "next/link";
-import { ModeSelection, Tooltip } from "@/components";
+import { ModeSelection, Tooltip } from "@/components/common";
 import { Settings, Menu, Palette, LogOut, Archive } from "@/components/icons";
 import {
   SidebarFooter as SidebarFooterUI,

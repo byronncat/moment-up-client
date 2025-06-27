@@ -8,7 +8,7 @@ import { cn } from "@/libraries/utils";
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
 import { VariableSizeList } from "react-window";
-import { VirtualScrollbar } from "@/components";
+import { VirtualScrollbar } from "@/components/common";
 import NotificationItem from "./NotificationItem";
 import { NotificationItemSkeleton } from "./NotificationSkeleton";
 

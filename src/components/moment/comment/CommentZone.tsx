@@ -13,7 +13,7 @@ import { ROUTE, SortBy } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { Avatar, UserInfoCard, Tooltip } from "@/components";
+import { Avatar, UserInfoCard, Tooltip } from "@/components/common";
 import { Heart } from "@/components/icons";
 import {
   HoverCard,

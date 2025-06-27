@@ -9,7 +9,7 @@ import { MomentCell } from "@/components/moment";
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
 import { VariableSizeList } from "react-window";
-import { VirtualScrollbar } from "@/components";
+import { VirtualScrollbar } from "@/components/common";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const COLUMN_COUNT = 3;

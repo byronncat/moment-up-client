@@ -2,7 +2,7 @@ import type { NavItem } from "./types";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { Tooltip } from "@/components";
+import { Tooltip } from "@/components/common";
 import {
   SidebarContent,
   SidebarGroup,

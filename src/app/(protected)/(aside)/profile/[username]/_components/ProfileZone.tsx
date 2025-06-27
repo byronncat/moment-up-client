@@ -3,7 +3,7 @@ import { ROUTE } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import UserInfo, { UserInfoSkeleton } from "./UserInfo";
-import { NavigationBar, type NavItem } from "@/components";
+import { NavigationBar, type NavItem } from "@/components/common";
 import { TableOfContents, Image, Tag } from "@/components/icons";
 
 type ProfileZoneProps = Readonly<{

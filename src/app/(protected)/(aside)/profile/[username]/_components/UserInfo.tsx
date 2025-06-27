@@ -9,7 +9,7 @@ import { ROUTE } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { Avatar } from "@/components";
+import { Avatar } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Settings, User } from "@/components/icons";
 import { Skeleton } from "@/components/ui/skeleton";

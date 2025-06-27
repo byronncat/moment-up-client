@@ -3,7 +3,7 @@ import { ROUTE } from "@/constants/clientConfig";
 
 import Link from "next/link";
 import { PageHeader } from "../_components";
-import { NavigationBar, type NavItem } from "@/components";
+import { NavigationBar, type NavItem } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Bell, Settings, User } from "@/components/icons";
 

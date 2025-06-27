@@ -6,7 +6,7 @@ import type {
 } from "api";
 
 import { cn } from "@/libraries/utils";
-import { Avatar } from "@/components";
+import { Avatar } from "@/components/common";
 import { Circle, MagnifyingGlass } from "@/components/icons";
 
 type SearchItemProps = Readonly<{

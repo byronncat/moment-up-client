@@ -16,7 +16,7 @@ import {
 } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
-import { ErrorContent, NavigationBar, type NavItem } from "@/components";
+import { ErrorContent, NavigationBar, type NavItem } from "@/components/common";
 import { PageHeader, SearchInput } from "../_components";
 import {
   SearchHistory,

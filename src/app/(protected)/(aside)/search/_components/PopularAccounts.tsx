@@ -2,7 +2,7 @@
 
 import type { ProfileSearchItem } from "api";
 import { cn } from "@/libraries/utils";
-import { Avatar } from "@/components";
+import { Avatar } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Circle } from "@/components/icons";
 

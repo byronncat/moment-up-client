@@ -3,7 +3,7 @@ import { ROUTE } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { Avatar } from "@/components";
+import { Avatar } from "@/components/common";
 
 export default function FeedItem({
   data,

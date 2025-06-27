@@ -14,7 +14,7 @@ import zodSchema from "@/libraries/zodSchema";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { Avatar } from "@/components";
+import { Avatar } from "@/components/common";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/app/(auth)/_components";
 import {

@@ -3,7 +3,7 @@ import type { Actions } from "@/components/providers/MomentData";
 import { useState } from "react";
 
 import { cn } from "@/libraries/utils";
-import { ColorfulIconButton, buttonStyles } from "@/components";
+import { ColorfulIconButton, buttonStyles } from "@/components/common";
 import { Heart, Message, Share, Repeat, Bookmark } from "@/components/icons";
 import ShareDialog from "@/components/moment/moment-card/ShareDialog";
 

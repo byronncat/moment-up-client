@@ -3,7 +3,7 @@ import { SearchCategory } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import { SearchItem } from "../../_components";
-import { ErrorContent } from "@/components";
+import { ErrorContent } from "@/components/common";
 import {
   //  MomentCard,
   MomentCell,

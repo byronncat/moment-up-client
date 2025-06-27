@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { CoreApi } from "@/services";
 import { ROUTE } from "@/constants/clientConfig";
 
-import { Modal } from "@/components";
+import { Modal } from "@/components/common";
 import { FeedView, RightNav } from "@/app/(protected)/feed/_components";
 
 export default function FeedModal() {

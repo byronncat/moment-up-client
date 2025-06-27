@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMoment } from "@/components/providers/MomentData";
 
 import { cn } from "@/libraries/utils";
-import { Modal } from "@/components";
+import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { MediaCarousel, Details } from "./_components";
 import { X } from "@/components/icons";

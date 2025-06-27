@@ -7,7 +7,7 @@ import { useState } from "react";
 import { cn } from "@/libraries/utils";
 
 import { useContact } from "../_provider/Contact";
-import { NavigationBar, type NavItem } from "@/components";
+import { NavigationBar, type NavItem } from "@/components/common";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { MagnifyingGlass, X } from "@/components/icons";
@@ -251,24 +251,6 @@ function UserStatus({ userStatuses, className }: UserStatusProps) {
           "overflow-x-auto scrollbar-hide"
         )}
       >
-        <Link href={ROUTE.THOUGHT} className="flex flex-col items-center gap-1">
-          <div className="relative">
-            <Avatar className="size-15">
-              <AvatarImage src="/note.png" alt="Your note" />
-              <AvatarFallback>Note</AvatarFallback>
-            </Avatar>
-          </div>
-          <span
-            className={cn(
-              "text-xs text-muted-foreground",
-              "truncate max-w-14",
-              "text-center"
-            )}
-          >
-            Your note
-          </span>
-        </Link>
-
         {userStatuses.map((user) => (
           <div key={user.id} className="flex flex-col items-center gap-1">
             <div className="relative">

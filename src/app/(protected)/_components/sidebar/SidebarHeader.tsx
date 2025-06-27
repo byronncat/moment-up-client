@@ -2,7 +2,7 @@ import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/clientConfig";
 
 import Link from "next/link";
-import { Logo } from "@/components";
+import { Logo } from "@/components/common";
 import {
   SidebarHeader as SidebarHeaderUI,
   SidebarMenu,
