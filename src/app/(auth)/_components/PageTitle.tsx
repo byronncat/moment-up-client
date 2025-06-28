@@ -23,5 +23,5 @@ export default function PageTitle({
   variant,
   className,
 }: PageTitleProps) {
-  return <h2 className={cn(titleVariants({ variant, className }))}>{title}</h2>;
+  return <h1 className={cn(titleVariants({ variant, className }))}>{title}</h1>;
 }

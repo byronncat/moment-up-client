@@ -55,7 +55,7 @@ export async function getProfile(
       message: "error",
     };
 
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  await new Promise((resolve) => setTimeout(resolve, 12000));
   return {
     success: true,
     message: "User fetched successfully",
@@ -70,6 +70,11 @@ export async function getMoments(
 ): Promise<API<{ items: DetailedMomentInfo[]; hasNextPage: boolean }>> {
   console.log("getMoments", type, username, page);
   await new Promise((resolve) => setTimeout(resolve, 4000));
+
+  return {
+    success: false,
+    message: "error",
+  };
 
   if (apiRes.getMoments === "empty")
     return {

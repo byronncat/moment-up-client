@@ -17,29 +17,45 @@ import { AuthApi } from "@/services";
 import { LoadingPage } from "../pages";
 import { ROUTE } from "@/constants/clientConfig";
 
-const AuthContext = createContext(
-  {} as {
-    user: Omit<UserCardDisplayInfo, "followedBy" | "isFollowing"> | null;
-    logged?: boolean;
-    setLogged: (logged: boolean) => void;
-    loaded: boolean;
-    setLoaded: (loaded: boolean) => void;
-    authenticate: () => Promise<void>;
-    login: (values: z.infer<typeof zodSchema.auth.login>) => Promise<API>;
-    switchLogin: (values: z.infer<typeof zodSchema.auth.login>) => Promise<API>;
-    signup: (values: z.infer<typeof zodSchema.auth.signup>) => Promise<API>;
-    logout: () => Promise<API>;
-    sendRecoveryEmail: (
-      values: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
-    ) => Promise<API>;
-    changePassword: (
-      values: z.infer<typeof zodSchema.auth.changePassword>
-    ) => Promise<API>;
-    changeAccount: (accountId: UserCardDisplayInfo["id"]) => Promise<void>;
-  }
-);
+type User = Omit<UserCardDisplayInfo, "followedBy" | "isFollowing">;
+type AuthContextType = {
+  user: User | null;
+  logged?: boolean;
+  loaded: boolean;
+  setLogged: (logged: boolean) => void;
+  setLoaded: (loaded: boolean) => void;
+  authenticate: () => Promise<void>;
+  login: (values: z.infer<typeof zodSchema.auth.login>) => Promise<API>;
+  switchLogin: (values: z.infer<typeof zodSchema.auth.login>) => Promise<API>;
+  signup: (values: z.infer<typeof zodSchema.auth.signup>) => Promise<API>;
+  logout: () => Promise<API>;
+  sendRecoveryEmail: (
+    values: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
+  ) => Promise<API>;
+  changePassword: (
+    values: z.infer<typeof zodSchema.auth.changePassword>
+  ) => Promise<API>;
+  changeAccount: (accountId: UserCardDisplayInfo["id"]) => Promise<void>;
+};
+
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  logged: false,
+  loaded: false,
+  setLogged: () => {},
+  setLoaded: () => {},
+  authenticate: async () => {},
+  login: async () => ({ success: false, message: "" }),
+  switchLogin: async () => ({ success: false, message: "" }),
+  signup: async () => ({ success: false, message: "" }),
+  logout: async () => ({ success: false, message: "" }),
+  sendRecoveryEmail: async () => ({ success: false, message: "" }),
+  changePassword: async () => ({ success: false, message: "" }),
+  changeAccount: async () => {},
+});
 
 export const useAuth = () => useContext(AuthContext);
+const PAGE_RELOAD_TIME = 1000;
 
 export default function AuthProvider({
   children,
@@ -80,10 +96,9 @@ export default function AuthProvider({
         router.push(ROUTE.HOME);
       }
 
-      // Wait for the page to reload
       setTimeout(() => {
         setLoaded(true);
-      }, 1000);
+      }, PAGE_RELOAD_TIME); // Wait for the page to reload
       return res;
     },
     [router]
@@ -110,7 +125,7 @@ export default function AuthProvider({
     }
     setTimeout(() => {
       setLoaded(true);
-    }, 100);
+    }, PAGE_RELOAD_TIME);
 
     return res;
   }, [router]);

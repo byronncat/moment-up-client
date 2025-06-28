@@ -8,6 +8,7 @@ import { MomentSkeleton } from "@/components/moment";
 export default function HomePage() {
   const feedsRes = CoreApi.getFeeds();
   const momentsRes = CoreApi.getMoments(0);
+
   return (
     <HomeProvider>
       <div className="relative">

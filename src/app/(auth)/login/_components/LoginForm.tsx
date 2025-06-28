@@ -1,16 +1,14 @@
 "use client";
 
 import type { z } from "zod";
-import type { API } from "api";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import zodSchema from "@/libraries/zodSchema";
 import { useAuth } from "@/components/providers";
+import { zodResolver } from "@hookform/resolvers/zod";
+import zodSchema from "@/libraries/zodSchema";
+import { toast } from "sonner";
 import { ROUTE } from "@/constants/clientConfig";
-import { styles } from "../../_constants/styles";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -21,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ActionableText, PasswordInput, SubmitButton } from "../../_components";
+import { styles } from "../../_constants/styles";
 
 export default function LoginForm() {
   const form = useForm<z.infer<typeof zodSchema.auth.login>>({
@@ -35,16 +34,9 @@ export default function LoginForm() {
   const { login } = useAuth();
   async function loginHandler(values: z.infer<typeof zodSchema.auth.login>) {
     setLoading(true);
-    toast.promise(login(values), {
-      loading: "Logging in...",
-      success: (res: API) => {
-        setLoading(false);
-        if (res.success) {
-          return "Login successful!";
-        } else throw new Error(res.message);
-      },
-      error: (error) => error.message,
-    });
+    const { success, message } = await login(values);
+    if (!success) toast.error(message);
+    setLoading(false);
   }
 
   return (

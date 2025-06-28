@@ -3,7 +3,7 @@ import { ROUTE } from "@/constants/clientConfig";
 import { Metadata } from "@/constants/metadata";
 
 import { PageTitle, ActionableText } from "../../../_components";
-import { RecoverPasswordForm } from "./_components";
+import RecoverPasswordForm from "./_components/RecoverPasswordForm";
 import { styles } from "../../../_constants/styles";
 
 export const metadata = Metadata.recover;

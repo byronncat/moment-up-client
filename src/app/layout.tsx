@@ -1,10 +1,11 @@
+import { Metadata } from "@/constants/metadata";
+export const metadata = Metadata.root;
+
 import { AuthProvider, ThemeProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Metadata } from "@/constants/metadata";
 import "@/styles/globals.css";
 
-export const metadata = Metadata.root;
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

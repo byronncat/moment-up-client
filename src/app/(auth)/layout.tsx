@@ -1,21 +1,16 @@
 import { cn } from "@/libraries/utils";
-import ModeSelection from "@/components/common/ModeSelection";
-import Brand from "@/components/common/Brand";
+import { ModeSelection, Brand } from "@/components/common";
 import { AsideBackground } from "./_components";
 
-export default async function Layout({
+export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className={cn("w-screen h-screen", "flex")}>
-      <AsideBackground />
-      <div
-        className={cn(
-          "size-full lg:max-w-(--breakpoint-md)",
-          "shrink-0",
-          "relative"
-        )}
-      >
+      <AsideBackground
+        className={cn("min-w-[460px] grow", "hidden lg:block")}
+      />
+      <div className={cn("size-full lg:max-w-(--breakpoint-md) grow", "relative")}>
         <div
           className={cn(
             "flex justify-between items-center",

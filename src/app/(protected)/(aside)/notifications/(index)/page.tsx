@@ -1,18 +1,7 @@
-import { Suspense } from "react";
 import { NotifyApi } from "@/services";
-import { NotificationList, NotificationSkeleton } from "../_components";
+import { NotificationList } from "../_components";
 
-export default function NotificationsPage() {
+export default function NotificationPage() {
   const notificationRes = NotifyApi.getNotifications();
-  return (
-    <Suspense
-      fallback={
-        <div className="pt-[121px]">
-          <NotificationSkeleton />
-        </div>
-      }
-    >
-      <NotificationList type="all" initialRes={notificationRes} />
-    </Suspense>
-  );
+  return <NotificationList type="all" initialRes={notificationRes} />;
 }

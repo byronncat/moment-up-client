@@ -1,17 +1,17 @@
-import { cn } from "@/libraries/utils";
-import { ROUTE } from "@/constants/clientConfig";
 import { Metadata } from "@/constants/metadata";
+export const metadata = Metadata.login;
 
+import { cn } from "@/libraries/utils";
 import {
   ActionableText,
   Divider,
   GoogleButton,
   PageTitle,
 } from "../_components";
-import { LoginForm } from "./_components";
+import LoginForm from "./_components/LoginForm";
+import { ROUTE } from "@/constants/clientConfig";
 import { styles } from "../_constants/styles";
 
-export const metadata = Metadata.login;
 export default function LoginPage() {
   return (
     <main className={styles.form}>

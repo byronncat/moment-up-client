@@ -1,16 +1,14 @@
-import Image from "next/image";
 import { cn } from "@/libraries/utils";
+import Image from "next/image";
 import backgroundImg from "@/assets/imgs/night-neon.avif";
 
-export default function AsideBackground() {
+type AsideBackgroundProps = Readonly<{
+  className?: string;
+}>;
+
+export default function AsideBackground({ className }: AsideBackgroundProps) {
   return (
-    <div
-      className={cn(
-        "grow size-full",
-        "relative select-none",
-        "hidden lg:block"
-      )}
-    >
+    <div className={cn("relative select-none", className)}>
       <Image
         src={backgroundImg.src}
         alt="background"

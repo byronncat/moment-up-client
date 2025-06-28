@@ -8,7 +8,7 @@ import {
   GoogleButton,
   PageTitle,
 } from "../_components";
-import { SignupForm } from "./_components";
+import SignupForm from "./_components/SignupForm";
 import { styles } from "../_constants/styles";
 
 export const metadata = Metadata.signup;
