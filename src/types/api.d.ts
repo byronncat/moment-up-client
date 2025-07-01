@@ -32,7 +32,7 @@ declare module "api" {
     hasFeed: boolean;
     isFollowing?: boolean;
   };
-
+  
   type UserCardDisplayInfo = Omit<UserProfileInfo, "backgroundImage"> & {
     followedBy?: {
       count: number;

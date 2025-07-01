@@ -1,15 +1,12 @@
 import { mockCurrentUsers } from "@/__mocks__";
 
 import type { z } from "zod";
-import type { UserAccountInfo, API, UserCardDisplayInfo } from "api";
+import type { UserAccountInfo, API, UserProfileInfo } from "api";
 
 import zodSchema from "@/libraries/zodSchema";
+import { SERVER_HOST_URL } from "@/constants/serverConfig";
 
 const apiRes = {
-  login: "Login successful" as
-    | "Login successful"
-    | "Incorrect identity or password"
-    | "Internal error",
   signup: "Signup successful" as "Signup successful" | "Internal error",
   sendRecoveryEmail: "Recovery email sent" as
     | "Recovery email sent"
@@ -25,86 +22,62 @@ const apiRes = {
     | "Internal error",
 };
 
+const ApiUrl = {
+  login: `${SERVER_HOST_URL}/v1/auth/login`,
+  logout: `${SERVER_HOST_URL}/v1/auth/logout`,
+};
+
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>
-): Promise<API> {
-  console.log("login", data);
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 3000);
-  });
-
-  if (apiRes.login === "Login successful") {
-    document.cookie = "session=123456789; max-age=3600; path=/";
-    return {
-      success: true,
-      message: "Login successful!",
-    };
-  }
-  if (apiRes.login === "Incorrect identity or password") {
-    return {
-      success: false,
-      message: "Incorrect identity or password",
-    };
-  }
-  return {
-    success: false,
-    message: "Internal error" as const,
-  };
-
-  // return await fetch(apiRes.auth.login, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(data),
-  //   credentials: "include",
-  // })
-  //   .then(async (res) => {
-  //     const response = await res.json();
-  //     if (!res.ok) throw response;
-  //     return {
-  //       success: true,
-  //       message: response,
-  //     };
-  //   })
-  //   .catch((err) => {
-  //     return {
-  //       success: false,
-  //       message: Array.isArray(err.message) ? err.message[0] : err.message,
-  //     };
-  //   });
+): Promise<API<Omit<UserProfileInfo, "isFollowing">>> {
+  return await fetch(ApiUrl.login, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw data;
+      return {
+        success: true,
+        message: "Login successful",
+        data,
+      };
+    })
+    .catch(async (error) => {
+      return {
+        success: false,
+        message: Array.isArray(error.message)
+          ? error.message[0]
+          : error.message,
+      };
+    });
 }
 
 export async function logout(): Promise<API> {
-  console.log("logout");
-  document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  return {
-    success: true,
-    message: "ok",
-  };
-  // return await fetch(apiRes.auth.logout, {
-  //   method: "DELETE",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   credentials: "include",
-  // })
-  //   .then(async (res) => {
-  //     const response = await res.json();
-  //     if (!res.ok) throw response;
-  //     return {
-  //       success: true,
-  //       message: response,
-  //     };
-  //   })
-  //   .catch((err) => {
-  //     return {
-  //       success: false,
-  //       message: Array.isArray(err.message) ? err.message[0] : err.message,
-  //     };
-  //   });
+  return await fetch(ApiUrl.logout, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then(async (res) => {
+      if (!res.ok) throw await res.json();
+      return {
+        success: true,
+        message: await res.text(),
+      };
+    })
+    .catch((err) => {
+      return {
+        success: false,
+        message: Array.isArray(err.message) ? err.message[0] : err.message,
+      };
+    });
 }
 
 export async function signup(
@@ -154,7 +127,7 @@ export async function signup(
 }
 
 export async function verify(): Promise<
-  API<Omit<UserCardDisplayInfo, "followedBy" | "isFollowing">>
+  API<Omit<UserProfileInfo, "isFollowing">>
 > {
   console.log("verify");
   await new Promise((resolve) => {
@@ -259,8 +232,8 @@ export async function getAllAcounts(): Promise<API<UserAccountInfo[]>> {
 }
 
 export async function switchAccount(
-  accountId: UserCardDisplayInfo["id"]
-): Promise<API<Omit<UserCardDisplayInfo, "followedBy" | "isFollowing">>> {
+  accountId: UserProfileInfo["id"]
+): Promise<API<Omit<UserProfileInfo, "followedBy" | "isFollowing">>> {
   console.log("switchAccount", accountId);
   const anotherUser = mockCurrentUsers.find((user) => user.id === accountId);
   return new Promise((resolve) => {

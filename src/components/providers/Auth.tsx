@@ -77,12 +77,13 @@ export default function AuthProvider({
 
   const login = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
-      const res = await AuthApi.login(values);
-      if (res.success) {
+      const { success, message, data } = await AuthApi.login(values);
+      if (success) {
         setLogged(true);
+        setUser(data ?? null);
         router.push(ROUTE.HOME);
       }
-      return res;
+      return { success, message };
     },
     [router]
   );
@@ -90,8 +91,8 @@ export default function AuthProvider({
   const switchLogin = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
       setLoaded(false);
-      const res = await AuthApi.login(values);
-      if (res.success) {
+      const { success, message } = await AuthApi.login(values);
+      if (success) {
         router.refresh();
         router.push(ROUTE.HOME);
       }
@@ -99,7 +100,7 @@ export default function AuthProvider({
       setTimeout(() => {
         setLoaded(true);
       }, PAGE_RELOAD_TIME); // Wait for the page to reload
-      return res;
+      return { success, message };
     },
     [router]
   );

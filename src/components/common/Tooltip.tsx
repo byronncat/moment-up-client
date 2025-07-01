@@ -37,7 +37,7 @@ type TooltipProps = Readonly<{
 export default function Tooltip({
   children,
   content,
-  sideOffset = 6,
+  sideOffset = 0,
   side,
   variant = "default",
   align,
