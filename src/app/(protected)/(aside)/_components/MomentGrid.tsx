@@ -17,12 +17,10 @@ import { MomentGrid } from "@/components/moment";
 import { Image } from "@/components/icons";
 
 type MediaGridProps = Readonly<{
-  initialRes: Promise<
-    API<{
-      items: DetailedMomentInfo[];
-      hasNextPage: boolean;
-    }>
-  >;
+  initialRes: API<{
+    items: DetailedMomentInfo[];
+    hasNextPage: boolean;
+  }>;
 }>;
 
 export default function Media({ initialRes }: MediaGridProps) {

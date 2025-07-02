@@ -1,5 +1,5 @@
 import { Metadata } from "@/constants/metadata";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import { PageHeader } from "../_components";
 import { NavigationBar, type NavItem } from "@/components/common";

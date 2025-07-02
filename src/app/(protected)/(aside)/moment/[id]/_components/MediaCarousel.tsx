@@ -13,6 +13,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { Pause, Play } from "@/components/icons";
+import { BLUR_DATA_URL } from "@/constants/clientConfig";
 
 type MediaCarouselProps = Readonly<{
   files: File[] | undefined;
@@ -71,6 +72,8 @@ export default function MediaCarousel({
                   className="object-contain select-none"
                   priority={index === initialIndex}
                   loading={index === initialIndex ? "eager" : "lazy"}
+                  placeholder="blur"
+                  blurDataURL={BLUR_DATA_URL}
                 />
               </div>
             ) : (

@@ -9,12 +9,10 @@ import VirtualizedList from "./VirtualizedList";
 
 type NotificationListProps = Readonly<{
   type: "all" | "requests" | "social";
-  initialRes: Promise<
-    API<{
-      items: NotificationInfo[];
-      hasNextPage: boolean;
-    }>
-  >;
+  initialRes: API<{
+    items: NotificationInfo[];
+    hasNextPage: boolean;
+  }>;
 }>;
 
 export default function NotificationList({

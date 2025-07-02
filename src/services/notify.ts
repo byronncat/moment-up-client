@@ -4,12 +4,10 @@ import type { API, NotificationInfo } from "api";
 export const getNotifications = async (
   type: "all" | "requests" | "social" = "all",
   page: number = 0
-): Promise<
-  API<{
-    items: NotificationInfo[];
-    hasNextPage: boolean;
-  }>
-> => {
+): API<{
+  items: NotificationInfo[];
+  hasNextPage: boolean;
+}> => {
   console.log("getNotifications", type, page);
   await new Promise((resolve) => setTimeout(resolve, 1000));
 

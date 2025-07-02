@@ -17,12 +17,10 @@ const TOP_PADDING = 160;
 const BOTTOM_PADDING = 121;
 
 type MomentsProps = Readonly<{
-  initialRes: Promise<
-    API<{
-      items: DetailedMomentInfo[];
-      hasNextPage: boolean;
-    }>
-  >;
+  initialRes: API<{
+    items: DetailedMomentInfo[];
+    hasNextPage: boolean;
+  }>;
 }>;
 
 export default function Moments({ initialRes }: MomentsProps) {

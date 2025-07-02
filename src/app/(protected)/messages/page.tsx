@@ -6,7 +6,7 @@ import { useContact } from "./_provider/Contact";
 import { cn } from "@/libraries/utils";
 
 import { Button } from "@/components/ui/button";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 export default function Messages() {
   const { currentContactId } = useContact();

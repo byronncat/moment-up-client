@@ -5,7 +5,7 @@ import type { API, DetailedMomentInfo } from "api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { use, useLayoutEffect, useRef } from "react";
 import { useMoment } from "@/components/providers";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { CommentZone, MomentHeader } from "@/components/moment";
 import { MomentButtonGroup, CommentDataProvider } from "@/components/moment";
@@ -15,7 +15,7 @@ import CommentInput from "./CommentInput";
 import ScrollArea from "./ScrollArea";
 
 type MomentDetailsProps = Readonly<{
-  initialRes: Promise<API<DetailedMomentInfo | null>>;
+  initialRes: API<DetailedMomentInfo | null>;
 }>;
 
 export default function MomentDetails({ initialRes }: MomentDetailsProps) {

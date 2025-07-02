@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useTextClamp } from "@/hooks";
 import { parseText } from "@/helpers/parser";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";

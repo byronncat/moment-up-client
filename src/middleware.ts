@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 
 import { NextResponse } from "next/server";
-import { PROTECTED_ROUTES, AUTH_ROUTES, ROUTE } from "@/constants/clientConfig";
+import { PROTECTED_ROUTES, AUTH_ROUTES, ROUTE } from "@/constants/route";
 
 const SESSION_COOKIE_NAME = "connect.sid";
 

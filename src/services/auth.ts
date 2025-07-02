@@ -1,7 +1,13 @@
 import { mockCurrentUsers } from "@/__mocks__";
 
 import type { z } from "zod";
-import type { UserAccountInfo, API, UserProfileInfo } from "api";
+import type {
+  AccessToken,
+  AccountInfo,
+  API,
+  UserInfo,
+  UserProfileInfo,
+} from "api";
 
 import zodSchema from "@/libraries/zodSchema";
 import { SERVER_HOST_URL } from "@/constants/serverConfig";
@@ -25,11 +31,41 @@ const apiRes = {
 const ApiUrl = {
   login: `${SERVER_HOST_URL}/v1/auth/login`,
   logout: `${SERVER_HOST_URL}/v1/auth/logout`,
+  verify: `${SERVER_HOST_URL}/v1/auth/verify`,
 };
+
+type AccessResponse = API<{
+  user: UserInfo;
+  accessToken: AccessToken;
+}>;
+
+export async function verify(): AccessResponse {
+  return await fetch(ApiUrl.verify, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw data;
+      return {
+        success: true,
+        message: data,
+      };
+    })
+    .catch((error) => {
+      return {
+        success: false,
+        message: error.message,
+      };
+    });
+}
 
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>
-): Promise<API<Omit<UserProfileInfo, "isFollowing">>> {
+): AccessResponse {
   return await fetch(ApiUrl.login, {
     method: "POST",
     headers: {
@@ -57,7 +93,7 @@ export async function login(
     });
 }
 
-export async function logout(): Promise<API> {
+export async function logout(): API {
   return await fetch(ApiUrl.logout, {
     method: "POST",
     headers: {
@@ -65,24 +101,22 @@ export async function logout(): Promise<API> {
     },
     credentials: "include",
   })
-    .then(async (res) => {
-      if (!res.ok) throw await res.json();
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: await res.text(),
+        message: await response.text(),
       };
     })
-    .catch((err) => {
+    .catch((error) => {
       return {
         success: false,
-        message: Array.isArray(err.message) ? err.message[0] : err.message,
+        message: error.message,
       };
     });
 }
 
-export async function signup(
-  data: z.infer<typeof zodSchema.auth.signup>
-): Promise<API> {
+export async function signup(data: z.infer<typeof zodSchema.auth.signup>): API {
   console.log("signup", data);
   await new Promise((resolve) => {
     setTimeout(() => {
@@ -126,48 +160,9 @@ export async function signup(
   //   });
 }
 
-export async function verify(): Promise<
-  API<Omit<UserProfileInfo, "isFollowing">>
-> {
-  console.log("verify");
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 2000);
-  });
-
-  return {
-    success: true,
-    message: "ok",
-    data: mockCurrentUsers[0],
-  };
-
-  // return await fetch(apiRes.auth.verify, {
-  //   method: "GET",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   credentials: "include",
-  // })
-  //   .then(async (res) => {
-  //     const response = await res.json();
-  //     if (!res.ok) throw response;
-  //     return {
-  //       success: true,
-  //       message: response,
-  //     };
-  //   })
-  //   .catch((err) => {
-  //     return {
-  //       success: false,
-  //       message: Array.isArray(err.message) ? err.message[0] : err.message,
-  //     };
-  //   });
-}
-
 export async function sendRecoveryEmail(
   data: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
-): Promise<API> {
+): API {
   console.log("sendRecoveryEmail", data);
   await new Promise((resolve) => {
     setTimeout(() => {
@@ -189,7 +184,7 @@ export async function sendRecoveryEmail(
 
 export async function changePassword(
   data: z.infer<typeof zodSchema.auth.changePassword>
-): Promise<API> {
+): API {
   console.log("changePassword", data);
   await new Promise((resolve) => {
     setTimeout(() => {
@@ -209,7 +204,7 @@ export async function changePassword(
   };
 }
 
-export async function getAllAcounts(): Promise<API<UserAccountInfo[]>> {
+export async function getAllAcounts(): API<AccountInfo[]> {
   console.log("getAllAcounts");
   await new Promise((resolve) => {
     setTimeout(() => {
@@ -233,7 +228,7 @@ export async function getAllAcounts(): Promise<API<UserAccountInfo[]>> {
 
 export async function switchAccount(
   accountId: UserProfileInfo["id"]
-): Promise<API<Omit<UserProfileInfo, "followedBy" | "isFollowing">>> {
+): API<Omit<UserProfileInfo, "followedBy" | "isFollowing">> {
   console.log("switchAccount", accountId);
   const anotherUser = mockCurrentUsers.find((user) => user.id === accountId);
   return new Promise((resolve) => {

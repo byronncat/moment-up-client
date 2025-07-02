@@ -1,7 +1,7 @@
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 const Error = {
   "not-found": {
@@ -13,7 +13,8 @@ const Error = {
   internal: {
     code: 500,
     title: "internal server",
-    description: "Something went wrong! Please try again later or contact support.",
+    description:
+      "Something went wrong! Please try again later or contact support.",
   },
 };
 

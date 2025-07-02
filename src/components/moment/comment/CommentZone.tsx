@@ -9,7 +9,8 @@ import dayjs from "dayjs";
 import format from "@/utilities/format";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
-import { ROUTE, SortBy } from "@/constants/clientConfig";
+import { SortBy } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";

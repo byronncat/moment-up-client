@@ -5,7 +5,7 @@ import type { FeedInfo, FeedNotification } from "api";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CoreApi } from "@/services";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { Modal } from "@/components/common";
 import { FeedView, RightNav } from "../_components";

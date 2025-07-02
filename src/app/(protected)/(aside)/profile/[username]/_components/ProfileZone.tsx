@@ -1,5 +1,5 @@
 import type { UserProfileInfo } from "api";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import UserInfo, { UserInfoSkeleton } from "./UserInfo";

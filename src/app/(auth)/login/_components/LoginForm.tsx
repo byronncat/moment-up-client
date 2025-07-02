@@ -8,7 +8,7 @@ import { useAuth } from "@/components/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import zodSchema from "@/libraries/zodSchema";
 import { toast } from "sonner";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { Input } from "@/components/ui/input";
 import {

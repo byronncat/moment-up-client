@@ -18,7 +18,7 @@ export const useProfile = () => useContext(ProfileContext);
 
 type ProfileProviderProps = {
   username: string;
-  initialRes: Promise<API<UserProfileInfo>>;
+  initialRes: API<UserProfileInfo>;
   children: React.ReactNode;
 };
 

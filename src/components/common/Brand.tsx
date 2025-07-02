@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/libraries/utils";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 import Logo from "./Logo";
 import { sourceCodePro } from "@/styles/fonts";
 

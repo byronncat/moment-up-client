@@ -5,7 +5,7 @@ import type { UserCardDisplayInfo } from "api";
 import { useRef } from "react";
 import { useHover } from "usehooks-ts";
 import format from "@/utilities/format";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";

@@ -7,7 +7,7 @@ import { useState, use, useRef } from "react";
 import { useHover } from "usehooks-ts";
 import { toast } from "sonner";
 import { UserApi } from "@/services";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -23,7 +23,7 @@ import { Circle } from "@/components/icons";
 export default function SuggestedSection({
   initialRes,
 }: Readonly<{
-  initialRes: Promise<API<UserCardDisplayInfo[]>>;
+  initialRes: API<UserCardDisplayInfo[]>;
 }>) {
   const response = use(initialRes);
   const suggestedUsers = response?.data ?? [];

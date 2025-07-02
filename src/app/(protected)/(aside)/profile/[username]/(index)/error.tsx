@@ -2,7 +2,7 @@
 
 type ErrorProps = Readonly<{
   error: Error & { digest?: string };
-  reset: () => void
+  reset: () => void;
 }>;
 
 export default function Error({ error, reset }: ErrorProps) {

@@ -1,5 +1,5 @@
 import { cn } from "@/libraries/utils";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 import { Metadata } from "@/constants/metadata";
 
 import { PageTitle, ActionableText } from "../../../_components";

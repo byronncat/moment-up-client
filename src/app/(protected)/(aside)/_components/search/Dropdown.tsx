@@ -1,5 +1,5 @@
 import type { SearchItem as SearchItemType } from "api";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";

@@ -1,5 +1,5 @@
 import { useAuth } from "@/components/providers";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import Link from "next/link";
 import { ModeSelection, Tooltip } from "@/components/common";

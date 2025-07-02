@@ -22,7 +22,7 @@ const apiRes = {
   toggleCommentLike: "success" as "error" | "success",
 };
 
-export async function getFeeds(): Promise<API<FeedNotification[]>> {
+export async function getFeeds(): API<FeedNotification[]> {
   console.log("getFeeds");
   await new Promise((resolve) => {
     setTimeout(() => {
@@ -52,7 +52,7 @@ export async function getFeeds(): Promise<API<FeedNotification[]>> {
   };
 }
 
-export async function getFeed(feedId: string): Promise<API<FeedInfo>> {
+export async function getFeed(feedId: string): API<FeedInfo> {
   console.log("getFeed", feedId);
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -78,15 +78,13 @@ export async function getFeed(feedId: string): Promise<API<FeedInfo>> {
   });
 }
 
-export async function getMoments(page: number): Promise<
-  API<{
-    items: DetailedMomentInfo[];
-    hasNextPage: boolean;
-  }>
-> {
+export async function getMoments(page: number): API<{
+  items: DetailedMomentInfo[];
+  hasNextPage: boolean;
+}> {
   console.log("getMoments", page);
   const moments = mockMoments;
-  await new Promise((resolve) => setTimeout(resolve, 4000));
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   if (apiRes.getMoments === "error") {
     return {
       success: false,
@@ -115,7 +113,7 @@ export async function getMoments(page: number): Promise<
 
 export async function getMoment(
   momentId: string
-): Promise<API<DetailedMomentInfo | null>> {
+): API<DetailedMomentInfo | null> {
   console.log("getMoment", momentId);
   await new Promise((resolve) => setTimeout(resolve, 3000));
   if (apiRes.getMoment === "error") {
@@ -143,12 +141,10 @@ export async function getComments(
   momentId: string,
   page: number,
   sortBy: SortBy
-): Promise<
-  API<{
-    items: CommentInfo[];
-    hasNextPage: boolean;
-  }>
-> {
+): API<{
+  items: CommentInfo[];
+  hasNextPage: boolean;
+}> {
   console.log("getComments", momentId, page, sortBy);
   const comments = mockComments.sort((a, b) => {
     if (sortBy === SortBy.NEWEST) {
@@ -192,12 +188,10 @@ export async function getComments(
 export async function explore(
   type: "media" | "moments",
   page: number
-): Promise<
-  API<{
-    items: DetailedMomentInfo[];
-    hasNextPage: boolean;
-  }>
-> {
+): API<{
+  items: DetailedMomentInfo[];
+  hasNextPage: boolean;
+}> {
   console.log("explore", type, page);
   const filteredMoments =
     type === "media"
@@ -237,10 +231,7 @@ export async function explore(
   };
 }
 
-export async function comment(
-  momentId: string,
-  data: CommentInfo
-): Promise<API> {
+export async function comment(momentId: string, data: CommentInfo): API {
   console.log("comment", momentId, data);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (apiRes.comment === "error") {
@@ -262,7 +253,7 @@ export async function repost(
     comment: string;
     audience: `${Audience}`;
   }
-): Promise<API> {
+): API {
   console.log("Repost feature is not implemented yet", momentId, data);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (apiRes.repost === "error") {
@@ -294,7 +285,7 @@ export async function report(momentId: string) {
   };
 }
 
-export async function toggleLike(momentId: string): Promise<API> {
+export async function toggleLike(momentId: string): API {
   console.log("Like feature is not implemented yet", momentId);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (apiRes.toggleLike === "error") {
@@ -309,7 +300,7 @@ export async function toggleLike(momentId: string): Promise<API> {
   };
 }
 
-export async function toggleBookmark(momentId: string): Promise<API> {
+export async function toggleBookmark(momentId: string): API {
   console.log("Bookmark feature is not implemented yet", momentId);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (apiRes.toggleBookmark === "error") {
@@ -325,7 +316,7 @@ export async function toggleBookmark(momentId: string): Promise<API> {
   };
 }
 
-export async function toggleCommentLike(commentId: string): Promise<API> {
+export async function toggleCommentLike(commentId: string): API {
   console.log("Comment like feature is not implemented yet", commentId);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (apiRes.toggleCommentLike === "error") {

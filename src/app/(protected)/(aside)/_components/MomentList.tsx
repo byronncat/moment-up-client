@@ -17,12 +17,10 @@ import { MomentList } from "@/components/moment";
 import { Camera } from "@/components/icons";
 
 type MomentsProps = Readonly<{
-  initialRes: Promise<
-    API<{
-      items: DetailedMomentInfo[];
-      hasNextPage: boolean;
-    }>
-  >;
+  initialRes: API<{
+    items: DetailedMomentInfo[];
+    hasNextPage: boolean;
+  }>;
 }>;
 
 export default function Moments({ initialRes }: MomentsProps) {

@@ -1,7 +1,7 @@
 import type { UserCardDisplayInfo } from "api";
 
 import { cn } from "@/libraries/utils";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import Link from "next/link";
 import { UserInfoCard } from "../../common";

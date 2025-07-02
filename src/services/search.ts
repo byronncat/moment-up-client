@@ -23,7 +23,7 @@ import { SearchCategory } from "@/constants/clientConfig";
 
 export async function search(
   data: z.infer<typeof zodSchema.core.search>
-): Promise<API<SearchItem[]>> {
+): API<SearchItem[]> {
   console.log("search", data);
   await new Promise((resolve) => {
     setTimeout(() => {
@@ -53,7 +53,7 @@ export async function search(
   };
 }
 
-export async function getSearchHistory(): Promise<API<SearchItem[]>> {
+export async function getSearchHistory(): API<SearchItem[]> {
   console.log("getSearchHistory");
   await new Promise((resolve) => {
     setTimeout(() => {
@@ -78,7 +78,7 @@ export async function getSearchHistory(): Promise<API<SearchItem[]>> {
 export async function detailSearch(
   data: z.infer<typeof zodSchema.core.search>,
   type: SearchCategory
-): Promise<API<SearchResult>> {
+): API<SearchResult> {
   console.log("detailSearch", data, type);
   try {
     await new Promise((resolve) => {

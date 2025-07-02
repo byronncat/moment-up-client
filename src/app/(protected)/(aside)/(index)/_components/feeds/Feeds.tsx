@@ -20,7 +20,7 @@ export default function Feeds({
   initialRes,
 }: Readonly<{
   className?: string;
-  initialRes: Promise<API<FeedNotification[]>>;
+  initialRes: API<FeedNotification[]>;
 }>) {
   const response = use(initialRes);
   const feeds = response?.data ?? [];

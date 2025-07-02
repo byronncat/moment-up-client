@@ -6,7 +6,7 @@ import type { Actions } from "../../providers/MomentData";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/libraries/utils";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import ColorfulIconButton, {
   buttonStyles,

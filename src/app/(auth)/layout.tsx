@@ -10,7 +10,9 @@ export default function Layout({
       <AsideBackground
         className={cn("min-w-[460px] grow", "hidden lg:block")}
       />
-      <div className={cn("size-full lg:max-w-(--breakpoint-md) grow", "relative")}>
+      <div
+        className={cn("size-full lg:max-w-(--breakpoint-md) grow", "relative")}
+      >
         <div
           className={cn(
             "flex justify-between items-center",

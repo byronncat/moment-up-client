@@ -9,7 +9,7 @@ const apiRes = {
   getMoments: "success" as "error" | "success" | "empty",
 };
 
-export async function toggleFollow(userId: string): Promise<API> {
+export async function toggleFollow(userId: string): API {
   console.log("toggleFollow", userId);
   await new Promise((resolve) => setTimeout(resolve, 3000));
   if (apiRes.toggleFollow === "error")
@@ -24,7 +24,7 @@ export async function toggleFollow(userId: string): Promise<API> {
   };
 }
 
-export async function toggleBlock(userId: string): Promise<API> {
+export async function toggleBlock(userId: string): API {
   console.log("toggleBlock", userId);
   await new Promise((resolve) => setTimeout(resolve, 3000));
   if (apiRes.toggleBlock === "error")
@@ -39,9 +39,7 @@ export async function toggleBlock(userId: string): Promise<API> {
   };
 }
 
-export async function getProfile(
-  username: string
-): Promise<API<UserProfileInfo>> {
+export async function getProfile(username: string): API<UserProfileInfo> {
   console.log("getProfile", username);
   if (apiRes.getProfile === "not-found")
     return {
@@ -67,7 +65,7 @@ export async function getMoments(
   type: "all" | "media" | "tagged" | "likes" | "bookmarks",
   username: string,
   page: number
-): Promise<API<{ items: DetailedMomentInfo[]; hasNextPage: boolean }>> {
+): API<{ items: DetailedMomentInfo[]; hasNextPage: boolean }> {
   console.log("getMoments", type, username, page);
   await new Promise((resolve) => setTimeout(resolve, 4000));
 

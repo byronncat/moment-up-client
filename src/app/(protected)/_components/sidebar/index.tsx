@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/components/providers";
 import { cn } from "@/libraries/utils";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import MobileHeader from "./MobileHeader";
 import MobileNav from "./MobileNav";

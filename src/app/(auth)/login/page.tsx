@@ -9,7 +9,7 @@ import {
   PageTitle,
 } from "../_components";
 import LoginForm from "./_components/LoginForm";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 import { styles } from "../_constants/styles";
 
 export default function LoginPage() {

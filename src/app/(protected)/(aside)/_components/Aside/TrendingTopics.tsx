@@ -7,7 +7,7 @@ import { use } from "react";
 import { toast } from "sonner";
 import format from "@/utilities/format";
 import { SuggestingApi } from "@/services";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -29,7 +29,7 @@ import {
 export default function TrendingSection({
   initialRes,
 }: Readonly<{
-  initialRes: Promise<API<HashtagItem[]>>;
+  initialRes: API<HashtagItem[]>;
 }>) {
   const response = use(initialRes);
   const topics = response?.data ?? [];
@@ -113,7 +113,7 @@ function FeedbackButton() {
   async function sendFeedback(feedback: number) {
     toast.promise(SuggestingApi.sendFeedback(feedback), {
       loading: "Submitting feedback...",
-      success: (res: API) => {
+      success: (res) => {
         if (res.success) {
           return "Feedback submitted";
         } else throw new Error(res.message);

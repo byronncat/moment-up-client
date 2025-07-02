@@ -11,7 +11,7 @@ import { NavigationBar, type NavItem } from "@/components/common";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { MagnifyingGlass, X } from "@/components/icons";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 export default function ChatSidebar() {
   const { contacts, currentContactId, setCurrentContactId, userStatuses } =

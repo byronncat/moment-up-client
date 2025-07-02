@@ -1,7 +1,6 @@
 "use client";
 
 import type { z } from "zod";
-import type { API } from "api";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -43,7 +42,7 @@ export default function SignupForm() {
     setLoading(true);
     toast.promise(signup(values), {
       loading: "Signing up...",
-      success: (res: API) => {
+      success: (res) => {
         setLoading(false);
         if (res.success) return "Sign up successful!";
         else throw new Error(res.message);

@@ -1,5 +1,5 @@
 import { Metadata } from "@/constants/metadata";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import Link from "next/link";
 import { PageHeader } from "../_components";

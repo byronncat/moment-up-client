@@ -7,7 +7,8 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { useOnClickOutside, useDebounceValue } from "usehooks-ts";
 import { toast } from "sonner";
 import { SearchApi } from "@/services";
-import { ROUTE, SEARCH_DEBOUNCE_TIME } from "@/constants/clientConfig";
+import { SEARCH_DEBOUNCE_TIME } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import SearchInput from "./SearchInput";

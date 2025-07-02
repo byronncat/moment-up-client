@@ -15,7 +15,7 @@ import {
 import zodSchema from "@/libraries/zodSchema";
 import { AuthApi } from "@/services";
 import { LoadingPage } from "../pages";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 type User = Omit<UserCardDisplayInfo, "followedBy" | "isFollowing">;
 type AuthContextType = {
@@ -25,16 +25,16 @@ type AuthContextType = {
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
   authenticate: () => Promise<void>;
-  login: (values: z.infer<typeof zodSchema.auth.login>) => Promise<API>;
-  switchLogin: (values: z.infer<typeof zodSchema.auth.login>) => Promise<API>;
-  signup: (values: z.infer<typeof zodSchema.auth.signup>) => Promise<API>;
-  logout: () => Promise<API>;
+  login: (values: z.infer<typeof zodSchema.auth.login>) => API;
+  switchLogin: (values: z.infer<typeof zodSchema.auth.login>) => API;
+  signup: (values: z.infer<typeof zodSchema.auth.signup>) => API;
+  logout: () => API;
   sendRecoveryEmail: (
     values: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
-  ) => Promise<API>;
+  ) => API;
   changePassword: (
     values: z.infer<typeof zodSchema.auth.changePassword>
-  ) => Promise<API>;
+  ) => API;
   changeAccount: (accountId: UserCardDisplayInfo["id"]) => Promise<void>;
 };
 
@@ -70,7 +70,7 @@ export default function AuthProvider({
 
   const authenticate = useCallback(async () => {
     const { success, data } = await AuthApi.verify();
-    if (success && data) setUser(data);
+    if (success) setUser(data!.user);
     setLogged(success);
     setLoaded(true);
   }, []);
@@ -80,7 +80,7 @@ export default function AuthProvider({
       const { success, message, data } = await AuthApi.login(values);
       if (success) {
         setLogged(true);
-        setUser(data ?? null);
+        setUser(data!.user);
         router.push(ROUTE.HOME);
       }
       return { success, message };

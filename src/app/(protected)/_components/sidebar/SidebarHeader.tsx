@@ -1,5 +1,5 @@
 import { cn } from "@/libraries/utils";
-import { ROUTE } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
 
 import Link from "next/link";
 import { Logo } from "@/components/common";

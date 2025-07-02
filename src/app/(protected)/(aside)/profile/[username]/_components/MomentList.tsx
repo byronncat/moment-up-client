@@ -12,9 +12,7 @@ import { MomentList as List, MomentSkeleton } from "@/components/moment";
 
 type MomentListProps = Readonly<{
   username: DetailedMomentInfo["user"]["username"];
-  initialRes: Promise<
-    API<{ items: DetailedMomentInfo[]; hasNextPage: boolean }>
-  >;
+  initialRes: API<{ items: DetailedMomentInfo[]; hasNextPage: boolean }>;
 }>;
 
 export default function SuspenseWrapper({

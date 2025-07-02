@@ -9,14 +9,17 @@ declare module "api" {
     File,
   } from "schema";
 
-  type API<T = void> = {
+  type API<T = void> = Promise<{
     success: boolean;
     message: string;
     data?: T;
-  };
+  }>;
+
+  // === Auth ===
+  type AccessToken = string;
 
   // === User ===
-  type UserAccountInfo = {
+  type AccountInfo = {
     id: User["id"];
     username: User["username"];
     displayName: User["display_name"];
@@ -24,15 +27,18 @@ declare module "api" {
     verified: User["verified"];
   };
 
-  type UserProfileInfo = UserAccountInfo & {
+  type UserInfo = AccountInfo & {
     bio?: User["bio"];
     backgroundImage?: User["background_image"];
     followers: number;
     following: number;
     hasFeed: boolean;
+  };
+
+  type UserProfileInfo = UserInfo & {
     isFollowing?: boolean;
   };
-  
+
   type UserCardDisplayInfo = Omit<UserProfileInfo, "backgroundImage"> & {
     followedBy?: {
       count: number;
@@ -106,7 +112,7 @@ declare module "api" {
   };
 
   // Search
-  type UserSearchItem = UserAccountInfo & {
+  type UserSearchItem = AccountInfo & {
     type: "user";
   };
 
@@ -125,7 +131,7 @@ declare module "api" {
 
   type SearchResult = {
     posts?: DetailedMomentInfo[];
-    users?: UserAccountInfo[];
+    users?: AccountInfo[];
     hashtags?: HashtagItem[];
   };
 
@@ -140,7 +146,7 @@ declare module "api" {
   };
 
   type FeedInfo = {
-    user: UserAccountInfo & {
+    user: AccountInfo & {
       isViewed: boolean;
     };
     feeds: {
