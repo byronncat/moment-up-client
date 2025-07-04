@@ -1,7 +1,7 @@
 "use client";
 
 import type { z } from "zod";
-import type { API, UserCardDisplayInfo } from "api";
+import type { API, UserCardDisplayInfo, UserInfo } from "api";
 
 import { useRouter } from "next/navigation";
 import {
@@ -10,21 +10,24 @@ import {
   useEffect,
   useState,
   useCallback,
+  useRef,
 } from "react";
-
+import { toast } from "sonner";
 import zodSchema from "@/libraries/zodSchema";
 import { AuthApi } from "@/services";
-import { LoadingPage } from "../pages";
 import { ROUTE } from "@/constants/route";
+import { LoadingPage } from "../pages";
 
-type User = Omit<UserCardDisplayInfo, "followedBy" | "isFollowing">;
 type AuthContextType = {
-  user: User | null;
+  user: UserInfo | null;
   logged?: boolean;
   loaded: boolean;
+  tokens: {
+    accessToken: string;
+    csrfToken: string;
+  };
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
-  authenticate: () => Promise<void>;
   login: (values: z.infer<typeof zodSchema.auth.login>) => API;
   switchLogin: (values: z.infer<typeof zodSchema.auth.login>) => API;
   signup: (values: z.infer<typeof zodSchema.auth.signup>) => API;
@@ -42,9 +45,12 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   logged: false,
   loaded: false,
+  tokens: {
+    accessToken: "",
+    csrfToken: "",
+  },
   setLogged: () => {},
   setLoaded: () => {},
-  authenticate: async () => {},
   login: async () => ({ success: false, message: "" }),
   switchLogin: async () => ({ success: false, message: "" }),
   signup: async () => ({ success: false, message: "" }),
@@ -68,19 +74,37 @@ export default function AuthProvider({
     "followedBy" | "isFollowing"
   > | null>(null);
 
+  const token = useRef({
+    accessToken: "",
+    csrfToken: "",
+  });
+
   const authenticate = useCallback(async () => {
-    const { success, data } = await AuthApi.verify();
-    if (success) setUser(data!.user);
-    setLogged(success);
+    const { success: successCsrf, data: dataCsrf } = await AuthApi.getCsrf();
+    if (successCsrf) token.current.csrfToken = dataCsrf!.csrfToken;
+    const { success: successVerify, data: dataVerify } = await AuthApi.verify(
+      token.current.csrfToken
+    );
+    if (successVerify) {
+      setUser(dataVerify!.user);
+      token.current.accessToken = dataVerify!.accessToken;
+      router.push(ROUTE.HOME);
+    }
+
+    setLogged(successVerify);
     setLoaded(true);
-  }, []);
+  }, [router]);
 
   const login = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
-      const { success, message, data } = await AuthApi.login(values);
+      const { success, message, data } = await AuthApi.login(
+        values,
+        token.current.csrfToken
+      );
       if (success) {
         setLogged(true);
         setUser(data!.user);
+        token.current.accessToken = data!.accessToken;
         router.push(ROUTE.HOME);
       }
       return { success, message };
@@ -91,7 +115,10 @@ export default function AuthProvider({
   const switchLogin = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
       setLoaded(false);
-      const { success, message } = await AuthApi.login(values);
+      const { success, message } = await AuthApi.login(
+        values,
+        token.current.csrfToken
+      );
       if (success) {
         router.refresh();
         router.push(ROUTE.HOME);
@@ -110,6 +137,7 @@ export default function AuthProvider({
       const res = await AuthApi.signup(values);
       if (res.success) {
         setLogged(true);
+        token.current.accessToken = "";
         router.push(ROUTE.HOME);
       }
       return res;
@@ -119,14 +147,17 @@ export default function AuthProvider({
 
   const logout = useCallback(async () => {
     setLoaded(false);
-    const res = await AuthApi.logout();
+    const res = await AuthApi.logout(token.current.csrfToken);
     if (res.success) {
       setLogged(false);
       router.push(ROUTE.LOGIN);
-    }
-    setTimeout(() => {
+      setTimeout(() => {
+        setLoaded(true);
+      }, PAGE_RELOAD_TIME);
+    } else {
+      toast.error(res.message);
       setLoaded(true);
-    }, PAGE_RELOAD_TIME);
+    }
 
     return res;
   }, [router]);
@@ -172,10 +203,13 @@ export default function AuthProvider({
       value={{
         user,
         logged,
+        tokens: {
+          accessToken: token.current.accessToken,
+          csrfToken: token.current.csrfToken,
+        },
         setLogged,
         loaded,
         setLoaded,
-        authenticate,
         login,
         switchLogin,
         signup,

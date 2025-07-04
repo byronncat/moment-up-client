@@ -16,7 +16,7 @@ declare module "api" {
   }>;
 
   // === Auth ===
-  type AccessToken = string;
+  type Token = string;
 
   // === User ===
   type AccountInfo = {

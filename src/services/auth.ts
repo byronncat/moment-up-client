@@ -1,13 +1,7 @@
 import { mockCurrentUsers } from "@/__mocks__";
 
 import type { z } from "zod";
-import type {
-  AccessToken,
-  AccountInfo,
-  API,
-  UserInfo,
-  UserProfileInfo,
-} from "api";
+import type { Token, AccountInfo, API, UserInfo, UserProfileInfo } from "api";
 
 import zodSchema from "@/libraries/zodSchema";
 import { SERVER_HOST_URL } from "@/constants/serverConfig";
@@ -32,44 +26,21 @@ const ApiUrl = {
   login: `${SERVER_HOST_URL}/v1/auth/login`,
   logout: `${SERVER_HOST_URL}/v1/auth/logout`,
   verify: `${SERVER_HOST_URL}/v1/auth/verify`,
+  getCsrfToken: `${SERVER_HOST_URL}/v1/auth/csrf`,
 };
 
-type AccessResponse = API<{
-  user: UserInfo;
-  accessToken: AccessToken;
-}>;
-
-export async function verify(): AccessResponse {
-  return await fetch(ApiUrl.verify, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  })
-    .then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) throw data;
-      return {
-        success: true,
-        message: data,
-      };
-    })
-    .catch((error) => {
-      return {
-        success: false,
-        message: error.message,
-      };
-    });
-}
-
 export async function login(
-  data: z.infer<typeof zodSchema.auth.login>
-): AccessResponse {
+  data: z.infer<typeof zodSchema.auth.login>,
+  csrfToken: Token
+): API<{
+  user: UserInfo;
+  accessToken: Token;
+}> {
   return await fetch(ApiUrl.login, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken,
     },
     body: JSON.stringify(data),
     credentials: "include",
@@ -93,11 +64,12 @@ export async function login(
     });
 }
 
-export async function logout(): API {
+export async function logout(csrfToken: Token): API {
   return await fetch(ApiUrl.logout, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken,
     },
     credentials: "include",
   })
@@ -105,7 +77,61 @@ export async function logout(): API {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: await response.text(),
+        message: "Logout successful",
+      };
+    })
+    .catch((error) => {
+      return {
+        success: false,
+        message: error.message,
+      };
+    });
+}
+
+export async function verify(csrfToken: Token): API<{
+  user: UserInfo;
+  accessToken: Token;
+}> {
+  return await fetch(ApiUrl.verify, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw data;
+      return {
+        success: true,
+        message: "User verified successfully",
+        data,
+      };
+    })
+    .catch((error) => {
+      return {
+        success: false,
+        message: error.message,
+      };
+    });
+}
+
+export async function getCsrf(): API<{ csrfToken: Token }> {
+  return await fetch(ApiUrl.getCsrfToken, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw data;
+      return {
+        success: true,
+        message: "CSRF token fetched successfully",
+        data,
       };
     })
     .catch((error) => {

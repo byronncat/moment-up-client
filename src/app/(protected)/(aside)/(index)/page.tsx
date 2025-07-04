@@ -5,7 +5,7 @@ import HomeProvider from "./_providers/Home";
 import { Feeds, FeedSkeletons, Moments } from "./_components";
 import { MomentSkeleton } from "@/components/moment";
 
-export default function HomePage() {
+export default async function HomePage() {
   const feedsRes = CoreApi.getFeeds();
   const momentsRes = CoreApi.getMoments(0);
 

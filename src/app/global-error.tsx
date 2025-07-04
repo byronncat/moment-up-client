@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { ErrorPage } from "@/components/pages";
 import { ThemeProvider } from "@/components/providers";
+import "@/styles/globals.css";
 
 type GlobalErrorProps = Readonly<{
   error: Error & { digest?: string };

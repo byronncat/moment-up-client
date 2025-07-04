@@ -3,11 +3,11 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { PROTECTED_ROUTES, AUTH_ROUTES, ROUTE } from "@/constants/route";
 
-const SESSION_COOKIE_NAME = "connect.sid";
+const AUTH_COOKIE_NAME = "refresh";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const hasSession = request.cookies.has(SESSION_COOKIE_NAME);
+  const hasSession = request.cookies.has(AUTH_COOKIE_NAME);
 
   if (hasSession && AUTH_ROUTES.some((route) => pathname.startsWith(route)))
     return NextResponse.redirect(new URL(ROUTE.HOME, request.url));

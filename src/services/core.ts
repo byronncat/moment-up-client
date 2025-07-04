@@ -7,6 +7,7 @@ import type {
   CommentInfo,
 } from "api";
 import { Audience, SortBy } from "@/constants/clientConfig";
+import { SERVER_HOST_URL } from "@/constants/serverConfig";
 
 const apiRes = {
   getMoments: "success" as "error" | "empty" | "success",
@@ -20,6 +21,10 @@ const apiRes = {
   toggleLike: "success" as "error" | "success",
   toggleBookmark: "success" as "error" | "success",
   toggleCommentLike: "success" as "error" | "success",
+};
+
+const ApiUrl = {
+  getMoments: (page: number) => `${SERVER_HOST_URL}/v1/moments?page=${page}`,
 };
 
 export async function getFeeds(): API<FeedNotification[]> {
@@ -78,37 +83,45 @@ export async function getFeed(feedId: string): API<FeedInfo> {
   });
 }
 
-export async function getMoments(page: number): API<{
+export async function getMoments(
+  page: number = 0,
+  token?: {
+    accessToken: string;
+    csrfToken: string;
+  }
+): API<{
   items: DetailedMomentInfo[];
   hasNextPage: boolean;
 }> {
-  console.log("getMoments", page);
-  const moments = mockMoments;
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  if (apiRes.getMoments === "error") {
-    return {
-      success: false,
-      message: "error",
-    };
-  }
-  if (apiRes.getMoments === "empty") {
-    return {
-      success: true,
-      message: "ok",
-      data: {
-        items: [],
-        hasNextPage: false,
-      },
-    };
-  }
-  return {
-    success: true,
-    message: "ok",
-    data: {
-      items: moments,
-      hasNextPage: page <= 3,
+  console.log("getMoments", page, token, ApiUrl.getMoments(page));
+  return await fetch(ApiUrl.getMoments(page), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && {
+        "X-CSRF-Token": token.csrfToken,
+        Authorization: `Bearer ${token.accessToken}`,
+      }),
     },
-  };
+    credentials: "include",
+  })
+    .then(async (response) => {
+      console.log("getMoments response", response);
+      const data = await response.json();
+      if (!response.ok) throw data;
+      return {
+        success: true,
+        message: "Fetch moments successful",
+        data,
+      };
+    })
+    .catch(async (error) => {
+      console.log("getMoments error", error);
+      return {
+        success: false,
+        message: error.message,
+      };
+    });
 }
 
 export async function getMoment(
