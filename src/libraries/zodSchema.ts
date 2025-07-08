@@ -10,6 +10,14 @@ const login = z.object({
 });
 
 const signup = z.object({
+  email: z
+    .string()
+    .nonempty({
+      message: "Email is required",
+    })
+    .email({
+      message: "Invalid email address",
+    }),
   username: z
     .string()
     .nonempty({
@@ -21,14 +29,6 @@ const signup = z.object({
     .regex(/^[a-zA-Z0-9._-]+$/, {
       message:
         "Only letters, numbers, dots, underscores, and hyphens are allowed",
-    }),
-  email: z
-    .string()
-    .nonempty({
-      message: "Email is required",
-    })
-    .email({
-      message: "Invalid email address",
     }),
   password: z
     .string()
@@ -53,29 +53,24 @@ const signup = z.object({
     ),
 });
 
-const sendRecoveryEmail = z.object({
-  email: z
-    .string()
-    .nonempty({
-      message: "Email is required",
-    })
-    .email({
-      message: "Invalid email address",
-    }),
+const sendOtpEmail = z.object({
+  identity: z.string().nonempty({
+    message: "Username or email is required",
+  }),
 });
 
 const changePassword = z
   .object({
-    code: z
+    otp: z
       .string()
       .nonempty({
-        message: "Verification code is required",
+        message: "OTP is required",
       })
       .length(6, {
-        message: "Verification code must be 6 digits",
+        message: "OTP must be 6 characters",
       })
-      .regex(/^\d+$/, {
-        message: "Verification code must contain only numbers",
+      .regex(/^[A-Za-z0-9]+$/, {
+        message: "OTP must contain only numbers and alphabetic characters",
       }),
     newPassword: z
       .string()
@@ -117,7 +112,7 @@ const zodSchema = {
   auth: {
     login,
     signup,
-    sendRecoveryEmail,
+    sendOtpEmail,
     changePassword,
   },
   core: {

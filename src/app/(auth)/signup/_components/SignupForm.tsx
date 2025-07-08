@@ -4,11 +4,10 @@ import type { z } from "zod";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import zodSchema from "@/libraries/zodSchema";
 import { useAuth } from "@/components/providers";
-import { styles } from "../../_constants/styles";
+import { zodResolver } from "@hookform/resolvers/zod";
+import zodSchema from "@/libraries/zodSchema";
+import { toast } from "sonner";
 
 import Tooltip from "@/components/common/Tooltip";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
+import styles from "../../_constants/styles";
 
 import { PasswordInput, SubmitButton } from "../../_components";
 import { Circle } from "@/components/icons";
@@ -31,7 +31,7 @@ export default function SignupForm() {
     defaultValues: {
       email: "ByronAT445@gmail.com",
       username: "Byron",
-      password: "12345678",
+      password: "T1234567t!",
     },
   });
 
@@ -40,15 +40,15 @@ export default function SignupForm() {
   const { signup } = useAuth();
   async function signupHandler(values: z.infer<typeof zodSchema.auth.signup>) {
     setLoading(true);
-    toast.promise(signup(values), {
-      loading: "Signing up...",
-      success: (res) => {
-        setLoading(false);
-        if (res.success) return "Sign up successful!";
-        else throw new Error(res.message);
-      },
-      error: (error) => error.message,
-    });
+    const { success, message } = await signup(values);
+    if (success)
+      toast("🎉 You're almost there!", {
+        duration: 12000,
+        description:
+          "We've sent a verification link to your email. Click it to activate your account and log in.",
+      });
+    else toast.error(message);
+    setLoading(false);
   }
 
   return (

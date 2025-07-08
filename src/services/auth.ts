@@ -7,13 +7,6 @@ import zodSchema from "@/libraries/zodSchema";
 import { SERVER_HOST_URL } from "@/constants/serverConfig";
 
 const apiRes = {
-  signup: "Signup successful" as "Signup successful" | "Internal error",
-  sendRecoveryEmail: "Recovery email sent" as
-    | "Recovery email sent"
-    | "Internal error",
-  changePassword: "Password changed successfully" as
-    | "Password changed successfully"
-    | "Internal error",
   getAllAccounts: "Accounts fetched successfully" as
     | "Accounts fetched successfully"
     | "Internal error",
@@ -24,9 +17,12 @@ const apiRes = {
 
 const ApiUrl = {
   login: `${SERVER_HOST_URL}/v1/auth/login`,
+  signup: `${SERVER_HOST_URL}/v1/auth/register`,
   logout: `${SERVER_HOST_URL}/v1/auth/logout`,
   verify: `${SERVER_HOST_URL}/v1/auth/verify`,
   getCsrfToken: `${SERVER_HOST_URL}/v1/auth/csrf`,
+  sendOtpEmail: `${SERVER_HOST_URL}/v1/auth/send-otp-email`,
+  changePassword: `${SERVER_HOST_URL}/v1/auth/change-password`,
 };
 
 export async function login(
@@ -64,6 +60,36 @@ export async function login(
     });
 }
 
+export async function signup(
+  data: z.infer<typeof zodSchema.auth.signup>,
+  csrfToken: Token
+): API {
+  return await fetch(ApiUrl.signup, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken,
+    },
+    body: JSON.stringify(data),
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Signup successful",
+      };
+    })
+    .catch(async (error) => {
+      return {
+        success: false,
+        message: Array.isArray(error.message)
+          ? error.message[0]
+          : error.message,
+      };
+    });
+}
+
 export async function logout(csrfToken: Token): API {
   return await fetch(ApiUrl.logout, {
     method: "POST",
@@ -88,15 +114,14 @@ export async function logout(csrfToken: Token): API {
     });
 }
 
-export async function verify(csrfToken: Token): API<{
+export async function verify(): API<{
   user: UserInfo;
   accessToken: Token;
 }> {
   return await fetch(ApiUrl.verify, {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRF-Token": csrfToken,
     },
     credentials: "include",
   })
@@ -142,92 +167,64 @@ export async function getCsrf(): API<{ csrfToken: Token }> {
     });
 }
 
-export async function signup(data: z.infer<typeof zodSchema.auth.signup>): API {
-  console.log("signup", data);
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 3000);
-  });
-
-  if (apiRes.signup === "Signup successful") {
-    document.cookie = "session=123456789; max-age=3600; path=/";
-    return {
-      success: true,
-      message: "Signup successful!",
-    };
-  }
-  return {
-    success: false,
-    message: "Internal error" as const,
-  };
-
-  // return await fetch(apiRes.auth.signup, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(data),
-  //   credentials: "include",
-  // })
-  //   .then(async (res) => {
-  //     const response = await res.json();
-  //     if (!res.ok) throw response;
-  //     return {
-  //       success: true,
-  //       message: response,
-  //     };
-  //   })
-  //   .catch((err) => {
-  //     return {
-  //       success: false,
-  //       message: Array.isArray(err.message) ? err.message[0] : err.message,
-  //     };
-  //   });
-}
-
-export async function sendRecoveryEmail(
-  data: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
+export async function sendOtpEmail(
+  data: z.infer<typeof zodSchema.auth.sendOtpEmail>,
+  csrfToken: Token
 ): API {
-  console.log("sendRecoveryEmail", data);
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 2000);
-  });
-
-  if (apiRes.sendRecoveryEmail === "Recovery email sent") {
-    return {
-      success: true,
-      message: "Recovery email sent",
-    };
-  }
-  return {
-    success: false,
-    message: "Internal error" as const,
-  };
+  return await fetch(ApiUrl.sendOtpEmail, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken,
+    },
+    body: JSON.stringify(data),
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Send successful",
+      };
+    })
+    .catch(async (error) => {
+      return {
+        success: false,
+        message: Array.isArray(error.message)
+          ? error.message[0]
+          : error.message,
+      };
+    });
 }
 
 export async function changePassword(
-  data: z.infer<typeof zodSchema.auth.changePassword>
+  data: z.infer<typeof zodSchema.auth.changePassword>,
+  csrfToken: Token
 ): API {
-  console.log("changePassword", data);
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 2000);
-  });
-
-  if (apiRes.changePassword === "Password changed successfully") {
-    return {
-      success: true,
-      message: "Password changed successfully",
-    };
-  }
-  return {
-    success: false,
-    message: "Internal error" as const,
-  };
+  return await fetch(ApiUrl.changePassword, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken,
+    },
+    body: JSON.stringify(data),
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Password changed successfully",
+      };
+    })
+    .catch(async (error) => {
+      return {
+        success: false,
+        message: Array.isArray(error.message)
+          ? error.message[0]
+          : error.message,
+      };
+    });
 }
 
 export async function getAllAcounts(): API<AccountInfo[]> {

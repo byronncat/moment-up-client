@@ -32,9 +32,7 @@ type AuthContextType = {
   switchLogin: (values: z.infer<typeof zodSchema.auth.login>) => API;
   signup: (values: z.infer<typeof zodSchema.auth.signup>) => API;
   logout: () => API;
-  sendRecoveryEmail: (
-    values: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
-  ) => API;
+  sendOtpEmail: (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => API;
   changePassword: (
     values: z.infer<typeof zodSchema.auth.changePassword>
   ) => API;
@@ -55,7 +53,7 @@ const AuthContext = createContext<AuthContextType>({
   switchLogin: async () => ({ success: false, message: "" }),
   signup: async () => ({ success: false, message: "" }),
   logout: async () => ({ success: false, message: "" }),
-  sendRecoveryEmail: async () => ({ success: false, message: "" }),
+  sendOtpEmail: async () => ({ success: false, message: "" }),
   changePassword: async () => ({ success: false, message: "" }),
   changeAccount: async () => {},
 });
@@ -82,18 +80,15 @@ export default function AuthProvider({
   const authenticate = useCallback(async () => {
     const { success: successCsrf, data: dataCsrf } = await AuthApi.getCsrf();
     if (successCsrf) token.current.csrfToken = dataCsrf!.csrfToken;
-    const { success: successVerify, data: dataVerify } = await AuthApi.verify(
-      token.current.csrfToken
-    );
+    const { success: successVerify, data: dataVerify } = await AuthApi.verify();
     if (successVerify) {
       setUser(dataVerify!.user);
       token.current.accessToken = dataVerify!.accessToken;
-      router.push(ROUTE.HOME);
     }
 
     setLogged(successVerify);
     setLoaded(true);
-  }, [router]);
+  }, []);
 
   const login = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
@@ -134,11 +129,11 @@ export default function AuthProvider({
 
   const signup = useCallback(
     async (values: z.infer<typeof zodSchema.auth.signup>) => {
-      const res = await AuthApi.signup(values);
+      const res = await AuthApi.signup(values, token.current.csrfToken);
       if (res.success) {
         setLogged(true);
         token.current.accessToken = "";
-        router.push(ROUTE.HOME);
+        router.push(`${ROUTE.LOGIN}?email=${encodeURIComponent(values.email)}`);
       }
       return res;
     },
@@ -162,18 +157,17 @@ export default function AuthProvider({
     return res;
   }, [router]);
 
-  const sendRecoveryEmail = useCallback(
-    async (values: z.infer<typeof zodSchema.auth.sendRecoveryEmail>) => {
-      const res = await AuthApi.sendRecoveryEmail(values);
-      if (res.success) router.push(ROUTE.VERIFY_RECOVERY);
+  const sendOtpEmail = useCallback(
+    async (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => {
+      const res = await AuthApi.sendOtpEmail(values, token.current.csrfToken);
       return res;
     },
-    [router]
+    []
   );
 
   const changePassword = useCallback(
     async (values: z.infer<typeof zodSchema.auth.changePassword>) => {
-      const res = await AuthApi.changePassword(values);
+      const res = await AuthApi.changePassword(values, token.current.csrfToken);
       if (res.success) router.push(ROUTE.LOGIN);
       return res;
     },
@@ -214,7 +208,7 @@ export default function AuthProvider({
         switchLogin,
         signup,
         logout,
-        sendRecoveryEmail,
+        sendOtpEmail,
         changePassword,
         changeAccount,
       }}

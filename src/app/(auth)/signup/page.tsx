@@ -1,7 +1,7 @@
-import { cn } from "@/libraries/utils";
-import { ROUTE } from "@/constants/route";
 import { Metadata } from "@/constants/metadata";
+export const metadata = Metadata.signup;
 
+import { cn } from "@/libraries/utils";
 import {
   ActionableText,
   Divider,
@@ -9,9 +9,9 @@ import {
   PageTitle,
 } from "../_components";
 import SignupForm from "./_components/SignupForm";
-import { styles } from "../_constants/styles";
+import { ROUTE } from "@/constants/route";
+import styles from "../_constants/styles";
 
-export const metadata = Metadata.signup;
 export default function SignUpPage() {
   return (
     <main className={cn(styles.form, "relative")}>

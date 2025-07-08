@@ -4,14 +4,12 @@ import type { z } from "zod";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/libraries/utils";
-import { toast } from "sonner";
-import zodSchema from "@/libraries/zodSchema";
 import { useAuth } from "@/components/providers";
-import { styles } from "../../../../_constants/styles";
+import { zodResolver } from "@hookform/resolvers/zod";
+import zodSchema from "@/libraries/zodSchema";
+import { toast } from "sonner";
 
-import { InputOTPPattern, ResendText } from "./";
+import { cn } from "@/libraries/utils";
 import {
   Form,
   FormControl,
@@ -20,42 +18,48 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { PasswordInput, SubmitButton } from "../../../../_components";
+import { PasswordInput, SubmitButton } from "../../_components";
+import InputOTPPattern from "./InputOTPPattern";
+import ResendText from "./ResendText";
+import styles from "../../_constants/styles";
+
+type ChangePasswordFormProps = Readonly<{
+  defaultValue: string;
+  className?: string;
+}>;
 
 export default function ChangePasswordForm({
+  defaultValue,
   className,
-}: Readonly<{
-  className?: string;
-}>) {
+}: ChangePasswordFormProps) {
   const form = useForm<z.infer<typeof zodSchema.auth.changePassword>>({
     resolver: zodResolver(zodSchema.auth.changePassword),
     defaultValues: {
-      code: "",
+      otp: "",
       newPassword: "",
       confirmPassword: "",
     },
   });
 
   const [loading, setLoading] = useState(false);
-  const { changePassword, sendRecoveryEmail } = useAuth();
+  const { changePassword, sendOtpEmail } = useAuth();
   async function verifyHandler(
     values: z.infer<typeof zodSchema.auth.changePassword>
   ) {
     setLoading(true);
-    toast.promise(changePassword(values), {
-      loading: "Changing password...",
-      success: (res) => {
-        setLoading(false);
-        if (res.success) return "Password changed successfully!";
-        throw new Error(res.message);
-      },
-      error: (err) => err.message,
-    });
+    const { success, message } = await changePassword(values);
+    if (success)
+      toast("🎉 Password changed successfully!", {
+        duration: 12000,
+        description: "You can now log in with your new password.",
+      });
+    else toast.error(message);
+    setLoading(false);
   }
 
   async function resendHandler() {
     setLoading(true);
-    toast.promise(sendRecoveryEmail({ email: "text" }), {
+    toast.promise(sendOtpEmail({ identity: defaultValue }), {
       loading: "Sending recovery email...",
       success: (res) => {
         setLoading(false);
@@ -72,11 +76,11 @@ export default function ChangePasswordForm({
         <form onSubmit={form.handleSubmit(verifyHandler)}>
           <FormField
             control={form.control}
-            name="code"
+            name="otp"
             render={({ field }) => (
               <FormItem>
                 <FormDescription className="text-center">
-                  Enter the 6-digit code sent to your email
+                  Enter the OTP sent to your email
                 </FormDescription>
                 <FormControl>
                   <InputOTPPattern

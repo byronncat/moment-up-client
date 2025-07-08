@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { cn } from "@/libraries/utils";
 
@@ -17,11 +15,8 @@ export default function ResendText({
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isDisabled) {
-      interval = setInterval(() => {
-        setResendTime((prev) => prev - 1);
-      }, 1000);
-    }
+    if (isDisabled)
+      interval = setInterval(() => setResendTime((prev) => prev - 1), 1000);
 
     return () => {
       clearInterval(interval);

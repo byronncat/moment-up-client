@@ -2,6 +2,7 @@
 
 import type { z } from "zod";
 
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/components/providers";
@@ -19,13 +20,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ActionableText, PasswordInput, SubmitButton } from "../../_components";
-import { styles } from "../../_constants/styles";
+import styles from "../../_constants/styles";
 
 export default function LoginForm() {
+  const searchParams = useSearchParams();
+  const emailParam = searchParams.get("email");
+
   const form = useForm<z.infer<typeof zodSchema.auth.login>>({
     resolver: zodResolver(zodSchema.auth.login),
     defaultValues: {
-      identity: "1@gmail.com",
+      identity: emailParam || "1@gmail.com",
       password: "1",
     },
   });

@@ -1,14 +1,11 @@
-"use client";
-
 import type { z } from "zod";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { useAuth } from "@/components/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import zodSchema from "@/libraries/zodSchema";
-import { useAuth } from "@/components/providers";
-import { styles } from "../../../../_constants/styles";
+import { toast } from "sonner";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -18,31 +15,30 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { SubmitButton } from "../../../../_components";
+import { SubmitButton } from "../../_components";
+import styles from "../../_constants/styles";
 
-export default function RecoverPasswordForm() {
-  const form = useForm<z.infer<typeof zodSchema.auth.sendRecoveryEmail>>({
-    resolver: zodResolver(zodSchema.auth.sendRecoveryEmail),
+export default function SendOtpForm({
+  onSuccess,
+}: Readonly<{
+  onSuccess: (data: string) => void;
+}>) {
+  const form = useForm<z.infer<typeof zodSchema.auth.sendOtpEmail>>({
+    resolver: zodResolver(zodSchema.auth.sendOtpEmail),
     defaultValues: {
-      email: "",
+      identity: "",
     },
   });
 
   const [loading, setLoading] = useState(false);
-  const { sendRecoveryEmail } = useAuth();
+  const { sendOtpEmail } = useAuth();
   async function sendEmailHandler(
-    values: z.infer<typeof zodSchema.auth.sendRecoveryEmail>
+    values: z.infer<typeof zodSchema.auth.sendOtpEmail>
   ) {
     setLoading(true);
-    toast.promise(sendRecoveryEmail(values), {
-      loading: "Sending recovery email...",
-      success: (res) => {
-        setLoading(false);
-        if (res.success) return "Recovery email sent!";
-        throw new Error(res.message);
-      },
-      error: (err) => err.message,
-    });
+    const { success, message } = await sendOtpEmail(values);
+    if (success) onSuccess(values.identity);
+    else toast.error(message);
     setLoading(false);
   }
 
@@ -52,14 +48,14 @@ export default function RecoverPasswordForm() {
         <div className={styles.inputGroup}>
           <FormField
             control={form.control}
-            name="email"
+            name="identity"
             render={({ field }) => (
               <FormItem className="space-y-1">
                 <FormControl>
                   <Input
-                    placeholder="Email"
+                    placeholder="Username or Email"
                     className={styles.input}
-                    autoComplete="email"
+                    autoComplete="username"
                     {...field}
                   />
                 </FormControl>
