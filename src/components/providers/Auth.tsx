@@ -50,12 +50,12 @@ const AuthContext = createContext<AuthContextType>({
   },
   setLogged: () => {},
   setLoaded: () => {},
-  login: async () => ({ success: false, message: "" }),
-  switchLogin: async () => ({ success: false, message: "" }),
-  signup: async () => ({ success: false, message: "" }),
-  logout: async () => ({ success: false, message: "" }),
-  sendOtpEmail: async () => ({ success: false, message: "" }),
-  changePassword: async () => ({ success: false, message: "" }),
+  login: async () => ({ success: false, message: "Something went wrong!" }),
+  switchLogin: async () => ({ success: false, message: "Something went wrong!" }),
+  signup: async () => ({ success: false, message: "Something went wrong!" }),
+  logout: async () => ({ success: false, message: "Something went wrong!" }),
+  sendOtpEmail: async () => ({ success: false, message: "Something went wrong!" }),
+  changePassword: async () => ({ success: false, message: "Something went wrong!" }),
   changeAccount: async () => {},
 });
 

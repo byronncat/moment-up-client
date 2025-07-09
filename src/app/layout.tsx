@@ -12,17 +12,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased bg-background overflow-hidden">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TooltipProvider>
-            <AuthProvider>{children}</AuthProvider>
-          </TooltipProvider>
-          <Toaster />
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TooltipProvider>{children}</TooltipProvider>
+            <Toaster />
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

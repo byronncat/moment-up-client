@@ -36,10 +36,8 @@ export default function SignupForm() {
   });
 
   const [showDetails, setShowDetails] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { signup } = useAuth();
   async function signupHandler(values: z.infer<typeof zodSchema.auth.signup>) {
-    setLoading(true);
     const { success, message } = await signup(values);
     if (success)
       toast("🎉 You're almost there!", {
@@ -48,7 +46,6 @@ export default function SignupForm() {
           "We've sent a verification link to your email. Click it to activate your account and log in.",
       });
     else toast.error(message);
-    setLoading(false);
   }
 
   return (
@@ -136,7 +133,7 @@ export default function SignupForm() {
             />
           </div>
 
-          <SubmitButton loading={loading} className="mt-6">
+          <SubmitButton loading={form.formState.isSubmitting} className="mt-6">
             Sign up
           </SubmitButton>
         </form>

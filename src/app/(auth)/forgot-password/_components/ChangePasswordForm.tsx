@@ -2,7 +2,6 @@
 
 import type { z } from "zod";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/components/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,12 +40,10 @@ export default function ChangePasswordForm({
     },
   });
 
-  const [loading, setLoading] = useState(false);
   const { changePassword, sendOtpEmail } = useAuth();
   async function verifyHandler(
     values: z.infer<typeof zodSchema.auth.changePassword>
   ) {
-    setLoading(true);
     const { success, message } = await changePassword(values);
     if (success)
       toast("🎉 Password changed successfully!", {
@@ -54,15 +51,12 @@ export default function ChangePasswordForm({
         description: "You can now log in with your new password.",
       });
     else toast.error(message);
-    setLoading(false);
   }
 
   async function resendHandler() {
-    setLoading(true);
     toast.promise(sendOtpEmail({ identity: defaultValue }), {
       loading: "Sending recovery email...",
       success: (res) => {
-        setLoading(false);
         if (res.success) return "Recovery email sent!";
         throw new Error(res.message);
       },
@@ -130,7 +124,7 @@ export default function ChangePasswordForm({
             />
           </div>
 
-          <SubmitButton loading={loading} className="mt-8">
+          <SubmitButton loading={form.formState.isSubmitting} className="mt-8">
             Reset Password
           </SubmitButton>
         </form>

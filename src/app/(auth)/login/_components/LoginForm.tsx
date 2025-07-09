@@ -3,7 +3,6 @@
 import type { z } from "zod";
 
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/components/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,13 +33,10 @@ export default function LoginForm() {
     },
   });
 
-  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   async function loginHandler(values: z.infer<typeof zodSchema.auth.login>) {
-    setLoading(true);
     const { success, message } = await login(values);
     if (!success) toast.error(message);
-    setLoading(false);
   }
 
   return (
@@ -89,7 +85,7 @@ export default function LoginForm() {
             highlightedText="Forgot your password?"
             className="text-right mb-2"
           />
-          <SubmitButton loading={loading}>Login</SubmitButton>
+          <SubmitButton loading={form.formState.isSubmitting}>Login</SubmitButton>
         </div>
       </form>
     </Form>

@@ -1,6 +1,5 @@
 import type { z } from "zod";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/components/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,16 +29,13 @@ export default function SendOtpForm({
     },
   });
 
-  const [loading, setLoading] = useState(false);
   const { sendOtpEmail } = useAuth();
   async function sendEmailHandler(
     values: z.infer<typeof zodSchema.auth.sendOtpEmail>
   ) {
-    setLoading(true);
     const { success, message } = await sendOtpEmail(values);
     if (success) onSuccess(values.identity);
     else toast.error(message);
-    setLoading(false);
   }
 
   return (
@@ -66,7 +62,7 @@ export default function SendOtpForm({
         </div>
 
         <div className="mt-5">
-          <SubmitButton loading={loading}>Send Recovery Email</SubmitButton>
+          <SubmitButton loading={form.formState.isSubmitting}>Send Recovery Email</SubmitButton>
         </div>
       </form>
     </Form>
