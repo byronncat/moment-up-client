@@ -99,7 +99,7 @@ export async function getMoments(
     headers: {
       "Content-Type": "application/json",
       ...(token && {
-        "X-CSRF-Token": token.csrfToken,
+        "X-Csrf-Token": token.csrfToken,
         Authorization: `Bearer ${token.accessToken}`,
       }),
     },

@@ -36,7 +36,7 @@ export async function login(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRF-Token": csrfToken,
+      "X-Csrf-Token": csrfToken,
     },
     body: JSON.stringify(data),
     credentials: "include",
@@ -68,7 +68,7 @@ export async function signup(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRF-Token": csrfToken,
+      "X-Csrf-Token": csrfToken,
     },
     body: JSON.stringify(data),
     credentials: "include",
@@ -95,7 +95,7 @@ export async function logout(csrfToken: Token): API {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRF-Token": csrfToken,
+      "X-Csrf-Token": csrfToken,
     },
     credentials: "include",
   })
@@ -175,7 +175,7 @@ export async function sendOtpEmail(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRF-Token": csrfToken,
+      "X-Csrf-Token": csrfToken,
     },
     body: JSON.stringify(data),
     credentials: "include",
@@ -205,7 +205,7 @@ export async function changePassword(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRF-Token": csrfToken,
+      "X-Csrf-Token": csrfToken,
     },
     body: JSON.stringify(data),
     credentials: "include",

@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { PROTECTED_ROUTES, AUTH_ROUTES, ROUTE } from "@/constants/route";
 
-const AUTH_COOKIE_NAME = "refresh";
+const AUTH_COOKIE_NAME = "_guard";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
