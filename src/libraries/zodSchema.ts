@@ -1,42 +1,41 @@
-import { z } from "zod";
+import * as z from "zod";
 
 const login = z.object({
-  identity: z.string().nonempty({
-    message: "Username or email is required",
+  identity: z.string().min(1, {
+    error: "Username or email is required",
   }),
-  password: z.string().nonempty({
-    message: "Password is required",
+  password: z.string().min(1, {
+    error: "Password is required",
   }),
 });
 
 const signup = z.object({
-  email: z
-    .string()
-    .nonempty({
-      message: "Email is required",
-    })
-    .email({
-      message: "Invalid email address",
-    }),
+  email: z.email({
+    error: (issue) => {
+      if (issue.input === "" || issue.input === undefined)
+        return "Email is required";
+      return "Invalid email address";
+    },
+  }),
   username: z
     .string()
-    .nonempty({
-      message: "Username is required",
+    .min(1, {
+      error: "Username is required",
     })
     .min(2, {
-      message: "Username must be at least 2 characters",
+      error: "Username must be at least 2 characters",
     })
     .regex(/^[a-zA-Z0-9._-]+$/, {
-      message:
+      error:
         "Only letters, numbers, dots, underscores, and hyphens are allowed",
     }),
   password: z
     .string()
-    .nonempty({
-      message: "Password is required",
+    .min(1, {
+      error: "Password is required",
     })
     .min(8, {
-      message: "Password must be at least 8 characters",
+      error: "Password must be at least 8 characters",
     })
     .refine(
       (password) => {
@@ -47,15 +46,15 @@ const signup = z.object({
         return conditionsMet >= 3;
       },
       {
-        message:
+        error:
           "Password must include at least three of the following: uppercase letter (A-Z), lowercase letter (a-z), number (0-9)",
       }
     ),
 });
 
 const sendOtpEmail = z.object({
-  identity: z.string().nonempty({
-    message: "Username or email is required",
+  identity: z.string().min(1, {
+    error: "Username or email is required",
   }),
 });
 
@@ -63,22 +62,22 @@ const changePassword = z
   .object({
     otp: z
       .string()
-      .nonempty({
-        message: "OTP is required",
+      .min(1, {
+        error: "OTP is required",
       })
       .length(6, {
-        message: "OTP must be 6 characters",
+        error: "OTP must be 6 characters",
       })
       .regex(/^[A-Za-z0-9]+$/, {
-        message: "OTP must contain only numbers and alphabetic characters",
+        error: "OTP must contain only numbers and alphabetic characters",
       }),
     newPassword: z
       .string()
-      .nonempty({
-        message: "New password is required",
+      .min(1, {
+        error: "New password is required",
       })
       .min(8, {
-        message: "Password must be at least 8 characters",
+        error: "Password must be at least 8 characters",
       })
       .refine(
         (password) => {
@@ -89,22 +88,22 @@ const changePassword = z
           return conditionsMet >= 3;
         },
         {
-          message:
+          error:
             "Password must include at least three of the following: uppercase letter (A-Z), lowercase letter (a-z), number (0-9)",
         }
       ),
-    confirmPassword: z.string().nonempty({
-      message: "Please confirm your password",
+    confirmPassword: z.string().min(1, {
+      error: "Please confirm your password",
     }),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords do not match",
+    error: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
 const search = z.object({
-  query: z.string().nonempty({
-    message: "Search query is required",
+  query: z.string().min(1, {
+    error: "Search query is required",
   }),
 });
 
