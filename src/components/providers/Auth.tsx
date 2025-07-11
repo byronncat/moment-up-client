@@ -14,7 +14,6 @@ import {
   useCallback,
   useRef,
 } from "react";
-import { toast } from "sonner";
 import zodSchema from "@/libraries/zodSchema";
 import { AuthApi } from "@/services";
 import { LoadingPage } from "../pages";
@@ -51,11 +50,20 @@ const AuthContext = createContext<AuthContextType>({
   setLogged: () => {},
   setLoaded: () => {},
   login: async () => ({ success: false, message: "Something went wrong!" }),
-  switchLogin: async () => ({ success: false, message: "Something went wrong!" }),
+  switchLogin: async () => ({
+    success: false,
+    message: "Something went wrong!",
+  }),
   signup: async () => ({ success: false, message: "Something went wrong!" }),
   logout: async () => ({ success: false, message: "Something went wrong!" }),
-  sendOtpEmail: async () => ({ success: false, message: "Something went wrong!" }),
-  recoverPassword: async () => ({ success: false, message: "Something went wrong!" }),
+  sendOtpEmail: async () => ({
+    success: false,
+    message: "Something went wrong!",
+  }),
+  recoverPassword: async () => ({
+    success: false,
+    message: "Something went wrong!",
+  }),
   changeAccount: async () => {},
 });
 
@@ -83,9 +91,10 @@ export default function AuthProvider({
   const authenticate = useCallback(async () => {
     const { success: successCsrf, data: dataCsrf } = await AuthApi.getCsrf();
     if (successCsrf) token.current.csrfToken = dataCsrf!.csrfToken;
-    const { success: successVerify, data: dataVerify } = await AuthApi.authenticate();
+    const { success: successVerify, data: dataVerify } =
+      await AuthApi.authenticate();
     setLogged(successVerify);
-    
+
     const hasGuardCookie = document.cookie.includes(AUTH_COOKIE_NAME);
     if (successVerify) {
       setUser(dataVerify!.user);
@@ -173,10 +182,7 @@ export default function AuthProvider({
       setTimeout(() => {
         setLoaded(true);
       }, PAGE_RELOAD_TIME);
-    } else {
-      toast.error(res.message);
-      setLoaded(true);
-    }
+    } else setLoaded(true);
 
     return res;
   }, [router]);
@@ -191,7 +197,10 @@ export default function AuthProvider({
 
   const recoverPassword = useCallback(
     async (values: z.infer<typeof zodSchema.auth.recoverPassword>) => {
-      const res = await AuthApi.recoverPassword(values, token.current.csrfToken);
+      const res = await AuthApi.recoverPassword(
+        values,
+        token.current.csrfToken
+      );
       if (res.success) router.push(ROUTE.LOGIN);
       return res;
     },

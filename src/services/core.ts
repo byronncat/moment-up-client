@@ -93,7 +93,7 @@ export async function getMoments(
   items: DetailedMomentInfo[];
   hasNextPage: boolean;
 }> {
-  console.log("getMoments", page, token, ApiUrl.getMoments(page));
+  console.log("getMoments", page, token);
   return await fetch(ApiUrl.getMoments(page), {
     method: "GET",
     headers: {
@@ -106,7 +106,6 @@ export async function getMoments(
     credentials: "include",
   })
     .then(async (response) => {
-      console.log("getMoments response", response);
       const data = await response.json();
       if (!response.ok) throw data;
       return {

@@ -62,7 +62,9 @@ export default function SendOtpForm({
         </div>
 
         <div className="mt-5">
-          <SubmitButton loading={form.formState.isSubmitting}>Send Recovery Email</SubmitButton>
+          <SubmitButton loading={form.formState.isSubmitting}>
+            Send Recovery Email
+          </SubmitButton>
         </div>
       </form>
     </Form>

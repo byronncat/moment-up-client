@@ -38,3 +38,12 @@ export const PUBLIC_ROUTES = [
   ROUTE.FORGOT_PASSWORD,
   ROUTE.PROFILE(""),
 ];
+
+export const LOGIN_ERRORS = {
+  missing_token:
+    "Authentication token is missing. Please try logging in again.",
+  invalid_token: "Invalid authentication token. Please try logging in again.",
+  expired_token: "Authentication session expired. Please try logging in again.",
+  social_auth_failed: "Social authentication failed. Please try again.",
+  default: "Authentication failed. Please try again.",
+};
