@@ -29,7 +29,7 @@ export default function SignupForm() {
   const form = useForm<z.infer<typeof zodSchema.auth.signup>>({
     resolver: zodResolver(zodSchema.auth.signup),
     defaultValues: {
-      email: "ByronAT445@gmail.com",
+      email: "thgnao@gmail.com",
       username: "Byron",
       password: "T1234567t!",
     },

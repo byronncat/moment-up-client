@@ -31,8 +31,8 @@ export default function ChangePasswordForm({
   defaultValue,
   className,
 }: ChangePasswordFormProps) {
-  const form = useForm<z.infer<typeof zodSchema.auth.changePassword>>({
-    resolver: zodResolver(zodSchema.auth.changePassword),
+  const form = useForm<z.infer<typeof zodSchema.auth.recoverPassword>>({
+    resolver: zodResolver(zodSchema.auth.recoverPassword),
     defaultValues: {
       otp: "",
       newPassword: "",
@@ -40,9 +40,9 @@ export default function ChangePasswordForm({
     },
   });
 
-  const { changePassword, sendOtpEmail } = useAuth();
+  const { recoverPassword: changePassword, sendOtpEmail } = useAuth();
   async function verifyHandler(
-    values: z.infer<typeof zodSchema.auth.changePassword>
+    values: z.infer<typeof zodSchema.auth.recoverPassword>
   ) {
     const { success, message } = await changePassword(values);
     if (success)

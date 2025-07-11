@@ -58,7 +58,7 @@ const sendOtpEmail = z.object({
   }),
 });
 
-const changePassword = z
+const recoverPassword = z
   .object({
     otp: z
       .string()
@@ -112,7 +112,7 @@ const zodSchema = {
     login,
     signup,
     sendOtpEmail,
-    changePassword,
+    recoverPassword,
   },
   core: {
     search,

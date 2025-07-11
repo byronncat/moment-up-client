@@ -34,8 +34,8 @@ type AuthContextType = {
   signup: (values: z.infer<typeof zodSchema.auth.signup>) => API;
   logout: () => API;
   sendOtpEmail: (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => API;
-  changePassword: (
-    values: z.infer<typeof zodSchema.auth.changePassword>
+  recoverPassword: (
+    values: z.infer<typeof zodSchema.auth.recoverPassword>
   ) => API;
   changeAccount: (accountId: UserCardDisplayInfo["id"]) => Promise<void>;
 };
@@ -55,7 +55,7 @@ const AuthContext = createContext<AuthContextType>({
   signup: async () => ({ success: false, message: "Something went wrong!" }),
   logout: async () => ({ success: false, message: "Something went wrong!" }),
   sendOtpEmail: async () => ({ success: false, message: "Something went wrong!" }),
-  changePassword: async () => ({ success: false, message: "Something went wrong!" }),
+  recoverPassword: async () => ({ success: false, message: "Something went wrong!" }),
   changeAccount: async () => {},
 });
 
@@ -83,7 +83,7 @@ export default function AuthProvider({
   const authenticate = useCallback(async () => {
     const { success: successCsrf, data: dataCsrf } = await AuthApi.getCsrf();
     if (successCsrf) token.current.csrfToken = dataCsrf!.csrfToken;
-    const { success: successVerify, data: dataVerify } = await AuthApi.verify();
+    const { success: successVerify, data: dataVerify } = await AuthApi.authenticate();
     setLogged(successVerify);
     
     const hasGuardCookie = document.cookie.includes(AUTH_COOKIE_NAME);
@@ -189,9 +189,9 @@ export default function AuthProvider({
     []
   );
 
-  const changePassword = useCallback(
-    async (values: z.infer<typeof zodSchema.auth.changePassword>) => {
-      const res = await AuthApi.changePassword(values, token.current.csrfToken);
+  const recoverPassword = useCallback(
+    async (values: z.infer<typeof zodSchema.auth.recoverPassword>) => {
+      const res = await AuthApi.recoverPassword(values, token.current.csrfToken);
       if (res.success) router.push(ROUTE.LOGIN);
       return res;
     },
@@ -233,7 +233,7 @@ export default function AuthProvider({
         signup,
         logout,
         sendOtpEmail,
-        changePassword,
+        recoverPassword,
         changeAccount,
       }}
     >

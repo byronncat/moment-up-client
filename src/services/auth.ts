@@ -19,10 +19,10 @@ const ApiUrl = {
   login: `${SERVER_HOST_URL}/v1/auth/login`,
   signup: `${SERVER_HOST_URL}/v1/auth/register`,
   logout: `${SERVER_HOST_URL}/v1/auth/logout`,
-  verify: `${SERVER_HOST_URL}/v1/auth/verify`,
+  authenticate: `${SERVER_HOST_URL}/v1/auth/authenticate`,
   getCsrfToken: `${SERVER_HOST_URL}/v1/auth/csrf`,
   sendOtpEmail: `${SERVER_HOST_URL}/v1/auth/send-otp-email`,
-  changePassword: `${SERVER_HOST_URL}/v1/auth/change-password`,
+  recoverPassword: `${SERVER_HOST_URL}/v1/auth/recover-password`,
 };
 
 export async function login(
@@ -114,11 +114,11 @@ export async function logout(csrfToken: Token): API {
     });
 }
 
-export async function verify(): API<{
+export async function authenticate(): API<{
   user: UserInfo;
   accessToken: Token;
 }> {
-  return await fetch(ApiUrl.verify, {
+  return await fetch(ApiUrl.authenticate, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -197,11 +197,11 @@ export async function sendOtpEmail(
     });
 }
 
-export async function changePassword(
-  data: z.infer<typeof zodSchema.auth.changePassword>,
+export async function recoverPassword(
+  data: z.infer<typeof zodSchema.auth.recoverPassword>,
   csrfToken: Token
 ): API {
-  return await fetch(ApiUrl.changePassword, {
+  return await fetch(ApiUrl.recoverPassword, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
