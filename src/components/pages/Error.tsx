@@ -3,44 +3,82 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ROUTE } from "@/constants/route";
 
-const Error = {
+const errorConfig = {
   "not-found": {
     code: 404,
-    title: "page not found",
+    title: "Page Not Found",
     description:
       "The page you are looking for might have been removed or is unavailable.",
+    defaultButton: "Go Home",
+    defaultRoute: ROUTE.HOME,
   },
   internal: {
     code: 500,
-    title: "internal server",
+    title: "Internal Server Error",
     description:
       "Something went wrong! Please try again later or contact support.",
+    defaultButton: "Try Again",
+    defaultRoute: ROUTE.HOME,
   },
-};
+  forbidden: {
+    code: 403,
+    title: "Access Forbidden",
+    description: "You don't have permission to access this resource.",
+    defaultButton: "Go Back",
+    defaultRoute: ROUTE.HOME,
+  },
+  maintenance: {
+    code: 503,
+    title: "Under Maintenance",
+    description:
+      "We're currently performing maintenance. Please try again later.",
+    defaultButton: "Go Home",
+    defaultRoute: ROUTE.HOME,
+  },
+} as const;
+
+type ErrorType = keyof typeof errorConfig;
 
 type ErrorPageProps = Readonly<{
-  type: "not-found" | "internal";
-  navigateButton?: boolean;
+  type: ErrorType;
+  customTitle?: string;
+  customDescription?: string;
+  buttonText?: string;
+  buttonRoute?: string;
+  showButton?: boolean;
 }>;
 
 export default function ErrorPage({
   type,
-  navigateButton = false,
+  customTitle,
+  customDescription,
+  buttonText,
+  buttonRoute,
+  showButton = true,
 }: ErrorPageProps) {
-  const error = Error[type];
+  const config = errorConfig[type];
+  const title = customTitle || config.title;
+  const description = customDescription || config.description;
+  const buttonLabel = buttonText || config.defaultButton;
+  const route = buttonRoute || config.defaultRoute;
+
   return (
-    <div className={cn("w-screen h-svh", "flex justify-center items-center")}>
+    <div
+      className={cn("w-screen h-svh", "flex justify-center items-center")}
+      role="main"
+      aria-labelledby="error-title"
+    >
       <div className={cn("flex flex-col items-center", "px-12 text-center")}>
-        <Indicator code={error.code} className="mb-7" />
+        <Indicator code={config.code} className="mb-7" />
         <Description
-          title={error.title}
-          description={error.description}
+          title={title}
+          description={description}
           className="mb-10"
         />
-        {navigateButton && (
-          <Link href={ROUTE.LOGIN}>
+        {showButton && (
+          <Link href={route}>
             <Button className="px-12 py-3" variant="outline">
-              Go to main page
+              {buttonLabel}
             </Button>
           </Link>
         )}
@@ -86,15 +124,14 @@ function Description({ title, description, className }: DescriptionProps) {
   return (
     <div className={className}>
       <h1
-        className={cn(
-          "mb-5",
-          "font-bold capitalize",
-          "text-3xl laptop:text-4xl"
-        )}
+        id="error-title"
+        className={cn("mb-5", "font-bold", "text-3xl laptop:text-4xl")}
       >
         {title}
       </h1>
-      <p className="text-muted-foreground">{description}</p>
+      <p className="text-muted-foreground" id="error-description">
+        {description}
+      </p>
     </div>
   );
 }

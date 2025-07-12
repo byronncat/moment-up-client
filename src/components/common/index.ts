@@ -15,3 +15,4 @@ export { default as UserInfoCard } from "./UserInfoCard";
 export { default as VirtualScrollbar } from "./VirtualScrollbar";
 
 export type { NavItem } from "./HorizontalNavigationBar";
+export * from "./utils";

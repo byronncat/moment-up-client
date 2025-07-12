@@ -47,7 +47,6 @@ export default function Content({
           : "w-full max-w-[600px] max-h-[92vh] rounded-xl overflow-hidden border-r border-y",
         className
       )}
-      onClick={(e) => e.stopPropagation()}
     >
       <div className="relative">
         <MomentHeader

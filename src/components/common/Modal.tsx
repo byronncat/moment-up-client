@@ -7,6 +7,10 @@ type ModalProps = Readonly<{
 }>;
 
 export default function Modal({ children, onClose, className }: ModalProps) {
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) onClose?.();
+  };
+
   return (
     <div
       className={cn(
@@ -15,7 +19,7 @@ export default function Modal({ children, onClose, className }: ModalProps) {
         "bg-black/80",
         className
       )}
-      onClick={onClose}
+      onClick={handleBackdropClick}
     >
       {children}
     </div>

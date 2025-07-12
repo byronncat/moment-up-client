@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import { useTextClamp } from "@/hooks";
 import { useComment } from "./provider/CommentData";
 import dayjs from "dayjs";
-import format from "@/utilities/format";
+import Format from "@/utilities/format";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
 import { SortBy } from "@/constants/clientConfig";
@@ -208,7 +208,7 @@ function CommentItem({
                 "shrink-0 ml-auto"
               )}
             >
-              {format.date(comment.createdAt)}
+              {Format.date(comment.createdAt)}
             </p>
           </Tooltip>
         </div>
@@ -269,7 +269,7 @@ function CommentItem({
                 )}
               />
             </span>
-            {likeCount > 0 && <span>{format.number(likeCount)}</span>}
+            {likeCount > 0 && <span>{Format.number(likeCount)}</span>}
           </button>
         </div>
       </div>

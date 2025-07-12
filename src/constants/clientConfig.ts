@@ -36,3 +36,6 @@ export enum SearchCategory {
 }
 
 export const MOBILE_BREAKPOINT = 560;
+export const XL_BREAKPOINT = 1280;
+
+export const PAGE_RELOAD_TIME = 500;

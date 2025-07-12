@@ -47,7 +47,7 @@ export default function ButtonGroup({
           )}
         />
       ),
-      color: "pink-500",
+      color: "pink" as const,
       count: post.likes,
       tooltip: "Like",
       isActive: post.isLiked,
@@ -64,7 +64,7 @@ export default function ButtonGroup({
           )}
         />
       ),
-      color: "sky-500",
+      color: "sky" as const,
       count: post.comments,
       tooltip: "Comment",
       onClick: () =>
@@ -82,7 +82,7 @@ export default function ButtonGroup({
           )}
         />
       ),
-      color: "green-500",
+      color: "green" as const,
       count: 73,
       tooltip: "Repost",
       onClick: () => setIsShareDialogOpen(true),
@@ -100,7 +100,7 @@ export default function ButtonGroup({
           )}
         />
       ),
-      color: "yellow-500",
+      color: "yellow" as const,
       tooltip: "Bookmark",
       isActive: post.isBookmarked,
       onClick: () => actions.bookmark(momentId),
@@ -115,7 +115,7 @@ export default function ButtonGroup({
           )}
         />
       ),
-      color: "blue-500",
+      color: "blue" as const,
       tooltip: "Share",
       onClick: () => actions.share(momentId),
     },

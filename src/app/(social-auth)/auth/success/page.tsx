@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/components/providers/Auth";
 import { ROUTE, LOGIN_ERRORS } from "@/constants/route";
+import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
 import { LoadingPage } from "@/components/pages";
 
 export default function AuthSuccessPage() {
@@ -23,7 +24,7 @@ export default function AuthSuccessPage() {
 
       setTimeout(() => {
         setLoaded(true);
-      }, 500);
+      }, PAGE_RELOAD_TIME);
     } else {
       router.replace(`${ROUTE.LOGIN}?error=${LOGIN_ERRORS.missing_token}`);
     }

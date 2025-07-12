@@ -39,56 +39,73 @@ export default function VirtualScrollbar({
     setScrollTop(newScrollTop);
   }, []);
 
-  function handleCustomScroll(newScrollTop: number) {
-    if (animationFrame.current) cancelAnimationFrame(animationFrame.current);
-    animationFrame.current = requestAnimationFrame(() => {
-      onScroll(newScrollTop);
-    });
-  }
+  const handleCustomScroll = useCallback(
+    (newScrollTop: number) => {
+      if (animationFrame.current) cancelAnimationFrame(animationFrame.current);
+      animationFrame.current = requestAnimationFrame(() => {
+        onScroll(newScrollTop);
+      });
+    },
+    [onScroll]
+  );
 
-  function handleMouseDown(e: React.MouseEvent) {
-    e.preventDefault();
-    setIsDragging(true);
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      setIsDragging(true);
 
-    const startY = e.pageY;
-    const startScrollTop = thumbTop;
+      const startY = e.pageY;
+      const startScrollTop = thumbTop;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const delta = e.pageY - startY;
+      const handleMouseMove = (e: MouseEvent) => {
+        const delta = e.pageY - startY;
+        const newThumbTop = Math.max(
+          0,
+          Math.min(maxScrollTop, startScrollTop + delta)
+        );
+        const newScrollTop =
+          (newThumbTop / maxScrollTop) * (totalHeight - height);
+
+        handleCustomScroll(newScrollTop);
+      };
+
+      const handleMouseUp = () => {
+        setIsDragging(false);
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+      };
+
+      document.addEventListener("mousemove", handleMouseMove, {
+        passive: false,
+      });
+      document.addEventListener("mouseup", handleMouseUp);
+    },
+    [thumbTop, maxScrollTop, totalHeight, height, handleCustomScroll]
+  );
+
+  const handleFastScroll = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const track = e.currentTarget;
+      const rect = track.getBoundingClientRect();
+      const clickY = e.clientY - rect.top;
+      if (clickY >= thumbTop && clickY <= thumbTop + thumbHeight) return;
       const newThumbTop = Math.max(
         0,
-        Math.min(maxScrollTop, startScrollTop + delta)
+        Math.min(maxScrollTop, clickY - thumbHeight / 2)
       );
       const newScrollTop =
         (newThumbTop / maxScrollTop) * (totalHeight - height);
-
       handleCustomScroll(newScrollTop);
-    };
-
-    const handleMouseUp = () => {
-      setIsDragging(false);
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-
-    document.addEventListener("mousemove", handleMouseMove, {
-      passive: false,
-    });
-    document.addEventListener("mouseup", handleMouseUp);
-  }
-
-  function handleFastScroll(e: React.MouseEvent<HTMLDivElement>) {
-    const track = e.currentTarget;
-    const rect = track.getBoundingClientRect();
-    const clickY = e.clientY - rect.top;
-    if (clickY >= thumbTop && clickY <= thumbTop + thumbHeight) return;
-    const newThumbTop = Math.max(
-      0,
-      Math.min(maxScrollTop, clickY - thumbHeight / 2)
-    );
-    const newScrollTop = (newThumbTop / maxScrollTop) * (totalHeight - height);
-    handleCustomScroll(newScrollTop);
-  }
+    },
+    [
+      thumbTop,
+      thumbHeight,
+      maxScrollTop,
+      totalHeight,
+      height,
+      handleCustomScroll,
+    ]
+  );
 
   useEffect(() => {
     onScrollUpdate?.(updateScrollPosition);

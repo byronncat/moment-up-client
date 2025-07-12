@@ -2,20 +2,32 @@ import { cn } from "@/libraries/utils";
 import Brand from "../common/Brand";
 import styles from "@/styles/loader.module.css";
 
-export default function LoadingPage() {
+type LoadingPageProps = Readonly<{
+  message?: string;
+  showBrand?: boolean;
+}>;
+
+export default function LoadingPage({
+  message = "LOADING...",
+  showBrand = true,
+}: LoadingPageProps) {
   return (
-    <div className={cn("flex items-center justify-center", "h-screen")}>
-      <Loader />
-      <BottomBrand className="absolute bottom-6" />
+    <div
+      className={cn("flex items-center justify-center", "h-screen")}
+      role="status"
+      aria-label="Loading content"
+    >
+      <Loader message={message} />
+      {showBrand && <BottomBrand className="absolute bottom-6" />}
     </div>
   );
 }
 
-function Loader() {
+function Loader({ message }: Readonly<{ message: string }>) {
   return (
     <div className="flex flex-col justify-center items-center">
       <BoxRotate />
-      <TextWave className="mt-12" />
+      <TextWave message={message} className="mt-12" />
     </div>
   );
 }
@@ -53,7 +65,15 @@ function BoxRotate() {
   );
 }
 
-function TextWave({ className }: Readonly<{ className?: string }>) {
+function TextWave({
+  message,
+  className,
+}: Readonly<{
+  message: string;
+  className?: string;
+}>) {
+  const letters = message.split("");
+
   return (
     <div
       className={cn(
@@ -63,17 +83,11 @@ function TextWave({ className }: Readonly<{ className?: string }>) {
         "font-bold text-2xl tracking-widest",
         className
       )}
+      aria-hidden="true"
     >
-      <span>L</span>
-      <span>O</span>
-      <span>A</span>
-      <span>D</span>
-      <span>I</span>
-      <span>N</span>
-      <span>G</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
+      {letters.map((letter, index) => (
+        <span key={index}>{letter}</span>
+      ))}
     </div>
   );
 }

@@ -10,7 +10,6 @@ export default async function Layout({
 }: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar-state")?.value === "true";
-
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <div
@@ -20,13 +19,13 @@ export default async function Layout({
         )}
       >
         <div className="size-full">
-          <MomentDataProvider>
-            <div className="size-full flex flex-row">
-              <Sidebar />
+          <div className="size-full flex flex-row">
+            <Sidebar />
+            <MomentDataProvider>
               <div className="size-full relative">{children}</div>
               {modal}
-            </div>
-          </MomentDataProvider>
+            </MomentDataProvider>
+          </div>
         </div>
       </div>
     </SidebarProvider>

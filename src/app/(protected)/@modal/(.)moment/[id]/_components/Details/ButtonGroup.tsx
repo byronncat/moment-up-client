@@ -44,7 +44,7 @@ function FirstGroup({
           )}
         />
       ),
-      color: "pink-500",
+      color: "pink" as const,
       count: data.likes,
       tooltip: "Like",
       isActive: data.isLiked,
@@ -61,7 +61,7 @@ function FirstGroup({
           )}
         />
       ),
-      color: "sky-500",
+      color: "sky" as const,
       count: data.comments,
       tooltip: "Comment",
       onClick: onCommentClick,
@@ -76,7 +76,7 @@ function FirstGroup({
           )}
         />
       ),
-      color: "green-500",
+      color: "green" as const,
       count: 73,
       tooltip: "Repost",
       onClick: () => setIsShareDialogOpen(true),
@@ -130,7 +130,7 @@ function SecondGroup({
           )}
         />
       ),
-      color: "yellow-500",
+      color: "yellow" as const,
       tooltip: "Bookmark",
       isActive: data.isBookmarked,
       onClick: () => actions.bookmark(momentId),
@@ -145,7 +145,7 @@ function SecondGroup({
           )}
         />
       ),
-      color: "blue-500",
+      color: "blue" as const,
       tooltip: "Share",
       onClick: () => actions.share(momentId),
     },

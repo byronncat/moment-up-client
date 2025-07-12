@@ -4,7 +4,7 @@ import type { UserCardDisplayInfo } from "api";
 
 import { useRef } from "react";
 import { useHover } from "usehooks-ts";
-import format from "@/utilities/format";
+import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -109,11 +109,11 @@ function FollowSection({ following, followers }: FollowSectionProps) {
   return (
     <div className={cn("flex gap-3", "text-sm", "mt-3")}>
       <div className="flex items-center gap-1">
-        <span className="font-semibold">{format.number(following)}</span>
+        <span className="font-semibold">{Format.number(following)}</span>
         <span className="text-muted-foreground">following</span>
       </div>
       <div className="flex items-center gap-1">
-        <span className="font-semibold">{format.number(followers)}</span>
+        <span className="font-semibold">{Format.number(followers)}</span>
         <span className="text-muted-foreground">followers</span>
       </div>
     </div>
@@ -121,24 +121,59 @@ function FollowSection({ following, followers }: FollowSectionProps) {
 }
 
 const MAX_FOLLOWED_BY_DISPLAY = 3;
+
+type FollowedByUser = {
+  id: string;
+  displayName: string;
+  avatar: string | undefined;
+};
+
+const getFollowedByMessage = (
+  displayItems: FollowedByUser[],
+  totalCount: number
+) => {
+  const names = displayItems
+    .map((user: FollowedByUser) => user.displayName)
+    .join(", ");
+  const additionalCount = totalCount - MAX_FOLLOWED_BY_DISPLAY;
+  const additionalText =
+    additionalCount > 0 ? ` and ${additionalCount} others you follow` : "";
+
+  return `Followed by ${names}${additionalText}`;
+};
+
+const getMaxWidthClass = (itemCount: number) => {
+  switch (itemCount) {
+    case 3:
+      return "max-w-[186px]";
+    case 2:
+      return "max-w-[202px]";
+    default:
+      return "max-w-[218px]";
+  }
+};
+
 function FollowedBy({
   users,
 }: Readonly<{
   users: UserCardDisplayInfo["followedBy"];
 }>) {
   if (!users) return null;
-  const DisplayUsers = users.displayItems;
+
+  const { displayItems } = users;
+  const reversedItems = [...displayItems].reverse();
+
   return (
     <div className={cn("flex items-top gap-2", "mt-4")}>
       <div className={cn("flex flex-row-reverse", "w-fit")}>
-        {DisplayUsers.reverse().map((user, index) => (
+        {reversedItems.map((user, index) => (
           <Avatar
             key={user.id}
             src={user.avatar}
             alt={`${user.displayName}'s avatar`}
             size="7"
             className={cn(
-              index !== DisplayUsers.length - 1 && "-ml-3",
+              index !== reversedItems.length - 1 && "-ml-3",
               "border-2 border-card"
             )}
           />
@@ -147,23 +182,11 @@ function FollowedBy({
       <div
         className={cn(
           "text-xs text-muted-foreground",
-          "mt-0.5",
-          "wrap-break-word",
-          users.displayItems.length === 3
-            ? "max-w-[186px]"
-            : users.displayItems.length === 2
-              ? "max-w-[202px]"
-              : "max-w-[218px]"
+          "mt-0.5 wrap-break-word",
+          getMaxWidthClass(displayItems.length)
         )}
       >
-        {`Followed by ${DisplayUsers.map(
-          (user, index) =>
-            `${user.displayName}${index !== DisplayUsers.length - 1 ? ", " : ""}`
-        ).join("")} ${
-          users.count > MAX_FOLLOWED_BY_DISPLAY
-            ? ` and ${users.count - MAX_FOLLOWED_BY_DISPLAY} others you follow`
-            : ""
-        }`}
+        {getFollowedByMessage(displayItems, users.count)}
       </div>
     </div>
   );

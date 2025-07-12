@@ -16,9 +16,9 @@ function date(dateInput: string | Date) {
   return postDate.format("MMM YYYY");
 }
 
-const format = {
+const Format = {
   number,
   date,
 };
 
-export default format;
+export default Format;

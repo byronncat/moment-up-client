@@ -1,5 +1,5 @@
 import type { DetailedMomentInfo } from "api";
-import format from "@/utilities/format";
+import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 import { BLUR_DATA_URL } from "@/constants/clientConfig";
 
@@ -88,11 +88,11 @@ function HoverOverlay({ id, isLiked, likes, comments }: HoverOverlayProps) {
             className="size-6 fill-red-500"
             type={isLiked ? "solid" : "regular"}
           />
-          <span>{format.number(likes)}</span>
+          <span>{Format.number(likes)}</span>
         </div>
         <div className="flex items-center gap-2">
           <Message className="size-6 fill-white" type="solid" />
-          <span>{format.number(comments)}</span>
+          <span>{Format.number(comments)}</span>
         </div>
       </div>
     </Link>

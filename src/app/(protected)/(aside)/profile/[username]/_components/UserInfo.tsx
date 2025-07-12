@@ -4,7 +4,7 @@ import type { UserProfileInfo } from "api";
 import { useRef } from "react";
 import { useHover } from "usehooks-ts";
 import { useProfile } from "../_providers/ProfileProvider";
-import format from "@/utilities/format";
+import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -49,13 +49,13 @@ export default function UserInfo({ data }: UserInformationProps) {
       <div className={cn("grid grid-cols-2 gap-10", "text-sm", "mb-6")}>
         <div className="flex flex-col items-center">
           <span className="font-bold">
-            {format.number(data.following ?? 0)}
+            {Format.number(data.following ?? 0)}
           </span>
           <span>Following</span>
         </div>
         <div className="flex flex-col items-center">
           <span className="font-bold">
-            {format.number(data.followers ?? 0)}
+            {Format.number(data.followers ?? 0)}
           </span>
           <span>Followers</span>
         </div>

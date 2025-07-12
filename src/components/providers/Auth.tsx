@@ -2,8 +2,6 @@
 
 import type { z } from "zod";
 import type { API, UserCardDisplayInfo, UserInfo } from "api";
-import { ROUTE } from "@/constants/route";
-import { AUTH_COOKIE_NAME } from "@/constants/serverConfig";
 
 import { useRouter } from "next/navigation";
 import {
@@ -14,8 +12,12 @@ import {
   useCallback,
   useRef,
 } from "react";
-import zodSchema from "@/libraries/zodSchema";
+import { useAuthOperations } from "./hooks/useAuthOperations";
 import { AuthApi } from "@/services";
+import { Cookie } from "@/utilities";
+import zodSchema from "@/libraries/zodSchema";
+import { ROUTE } from "@/constants/route";
+import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
 import { LoadingPage } from "../pages";
 
 type AuthContextType = {
@@ -68,9 +70,6 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const useAuth = () => useContext(AuthContext);
-const PAGE_RELOAD_TIME = 1000;
-const GUARD_COOKIE = `${AUTH_COOKIE_NAME}=; path=/; max-age=${7 * 24 * 60 * 60}; secure; samesite=none`;
-const REMOVE_GUARD_COOKIE = `${AUTH_COOKIE_NAME}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; samesite=none`;
 
 export default function AuthProvider({
   children,
@@ -78,48 +77,19 @@ export default function AuthProvider({
   const router = useRouter();
   const [logged, setLogged] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [user, setUser] = useState<Omit<
-    UserCardDisplayInfo,
-    "followedBy" | "isFollowing"
-  > | null>(null);
+  const [user, setUser] = useState<UserInfo | null>(null);
 
   const token = useRef({
     accessToken: "",
     csrfToken: "",
   });
 
-  const authenticate = useCallback(async () => {
-    const { success: successCsrf, data: dataCsrf } = await AuthApi.getCsrf();
-    if (successCsrf) token.current.csrfToken = dataCsrf!.csrfToken;
-    const { success: successVerify, data: dataVerify } =
-      await AuthApi.authenticate();
-    setLogged(successVerify);
-
-    const hasGuardCookie = document.cookie.includes(AUTH_COOKIE_NAME);
-    if (successVerify) {
-      setUser(dataVerify!.user);
-      token.current.accessToken = dataVerify!.accessToken;
-      document.cookie = GUARD_COOKIE;
-      if (!hasGuardCookie) {
-        router.refresh();
-        setTimeout(() => {
-          setLoaded(true);
-        }, PAGE_RELOAD_TIME);
-        return;
-      }
-    } else {
-      document.cookie = REMOVE_GUARD_COOKIE;
-      if (hasGuardCookie) {
-        router.refresh();
-        setTimeout(() => {
-          setLoaded(true);
-        }, PAGE_RELOAD_TIME);
-        return;
-      }
-    }
-
-    setLoaded(true);
-  }, [router]);
+  const { authenticate } = useAuthOperations({
+    setLogged,
+    setLoaded,
+    setUser,
+    token,
+  });
 
   const login = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
@@ -127,11 +97,11 @@ export default function AuthProvider({
         values,
         token.current.csrfToken
       );
-      if (success) {
+      if (success && data) {
         setLogged(true);
-        setUser(data!.user);
-        token.current.accessToken = data!.accessToken;
-        document.cookie = GUARD_COOKIE;
+        setUser(data.user);
+        token.current.accessToken = data.accessToken;
+        document.cookie = Cookie.set();
         router.push(ROUTE.HOME);
       }
       return { success, message };
@@ -153,7 +123,7 @@ export default function AuthProvider({
 
       setTimeout(() => {
         setLoaded(true);
-      }, PAGE_RELOAD_TIME); // Wait for the page to reload
+      }, PAGE_RELOAD_TIME);
       return { success, message };
     },
     [router]
@@ -177,7 +147,8 @@ export default function AuthProvider({
     const res = await AuthApi.logout(token.current.csrfToken);
     if (res.success) {
       setLogged(false);
-      document.cookie = REMOVE_GUARD_COOKIE;
+      setUser(null);
+      document.cookie = Cookie.remove();
       router.push(ROUTE.LOGIN);
       setTimeout(() => {
         setLoaded(true);

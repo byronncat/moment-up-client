@@ -5,7 +5,7 @@ import type { API } from "api";
 
 import { use } from "react";
 import { toast } from "sonner";
-import format from "@/utilities/format";
+import Format from "@/utilities/format";
 import { SuggestingApi } from "@/services";
 import { ROUTE } from "@/constants/route";
 
@@ -98,7 +98,7 @@ function TrendingTopicItem({ topic }: { topic: HashtagItem }) {
             #{topic.id}
           </div>
           <span className="text-xs text-muted-foreground">
-            {format.number(topic.count)} posts
+            {Format.number(topic.count)} posts
           </span>
         </div>
         <div onClick={(e) => e.stopPropagation()}>

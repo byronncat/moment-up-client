@@ -2,7 +2,7 @@ import type { DetailedMomentInfo } from "api";
 import type { Actions } from "../../providers/MomentData";
 
 import dayjs from "dayjs";
-import format from "@/utilities/format";
+import Format from "@/utilities/format";
 
 import { cn } from "@/libraries/utils";
 import HoverableComponent from "./HoverInfo";
@@ -61,7 +61,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
             content={dayjs(post.created_at).format("h:mm A MMM D, YYYY")}
           >
             <span className="text-sm/tight text-muted-foreground cursor-default">
-              {format.date(post.created_at)}
+              {Format.date(post.created_at)}
             </span>
           </Tooltip>
         </div>
