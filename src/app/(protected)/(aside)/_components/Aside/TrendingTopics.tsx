@@ -1,6 +1,6 @@
 "use client";
 
-import type { HashtagItem } from "api";
+import type { Hashtag } from "api";
 import type { API } from "api";
 
 import { use } from "react";
@@ -29,7 +29,7 @@ import {
 export default function TrendingSection({
   initialRes,
 }: Readonly<{
-  initialRes: API<HashtagItem[]>;
+  initialRes: API<Hashtag[]>;
 }>) {
   const response = use(initialRes);
   const topics = response?.data ?? [];
@@ -80,7 +80,7 @@ const FEEDBACK_OPTIONS = [
   },
 ];
 
-function TrendingTopicItem({ topic }: { topic: HashtagItem }) {
+function TrendingTopicItem({ topic }: Readonly<{ topic: Hashtag }>) {
   return (
     <div
       className={cn(

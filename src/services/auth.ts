@@ -4,7 +4,7 @@ import type { z } from "zod";
 import type { Token, AccountInfo, API, UserInfo, UserProfileInfo } from "api";
 
 import zodSchema from "@/libraries/zodSchema";
-import { SERVER_HOST_URL } from "@/constants/serverConfig";
+import { ApiUrl } from "./api.constant";
 
 const apiRes = {
   getAllAccounts: "Accounts fetched successfully" as
@@ -15,16 +15,6 @@ const apiRes = {
     | "Internal error",
 };
 
-const ApiUrl = {
-  login: `${SERVER_HOST_URL}/v1/auth/login`,
-  signup: `${SERVER_HOST_URL}/v1/auth/register`,
-  logout: `${SERVER_HOST_URL}/v1/auth/logout`,
-  authenticate: `${SERVER_HOST_URL}/v1/auth/authenticate`,
-  getCsrfToken: `${SERVER_HOST_URL}/v1/auth/csrf`,
-  sendOtpEmail: `${SERVER_HOST_URL}/v1/auth/send-otp-email`,
-  recoverPassword: `${SERVER_HOST_URL}/v1/auth/recover-password`,
-};
-
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>,
   csrfToken: Token
@@ -32,7 +22,7 @@ export async function login(
   user: UserInfo;
   accessToken: Token;
 }> {
-  return await fetch(ApiUrl.login, {
+  return await fetch(ApiUrl.auth.login, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -64,7 +54,7 @@ export async function signup(
   data: z.infer<typeof zodSchema.auth.signup>,
   csrfToken: Token
 ): API {
-  return await fetch(ApiUrl.signup, {
+  return await fetch(ApiUrl.auth.signup, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -91,7 +81,7 @@ export async function signup(
 }
 
 export async function logout(csrfToken: Token): API {
-  return await fetch(ApiUrl.logout, {
+  return await fetch(ApiUrl.auth.logout, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -118,7 +108,7 @@ export async function authenticate(): API<{
   user: UserInfo;
   accessToken: Token;
 }> {
-  return await fetch(ApiUrl.authenticate, {
+  return await fetch(ApiUrl.auth.authenticate, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -143,7 +133,7 @@ export async function authenticate(): API<{
 }
 
 export async function getCsrf(): API<{ csrfToken: Token }> {
-  return await fetch(ApiUrl.getCsrfToken, {
+  return await fetch(ApiUrl.auth.getCsrfToken, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -171,7 +161,7 @@ export async function sendOtpEmail(
   data: z.infer<typeof zodSchema.auth.sendOtpEmail>,
   csrfToken: Token
 ): API {
-  return await fetch(ApiUrl.sendOtpEmail, {
+  return await fetch(ApiUrl.auth.sendOtpEmail, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -201,7 +191,7 @@ export async function recoverPassword(
   data: z.infer<typeof zodSchema.auth.recoverPassword>,
   csrfToken: Token
 ): API {
-  return await fetch(ApiUrl.recoverPassword, {
+  return await fetch(ApiUrl.auth.recoverPassword, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

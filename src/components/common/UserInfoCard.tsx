@@ -18,7 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Circle, User, Settings } from "@/components/icons";
+import { User, Settings } from "@/components/icons";
 import { useAuth } from "../providers";
 
 type UserInfoCardProps = Readonly<{
@@ -59,9 +59,6 @@ export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
               )}
             >
               <span className="truncate max-w-[144px]">{user.displayName}</span>
-              {user.verified && (
-                <Circle variant="check" className="size-3 fill-primary" />
-              )}
             </CardTitle>
           </Link>
           <Link
@@ -125,7 +122,7 @@ const MAX_FOLLOWED_BY_DISPLAY = 3;
 type FollowedByUser = {
   id: string;
   displayName: string;
-  avatar: string | undefined;
+  avatar?: string;
 };
 
 const getFollowedByMessage = (

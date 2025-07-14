@@ -25,7 +25,7 @@ export default function CommentInput({ ref, className }: CommentInputProps) {
     const success = await handleComment({
       id: crypto.randomUUID(),
       content: comment,
-      createdAt: new Date(),
+      createdAt: "2025-07-11T09:20:12.345Z",
       likes: 0,
       isLiked: false,
       user,

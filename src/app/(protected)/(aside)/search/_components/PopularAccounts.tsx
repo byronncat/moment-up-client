@@ -4,7 +4,6 @@ import type { ProfileSearchItem } from "api";
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
 import { Button } from "@/components/ui/button";
-import { Circle } from "@/components/icons";
 
 interface PopularAccountsProps {
   users: ProfileSearchItem[];
@@ -50,13 +49,14 @@ function UserCard({ user }: Readonly<{ user: ProfileSearchItem }>) {
           className={cn("absolute inset-0 h-10")}
         />
         <Avatar src={user.avatar} size="12" />
-        <div className={cn("flex items-center gap-1.5", "mt-1")}>
-          <p className={cn("font-semibold", "truncate max-w-32")}>
-            {user.username}
-          </p>
-          {user.verified && (
-            <Circle variant="check" className="size-3.5 fill-primary" />
+        <div
+          className={cn(
+            "flex items-center mt-1",
+            "font-semibold",
+            "truncate max-w-32"
           )}
+        >
+          {user.username}
         </div>
         <div className="grow">
           <div className="px-2 text-sm text-muted-foreground line-clamp-2">

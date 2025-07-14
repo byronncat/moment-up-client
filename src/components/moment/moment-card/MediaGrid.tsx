@@ -46,7 +46,7 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
     const file = files[0];
     return (
       <AspectRatio
-        ratio={getAspectRatioValue(file.aspect_ratio)}
+        ratio={getAspectRatioValue(file.aspectRatio)}
         className="relative"
       >
         <MediaItem file={file} index={0} momentId={momentId} />
@@ -56,7 +56,7 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
 
   function render2Images() {
     if (!files) return null;
-    const firstImageHorizontal = isHorizontal(files[0].aspect_ratio);
+    const firstImageHorizontal = isHorizontal(files[0].aspectRatio);
 
     if (firstImageHorizontal) {
       return (
@@ -77,7 +77,7 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
 
   function render3Images() {
     if (!files) return null;
-    const firstImageHorizontal = isHorizontal(files[0].aspect_ratio);
+    const firstImageHorizontal = isHorizontal(files[0].aspectRatio);
 
     if (firstImageHorizontal) {
       return (
@@ -120,7 +120,7 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
 
   function render5PlusImages() {
     if (!files) return null;
-    const firstImageHorizontal = isHorizontal(files[0].aspect_ratio);
+    const firstImageHorizontal = isHorizontal(files[0].aspectRatio);
 
     if (firstImageHorizontal) {
       return (

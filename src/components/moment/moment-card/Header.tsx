@@ -57,11 +57,9 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
             </span>
           </HoverableComponent>
           <span className="text-base/tight text-muted-foreground">·</span>
-          <Tooltip
-            content={dayjs(post.created_at).format("h:mm A MMM D, YYYY")}
-          >
+          <Tooltip content={dayjs(post.createdAt).format("h:mm A MMM D, YYYY")}>
             <span className="text-sm/tight text-muted-foreground cursor-default">
-              {Format.date(post.created_at)}
+              {Format.date(post.createdAt)}
             </span>
           </Tooltip>
         </div>

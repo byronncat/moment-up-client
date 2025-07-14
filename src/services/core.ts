@@ -7,7 +7,7 @@ import type {
   CommentInfo,
 } from "api";
 import { Audience, SortBy } from "@/constants/clientConfig";
-import { SERVER_HOST_URL } from "@/constants/serverConfig";
+import { ApiUrl } from "./api.constant";
 
 const apiRes = {
   getMoments: "success" as "error" | "empty" | "success",
@@ -21,10 +21,6 @@ const apiRes = {
   toggleLike: "success" as "error" | "success",
   toggleBookmark: "success" as "error" | "success",
   toggleCommentLike: "success" as "error" | "success",
-};
-
-const ApiUrl = {
-  getMoments: (page: number) => `${SERVER_HOST_URL}/v1/moments?page=${page}`,
 };
 
 export async function getFeeds(): API<FeedNotification[]> {
@@ -94,7 +90,7 @@ export async function getMoments(
   hasNextPage: boolean;
 }> {
   console.log("getMoments", page, token);
-  return await fetch(ApiUrl.getMoments(page), {
+  return await fetch(ApiUrl.core.getMoments(page), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

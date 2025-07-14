@@ -18,7 +18,6 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import SectionHeader from "./SectionHeader";
-import { Circle } from "@/components/icons";
 
 export default function SuggestedSection({
   initialRes,
@@ -106,9 +105,6 @@ function SuggestedUserItem({
                   )}
                 >
                   {user.username}
-                  {user.verified && (
-                    <Circle variant="check" className="size-3 fill-primary" />
-                  )}
                 </div>
               </Link>
             </HoverCardTrigger>

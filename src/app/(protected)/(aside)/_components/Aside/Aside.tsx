@@ -1,4 +1,5 @@
 import { SuggestingApi } from "@/services";
+import { ServerCookie } from "@/helpers/cookie";
 
 import { cn } from "@/libraries/utils";
 import { Suspense } from "react";
@@ -8,8 +9,15 @@ import SuggestedUsers from "./SuggestedUsers";
 import Footer from "./Footer";
 import TrendingTopics from "./TrendingTopics";
 import SearchBar from "../Search/SearchBar";
+import { cookies } from "next/headers";
 
-export default function Aside({ className }: Readonly<{ className?: string }>) {
+export default async function Aside({
+  className,
+}: Readonly<{ className?: string }>) {
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore.toString();
+  ServerCookie.setCookieHeader(cookieHeader);
+
   const trendingTopicsRes = SuggestingApi.getTrendingTopics();
   const suggestedUsersRes = SuggestingApi.getSuggestedUsers();
 

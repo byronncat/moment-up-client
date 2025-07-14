@@ -89,7 +89,7 @@ export default function MomentList({
     if (moment.post.files?.length) {
       if (moment.post.files.length === 1) {
         const file = moment.post.files[0];
-        switch (file.aspect_ratio) {
+        switch (file.aspectRatio) {
           case "1:1":
             height += width; // Square
             break;

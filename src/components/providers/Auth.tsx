@@ -14,7 +14,7 @@ import {
 } from "react";
 import { useAuthOperations } from "./hooks/useAuthOperations";
 import { AuthApi } from "@/services";
-import { Cookie } from "@/utilities";
+import { ClientCookie } from "@/helpers/cookie";
 import zodSchema from "@/libraries/zodSchema";
 import { ROUTE } from "@/constants/route";
 import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
@@ -101,7 +101,7 @@ export default function AuthProvider({
         setLogged(true);
         setUser(data.user);
         token.current.accessToken = data.accessToken;
-        document.cookie = Cookie.set();
+        document.cookie = ClientCookie.set(data.accessToken);
         router.push(ROUTE.HOME);
       }
       return { success, message };
@@ -112,11 +112,15 @@ export default function AuthProvider({
   const switchLogin = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
       setLoaded(false);
-      const { success, message } = await AuthApi.login(
+      const { success, message, data } = await AuthApi.login(
         values,
         token.current.csrfToken
       );
-      if (success) {
+      if (success && data) {
+        setLogged(true);
+        setUser(data.user);
+        token.current.accessToken = data.accessToken;
+        document.cookie = ClientCookie.set(data.accessToken);
         router.refresh();
         router.push(ROUTE.HOME);
       }
@@ -148,7 +152,8 @@ export default function AuthProvider({
     if (res.success) {
       setLogged(false);
       setUser(null);
-      document.cookie = Cookie.remove();
+      token.current.accessToken = "";
+      document.cookie = ClientCookie.remove();
       router.push(ROUTE.LOGIN);
       setTimeout(() => {
         setLoaded(true);
@@ -178,19 +183,24 @@ export default function AuthProvider({
     [router]
   );
 
-  const changeAccount = useCallback(
-    async (accountId: UserCardDisplayInfo["id"]) => {
-      setLoaded(false);
-      const res = await AuthApi.switchAccount(accountId);
-      if (res.success) {
-        router.refresh();
-        router.push(ROUTE.HOME);
-        setUser(res.data ?? null);
-      }
-      setLoaded(true);
-    },
-    [router]
-  );
+  // const changeAccount = useCallback(
+  //   async (accountId: UserCardDisplayInfo["id"]) => {
+  //     setLoaded(false);
+  //     const res = await AuthApi.switchAccount(accountId);
+  //     if (res.success && res.data) {
+  //       // Update access token if provided
+  //       if (res.data.accessToken) {
+  //         token.current.accessToken = res.data.accessToken;
+  //         document.cookie = ClientCookie.set(res.data.accessToken);
+  //       }
+  //       setUser(res.data ?? null);
+  //       router.refresh();
+  //       router.push(ROUTE.HOME);
+  //     }
+  //     setLoaded(true);
+  //   },
+  //   [router]
+  // );
 
   useEffect(() => {
     authenticate();
@@ -214,7 +224,9 @@ export default function AuthProvider({
         logout,
         sendOtpEmail,
         recoverPassword,
-        changeAccount,
+        changeAccount: () => {
+          return Promise.resolve();
+        },
       }}
     >
       {loaded ? children : <LoadingPage />}

@@ -12,7 +12,7 @@ const apiRes = {
 import type { z } from "zod";
 import type {
   API,
-  HashtagItem,
+  HashtagSearchItem,
   SearchItem,
   SearchResult,
   UserSearchItem,
@@ -100,7 +100,7 @@ export async function detailSearch(
         (hashtag) =>
           hashtag.type === "hashtag" &&
           hashtag.id.toLowerCase().includes(data.query.toLowerCase())
-      ) as HashtagItem[],
+      ) as HashtagSearchItem[],
     };
 
     if (type === SearchCategory.PEOPLE) {

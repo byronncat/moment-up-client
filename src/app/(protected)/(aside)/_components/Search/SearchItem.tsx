@@ -2,12 +2,12 @@ import type {
   SearchItem,
   UserSearchItem,
   QuerySearchItem,
-  HashtagItem,
+  HashtagSearchItem,
 } from "api";
 
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
-import { Circle, MagnifyingGlass } from "@/components/icons";
+import { MagnifyingGlass } from "@/components/icons";
 
 type SearchItemProps = Readonly<{
   data: SearchItem;
@@ -24,13 +24,10 @@ export default function SearchItem({ data }: SearchItemProps) {
           size="12"
         />
         <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold">
-              {(data as UserSearchItem).username}
-            </span>
-            {(data as UserSearchItem).verified && (
-              <Circle variant="check" className="size-3.5 fill-primary" />
-            )}
+          <div
+            className={cn("flex items-center gap-2", "text-sm font-semibold")}
+          >
+            {(data as UserSearchItem).username}
           </div>
           <span className="text-sm text-muted-foreground">
             {(data as UserSearchItem).displayName}
@@ -65,10 +62,10 @@ export default function SearchItem({ data }: SearchItemProps) {
         </div>
         <div className="flex flex-col">
           <span className="text-sm font-semibold">
-            {(data as HashtagItem).id}
+            {(data as HashtagSearchItem).id}
           </span>
           <span className="text-sm text-muted-foreground">
-            {`${(data as HashtagItem).count} tagged`}
+            {`${(data as HashtagSearchItem).count} tagged`}
           </span>
         </div>
       </>

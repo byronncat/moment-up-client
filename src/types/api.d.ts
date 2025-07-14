@@ -1,14 +1,4 @@
 declare module "api" {
-  import type {
-    Moment,
-    User,
-    Hashtag,
-    Feed,
-    Notification,
-    Comment,
-    File,
-  } from "schema";
-
   type API<T = void> = Promise<{
     success: boolean;
     message: string;
@@ -19,39 +9,47 @@ declare module "api" {
   type Token = string;
 
   // === User ===
-  type AccountInfo = {
-    id: User["id"];
-    username: User["username"];
-    displayName: User["display_name"];
-    avatar?: User["avatar"];
-    verified: User["verified"];
-  };
+  interface AccountInfo {
+    id: string;
+    username: string;
+    displayName: string;
+    avatar?: string;
+  }
 
-  type UserInfo = AccountInfo & {
-    bio?: User["bio"];
-    backgroundImage?: User["background_image"];
+  interface UserInfo extends AccountInfo {
+    bio?: string;
+    backgroundImage?: string;
     followers: number;
     following: number;
     hasFeed: boolean;
-  };
+  }
 
-  type UserProfileInfo = UserInfo & {
+  interface UserProfileInfo extends UserInfo {
     isFollowing?: boolean;
-  };
+  }
 
-  type UserCardDisplayInfo = Omit<UserProfileInfo, "backgroundImage"> & {
+  interface UserCardDisplayInfo
+    extends Omit<UserProfileInfo, "backgroundImage"> {
     followedBy?: {
       count: number;
       displayItems: {
-        id: User["id"];
-        displayName: User["display_name"];
-        avatar: User["avatar"];
+        id: string;
+        displayName: string;
+        avatar?: string;
       }[];
     };
-  };
+  }
 
   // === Core ===
-  type MomentInfo = Omit<Moment, "id" | "user_id"> & {
+  type MomentInfo = {
+    text?: string;
+    files?: {
+      id: string;
+      type: "image" | "video" | "audio";
+      url: string;
+      aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
+    }[];
+    createdAt: string;
     likes: number;
     comments: number;
     isLiked: boolean;
@@ -59,33 +57,33 @@ declare module "api" {
   };
 
   type DetailedMomentInfo = {
-    id: Moment["id"];
+    id: string;
     user: UserCardDisplayInfo;
     post: MomentInfo;
   };
 
   type CommentInfo = {
-    id: Comment["id"];
-    content: Comment["content"];
+    id: string;
+    content: string;
     user: UserCardDisplayInfo;
     likes: number;
     isLiked: boolean;
-    createdAt: Comment["created_at"];
+    createdAt: string;
   };
 
   // === Notification ===
   type SecurityNotification = {
-    id: Notification["id"];
+    id: string;
     type: "security";
-    userId: Notification["user_id"];
-    createdAt: Notification["created_at"];
+    userId: string;
+    createdAt: string;
   };
 
   type CommunityNotification = {
-    id: Notification["id"];
+    id: string;
     type: "social";
     user: UserCardDisplayInfo;
-    createdAt: Notification["created_at"];
+    createdAt: string;
     information:
       | {
           type: "post" | "mention";
@@ -99,30 +97,34 @@ declare module "api" {
   type NotificationInfo = SecurityNotification | CommunityNotification;
 
   // === Others ===
-  type HashtagItem = Hashtag & {
-    type: "hashtag";
+  type Hashtag = {
+    id: string;
     count: number;
   };
 
   type FileInfo = {
-    id: File["id"];
-    type: File["type"];
-    url: File["url"];
-    aspectRatio: File["aspect_ratio"];
+    id: string;
+    type: "image" | "video" | "audio";
+    url: string;
+    aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
   };
 
   // Search
-  type UserSearchItem = AccountInfo & {
+  interface UserSearchItem extends AccountInfo {
     type: "user";
-  };
+  }
 
-  type QuerySearchItem = {
-    id: string;
+  interface QuerySearchItem {
     type: "search";
+    id: string;
     query: string;
-  };
+  }
 
-  type SearchItem = UserSearchItem | QuerySearchItem | HashtagItem;
+  interface HashtagSearchItem extends Hashtag {
+    type: "hashtag";
+  }
+
+  type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;
 
   type ProfileSearchItem = Omit<
     UserProfileInfo,
@@ -132,17 +134,17 @@ declare module "api" {
   type SearchResult = {
     posts?: DetailedMomentInfo[];
     users?: AccountInfo[];
-    hashtags?: HashtagItem[];
+    hashtags?: Hashtag[];
   };
 
   // Core
   type FeedNotification = {
-    id: Feed["id"];
-    userId: User["id"];
-    displayName: User["display_name"];
-    avatar: User["avatar"];
+    id: string;
+    userId: string;
+    displayName: string;
+    avatar?: string;
     viewed: boolean;
-    latestFeedTime: Date;
+    latestFeedTime: string;
   };
 
   type FeedInfo = {
@@ -150,10 +152,22 @@ declare module "api" {
       isViewed: boolean;
     };
     feeds: {
-      id: Feed["id"];
-      content: Feed["content"];
-      sound?: Feed["sound"];
-      createdAt: Feed["created_at"];
+      id: string;
+      content:
+        | string
+        | {
+            id: string;
+            type: "image" | "video" | "audio";
+            url: string;
+            aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
+          };
+      sound?: {
+        id: string;
+        type: "image" | "video" | "audio";
+        url: string;
+        aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
+      };
+      createdAt: string;
     }[];
   };
 }
