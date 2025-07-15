@@ -21,6 +21,7 @@ export const ApiUrl = {
   suggestion: {
     users: `${SERVER_HOST_URL}/v1/suggestion/users`,
     trending: `${SERVER_HOST_URL}/v1/suggestion/trending`,
+    report: `${SERVER_HOST_URL}/v1/suggestion/trending/report`,
   },
 
   // User

@@ -1,13 +1,14 @@
 "use client";
 
 import type { Hashtag } from "api";
-import type { API } from "api";
 
 import { use } from "react";
+import { useAuth } from "@/components/providers";
 import { toast } from "sonner";
 import Format from "@/utilities/format";
-import { SuggestingApi } from "@/services";
+import { SuggestApi } from "@/services";
 import { ROUTE } from "@/constants/route";
+import { ReportType } from "@/constants/serverConfig";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -26,15 +27,48 @@ import {
   Copy,
 } from "@/components/icons";
 
-export default function TrendingSection({
-  initialRes,
-}: Readonly<{
-  initialRes: API<Hashtag[]>;
-}>) {
-  const response = use(initialRes);
-  const topics = response?.data ?? [];
+const FEEDBACK_OPTIONS = [
+  {
+    label: "The associated content is not relevant",
+    icon: <Circle variant="x" className="mr-2 size-4" />,
+    value: ReportType.NOT_RELEVANT,
+  },
+  {
+    label: "This trend is spam",
+    icon: <AlertCircle className="mr-2 size-4" />,
+    value: ReportType.SPAM,
+  },
+  {
+    label: "This trend is abusive or harmful",
+    icon: <AlertCircle className="mr-2 size-4" />,
+    value: ReportType.ABUSIVE,
+  },
+  {
+    label: "Not interested in this",
+    icon: <Ban className="mr-2 size-4" />,
+    value: ReportType.NOT_INTERESTED,
+  },
+  {
+    label: "This trend is a duplicate",
+    icon: <Copy className="mr-2 size-4" />,
+    value: ReportType.DUPLICATE,
+  },
+  {
+    label: "This trend is harmful or spammy",
+    icon: <AlertCircle className="mr-2 size-4" />,
+    value: ReportType.HARMFUL,
+  },
+];
 
-  if (topics?.length === 0) return null;
+export default function TrendingSection({
+  trendingPromise,
+}: Readonly<{
+  trendingPromise: ReturnType<typeof SuggestApi.getTrendingTopics>;
+}>) {
+  const { success, data } = use(trendingPromise);
+  const topics = data;
+
+  if (topics?.length === 0 || !success) return null;
   return (
     <div className="w-full">
       <SectionHeader className="mb-4">Trending topics</SectionHeader>
@@ -46,39 +80,6 @@ export default function TrendingSection({
     </div>
   );
 }
-
-const FEEDBACK_OPTIONS = [
-  {
-    label: "The associated content is not relevant",
-    icon: <Circle variant="x" className="mr-2 size-4" />,
-    value: 0,
-  },
-  {
-    label: "This trend is spam",
-    icon: <AlertCircle className="mr-2 size-4" />,
-    value: 1,
-  },
-  {
-    label: "This trend is abusive or harmful",
-    icon: <AlertCircle className="mr-2 size-4" />,
-    value: 2,
-  },
-  {
-    label: "Not interested in this",
-    icon: <Ban className="mr-2 size-4" />,
-    value: 3,
-  },
-  {
-    label: "This trend is a duplicate",
-    icon: <Copy className="mr-2 size-4" />,
-    value: 4,
-  },
-  {
-    label: "This trend is harmful or spammy",
-    icon: <AlertCircle className="mr-2 size-4" />,
-    value: 5,
-  },
-];
 
 function TrendingTopicItem({ topic }: Readonly<{ topic: Hashtag }>) {
   return (
@@ -102,24 +103,27 @@ function TrendingTopicItem({ topic }: Readonly<{ topic: Hashtag }>) {
           </span>
         </div>
         <div onClick={(e) => e.stopPropagation()}>
-          <FeedbackButton />
+          <ReportButton topicId={topic.id} />
         </div>
       </Link>
     </div>
   );
 }
 
-function FeedbackButton() {
-  async function sendFeedback(feedback: number) {
-    toast.promise(SuggestingApi.sendFeedback(feedback), {
-      loading: "Submitting feedback...",
-      success: (res) => {
-        if (res.success) {
-          return "Feedback submitted";
-        } else throw new Error(res.message);
-      },
-      error: "Failed to submit feedback",
-    });
+function ReportButton({ topicId }: Readonly<{ topicId: Hashtag["id"] }>) {
+  const { tokens } = useAuth();
+  async function report(reportType: ReportType) {
+    toast.promise(
+      SuggestApi.reportTopic(topicId, reportType, tokens.csrfToken),
+      {
+        loading: "Submitting report...",
+        success: (res) => {
+          if (res.success) return "Report submitted";
+          else throw new Error(res.message);
+        },
+        error: "Failed to submit report",
+      }
+    );
   }
 
   return (
@@ -146,7 +150,7 @@ function FeedbackButton() {
         {FEEDBACK_OPTIONS.map((option) => (
           <DropdownMenuItem
             key={option.value}
-            onClick={() => sendFeedback(option.value)}
+            onClick={() => report(option.value)}
             className="cursor-pointer"
           >
             {option.icon}

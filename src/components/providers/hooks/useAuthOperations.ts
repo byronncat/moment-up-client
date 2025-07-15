@@ -10,8 +10,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { AuthApi } from "@/services";
 import { ClientCookie } from "@/helpers/cookie";
-import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
-import { AUTH_COOKIE_NAME } from "@/constants/serverConfig";
+import { PAGE_RELOAD_TIME, AUTH_COOKIE_NAME } from "@/constants/clientConfig";
 
 type AuthHookProps = {
   setLogged: (logged: boolean) => void;

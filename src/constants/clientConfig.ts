@@ -1,3 +1,6 @@
+export const AUTH_COOKIE_NAME = "_guard";
+
+// UI
 export const ASPECT_RATIO = {
   HORIZONTAL: 1.91 / 1,
   VERTICAL: 9 / 16,

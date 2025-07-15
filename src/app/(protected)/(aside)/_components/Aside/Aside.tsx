@@ -1,4 +1,4 @@
-import { SuggestingApi } from "@/services";
+import { SuggestApi } from "@/services";
 import { ServerCookie } from "@/helpers/cookie";
 
 import { cn } from "@/libraries/utils";
@@ -18,8 +18,8 @@ export default async function Aside({
   const cookieHeader = cookieStore.toString();
   ServerCookie.setHeader(cookieHeader);
 
-  const trendingTopicsRes = SuggestingApi.getTrendingTopics();
-  const suggestedUsersRes = SuggestingApi.getSuggestedUsers();
+  const trendingTopics = SuggestApi.getTrendingTopics();
+  const popularUsers = SuggestApi.getPopularUsers();
 
   return (
     <aside className={cn("h-fit w-[320px]", "space-y-6", className)}>
@@ -33,10 +33,10 @@ export default async function Aside({
         )}
       >
         <Suspense fallback={<TrendingTopicsSkeleton />}>
-          <TrendingTopics initialRes={trendingTopicsRes} />
+          <TrendingTopics trendingPromise={trendingTopics} />
         </Suspense>
         <Suspense fallback={<SuggestedUsersSkeleton />}>
-          <SuggestedUsers initialRes={suggestedUsersRes} />
+          <SuggestedUsers userPromise={popularUsers} />
         </Suspense>
         <Footer />
       </div>

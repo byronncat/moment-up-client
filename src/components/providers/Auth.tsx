@@ -18,8 +18,7 @@ import { AuthApi } from "@/services";
 import { ClientCookie } from "@/helpers/cookie";
 import zodSchema from "@/libraries/zodSchema";
 import { ROUTE } from "@/constants/route";
-import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
-import { AUTH_COOKIE_NAME } from "@/constants/serverConfig";
+import { PAGE_RELOAD_TIME, AUTH_COOKIE_NAME } from "@/constants/clientConfig";
 import { LoadingPage } from "../pages";
 
 type AuthContextType = {

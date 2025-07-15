@@ -1,12 +1,12 @@
 "use client";
 
-import type { API, UserCardDisplayInfo } from "api";
+import type { UserCardDisplayInfo } from "api";
 
 import { useRouter } from "next/navigation";
 import { useState, use, useRef } from "react";
 import { useHover } from "usehooks-ts";
 import { toast } from "sonner";
-import { UserApi } from "@/services";
+import { SuggestApi, UserApi } from "@/services";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -20,20 +20,20 @@ import {
 import SectionHeader from "./SectionHeader";
 
 export default function SuggestedSection({
-  initialRes,
+  userPromise,
 }: Readonly<{
-  initialRes: API<UserCardDisplayInfo[]>;
+  userPromise: ReturnType<typeof SuggestApi.getPopularUsers>;
 }>) {
-  const response = use(initialRes);
-  const suggestedUsers = response?.data ?? [];
+  const { success, data } = use(userPromise);
+  const suggestedUsers = data;
 
-  if (suggestedUsers?.length === 0) return null;
+  if (suggestedUsers?.length === 0 || !success) return null;
   return (
     <div className="w-full">
       <SectionHeader className="mb-4">Suggested for you</SectionHeader>
       <div>
         {suggestedUsers?.map((user) => (
-          <SuggestedUserItem key={user.id} user={user} />
+          <SuggestedUserItem key={user.id} _user={user} />
         ))}
       </div>
     </div>
@@ -41,20 +41,21 @@ export default function SuggestedSection({
 }
 
 function SuggestedUserItem({
-  user,
+  _user,
 }: Readonly<{
-  user: UserCardDisplayInfo;
+  _user: UserCardDisplayInfo;
 }>) {
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [user, setUser] = useState(_user);
   const router = useRouter();
+  const isFollowing = user.isFollowing || false;
 
   async function followHandler(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    setIsFollowing((prev) => !prev);
-    const res = await UserApi.toggleFollow(user.id);
-    if (!res.success) {
-      setIsFollowing((prev) => !prev);
+    setUser((prev) => ({ ...prev, isFollowing: !isFollowing }));
+    const { success } = await UserApi.toggleFollow(user.id);
+    if (!success) {
+      setUser((prev) => ({ ...prev, isFollowing }));
       toast.error("Something went wrong");
     }
   }
@@ -75,43 +76,33 @@ function SuggestedUserItem({
         className="flex items-center gap-2"
         onClick={(e) => e.preventDefault()}
       >
-        <HoverCard>
-          <HoverCardTrigger asChild>
-            <Link
-              href={ROUTE.PROFILE(user.username)}
-              className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
-            >
-              <Avatar
-                src={user.avatar}
-                alt={`${user.displayName}'s avatar`}
-                size="10"
-              />
-            </Link>
-          </HoverCardTrigger>
-          <HoverCardContent className="w-[288px]">
-            <UserInfoCard user={user} onFollow={followHandler} />
-          </HoverCardContent>
-        </HoverCard>
+        <UserHoverCard user={user} onFollow={followHandler}>
+          <Link
+            href={ROUTE.PROFILE(user.username)}
+            className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
+          >
+            <Avatar
+              src={user.avatar}
+              alt={`${user.displayName}'s avatar`}
+              size="10"
+            />
+          </Link>
+        </UserHoverCard>
         <div className="flex flex-col">
-          <HoverCard>
-            <HoverCardTrigger asChild>
-              <Link href={ROUTE.PROFILE(user.username)}>
-                <div
-                  className={cn(
-                    "text-sm font-semibold",
-                    "hover:opacity-80",
-                    "transition-opacity duration-150 ease-in-out",
-                    "flex items-center gap-1.5"
-                  )}
-                >
-                  {user.username}
-                </div>
-              </Link>
-            </HoverCardTrigger>
-            <HoverCardContent className="w-[288px]">
-              <UserInfoCard user={user} onFollow={followHandler} />
-            </HoverCardContent>
-          </HoverCard>
+          <UserHoverCard user={user} onFollow={followHandler}>
+            <Link href={ROUTE.PROFILE(user.username)}>
+              <div
+                className={cn(
+                  "text-sm font-semibold",
+                  "hover:opacity-80",
+                  "transition-opacity duration-150 ease-in-out",
+                  "flex items-center gap-1.5"
+                )}
+              >
+                {user.username}
+              </div>
+            </Link>
+          </UserHoverCard>
           <span className="text-xs text-muted-foreground">
             {user.followedBy
               ? `Followed by ${user.followedBy.displayItems[0].displayName}`
@@ -138,13 +129,37 @@ function FollowText({
       ref={hoverRef}
       onClick={followHandler}
       className={cn(
+        "cursor-pointer",
         "text-xs font-semibold",
-        isFollowing && isHover ? "text-red-400" : "text-primary",
-        "cursor-pointer hover:opacity-80",
-        "transition-opacity duration-150 ease-in-out"
+        isFollowing && isHover
+          ? "text-red-500 dark:text-red-400"
+          : "text-primary"
       )}
     >
       {isFollowing ? (isHover ? "Unfollow" : "Following") : "Follow"}
     </button>
+  );
+}
+
+interface UserHoverCardProps {
+  user: UserCardDisplayInfo;
+  onFollow: (e: React.MouseEvent) => Promise<void>;
+  children?: React.ReactNode;
+}
+
+export function UserHoverCard({
+  user,
+  onFollow,
+  children,
+}: UserHoverCardProps) {
+  return (
+    <HoverCard>
+      <HoverCardTrigger asChild>
+        <div className="cursor-pointer">{children}</div>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-[288px]">
+        <UserInfoCard user={user} onFollow={onFollow} />
+      </HoverCardContent>
+    </HoverCard>
   );
 }

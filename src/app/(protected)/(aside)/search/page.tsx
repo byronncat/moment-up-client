@@ -8,7 +8,7 @@ import {
 } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import { SearchApi, SuggestingApi } from "@/services";
+import { SearchApi, SuggestApi } from "@/services";
 import {
   SEARCH_DEBOUNCE_TIME,
   SearchCategory,
@@ -155,7 +155,7 @@ function NoSearchState() {
   }
 
   async function fetchPopularAccounts() {
-    const res = await SuggestingApi.getPopularAccounts();
+    const res = await SuggestApi.getPopularAccounts();
     if (res.success) setPopularAccounts(res.data ?? []);
     setIsPopularLoaded(true);
   }
