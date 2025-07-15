@@ -2,16 +2,16 @@ import type { UserInfo } from "api";
 
 type TokenRef = {
   current: {
-    accessToken: string;
     csrfToken: string;
   };
 };
 
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { AuthApi } from "@/services";
 import { ClientCookie } from "@/helpers/cookie";
 import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { AUTH_COOKIE_NAME } from "@/constants/serverConfig";
 
 type AuthHookProps = {
   setLogged: (logged: boolean) => void;
@@ -27,6 +27,7 @@ export function useAuthOperations({
   token,
 }: AuthHookProps) {
   const router = useRouter();
+  const authCookie = useMemo(() => ClientCookie(AUTH_COOKIE_NAME), []);
 
   const handlePageReload = useCallback(
     (callback?: () => void) => {
@@ -40,25 +41,23 @@ export function useAuthOperations({
   );
 
   const authenticate = useCallback(async () => {
-    const { success: successCsrf, data: dataCsrf } = await AuthApi.getCsrf();
-    if (successCsrf && dataCsrf) token.current.csrfToken = dataCsrf.csrfToken;
+    const { success: successCsrf, data } = await AuthApi.getCsrf();
+    if (successCsrf && data) token.current.csrfToken = data.csrfToken;
 
-    const { success: successVerify, data: dataVerify } =
-      await AuthApi.authenticate();
+    const { success: successVerify, data: user } = await AuthApi.authenticate();
     setLogged(successVerify);
 
-    const hasGuardCookie = ClientCookie.exists();
+    const hasGuardCookie = authCookie.exists();
 
-    if (successVerify && dataVerify) {
-      setUser(dataVerify.user);
-      token.current.accessToken = dataVerify.accessToken;
-      document.cookie = ClientCookie.set(token.current.accessToken);
+    if (successVerify && user) {
+      setUser(user);
+      document.cookie = authCookie.set();
       if (!hasGuardCookie) {
         handlePageReload();
         return;
       }
     } else {
-      document.cookie = ClientCookie.remove();
+      document.cookie = authCookie.remove();
       if (hasGuardCookie) {
         handlePageReload();
         return;
@@ -66,7 +65,7 @@ export function useAuthOperations({
     }
 
     setLoaded(true);
-  }, [setLogged, setLoaded, setUser, token, handlePageReload]);
+  }, [setLogged, setLoaded, setUser, token, handlePageReload, authCookie]);
 
   return {
     authenticate,

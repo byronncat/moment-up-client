@@ -11,9 +11,13 @@ import { ServerCookie } from "@/helpers/cookie";
 import { ApiUrl } from "./api.constant";
 
 export async function getSuggestedUsers(): API<UserCardDisplayInfo[]> {
+  const cookieHeader = ServerCookie.getHeader();
   return await fetch(ApiUrl.suggestion.users, {
     method: "GET",
-    headers: ServerCookie.getAuthHeaders(),
+    headers: {
+      "Content-Type": "application/json",
+      ...(cookieHeader && { cookie: cookieHeader }),
+    },
     credentials: "include",
   })
     .then(async (response) => {
@@ -57,9 +61,13 @@ export async function getPopularAccounts(): API<ProfileSearchItem[]> {
 }
 
 export async function getTrendingTopics(): API<Hashtag[]> {
+  const cookieHeader = ServerCookie.getHeader();
   return await fetch(ApiUrl.suggestion.trending, {
     method: "GET",
-    headers: ServerCookie.getAuthHeaders(),
+    headers: {
+      "Content-Type": "application/json",
+      ...(cookieHeader && { cookie: cookieHeader }),
+    },
     credentials: "include",
   })
     .then(async (response) => {

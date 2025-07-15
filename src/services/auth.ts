@@ -18,10 +18,7 @@ const apiRes = {
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>,
   csrfToken: Token
-): API<{
-  user: UserInfo;
-  accessToken: Token;
-}> {
+): API<UserInfo> {
   return await fetch(ApiUrl.auth.login, {
     method: "POST",
     headers: {
@@ -104,10 +101,7 @@ export async function logout(csrfToken: Token): API {
     });
 }
 
-export async function authenticate(): API<{
-  user: UserInfo;
-  accessToken: Token;
-}> {
+export async function authenticate(): API<UserInfo> {
   return await fetch(ApiUrl.auth.authenticate, {
     method: "GET",
     headers: {

@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useSidebar, SIDEBAR_COOKIE_NAME } from "@/components/ui/sidebar";
+import { ClientCookie } from "@/helpers/cookie";
 import { XL_BREAKPOINT } from "@/constants/clientConfig";
 
 export function useResponsiveSidebar() {
@@ -8,17 +9,13 @@ export function useResponsiveSidebar() {
   const userPreferenceRef = useRef<boolean | null>(null);
   const isFirstRender = useRef(true);
 
-  function getSidebarCookie(): boolean | null {
-    if (typeof document === "undefined") return null;
-    const cookies = document.cookie.split("; ");
-    const cookie = cookies.find((c) => c.startsWith(`${SIDEBAR_COOKIE_NAME}=`));
-    return cookie ? cookie.split("=")[1] === "true" : null;
-  }
+  const sidebarCookie = ClientCookie(SIDEBAR_COOKIE_NAME);
 
   useEffect(() => {
-    const storedState = getSidebarCookie();
+    const cookieValue = sidebarCookie.get();
+    const storedState = cookieValue ? cookieValue === "true" : null;
     userPreferenceRef.current = storedState ?? true;
-  }, []);
+  }, [sidebarCookie]);
 
   useEffect(() => {
     const handleResize = () => {

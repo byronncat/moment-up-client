@@ -2,7 +2,7 @@ import ClientCookie from "./client-cookie";
 import ServerCookie from "./server-cookie";
 
 export function getAuthHeaders(): Record<string, string> {
-  if (ServerCookie.getCookieHeader()) return ServerCookie.getAuthHeaders();
+  if (ServerCookie.getHeader()) return ServerCookie.getAuthHeaders();
   return ClientCookie.getAuthHeaders();
 }
 

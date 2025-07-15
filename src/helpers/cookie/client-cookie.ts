@@ -1,33 +1,47 @@
-import { AUTH_COOKIE_NAME } from "@/constants/serverConfig";
+interface ClientCookieOptions {
+  secure?: boolean;
+  sameSite?: "Strict" | "Lax" | "None";
+  maxAge?: number;
+}
 
-const ClientCookie = {
-  set: (value: string = ""): string =>
-    `${AUTH_COOKIE_NAME}=${encodeURIComponent(value)}; path=/; max-age=${7 * 24 * 60 * 60}; secure; samesite=none`,
+const DefaultOptions: ClientCookieOptions = {
+  secure: true,
+  sameSite: "None",
+  maxAge: 7 * 24 * 60 * 60,
+};
 
-  get: (): string | null => {
-    if (typeof document === "undefined") return null;
-    const cookies = document.cookie.split("; ");
-    const cookie = cookies.find((c) => c.startsWith(`${AUTH_COOKIE_NAME}=`));
-    return cookie ? decodeURIComponent(cookie.split("=")[1]) : null;
-  },
+const ClientCookie = (
+  cookieName: string,
+  options: ClientCookieOptions = DefaultOptions
+) => {
+  const secure = options.secure ? "; secure" : "";
+  const sameSite = options.sameSite
+    ? `; samesite=${options.sameSite.toLowerCase()}`
+    : "";
 
-  remove: (): string =>
-    `${AUTH_COOKIE_NAME}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; samesite=none`,
+  return {
+    set: (value: string = ""): string => {
+      return `${cookieName}=${encodeURIComponent(value)}; path=/; max-age=${options.maxAge}${secure}${sameSite}`;
+    },
 
-  exists: (): boolean => {
-    if (typeof document === "undefined") return false;
-    return document.cookie.includes(AUTH_COOKIE_NAME);
-  },
+    get: (): string | null => {
+      if (typeof document === "undefined") return null;
+      const cookies = document.cookie.split("; ");
+      const cookie = cookies.find((cookieString) =>
+        cookieString.startsWith(`${cookieName}=`)
+      );
+      return cookie ? decodeURIComponent(cookie.split("=")[1]) : null;
+    },
 
-  getAuthHeaders: (): Record<string, string> => {
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
+    remove: (): string => {
+      return `${cookieName}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT${secure}${sameSite}`;
+    },
 
-    const accessToken = ClientCookie.get();
-    if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
-    return headers;
-  },
-} as const;
+    exists: (): boolean => {
+      if (typeof document === "undefined") return false;
+      return document.cookie.includes(cookieName);
+    },
+  };
+};
 
 export default ClientCookie;

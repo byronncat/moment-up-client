@@ -16,7 +16,7 @@ export default async function Aside({
 }: Readonly<{ className?: string }>) {
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
-  ServerCookie.setCookieHeader(cookieHeader);
+  ServerCookie.setHeader(cookieHeader);
 
   const trendingTopicsRes = SuggestingApi.getTrendingTopics();
   const suggestedUsersRes = SuggestingApi.getSuggestedUsers();

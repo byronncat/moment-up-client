@@ -11,6 +11,7 @@ import {
   useState,
   useCallback,
   useRef,
+  useMemo,
 } from "react";
 import { useAuthOperations } from "./hooks/useAuthOperations";
 import { AuthApi } from "@/services";
@@ -18,6 +19,7 @@ import { ClientCookie } from "@/helpers/cookie";
 import zodSchema from "@/libraries/zodSchema";
 import { ROUTE } from "@/constants/route";
 import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { AUTH_COOKIE_NAME } from "@/constants/serverConfig";
 import { LoadingPage } from "../pages";
 
 type AuthContextType = {
@@ -25,7 +27,6 @@ type AuthContextType = {
   logged?: boolean;
   loaded: boolean;
   tokens: {
-    accessToken: string;
     csrfToken: string;
   };
   setLogged: (logged: boolean) => void;
@@ -46,7 +47,6 @@ const AuthContext = createContext<AuthContextType>({
   logged: false,
   loaded: false,
   tokens: {
-    accessToken: "",
     csrfToken: "",
   },
   setLogged: () => {},
@@ -79,6 +79,7 @@ export default function AuthProvider({
   const [loaded, setLoaded] = useState(false);
   const [user, setUser] = useState<UserInfo | null>(null);
 
+  const authCookie = useMemo(() => ClientCookie(AUTH_COOKIE_NAME), []);
   const token = useRef({
     accessToken: "",
     csrfToken: "",
@@ -99,14 +100,13 @@ export default function AuthProvider({
       );
       if (success && data) {
         setLogged(true);
-        setUser(data.user);
-        token.current.accessToken = data.accessToken;
-        document.cookie = ClientCookie.set(data.accessToken);
+        setUser(data);
+        document.cookie = authCookie.set();
         router.push(ROUTE.HOME);
       }
       return { success, message };
     },
-    [router]
+    [router, authCookie]
   );
 
   const switchLogin = useCallback(
@@ -118,9 +118,8 @@ export default function AuthProvider({
       );
       if (success && data) {
         setLogged(true);
-        setUser(data.user);
-        token.current.accessToken = data.accessToken;
-        document.cookie = ClientCookie.set(data.accessToken);
+        setUser(data);
+        document.cookie = authCookie.set();
         router.refresh();
         router.push(ROUTE.HOME);
       }
@@ -130,7 +129,7 @@ export default function AuthProvider({
       }, PAGE_RELOAD_TIME);
       return { success, message };
     },
-    [router]
+    [router, authCookie]
   );
 
   const signup = useCallback(
@@ -153,7 +152,7 @@ export default function AuthProvider({
       setLogged(false);
       setUser(null);
       token.current.accessToken = "";
-      document.cookie = ClientCookie.remove();
+      document.cookie = authCookie.remove();
       router.push(ROUTE.LOGIN);
       setTimeout(() => {
         setLoaded(true);
@@ -161,7 +160,7 @@ export default function AuthProvider({
     } else setLoaded(true);
 
     return res;
-  }, [router]);
+  }, [router, authCookie]);
 
   const sendOtpEmail = useCallback(
     async (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => {
@@ -191,7 +190,7 @@ export default function AuthProvider({
   //       // Update access token if provided
   //       if (res.data.accessToken) {
   //         token.current.accessToken = res.data.accessToken;
-  //         document.cookie = ClientCookie.set(res.data.accessToken);
+  //         document.cookie = ClientCookie.set();
   //       }
   //       setUser(res.data ?? null);
   //       router.refresh();
@@ -212,7 +211,6 @@ export default function AuthProvider({
         user,
         logged,
         tokens: {
-          accessToken: token.current.accessToken,
           csrfToken: token.current.csrfToken,
         },
         setLogged,
