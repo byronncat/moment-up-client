@@ -5,8 +5,11 @@ declare module "api" {
     data?: T;
   }>;
 
-  // === Auth ===
-  type Token = string;
+  interface ErrorResponse {
+    error: string;
+    message: string | string[];
+    statusCode: number;
+  }
 
   // === User ===
   interface AccountInfo {

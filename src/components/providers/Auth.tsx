@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import {
   createContext,
   useContext,
-  useEffect,
   useState,
   useCallback,
   useRef,
@@ -21,13 +20,16 @@ import { ROUTE } from "@/constants/route";
 import { PAGE_RELOAD_TIME, AUTH_COOKIE_NAME } from "@/constants/clientConfig";
 import { LoadingPage } from "../pages";
 
+export type Token = {
+  csrfToken: string;
+  accessToken: string;
+};
+
 type AuthContextType = {
   user: UserInfo | null;
   logged?: boolean;
   loaded: boolean;
-  tokens: {
-    csrfToken: string;
-  };
+  token: Token;
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
   login: (values: z.infer<typeof zodSchema.auth.login>) => API;
@@ -45,8 +47,9 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   logged: false,
   loaded: false,
-  tokens: {
+  token: {
     csrfToken: "",
+    accessToken: "",
   },
   setLogged: () => {},
   setLoaded: () => {},
@@ -84,7 +87,7 @@ export default function AuthProvider({
     csrfToken: "",
   });
 
-  const { authenticate } = useAuthOperations({
+  useAuthOperations({
     setLogged,
     setLoaded,
     setUser,
@@ -99,7 +102,8 @@ export default function AuthProvider({
       );
       if (success && data) {
         setLogged(true);
-        setUser(data);
+        setUser(data.user);
+        token.current.accessToken = data.accessToken;
         document.cookie = authCookie.set();
         router.push(ROUTE.HOME);
       }
@@ -117,7 +121,7 @@ export default function AuthProvider({
       );
       if (success && data) {
         setLogged(true);
-        setUser(data);
+        // setUser(data);
         document.cookie = authCookie.set();
         router.refresh();
         router.push(ROUTE.HOME);
@@ -200,17 +204,14 @@ export default function AuthProvider({
   //   [router]
   // );
 
-  useEffect(() => {
-    authenticate();
-  }, [authenticate]);
-
   return (
     <AuthContext.Provider
       value={{
         user,
         logged,
-        tokens: {
+        token: {
           csrfToken: token.current.csrfToken,
+          accessToken: token.current.accessToken,
         },
         setLogged,
         loaded,

@@ -1,13 +1,12 @@
 import type { UserInfo } from "api";
+import type { Token } from "../Auth";
 
-type TokenRef = {
-  current: {
-    csrfToken: string;
-  };
-};
+interface TokenRef {
+  current: Token;
+}
 
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { AuthApi } from "@/services";
 import { ClientCookie } from "@/helpers/cookie";
 import { PAGE_RELOAD_TIME, AUTH_COOKIE_NAME } from "@/constants/clientConfig";
@@ -27,7 +26,6 @@ export function useAuthOperations({
 }: AuthHookProps) {
   const router = useRouter();
   const authCookie = useMemo(() => ClientCookie(AUTH_COOKIE_NAME), []);
-
   const handlePageReload = useCallback(
     (callback?: () => void) => {
       router.refresh();
@@ -40,16 +38,21 @@ export function useAuthOperations({
   );
 
   const authenticate = useCallback(async () => {
-    const { success: successCsrf, data } = await AuthApi.getCsrf();
-    if (successCsrf && data) token.current.csrfToken = data.csrfToken;
+    const csrfToken = await AuthApi.csrf();
+    token.current.csrfToken = csrfToken;
 
-    const { success: successVerify, data: user } = await AuthApi.authenticate();
-    setLogged(successVerify);
+    const accessToken = await AuthApi.refresh();
+    token.current.accessToken = accessToken;
+
+    const { success, data } = await AuthApi.getUser(
+      token.current.accessToken
+    );
+    setLogged(success);
 
     const hasGuardCookie = authCookie.exists();
 
-    if (successVerify && user) {
-      setUser(user);
+    if (success && data) {
+      setUser(data.user);
       document.cookie = authCookie.set();
       if (!hasGuardCookie) {
         handlePageReload();
@@ -64,10 +67,9 @@ export function useAuthOperations({
     }
 
     setLoaded(true);
-  }, [setLogged, setLoaded, setUser, token, handlePageReload, authCookie]);
+  }, [handlePageReload, authCookie, setLogged, setLoaded, setUser, token]);
 
-  return {
-    authenticate,
-    handlePageReload,
-  };
+  useEffect(() => {
+    authenticate();
+  }, [authenticate]);
 }

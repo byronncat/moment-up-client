@@ -3,10 +3,12 @@
 import type { UserCardDisplayInfo } from "api";
 
 import { useRouter } from "next/navigation";
-import { useState, use, useRef } from "react";
+import { useState, useRef } from "react";
 import { useHover } from "usehooks-ts";
+import useSWR from "swr";
+import { useAuth } from "@/components/providers";
 import { toast } from "sonner";
-import { SuggestApi, UserApi } from "@/services";
+import { ApiUrl, swrFetcherWithToken, UserApi } from "@/services";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -17,22 +19,24 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import SectionHeader from "./SectionHeader";
+import { Skeleton } from "@/components/ui/skeleton";
+import SectionHeader, { HeaderSkeleton } from "./SectionHeader";
 
-export default function SuggestedSection({
-  userPromise,
-}: Readonly<{
-  userPromise: ReturnType<typeof SuggestApi.getPopularUsers>;
-}>) {
-  const { success, data } = use(userPromise);
-  const suggestedUsers = data;
+export default function SuggestedUsers() {
+  const { token } = useAuth();
+  const { data: popularUsers, isLoading, error } = useSWR(
+    [ApiUrl.suggestion.users, token.accessToken],
+    ([url, token]) => swrFetcherWithToken<UserCardDisplayInfo[]>(url, token)
+  );
 
-  if (suggestedUsers?.length === 0 || !success) return null;
+  if (error) return <div>Error</div>;
+  if (isLoading) return <SuggestedUsersSkeleton />;
+  if (!popularUsers || popularUsers.length === 0) return null;
   return (
     <div className="w-full">
       <SectionHeader className="mb-4">Suggested for you</SectionHeader>
       <div>
-        {suggestedUsers?.map((user) => (
+        {popularUsers?.map((user) => (
           <SuggestedUserItem key={user.id} _user={user} />
         ))}
       </div>
@@ -161,5 +165,30 @@ export function UserHoverCard({
         <UserInfoCard user={user} onFollow={onFollow} />
       </HoverCardContent>
     </HoverCard>
+  );
+}
+
+function SuggestedUsersSkeleton() {
+  return (
+    <div>
+      <HeaderSkeleton className="mb-5" />
+      <div>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div
+            className={cn("flex items-center justify-between", "p-2")}
+            key={index}
+          >
+            <div className="flex items-center gap-2">
+              <Skeleton className="size-10 rounded-full" />
+              <div className="flex flex-col gap-1 mt-1">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-3 w-32" />
+              </div>
+            </div>
+            <Skeleton className="h-4 w-12 mt-1" />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

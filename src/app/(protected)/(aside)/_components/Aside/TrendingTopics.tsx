@@ -2,23 +2,24 @@
 
 import type { Hashtag } from "api";
 
-import { use } from "react";
 import { useAuth } from "@/components/providers";
+import useSWR from "swr";
 import { toast } from "sonner";
+import { SuggestApi, swrFetcher, ApiUrl } from "@/services";
 import Format from "@/utilities/format";
-import { SuggestApi } from "@/services";
 import { ROUTE } from "@/constants/route";
 import { ReportType } from "@/constants/serverConfig";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import SectionHeader from "./SectionHeader";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import SectionHeader, { HeaderSkeleton } from "./SectionHeader";
 import {
   MoreHorizontal,
   Circle,
@@ -60,20 +61,19 @@ const FEEDBACK_OPTIONS = [
   },
 ];
 
-export default function TrendingSection({
-  trendingPromise,
-}: Readonly<{
-  trendingPromise: ReturnType<typeof SuggestApi.getTrendingTopics>;
-}>) {
-  const { success, data } = use(trendingPromise);
-  const topics = data;
+export default function TrendingTopics() {
+  const { data: trendingTopics, isLoading } = useSWR(
+    ApiUrl.suggestion.trending,
+    swrFetcher<Hashtag[]>
+  );
 
-  if (topics?.length === 0 || !success) return null;
+  if (isLoading) return <TrendingTopicsSkeleton />;
+  if (!trendingTopics || trendingTopics.length === 0) return null;
   return (
     <div className="w-full">
       <SectionHeader className="mb-4">Trending topics</SectionHeader>
       <div>
-        {topics?.map((topic) => (
+        {trendingTopics.map((topic) => (
           <TrendingTopicItem key={topic.id} topic={topic} />
         ))}
       </div>
@@ -111,10 +111,10 @@ function TrendingTopicItem({ topic }: Readonly<{ topic: Hashtag }>) {
 }
 
 function ReportButton({ topicId }: Readonly<{ topicId: Hashtag["id"] }>) {
-  const { tokens } = useAuth();
+  const { token } = useAuth();
   async function report(reportType: ReportType) {
     toast.promise(
-      SuggestApi.reportTopic(topicId, reportType, tokens.csrfToken),
+      SuggestApi.reportTopic(topicId, reportType, token.csrfToken),
       {
         loading: "Submitting report...",
         success: (res) => {
@@ -159,5 +159,27 @@ function ReportButton({ topicId }: Readonly<{ topicId: Hashtag["id"] }>) {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+function TrendingTopicsSkeleton() {
+  return (
+    <div>
+      <HeaderSkeleton className="mb-5" />
+      <div className="space-y-1">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div
+            className={cn("flex items-center justify-between", "p-2")}
+            key={index}
+          >
+            <div className="flex flex-col gap-1">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+            <Skeleton className="size-4 mr-1" />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

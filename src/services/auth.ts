@@ -1,7 +1,13 @@
 import { mockCurrentUsers } from "@/__mocks__";
 
 import type { z } from "zod";
-import type { Token, AccountInfo, API, UserInfo, UserProfileInfo } from "api";
+import type {
+  AccountInfo,
+  API,
+  UserInfo,
+  UserProfileInfo,
+  ErrorResponse,
+} from "api";
 
 import zodSchema from "@/libraries/zodSchema";
 import { ApiUrl } from "./api.constant";
@@ -17,8 +23,11 @@ const apiRes = {
 
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>,
-  csrfToken: Token
-): API<UserInfo> {
+  csrfToken: string
+): API<{
+  accessToken: string;
+  user: UserInfo;
+}> {
   return await fetch(ApiUrl.auth.login, {
     method: "POST",
     headers: {
@@ -37,7 +46,7 @@ export async function login(
         data,
       };
     })
-    .catch(async (error) => {
+    .catch((error: ErrorResponse) => {
       return {
         success: false,
         message: Array.isArray(error.message)
@@ -49,7 +58,7 @@ export async function login(
 
 export async function signup(
   data: z.infer<typeof zodSchema.auth.signup>,
-  csrfToken: Token
+  csrfToken: string
 ): API {
   return await fetch(ApiUrl.auth.signup, {
     method: "POST",
@@ -67,7 +76,7 @@ export async function signup(
         message: "Signup successful",
       };
     })
-    .catch(async (error) => {
+    .catch((error: ErrorResponse) => {
       return {
         success: false,
         message: Array.isArray(error.message)
@@ -77,7 +86,7 @@ export async function signup(
     });
 }
 
-export async function logout(csrfToken: Token): API {
+export async function logout(csrfToken: string): API {
   return await fetch(ApiUrl.auth.logout, {
     method: "POST",
     headers: {
@@ -93,19 +102,56 @@ export async function logout(csrfToken: Token): API {
         message: "Logout successful",
       };
     })
-    .catch((error) => {
+    .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message,
+        message: error.message as string,
       };
     });
 }
 
-export async function authenticate(): API<UserInfo> {
-  return await fetch(ApiUrl.auth.authenticate, {
+export async function csrf() {
+  return await fetch(ApiUrl.auth.csrf, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = (await response.json()) as { csrfToken: string };
+      if (!response.ok) throw data;
+      return data.csrfToken;
+    })
+    .catch(() => {
+      return "";
+    });
+}
+
+export async function refresh() {
+  return await fetch(ApiUrl.auth.refresh, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = (await response.json()) as { accessToken: string };
+      if (!response.ok) throw data;
+      return data.accessToken;
+    })
+    .catch(() => {
+      return "";
+    });
+}
+
+export async function getUser(accessToken: string): API<{ user: UserInfo }> {
+  return await fetch(ApiUrl.auth.me, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
     credentials: "include",
   })
@@ -114,46 +160,21 @@ export async function authenticate(): API<UserInfo> {
       if (!response.ok) throw data;
       return {
         success: true,
-        message: "User verified successfully",
+        message: "User fetched successfully",
         data,
       };
     })
-    .catch((error) => {
+    .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message,
-      };
-    });
-}
-
-export async function getCsrf(): API<{ csrfToken: Token }> {
-  return await fetch(ApiUrl.auth.getCsrfToken, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  })
-    .then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) throw data;
-      return {
-        success: true,
-        message: "CSRF token fetched successfully",
-        data,
-      };
-    })
-    .catch((error) => {
-      return {
-        success: false,
-        message: error.message,
+        message: error.message as string,
       };
     });
 }
 
 export async function sendOtpEmail(
   data: z.infer<typeof zodSchema.auth.sendOtpEmail>,
-  csrfToken: Token
+  csrfToken: string
 ): API {
   return await fetch(ApiUrl.auth.sendOtpEmail, {
     method: "POST",
@@ -171,7 +192,7 @@ export async function sendOtpEmail(
         message: "Send successful",
       };
     })
-    .catch(async (error) => {
+    .catch((error: ErrorResponse) => {
       return {
         success: false,
         message: Array.isArray(error.message)
@@ -183,7 +204,7 @@ export async function sendOtpEmail(
 
 export async function recoverPassword(
   data: z.infer<typeof zodSchema.auth.recoverPassword>,
-  csrfToken: Token
+  csrfToken: string
 ): API {
   return await fetch(ApiUrl.auth.recoverPassword, {
     method: "POST",
@@ -201,7 +222,7 @@ export async function recoverPassword(
         message: "Password changed successfully",
       };
     })
-    .catch(async (error) => {
+    .catch((error: ErrorResponse) => {
       return {
         success: false,
         message: Array.isArray(error.message)
