@@ -3,9 +3,10 @@
 import type { Hashtag } from "api";
 
 import { useAuth } from "@/components/providers";
-import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
+import { SWRFetcher } from "@/libraries/swr";
 import { toast } from "sonner";
-import { SuggestApi, swrFetcher, ApiUrl } from "@/services";
+import { SuggestApi, ApiUrl } from "@/services";
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 import { ReportType } from "@/constants/serverConfig";
@@ -62,13 +63,14 @@ const FEEDBACK_OPTIONS = [
 ];
 
 export default function TrendingTopics() {
-  const { data: trendingTopics, isLoading } = useSWR(
-    ApiUrl.suggestion.trending,
-    swrFetcher<Hashtag[]>
-  );
+  const {
+    data: trendingTopics,
+    isLoading,
+    error,
+  } = useSWRImmutable(ApiUrl.suggestion.trending, SWRFetcher<Hashtag[]>);
 
   if (isLoading) return <TrendingTopicsSkeleton />;
-  if (!trendingTopics || trendingTopics.length === 0) return null;
+  if (!trendingTopics || trendingTopics.length === 0 || error) return null;
   return (
     <div className="w-full">
       <SectionHeader className="mb-4">Trending topics</SectionHeader>

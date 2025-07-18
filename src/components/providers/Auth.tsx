@@ -30,6 +30,7 @@ type AuthContextType = {
   logged?: boolean;
   loaded: boolean;
   token: Token;
+  refresh: () => Promise<string>;
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
   login: (values: z.infer<typeof zodSchema.auth.login>) => API;
@@ -51,6 +52,7 @@ const AuthContext = createContext<AuthContextType>({
     csrfToken: "",
     accessToken: "",
   },
+  refresh: async () => "",
   setLogged: () => {},
   setLoaded: () => {},
   login: async () => ({ success: false, message: "Something went wrong!" }),
@@ -72,6 +74,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const useAuth = () => useContext(AuthContext);
+export * from "./hooks";
 
 export default function AuthProvider({
   children,
@@ -87,7 +90,7 @@ export default function AuthProvider({
     csrfToken: "",
   });
 
-  useAuthOperations({
+  const { refresh } = useAuthOperations({
     setLogged,
     setLoaded,
     setUser,
@@ -213,6 +216,7 @@ export default function AuthProvider({
           csrfToken: token.current.csrfToken,
           accessToken: token.current.accessToken,
         },
+        refresh,
         setLogged,
         loaded,
         setLoaded,

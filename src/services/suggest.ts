@@ -1,5 +1,5 @@
 import { mockPopularAccounts } from "@/__mocks__";
-import type { API, ProfileSearchItem } from "api";
+import type { API, ErrorResponse, ProfileSearchItem } from "api";
 
 import { ApiUrl } from "./api.constant";
 import { ReportType } from "@/constants/serverConfig";
@@ -28,10 +28,10 @@ export async function reportTopic(
         message: "Report submitted successfully",
       };
     })
-    .catch(async (error) => {
+    .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message,
+        message: error.message as string,
       };
     });
 }

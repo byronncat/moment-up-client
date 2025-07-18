@@ -5,10 +5,11 @@ import type { UserCardDisplayInfo } from "api";
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 import { useHover } from "usehooks-ts";
-import useSWR from "swr";
-import { useAuth } from "@/components/providers";
+import { useAuth, useRefreshApi } from "@/components/providers";
+import useSWRImmutable from "swr/immutable";
+import { SWRFetcherWithToken } from "@/libraries/swr";
 import { toast } from "sonner";
-import { ApiUrl, swrFetcherWithToken, UserApi } from "@/services";
+import { ApiUrl, UserApi } from "@/services";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -24,14 +25,17 @@ import SectionHeader, { HeaderSkeleton } from "./SectionHeader";
 
 export default function SuggestedUsers() {
   const { token } = useAuth();
-  const { data: popularUsers, isLoading, error } = useSWR(
+  const {
+    data: popularUsers,
+    isLoading,
+    error,
+  } = useSWRImmutable(
     [ApiUrl.suggestion.users, token.accessToken],
-    ([url, token]) => swrFetcherWithToken<UserCardDisplayInfo[]>(url, token)
+    ([url, token]) => SWRFetcherWithToken<UserCardDisplayInfo[]>(url, token)
   );
 
-  if (error) return <div>Error</div>;
   if (isLoading) return <SuggestedUsersSkeleton />;
-  if (!popularUsers || popularUsers.length === 0) return null;
+  if (!popularUsers || popularUsers.length === 0 || error) return null;
   return (
     <div className="w-full">
       <SectionHeader className="mb-4">Suggested for you</SectionHeader>
@@ -50,18 +54,24 @@ function SuggestedUserItem({
   _user: UserCardDisplayInfo;
 }>) {
   const [user, setUser] = useState(_user);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const isFollowing = user.isFollowing || false;
+
+  const follow = useRefreshApi(UserApi.follow);
 
   async function followHandler(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
+    if (isLoading) return;
+    setIsLoading(true);
     setUser((prev) => ({ ...prev, isFollowing: !isFollowing }));
-    const { success } = await UserApi.toggleFollow(user.id);
+    const { success } = await follow({ targetId: user.id, isFollowing });
     if (!success) {
       setUser((prev) => ({ ...prev, isFollowing }));
       toast.error("Something went wrong");
     }
+    setIsLoading(false);
   }
 
   return (

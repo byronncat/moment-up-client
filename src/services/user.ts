@@ -1,6 +1,12 @@
-import type { DetailedMomentInfo, UserProfileInfo } from "api";
 import { mockProfile, mockMoments } from "@/__mocks__";
-import type { API } from "api";
+import type {
+  API,
+  DetailedMomentInfo,
+  ErrorResponse,
+  UserProfileInfo,
+} from "api";
+import type { Token } from "@/components/providers/Auth";
+import { ApiUrl } from "./api.constant";
 
 const apiRes = {
   toggleFollow: "success" as "error" | "success",
@@ -8,6 +14,41 @@ const apiRes = {
   getProfile: "success" as "error" | "success" | "not-found",
   getMoments: "success" as "error" | "success" | "empty",
 };
+
+export async function follow(
+  data: { targetId: string; isFollowing: boolean },
+  token: Token
+) {
+  console.log(token.accessToken)
+  return await fetch(
+    data.isFollowing
+      ? ApiUrl.user.unfollow(data.targetId)
+      : ApiUrl.user.follow(data.targetId),
+    {
+      method: data.isFollowing ? "DELETE" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Csrf-Token": token.csrfToken,
+        Authorization: `Bearer ${token.accessToken}`,
+      },
+      credentials: "include",
+    }
+  )
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Follow updated successfully",
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        statusCode: error.statusCode,
+        success: false,
+        message: error.message as string,
+      };
+    });
+}
 
 export async function toggleFollow(userId: string): API {
   console.log("toggleFollow", userId);

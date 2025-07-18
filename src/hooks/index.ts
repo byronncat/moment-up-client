@@ -1,2 +1,1 @@
-export * from "./use-mobile";
-export * from "./use-text-clamp";
+export { useTextClamp } from "./use-text-clamp";

@@ -26,6 +26,7 @@ export function useAuthOperations({
 }: AuthHookProps) {
   const router = useRouter();
   const authCookie = useMemo(() => ClientCookie(AUTH_COOKIE_NAME), []);
+
   const handlePageReload = useCallback(
     (callback?: () => void) => {
       router.refresh();
@@ -44,9 +45,7 @@ export function useAuthOperations({
     const accessToken = await AuthApi.refresh();
     token.current.accessToken = accessToken;
 
-    const { success, data } = await AuthApi.getUser(
-      token.current.accessToken
-    );
+    const { success, data } = await AuthApi.getUser(token.current.accessToken);
     setLogged(success);
 
     const hasGuardCookie = authCookie.exists();
@@ -69,7 +68,17 @@ export function useAuthOperations({
     setLoaded(true);
   }, [handlePageReload, authCookie, setLogged, setLoaded, setUser, token]);
 
+  const refresh = useCallback(async () => {
+    const accessToken = await AuthApi.refresh();
+    token.current.accessToken = accessToken;
+    return accessToken;
+  }, [token]);
+
   useEffect(() => {
     authenticate();
   }, [authenticate]);
+
+  return {
+    refresh,
+  };
 }
