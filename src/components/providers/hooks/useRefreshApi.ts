@@ -15,6 +15,8 @@ type ApiResult = {
 import { useCallback } from "react";
 import { useAuth } from "../Auth";
 
+const UNAUTHORIZED_STATUS_CODE = 401;
+
 export function useRefreshApi<TArgs extends any[], TResult extends ApiResult>(
   apiFunction: AuthenticatedApiFunction<TArgs, TResult>
 ) {
@@ -22,17 +24,14 @@ export function useRefreshApi<TArgs extends any[], TResult extends ApiResult>(
 
   const executeWithRefresh = useCallback(
     async (...args: TArgs): Promise<TResult> => {
-      let result = await apiFunction(...args, {
-        csrfToken: token.csrfToken,
-        accessToken: token.accessToken,
-      });
+      let result = await apiFunction(...args, token);
 
       if (
         !result.success &&
-        (result as unknown as ErrorResponse).statusCode === 401
+        (result as unknown as ErrorResponse).statusCode ===
+          UNAUTHORIZED_STATUS_CODE
       ) {
         const newAccessToken = await refresh();
-
         result = await apiFunction(...args, {
           csrfToken: token.csrfToken,
           accessToken: newAccessToken,

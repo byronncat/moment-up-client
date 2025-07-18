@@ -15,11 +15,13 @@ const apiRes = {
   getMoments: "success" as "error" | "success" | "empty",
 };
 
-export async function follow(
-  data: { targetId: string; isFollowing: boolean },
-  token: Token
-) {
-  console.log(token.accessToken)
+interface FollowDto {
+  targetId: string;
+  isFollowing: boolean;
+}
+
+export async function follow(data: FollowDto, token: Token) {
+  console.log(token.accessToken);
   return await fetch(
     data.isFollowing
       ? ApiUrl.user.unfollow(data.targetId)

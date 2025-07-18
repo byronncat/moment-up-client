@@ -2,7 +2,7 @@
 
 import type { Hashtag } from "api";
 
-import { useAuth } from "@/components/providers";
+import { useRefreshApi } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcher } from "@/libraries/swr";
 import { toast } from "sonner";
@@ -113,19 +113,17 @@ function TrendingTopicItem({ topic }: Readonly<{ topic: Hashtag }>) {
 }
 
 function ReportButton({ topicId }: Readonly<{ topicId: Hashtag["id"] }>) {
-  const { token } = useAuth();
+  const reportTopic = useRefreshApi(SuggestApi.reportTopic);
+
   async function report(reportType: ReportType) {
-    toast.promise(
-      SuggestApi.reportTopic(topicId, reportType, token.csrfToken),
-      {
-        loading: "Submitting report...",
-        success: (res) => {
-          if (res.success) return "Report submitted";
-          else throw new Error(res.message);
-        },
-        error: "Failed to submit report",
-      }
-    );
+    toast.promise(reportTopic({ topicId, type: reportType }), {
+      loading: "Submitting report...",
+      success: (res) => {
+        if (res.success) return "Report submitted";
+        else throw new Error(res.message);
+      },
+      error: "Failed to submit report",
+    });
   }
 
   return (

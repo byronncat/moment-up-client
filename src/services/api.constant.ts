@@ -28,9 +28,11 @@ export const ApiUrl = {
   // User
   user: {
     follow: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/follow`,
-    unfollow: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/unfollow`,
+    unfollow: (userId: string) =>
+      `${SERVER_HOST_URL}/v1/users/${userId}/unfollow`,
     block: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/block`,
-    unblock: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/unblock`,
+    unblock: (userId: string) =>
+      `${SERVER_HOST_URL}/v1/users/${userId}/unblock`,
   },
 
   // Search

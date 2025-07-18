@@ -1,24 +1,27 @@
 import { mockPopularAccounts } from "@/__mocks__";
 import type { API, ErrorResponse, ProfileSearchItem } from "api";
+import type { Token } from "@/components/providers/Auth";
 
 import { ApiUrl } from "./api.constant";
 import { ReportType } from "@/constants/serverConfig";
 
-export async function reportTopic(
-  topicId: string,
-  reportType: ReportType,
-  csrfToken: string
-): API {
+interface ReportTopicDto {
+  topicId: string;
+  type: ReportType;
+}
+
+export async function reportTopic(data: ReportTopicDto, token: Token): API {
   return await fetch(ApiUrl.suggestion.report, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRF-Token": csrfToken,
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
     },
     credentials: "include",
     body: JSON.stringify({
-      topicId,
-      type: reportType,
+      topicId: data.topicId,
+      type: data.type,
     }),
   })
     .then(async (response) => {
@@ -30,6 +33,7 @@ export async function reportTopic(
     })
     .catch((error: ErrorResponse) => {
       return {
+        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
       };
