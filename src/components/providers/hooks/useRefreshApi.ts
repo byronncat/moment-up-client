@@ -12,35 +12,42 @@ type ApiResult = {
   [key: string]: any;
 };
 
+interface Dependencies {
+  _token?: Token;
+  _refresh?: () => Promise<string>;
+}
+
 import { useCallback } from "react";
 import { useAuth } from "../Auth";
 
 const UNAUTHORIZED_STATUS_CODE = 401;
 
 export function useRefreshApi<TArgs extends any[], TResult extends ApiResult>(
-  apiFunction: AuthenticatedApiFunction<TArgs, TResult>
+  apiFunction: AuthenticatedApiFunction<TArgs, TResult>,
+  dependencies: Dependencies
 ) {
   const { token, refresh } = useAuth();
+  const currentToken = dependencies?._token || token;
+  const currentRefresh = dependencies?._refresh || refresh;
 
   const executeWithRefresh = useCallback(
     async (...args: TArgs): Promise<TResult> => {
-      let result = await apiFunction(...args, token);
-
+      let result = await apiFunction(...args, currentToken);
       if (
         !result.success &&
         (result as unknown as ErrorResponse).statusCode ===
           UNAUTHORIZED_STATUS_CODE
       ) {
-        const newAccessToken = await refresh();
+        const newAccessToken = await currentRefresh();
         result = await apiFunction(...args, {
-          csrfToken: token.csrfToken,
+          csrfToken: currentToken.csrfToken,
           accessToken: newAccessToken,
         });
       }
 
       return result;
     },
-    [apiFunction, token, refresh]
+    [apiFunction, currentRefresh, currentToken]
   );
 
   return executeWithRefresh;

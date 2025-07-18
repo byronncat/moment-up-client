@@ -1,7 +1,7 @@
 "use client";
 
 import type { z } from "zod";
-import type { API, UserCardDisplayInfo, UserInfo } from "api";
+import type { API, UserInfo } from "api";
 
 import { useRouter } from "next/navigation";
 import {
@@ -12,8 +12,8 @@ import {
   useRef,
   useMemo,
 } from "react";
-import { useAuthOperations } from "./hooks/useAuthOperations";
-import { AuthApi } from "@/services";
+import { useAuthOperations, useRefreshApi } from "./hooks";
+import { AuthApi, indexedDBService } from "@/services";
 import { ClientCookie } from "@/helpers/cookie";
 import zodSchema from "@/libraries/zodSchema";
 import { ROUTE } from "@/constants/route";
@@ -34,14 +34,15 @@ type AuthContextType = {
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
   login: (values: z.infer<typeof zodSchema.auth.login>) => API;
-  switchLogin: (values: z.infer<typeof zodSchema.auth.login>) => API;
+  addAccount: (values: z.infer<typeof zodSchema.auth.login>) => API;
   signup: (values: z.infer<typeof zodSchema.auth.signup>) => API;
   logout: () => API;
   sendOtpEmail: (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => API;
   recoverPassword: (
     values: z.infer<typeof zodSchema.auth.recoverPassword>
   ) => API;
-  changeAccount: (accountId: UserCardDisplayInfo["id"]) => Promise<void>;
+  switchAccount: (accountId: UserInfo["id"]) => API;
+  reload: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -56,7 +57,7 @@ const AuthContext = createContext<AuthContextType>({
   setLogged: () => {},
   setLoaded: () => {},
   login: async () => ({ success: false, message: "Something went wrong!" }),
-  switchLogin: async () => ({
+  addAccount: async () => ({
     success: false,
     message: "Something went wrong!",
   }),
@@ -70,7 +71,11 @@ const AuthContext = createContext<AuthContextType>({
     success: false,
     message: "Something went wrong!",
   }),
-  changeAccount: async () => {},
+  switchAccount: async () => ({
+    success: false,
+    message: "Something went wrong!",
+  }),
+  reload: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -90,12 +95,18 @@ export default function AuthProvider({
     csrfToken: "",
   });
 
-  const { refresh } = useAuthOperations({
+  useAuthOperations({
     setLogged,
     setLoaded,
     setUser,
     token,
   });
+
+  const refresh = useCallback(async () => {
+    const accessToken = await AuthApi.refresh();
+    token.current.accessToken = accessToken;
+    return accessToken;
+  }, []);
 
   const login = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
@@ -104,10 +115,12 @@ export default function AuthProvider({
         token.current.csrfToken
       );
       if (success && data) {
+        await indexedDBService.storeAccount(data.user);
         setLogged(true);
         setUser(data.user);
         token.current.accessToken = data.accessToken;
         document.cookie = authCookie.set();
+
         router.push(ROUTE.HOME);
       }
       return { success, message };
@@ -115,46 +128,69 @@ export default function AuthProvider({
     [router, authCookie]
   );
 
-  const switchLogin = useCallback(
+  const addAccount = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
-      setLoaded(false);
       const { success, message, data } = await AuthApi.login(
         values,
         token.current.csrfToken
       );
       if (success && data) {
+        await indexedDBService.storeAccount(data.user);
         setLogged(true);
-        // setUser(data);
-        document.cookie = authCookie.set();
-        router.refresh();
+        setUser(data.user);
+        token.current.accessToken = data.accessToken;
+
         router.push(ROUTE.HOME);
       }
-
-      setTimeout(() => {
-        setLoaded(true);
-      }, PAGE_RELOAD_TIME);
       return { success, message };
-    },
-    [router, authCookie]
-  );
-
-  const signup = useCallback(
-    async (values: z.infer<typeof zodSchema.auth.signup>) => {
-      const res = await AuthApi.signup(values, token.current.csrfToken);
-      if (res.success) {
-        setLogged(true);
-        token.current.accessToken = "";
-        router.push(`${ROUTE.LOGIN}?email=${encodeURIComponent(values.email)}`);
-      }
-      return res;
     },
     [router]
   );
 
+  const switchApi = useRefreshApi(AuthApi.switchAccount, {
+    _token: token.current,
+    _refresh: refresh,
+  });
+  const switchAccount = useCallback(
+    async (accountId: UserInfo["id"]) => {
+      const { success, message, data } = await switchApi(accountId);
+      if (success && data) {
+        setLogged(true);
+        setUser(data.user);
+        token.current.accessToken = data.accessToken;
+
+        router.push(ROUTE.HOME);
+      }
+      return { success, message };
+    },
+    [router, switchApi]
+  );
+
+  const signup = useCallback(
+    async (values: z.infer<typeof zodSchema.auth.signup>) => {
+      const { success, message } = await AuthApi.signup(
+        values,
+        token.current.csrfToken
+      );
+      if (success) {
+        setLogged(true);
+        token.current.accessToken = "";
+        router.push(`${ROUTE.LOGIN}?email=${encodeURIComponent(values.email)}`);
+      }
+      return { success, message };
+    },
+    [router]
+  );
+
+  const logoutApi = useRefreshApi(AuthApi.logout, {
+    _token: token.current,
+    _refresh: refresh,
+  });
   const logout = useCallback(async () => {
     setLoaded(false);
-    const res = await AuthApi.logout(token.current.csrfToken);
-    if (res.success) {
+    const { success, message } = await logoutApi();
+    if (success) {
+      if (user?.id) await indexedDBService.removeAccount(user.id);
       setLogged(false);
       setUser(null);
       token.current.accessToken = "";
@@ -165,8 +201,8 @@ export default function AuthProvider({
       }, PAGE_RELOAD_TIME);
     } else setLoaded(true);
 
-    return res;
-  }, [router, authCookie]);
+    return { success, message };
+  }, [router, authCookie, logoutApi, user]);
 
   const sendOtpEmail = useCallback(
     async (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => {
@@ -188,24 +224,12 @@ export default function AuthProvider({
     [router]
   );
 
-  // const changeAccount = useCallback(
-  //   async (accountId: UserCardDisplayInfo["id"]) => {
-  //     setLoaded(false);
-  //     const res = await AuthApi.switchAccount(accountId);
-  //     if (res.success && res.data) {
-  //       // Update access token if provided
-  //       if (res.data.accessToken) {
-  //         token.current.accessToken = res.data.accessToken;
-  //         document.cookie = ClientCookie.set();
-  //       }
-  //       setUser(res.data ?? null);
-  //       router.refresh();
-  //       router.push(ROUTE.HOME);
-  //     }
-  //     setLoaded(true);
-  //   },
-  //   [router]
-  // );
+  const reload = useCallback(async () => {
+    setLoaded(false);
+    setTimeout(() => {
+      setLoaded(true);
+    }, 3000);
+  }, [setLoaded]);
 
   return (
     <AuthContext.Provider
@@ -221,14 +245,13 @@ export default function AuthProvider({
         loaded,
         setLoaded,
         login,
-        switchLogin,
+        addAccount,
         signup,
         logout,
         sendOtpEmail,
         recoverPassword,
-        changeAccount: () => {
-          return Promise.resolve();
-        },
+        reload,
+        switchAccount,
       }}
     >
       {loaded ? children : <LoadingPage />}

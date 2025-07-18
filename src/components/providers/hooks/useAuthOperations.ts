@@ -68,17 +68,7 @@ export function useAuthOperations({
     setLoaded(true);
   }, [handlePageReload, authCookie, setLogged, setLoaded, setUser, token]);
 
-  const refresh = useCallback(async () => {
-    const accessToken = await AuthApi.refresh();
-    token.current.accessToken = accessToken;
-    return accessToken;
-  }, [token]);
-
   useEffect(() => {
     authenticate();
   }, [authenticate]);
-
-  return {
-    refresh,
-  };
 }

@@ -21,7 +21,6 @@ interface FollowDto {
 }
 
 export async function follow(data: FollowDto, token: Token) {
-  console.log(token.accessToken);
   return await fetch(
     data.isFollowing
       ? ApiUrl.user.unfollow(data.targetId)

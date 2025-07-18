@@ -1,6 +1,6 @@
 import { cn } from "@/libraries/utils";
 import SearchBar from "../Search/SearchBar";
-import SwitchAccount from "./SwitchAccount";
+import SwitchAccount from "./switch-account";
 import TrendingTopics from "./TrendingTopics";
 import SuggestedUsers from "./SuggestedUsers";
 import Footer from "./Footer";

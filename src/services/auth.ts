@@ -1,25 +1,9 @@
-import { mockCurrentUsers } from "@/__mocks__";
-
 import type { z } from "zod";
-import type {
-  AccountInfo,
-  API,
-  UserInfo,
-  UserProfileInfo,
-  ErrorResponse,
-} from "api";
+import type { API, UserInfo, ErrorResponse } from "api";
+import type { Token } from "@/components/providers/Auth";
 
 import zodSchema from "@/libraries/zodSchema";
 import { ApiUrl } from "./api.constant";
-
-const apiRes = {
-  getAllAccounts: "Accounts fetched successfully" as
-    | "Accounts fetched successfully"
-    | "Internal error",
-  switchAccount: "Account switched successfully" as
-    | "Account switched successfully"
-    | "Internal error",
-};
 
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>,
@@ -43,6 +27,42 @@ export async function login(
       return {
         success: true,
         message: "Login successful",
+        data,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        success: false,
+        message: Array.isArray(error.message)
+          ? error.message[0]
+          : error.message,
+      };
+    });
+}
+
+export async function switchAccount(
+  accountId: UserInfo["id"],
+  token: Token
+): API<{
+  accessToken: string;
+  user: UserInfo;
+}> {
+  return await fetch(ApiUrl.auth.switch, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    body: JSON.stringify({ accountId }),
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw data;
+      return {
+        success: true,
+        message: "Account switched successfully",
         data,
       };
     })
@@ -86,12 +106,13 @@ export async function signup(
     });
 }
 
-export async function logout(csrfToken: string): API {
+export async function logout(token: Token): API {
   return await fetch(ApiUrl.auth.logout, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Csrf-Token": csrfToken,
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
     },
     credentials: "include",
   })
@@ -104,6 +125,7 @@ export async function logout(csrfToken: string): API {
     })
     .catch((error: ErrorResponse) => {
       return {
+        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
       };
@@ -230,42 +252,4 @@ export async function recoverPassword(
           : error.message,
       };
     });
-}
-
-export async function getAllAcounts(): API<AccountInfo[]> {
-  console.log("getAllAcounts");
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 1000);
-  });
-
-  if (apiRes.getAllAccounts === "Accounts fetched successfully") {
-    return {
-      success: true,
-      message: "Accounts fetched successfully",
-      data: mockCurrentUsers,
-    };
-  }
-
-  return {
-    success: false,
-    message: "Internal error" as const,
-  };
-}
-
-export async function switchAccount(
-  accountId: UserProfileInfo["id"]
-): API<Omit<UserProfileInfo, "followedBy" | "isFollowing">> {
-  console.log("switchAccount", accountId);
-  const anotherUser = mockCurrentUsers.find((user) => user.id === accountId);
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        message: "ok",
-        data: anotherUser,
-      });
-    }, 2000);
-  });
 }

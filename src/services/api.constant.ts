@@ -4,6 +4,7 @@ export const ApiUrl = {
   // Auth
   auth: {
     login: `${SERVER_HOST_URL}/v1/auth/login`,
+    switch: `${SERVER_HOST_URL}/v1/auth/switch-account`,
     signup: `${SERVER_HOST_URL}/v1/auth/register`,
     logout: `${SERVER_HOST_URL}/v1/auth/logout`,
     csrf: `${SERVER_HOST_URL}/v1/auth/csrf`,

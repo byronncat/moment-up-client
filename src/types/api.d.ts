@@ -14,6 +14,7 @@ declare module "api" {
   // === User ===
   interface AccountInfo {
     id: string;
+    email: string;
     username: string;
     displayName: string;
     avatar?: string;
