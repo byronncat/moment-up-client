@@ -92,7 +92,7 @@ function SearchBar({ query, setQuery }: SearchBarProps) {
           type="text"
           placeholder="Search Messenger"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(event) => setQuery(event.target.value)}
           className={cn("h-10 bg-card pl-9", query && "pr-9")}
         />
         {query && (

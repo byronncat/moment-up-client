@@ -78,7 +78,7 @@ export default function ModeSelection({
         side={side}
         sideOffset={sideOffset}
         className="font-medium"
-        onCloseAutoFocus={(e) => e.preventDefault()}
+        onCloseAutoFocus={(event) => event.preventDefault()}
       >
         <DropdownMenuItem
           onClick={() => setTheme("light")}

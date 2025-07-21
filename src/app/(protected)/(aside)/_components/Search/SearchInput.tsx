@@ -11,9 +11,9 @@ export default function SearchInput({
 }: React.ComponentProps<"input">) {
   const [query, setQuery] = useState(defaultValue);
 
-  function changeQuery(e: React.ChangeEvent<HTMLInputElement>) {
-    setQuery(e.target.value);
-    props.onChange?.(e);
+  function changeQuery(event: React.ChangeEvent<HTMLInputElement>) {
+    setQuery(event.target.value);
+    props.onChange?.(event);
   }
 
   function clearQuery() {

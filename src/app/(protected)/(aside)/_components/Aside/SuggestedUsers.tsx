@@ -60,9 +60,9 @@ function SuggestedUserItem({
 
   const follow = useRefreshApi(UserApi.follow);
 
-  async function followHandler(e: React.MouseEvent) {
-    e.preventDefault();
-    e.stopPropagation();
+  async function followHandler(event: React.MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
     if (isLoading) return;
     setIsLoading(true);
     setUser((prev) => ({ ...prev, isFollowing: !isFollowing }));
@@ -88,7 +88,7 @@ function SuggestedUserItem({
     >
       <div
         className="flex items-center gap-2"
-        onClick={(e) => e.preventDefault()}
+        onClick={(event) => event.preventDefault()}
       >
         <UserHoverCard user={user} onFollow={followHandler}>
           <Link
@@ -134,7 +134,7 @@ function FollowText({
   followHandler,
 }: Readonly<{
   isFollowing: boolean;
-  followHandler: (e: React.MouseEvent) => void;
+  followHandler: (event: React.MouseEvent) => void;
 }>) {
   const hoverRef = useRef<HTMLButtonElement>(null);
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
@@ -157,7 +157,7 @@ function FollowText({
 
 interface UserHoverCardProps {
   user: UserCardDisplayInfo;
-  onFollow: (e: React.MouseEvent) => Promise<void>;
+  onFollow: (event: React.MouseEvent) => Promise<void>;
   children?: React.ReactNode;
 }
 

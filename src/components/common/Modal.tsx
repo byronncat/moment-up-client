@@ -7,8 +7,8 @@ type ModalProps = Readonly<{
 }>;
 
 export default function Modal({ children, onClose, className }: ModalProps) {
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) onClose?.();
+  const handleBackdropClick = (event: React.MouseEvent) => {
+    if (event.target === event.currentTarget) onClose?.();
   };
 
   return (

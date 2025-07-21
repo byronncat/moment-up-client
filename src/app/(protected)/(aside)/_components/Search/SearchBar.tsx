@@ -82,8 +82,8 @@ export default function SearchBar() {
       <SearchInput
         id="side-search-input"
         onFocus={() => setIsOpen(true)}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setQuery(e.target.value)
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setQuery(event.target.value)
         }
       />
       {isLoading && <LoadingIndicator />}

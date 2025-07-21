@@ -42,7 +42,7 @@ export default function CommentInput({ ref, className }: CommentInputProps) {
           id="comment-input"
           placeholder="Add a comment..."
           value={comment}
-          onChange={(e) => setComment(e.target.value)}
+          onChange={(event) => setComment(event.target.value)}
           className={cn(
             "rounded-none bg-transparent resize-none",
             "border-x-0 border-t-0 border-border",

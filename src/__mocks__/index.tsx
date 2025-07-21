@@ -208,6 +208,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "45d49f7d-d07f-4eae-abcf-2f61ced287a2",
     type: "user" as const,
+    email: "",
     username: "mbontoft0",
     displayName: "Mac Bontoft",
     avatar: getRandomFile("45d49f7d-d07f-4eae-abcf-2f61ced287a2"),
@@ -225,6 +226,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "7b0bf82a-0407-4fa4-9fdf-106a681a626c",
     type: "user" as const,
+    email: "",
     username: "ssauven1",
     displayName: "Stanislaw Sauven",
     avatar: getRandomFile("7b0bf82a-0407-4fa4-9fdf-106a681a626c"),
@@ -232,6 +234,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "e0e16793-c56f-4456-80d9-9767d5e3c3da",
     type: "user" as const,
+    email: "",
     username: "ahaccleton2",
     displayName: "Aurie Haccleton",
     avatar: getRandomFile("e0e16793-c56f-4456-80d9-9767d5e3c3da"),
@@ -244,6 +247,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "261c65cb-4646-47ba-a65a-262d7242ee9f",
     type: "user" as const,
+    email: "",
     username: "droderham3",
     displayName: "Dannie Roderham",
     avatar: getRandomFile("261c65cb-4646-47ba-a65a-262d7242ee9f"),
@@ -251,6 +255,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "4bef2e89-8dc0-4dd4-8b82-219b13d4ae0d",
     type: "user" as const,
+    email: "",
     username: "tronald4",
     displayName: "Timmie Ronald",
     avatar: getRandomFile("4bef2e89-8dc0-4dd4-8b82-219b13d4ae0d"),
@@ -263,6 +268,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "60edd744-11e7-497f-9077-491a49369b18",
     type: "user" as const,
+    email: "",
     username: "hhartley5",
     displayName: "Hyacinthe Hartley",
     avatar: getRandomFile("60edd744-11e7-497f-9077-491a49369b18"),
@@ -280,6 +286,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "382d48f6-a932-410b-8309-ff0b9b6024e4",
     type: "user" as const,
+    email: "",
     username: "vblacklock6",
     displayName: "Virginie Blacklock",
     avatar: getRandomFile("382d48f6-a932-410b-8309-ff0b9b6024e4"),
@@ -287,6 +294,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "766e49e6-46b7-4104-bfa1-aed763262d57",
     type: "user" as const,
+    email: "",
     username: "jsevern7",
     displayName: "Justin Severn",
     avatar: getRandomFile("766e49e6-46b7-4104-bfa1-aed763262d57"),
@@ -294,6 +302,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "41e5323f-0ce9-4d37-a8db-46d4ca0a8809",
     type: "user" as const,
+    email: "",
     username: "bakers8",
     displayName: "Berry Akers",
     avatar: getRandomFile("41e5323f-0ce9-4d37-a8db-46d4ca0a8809"),
@@ -301,6 +310,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "a2f41718-2ddb-4c03-bdda-f80c5373cd96",
     type: "user" as const,
+    email: "",
     username: "smcwilliam9",
     displayName: "Spense McWilliam",
     avatar: getRandomFile("a2f41718-2ddb-4c03-bdda-f80c5373cd96"),
@@ -323,6 +333,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "6934603c-5bd1-40c5-a298-3d0cde2de578",
     type: "user" as const,
+    email: "",
     username: "bsantea",
     displayName: "Bernetta Sante",
     avatar: getRandomFile("6934603c-5bd1-40c5-a298-3d0cde2de578"),
@@ -330,6 +341,7 @@ export const mockSearches: SearchItem[] = [
   {
     id: "c6ad53bf-1252-4911-bef7-a9bb13f26aed",
     type: "user" as const,
+    email: "",
     username: "mpackingtonb",
     displayName: "Morse Packington",
     avatar: getRandomFile("c6ad53bf-1252-4911-bef7-a9bb13f26aed"),
@@ -461,12 +473,13 @@ export const mockFeed: FeedInfo[] = [
   // },
 ];
 
-export const mockMoments: DetailedMomentInfo[] = isDev
+export const mockMoments: any[] = isDev
   ? [
       {
         id: "b9a6a3a4-02e1-47f0-8cbe-73dc2a15735b9",
         user: {
           id: "b9a6a3a4-02e1-47f0-8cbe-73dc2a15735b9",
+          email: "",
           username: "anonymous",
           displayName: "Anonymous",
           avatar: getRandomFile("b9a6a3a4-02e1-47f0-8cbe-73dc2a15735b9"),
@@ -509,6 +522,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "b9a6a3a4-02e1-47f0-8cbe-69dc2a15735b9",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("b9a6a3a4-02e1-47f0-8cbe-69dc2a15735b9"),
           followers: 1000,
           following: 1000,
@@ -530,6 +544,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "b9a6a3a4-02e1-47f0-8cbe-73dc2a15735c8",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("b9a6a3a4-02e1-47f0-8cbe-73dc2a15735c8"),
           followers: 1000,
           following: 1000,
@@ -571,6 +586,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "b9b6a3a4-02e1-47f0-8cbe-73dc2a1573566c",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("b9b6a3a4-02e1-47f0-8cbe-73dc2a1573566c"),
           followers: 1000,
           following: 1000,
@@ -592,6 +608,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "b9a6a3a4-02e1-47f0-8cbe-73dc2a15735ba",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("b9a6a3a4-02e1-47f0-8cbe-73dc2a15735ba"),
           followers: 1000,
           following: 1000,
@@ -627,6 +644,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "c4b07087-f164-405d-86ac-4b54870b29d3",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("c4b07087-f164-405d-86ac-4b54870b29d3"),
           followers: 1000,
           following: 1000,
@@ -656,6 +674,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "b9b6a3a4-02e1-47f0-8cbe-73dc2a15735c",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("b9b6a3a4-02e1-47f0-8cbe-73dc2a15735c"),
           followers: 1000,
           following: 1000,
@@ -677,6 +696,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "e449b4ff-3f2c-4ffc-ba19-244f918b2662",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("e449b4ff-3f2c-4ffc-ba19-244f918b2662"),
           followers: 1000,
           following: 1000,
@@ -712,6 +732,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "73a1e6f0-12ce-49bc-b393-ed42599efa9",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("73a1e6f0-12ce-49bc-b393-ed42599efa9"),
           followers: 1000,
           following: 1000,
@@ -753,6 +774,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "73a1e6f0-12ce-49bc-b393-ed42599ef2a9",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("73a1e6f0-12ce-49bc-b393-ed42599ef2a9"),
           followers: 1000,
           following: 1000,
@@ -782,6 +804,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "d807583d-69c5-4a00-8927-ba263cd100fb",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("d807583d-69c5-4a00-8927-ba263cd100fb"),
           followers: 1000,
           following: 1000,
@@ -823,6 +846,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "da8a84c3-4ed5-4751-b1cd-9fade2f20fa2",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("da8a84c3-4ed5-4751-b1cd-9fade2f20fa2"),
           followers: 1000,
           following: 1000,
@@ -882,6 +906,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "54a7ea30-66a9-444e-aaf4-20d44ec7f10b",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("54a7ea30-66a9-444e-aaf4-20d44ec7f10b"),
           followers: 1000,
           following: 1000,
@@ -935,6 +960,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "ce90e671-35b8-4ed9-bcba-5951861851a3",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("ce90e671-35b8-4ed9-bcba-5951861851a3"),
           followers: 1000,
           following: 1000,
@@ -964,6 +990,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "96f6153d-87be-43df-a602-2c31bcafda3b",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("96f6153d-87be-43df-a602-2c31bcafda3b"),
           followers: 1000,
           following: 1000,
@@ -1005,6 +1032,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "7aaabed3-d3b1-4db3-a979-55e3ce0551c2",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("7aaabed3-d3b1-4db3-a979-55e3ce0551c2"),
           followers: 1000,
           following: 1000,
@@ -1033,6 +1061,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "d3c53881-ddb9-423e-bcd3-b206feedc085",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("d3c53881-ddb9-423e-bcd3-b206feedc085"),
           followers: 1000,
           following: 1000,
@@ -1061,6 +1090,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "fcdacfcb-630c-43ca-a7a7-68bac9592e07",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("fcdacfcb-630c-43ca-a7a7-68bac9592e07"),
           followers: 1000,
           following: 1000,
@@ -1089,6 +1119,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "c2a29470-68ff-4e07-a7eb-726bddd2d7f7",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("c2a29470-68ff-4e07-a7eb-726bddd2d7f7"),
           followers: 1000,
           following: 1000,
@@ -1117,6 +1148,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "4a6918cb-7af3-4aba-9fe5-430addd54d84",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("4a6918cb-7af3-4aba-9fe5-430addd54d84"),
           followers: 1000,
           following: 1000,
@@ -1151,6 +1183,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "a0fa3c9e-11da-43b8-92cf-090e69e8bd39",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("a0fa3c9e-11da-43b8-92cf-090e69e8bd39"),
           followers: 1000,
           following: 1000,
@@ -1179,6 +1212,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "0f4aeda5-7217-45c7-998c-3c8087bf8531",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("0f4aeda5-7217-45c7-998c-3c8087bf8531"),
           followers: 1000,
           following: 1000,
@@ -1225,6 +1259,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "0f5aeda5-7217-45c7-998c-3c8087bf8531",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("0f5aeda5-7217-45c7-998c-3c8087bf8531"),
           followers: 1000,
           following: 1000,
@@ -1265,6 +1300,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "0f6aeda5-7217-45c7-998c-3c8087bf8531",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("0f6aeda5-7217-45c7-998c-3c8087bf8531"),
           followers: 1000,
           following: 1000,
@@ -1305,6 +1341,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "0f5aeda5-7217-45c7-998c-3c8087bf8532",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("0f5aeda5-7217-45c7-998c-3c8087bf8531"),
           followers: 1000,
           following: 1000,
@@ -1339,6 +1376,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "0f7aeda5-7217-45c7-998c-3c8087bf8531",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("0f7aeda5-7217-45c7-998c-3c8087bf8531"),
           followers: 1000,
           following: 1000,
@@ -1521,6 +1559,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "b9a6a3a4-02e1-470-8cbe-69dc2a15735b9",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("b9a6a3a4-02e1-470-8cbe-69dc2a15735b9"),
           followers: 1000,
           following: 1000,
@@ -1542,6 +1581,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "b9a6a3a4-02e1-470-8cbe-69dc2a15735b10",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("b9a6a3a4-02e1-470-8cbe-69dc2a15735b10"),
           followers: 1000,
           following: 1000,
@@ -1589,6 +1629,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "b9a6a3a4-02e1-470-8cbe-69dc2a15735b11",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("b9a6a3a4-02e1-470-8cbe-69dc2a15735b11"),
           followers: 1000,
           following: 1000,
@@ -1617,6 +1658,7 @@ export const mockMoments: DetailedMomentInfo[] = isDev
           id: "b9a6a3a4-02e1-470-8cbe-69dc2a15735b12",
           username: "anonymous",
           displayName: "Anonymous",
+          email: "",
           avatar: getRandomFile("b9a6a3a4-02e1-470-8cbe-69dc2a15735b12"),
           followers: 1000,
           following: 1000,
@@ -1648,6 +1690,7 @@ export const mockComments: CommentInfo[] = [
     content:
       "Aliquam eget lectus eget felis aliquam rhoncus eget at augue. Ut quis tincidunt nibh. Fusce tincidunt tincidunt dui, et condimentum orci ornare non. Mauris laoreet ante nec mi rutrum, ac rhoncus lorem ultricies. In scelerisque ut ipsum ut viverra. Nullam posuere lectus eget odio mollis, ut varius enim tristique. Integer vitae nisl ac metus tempus vulputate non non diam. Cras cursus viverra feugiat. Nulla sed dolor est./nQuisque et lectus id magna laoreet dapibus. Morbi feugiat libero non mattis bibendum. Morbi sem augue, pretium tristique nibh in, suscipit pulvinar arcu. Aenean ultrices tellus et sapien egestas pulvinar. Aenean ipsum risus, fringilla et luctus id, dignissim at tellus. Etiam aliquam posuere ultricies. Phasellus placerat nunc eget hendrerit dignissim. Mauris purus dolor, facilisis at nulla id, finibus tincidunt felis. In ullamcorper ullamcorper ligula, in ultricies justo faucibus ut. Aenean porttitor dictum nibh, eget mollis tellus pellentesque ut. Pellentesque luctus lorem et mi mollis, eget lacinia mauris viverra. Morbi sit amet commodo dolor. Cras orci enim, varius non molestie eu, facilisis in ligula. Ut ornare fermentum velit quis semper. Nam non viverra neque. Cras ac eros rhoncus, vehicula quam nec, eleifend arcu./nCras sagittis quam id sem vehicula placerat. Nunc condimentum mattis leo, non mollis odio maximus luctus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Praesent semper, risus at faucibus varius, tellus orci semper ligula, nec posuere turpis mauris ac leo. Praesent sed ipsum volutpat, imperdiet lorem et, hendrerit diam. Proin ut auctor purus. Morbi porta neque at dui vestibulum posuere. Fusce nec velit et elit volutpat posuere id at velit. In nec accumsan lacus, in luctus purus. Quisque venenatis ac ipsum vel efficitur. Donec sed mauris vehicula, tempor nibh sed, fringilla magna. Integer ornare dui non libero tincidunt, quis pulvinar nunc porttitor. Ut efficitur sagittis pharetra. Ut in augue et turpis placerat pretium pulvinar vitae sapien.",
     user: {
+      email: "",
       id: "979491b0-13a7-41c7-9b5e-1c60c96684b2",
       username: "anonymous",
       displayName: "Anonymous",
@@ -1666,6 +1709,7 @@ export const mockComments: CommentInfo[] = [
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan et diam vitae tincidunt. Integer lectus tortor, sollicitudin consequat est id, ultrices gravida neque. Etiam congue arcu quam. Praesent quis interdum diam. Donec cursus nulla ligula, eget imperdiet neque posuere in.",
     user: {
+      email: "",
       id: "979491b0-13a7-41c7-9b5e-1c60c96684b3",
       username: "anonymous",
       displayName: "Anonymous",
@@ -1685,6 +1729,7 @@ export const mockComments: CommentInfo[] = [
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan et diam vitae tincidunt. Integer lectus tortor, sollicitudin consequat est id, ultrices gravida neque. Etiam congue arcu quam. Praesent quis interdum diam. Donec cursus nulla ligula, eget imperdiet neque posuere in.",
     user: {
+      email: "",
       id: "979491b0-13a7-41c7-9b5e-1c60c96684b4",
       username: "anonymous",
       displayName: "Anonymous",
@@ -1702,6 +1747,7 @@ export const mockComments: CommentInfo[] = [
     id: "979491b0-13a7-41c7-9b5e-1c60c9668467",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     user: {
+      email: "",
       id: "979491b0-13a7-41c7-9b5e-1c60c9668467",
       username: "anonymous",
       displayName: "Anonymous",
@@ -1719,6 +1765,7 @@ export const mockComments: CommentInfo[] = [
 
 export const mockProfile: UserProfileInfo = {
   id: "a9a6d7c2-1e20-2439-a50b-51a1deh131da1",
+  email: "",
   username: "byronat445",
   displayName: "Byron Atwood",
   avatar: getRandomFile("byronat445"),
@@ -2050,6 +2097,7 @@ export const mockNotifications: NotificationInfo[] = [
     type: "social",
     createdAt: "2025-07-11T09:20:12.345Z",
     user: {
+      email: "",
       id: "d75906a9-9655-44d6-aa06-fa675ba13e3e",
       username: "anonymous",
       displayName: "Anonymous",
@@ -2067,6 +2115,7 @@ export const mockNotifications: NotificationInfo[] = [
     id: "feff69a1-41df-48e8-b799-4be4e6f0e3c0",
     type: "social",
     user: {
+      email: "",
       id: "feff69a1-41df-48e8-b799-4be4e6f0e3c0",
       username: "anonymous",
       displayName: "Anonymous",
@@ -2085,6 +2134,7 @@ export const mockNotifications: NotificationInfo[] = [
     id: "a4cdafc1-9da2-47ac-9bf7-e9f82db9eb80",
     type: "social",
     user: {
+      email: "",
       id: "a4cdafc1-9da2-47ac-9bf7-e9f82db9eb80",
       username: "anonymous",
       displayName: "Anonymous",
@@ -2104,6 +2154,7 @@ export const mockNotifications: NotificationInfo[] = [
 export const mockPopularAccounts: ProfileSearchItem[] = [
   {
     isFollowing: false,
+    email: "",
     id: "057b50c5-4646-42bf-98ea-933c108f2671",
     username: "wbale0",
     displayName: "Werner Bale",
@@ -2113,6 +2164,7 @@ export const mockPopularAccounts: ProfileSearchItem[] = [
   },
   {
     isFollowing: false,
+    email: "",
     id: "ca0f9eb5-c789-4e50-9f8c-457ff3b9f964",
     username: "tech_jason",
     displayName: "Jason Chen",
@@ -2120,6 +2172,7 @@ export const mockPopularAccounts: ProfileSearchItem[] = [
   },
   {
     isFollowing: false,
+    email: "",
     id: "90946704-51dc-4a73-9f56-99531bc3db7b",
     username: "foodie_sophie",
     displayName: "Sophie Rodriguez",
@@ -2129,6 +2182,7 @@ export const mockPopularAccounts: ProfileSearchItem[] = [
   },
   {
     isFollowing: false,
+    email: "",
     id: "92a1e004-8ddf-46ab-8811-28a6e1bb7a60",
     username: "fitness_marcus",
     displayName: "Marcus Johnson",
@@ -2144,6 +2198,7 @@ export const mockCurrentUsers: Omit<
 >[] = [
   {
     id: "thinhngo",
+    email: "",
     username: "byronat445",
     displayName: "Thinh Ngo",
     avatar: getRandomFile("byronat445"),
@@ -2153,6 +2208,7 @@ export const mockCurrentUsers: Omit<
   },
   {
     id: "anotherMe",
+    email: "",
     username: "hkbtrung",
     displayName: "Bao Trung",
     avatar: getRandomFile("hkbtrung"),

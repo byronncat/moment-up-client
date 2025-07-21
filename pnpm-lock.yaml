@@ -126,8 +126,8 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1
       "@next/eslint-plugin-next":
-        specifier: ^15.4.1
-        version: 15.4.1
+        specifier: ^15.4.2
+        version: 15.4.2
       "@tailwindcss/postcss":
         specifier: ^4.1.11
         version: 4.1.11
@@ -135,8 +135,8 @@ importers:
         specifier: ^4.17.20
         version: 4.17.20
       "@types/node":
-        specifier: ^24.0.14
-        version: 24.0.14
+        specifier: ^24.0.15
+        version: 24.0.15
       "@types/react":
         specifier: ^19.1.8
         version: 19.1.8
@@ -156,8 +156,8 @@ importers:
         specifier: 15.4.1
         version: 15.4.1(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3)
       eslint-config-prettier:
-        specifier: ^10.1.5
-        version: 10.1.5(eslint@9.31.0(jiti@2.4.2))
+        specifier: ^10.1.8
+        version: 10.1.8(eslint@9.31.0(jiti@2.4.2))
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
         version: 5.2.0(eslint@9.31.0(jiti@2.4.2))
@@ -199,22 +199,22 @@ packages:
       }
     engines: { node: ">=6.9.0" }
 
-  "@emnapi/core@1.4.4":
+  "@emnapi/core@1.4.5":
     resolution:
       {
-        integrity: sha512-A9CnAbC6ARNMKcIcrQwq6HeHCjpcBZ5wSx4U01WXCqEKlrzB9F9315WDNHkrs2xbx7YjjSxbUYxuN6EQzpcY2g==,
+        integrity: sha512-XsLw1dEOpkSX/WucdqUhPWP7hDxSvZiY+fsUC14h+FtQ2Ifni4znbBt8punRX+Uj2JG/uDb8nEHVKvrVlvdZ5Q==,
       }
 
-  "@emnapi/runtime@1.4.4":
+  "@emnapi/runtime@1.4.5":
     resolution:
       {
-        integrity: sha512-hHyapA4A3gPaDCNfiqyZUStTMqIkKRshqPIuDOXv1hcBnD4U3l8cP0T1HMCfGRxQ6V64TGCcoswChANyOAwbQg==,
+        integrity: sha512-++LApOtY0pEEz1zrd9vy1/zXVaVJJ/EbAF3u0fXIzPJEDtnITsBGbbK0EkM72amhl/R5b+5xx0Y/QhcVOpuulg==,
       }
 
-  "@emnapi/wasi-threads@1.0.3":
+  "@emnapi/wasi-threads@1.0.4":
     resolution:
       {
-        integrity: sha512-8K5IFFsQqF9wQNJptGbS6FNKgUTsSRYnTqNCG1vPP8jFdjSv18n2mQfJpkt2Oibo9iBEzcDnDxNwKTzC7svlJw==,
+        integrity: sha512-PJR+bOmMOPH8AtcTGAyYNiuJ3/Fcoj2XN/gBEWzDIKh254XO+mM9XoXHk5GNEhodxeMznbg7BlRojVbKN+gC6g==,
       }
 
   "@eslint-community/eslint-utils@4.7.0":
@@ -588,6 +588,12 @@ packages:
     resolution:
       {
         integrity: sha512-lQnHUxN7mMksK7IxgKDIXNMWFOBmksVrjamMEURXiYfo7zgsc30lnU8u4y/MJktSh+nB80ktTQeQbWdQO6c8Ow==,
+      }
+
+  "@next/eslint-plugin-next@15.4.2":
+    resolution:
+      {
+        integrity: sha512-k0rjdWjXBY6tAOty1ckrMETE6Mx66d85NsgcAIdDp7/cXOsTJ93ywmbg3uUcpxX5TUHFEcCWI5mb8nPhwCe9jg==,
       }
 
   "@next/swc-darwin-arm64@15.4.1":
@@ -1459,10 +1465,10 @@ packages:
         integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==,
       }
 
-  "@types/node@24.0.14":
+  "@types/node@24.0.15":
     resolution:
       {
-        integrity: sha512-4zXMWD91vBLGRtHK3YbIoFMia+1nqEz72coM42C5ETjnNCa/heoj7NT1G67iAfOqMmcfhuCZ4uNpyz8EjlAejw==,
+        integrity: sha512-oaeTSbCef7U/z7rDeJA138xpG3NuKc64/rZ2qmUFkFJmnMsAPaluIifqyWd8hSSMxyP9oie3dLAqYPblag9KgA==,
       }
 
   "@types/react-dom@19.1.6":
@@ -2244,10 +2250,10 @@ packages:
       typescript:
         optional: true
 
-  eslint-config-prettier@10.1.5:
+  eslint-config-prettier@10.1.8:
     resolution:
       {
-        integrity: sha512-zc1UmCpNltmVY34vuLRV61r1K27sWuX39E+uyUnY8xS2Bex88VV9cugG+UZbRSRGtGyFboj+D8JODyme1plMpw==,
+        integrity: sha512-82GZUjRS0p/jganf6q1rEO25VSoHH0hKPCTrgillPjdI/3bgBhAE1QzHrHTizjpRvy6pGAvKjDJtk2pF9NDq8w==,
       }
     hasBin: true
     peerDependencies:
@@ -3199,10 +3205,10 @@ packages:
     engines: { node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1 }
     hasBin: true
 
-  napi-postinstall@0.3.0:
+  napi-postinstall@0.3.2:
     resolution:
       {
-        integrity: sha512-M7NqKyhODKV1gRLdkwE7pDsZP2/SC2a2vHkOYh9MCpKMbWVfyVfUw5MaH83Fv6XMjxr5jryUp3IDDL9rlxsTeA==,
+        integrity: sha512-tWVJxJHmBWLy69PvO96TZMZDrzmw5KeiZBz3RHmiM2XZ9grBJ2WgMAFVVg25nqp3ZjTFUs2Ftw1JhscL3Teliw==,
       }
     engines: { node: ^12.20.0 || ^14.18.0 || >=16.0.0 }
     hasBin: true
@@ -3370,10 +3376,10 @@ packages:
       }
     engines: { node: ">=8.6" }
 
-  picomatch@4.0.2:
+  picomatch@4.0.3:
     resolution:
       {
-        integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==,
+        integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==,
       }
     engines: { node: ">=12" }
 
@@ -4078,18 +4084,18 @@ snapshots:
 
   "@babel/runtime@7.27.6": {}
 
-  "@emnapi/core@1.4.4":
+  "@emnapi/core@1.4.5":
     dependencies:
-      "@emnapi/wasi-threads": 1.0.3
+      "@emnapi/wasi-threads": 1.0.4
       tslib: 2.8.1
     optional: true
 
-  "@emnapi/runtime@1.4.4":
+  "@emnapi/runtime@1.4.5":
     dependencies:
       tslib: 2.8.1
     optional: true
 
-  "@emnapi/wasi-threads@1.0.3":
+  "@emnapi/wasi-threads@1.0.4":
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -4247,7 +4253,7 @@ snapshots:
 
   "@img/sharp-wasm32@0.34.3":
     dependencies:
-      "@emnapi/runtime": 1.4.4
+      "@emnapi/runtime": 1.4.5
     optional: true
 
   "@img/sharp-win32-arm64@0.34.3":
@@ -4279,14 +4285,18 @@ snapshots:
 
   "@napi-rs/wasm-runtime@0.2.12":
     dependencies:
-      "@emnapi/core": 1.4.4
-      "@emnapi/runtime": 1.4.4
+      "@emnapi/core": 1.4.5
+      "@emnapi/runtime": 1.4.5
       "@tybys/wasm-util": 0.10.0
     optional: true
 
   "@next/env@15.4.1": {}
 
   "@next/eslint-plugin-next@15.4.1":
+    dependencies:
+      fast-glob: 3.3.1
+
+  "@next/eslint-plugin-next@15.4.2":
     dependencies:
       fast-glob: 3.3.1
 
@@ -4863,7 +4873,7 @@ snapshots:
 
   "@types/lodash@4.17.20": {}
 
-  "@types/node@24.0.14":
+  "@types/node@24.0.15":
     dependencies:
       undici-types: 7.8.0
 
@@ -5427,7 +5437,7 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  eslint-config-prettier@10.1.5(eslint@9.31.0(jiti@2.4.2)):
+  eslint-config-prettier@10.1.8(eslint@9.31.0(jiti@2.4.2)):
     dependencies:
       eslint: 9.31.0(jiti@2.4.2)
 
@@ -5634,9 +5644,9 @@ snapshots:
     dependencies:
       reusify: 1.1.0
 
-  fdir@6.4.6(picomatch@4.0.2):
+  fdir@6.4.6(picomatch@4.0.3):
     optionalDependencies:
-      picomatch: 4.0.2
+      picomatch: 4.0.3
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -6036,7 +6046,7 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  napi-postinstall@0.3.0: {}
+  napi-postinstall@0.3.2: {}
 
   natural-compare@1.4.0: {}
 
@@ -6147,7 +6157,7 @@ snapshots:
 
   picomatch@2.3.1: {}
 
-  picomatch@4.0.2: {}
+  picomatch@4.0.3: {}
 
   possible-typed-array-names@1.1.0: {}
 
@@ -6496,8 +6506,8 @@ snapshots:
 
   tinyglobby@0.2.14:
     dependencies:
-      fdir: 6.4.6(picomatch@4.0.2)
-      picomatch: 4.0.2
+      fdir: 6.4.6(picomatch@4.0.3)
+      picomatch: 4.0.3
 
   to-regex-range@5.0.1:
     dependencies:
@@ -6566,7 +6576,7 @@ snapshots:
 
   unrs-resolver@1.11.1:
     dependencies:
-      napi-postinstall: 0.3.0
+      napi-postinstall: 0.3.2
     optionalDependencies:
       "@unrs/resolver-binding-android-arm-eabi": 1.11.1
       "@unrs/resolver-binding-android-arm64": 1.11.1

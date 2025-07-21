@@ -113,6 +113,7 @@ export async function getMoments(
     .catch(async (error) => {
       console.log("getMoments error", error);
       return {
+        statusCode: error.statusCode,
         success: false,
         message: error.message,
       };

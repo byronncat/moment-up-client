@@ -24,7 +24,7 @@ const UNAUTHORIZED_STATUS_CODE = 401;
 
 export function useRefreshApi<TArgs extends any[], TResult extends ApiResult>(
   apiFunction: AuthenticatedApiFunction<TArgs, TResult>,
-  dependencies: Dependencies
+  dependencies?: Dependencies
 ) {
   const { token, refresh } = useAuth();
   const currentToken = dependencies?._token || token;

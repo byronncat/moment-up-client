@@ -104,7 +104,7 @@ function TrendingTopicItem({ topic }: Readonly<{ topic: Hashtag }>) {
             {Format.number(topic.count)} posts
           </span>
         </div>
-        <div onClick={(e) => e.stopPropagation()}>
+        <div onClick={(event) => event.stopPropagation()}>
           <ReportButton topicId={topic.id} />
         </div>
       </Link>
@@ -135,7 +135,7 @@ function ReportButton({ topicId }: Readonly<{ topicId: Hashtag["id"] }>) {
             "hover:bg-primary/10 group",
             "transition-colors duration-150 ease-in-out"
           )}
-          onClick={(e) => e.stopPropagation()}
+          onClick={(event) => event.stopPropagation()}
         >
           <MoreHorizontal
             className={cn(

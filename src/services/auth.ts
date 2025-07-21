@@ -32,6 +32,7 @@ export async function login(
     })
     .catch((error: ErrorResponse) => {
       return {
+        statusCode: error.statusCode,
         success: false,
         message: Array.isArray(error.message)
           ? error.message[0]
@@ -68,6 +69,7 @@ export async function switchAccount(
     })
     .catch((error: ErrorResponse) => {
       return {
+        statusCode: error.statusCode,
         success: false,
         message: Array.isArray(error.message)
           ? error.message[0]
@@ -98,6 +100,7 @@ export async function signup(
     })
     .catch((error: ErrorResponse) => {
       return {
+        statusCode: error.statusCode,
         success: false,
         message: Array.isArray(error.message)
           ? error.message[0]
@@ -188,6 +191,7 @@ export async function getUser(accessToken: string): API<{ user: UserInfo }> {
     })
     .catch((error: ErrorResponse) => {
       return {
+        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
       };
@@ -216,6 +220,7 @@ export async function sendOtpEmail(
     })
     .catch((error: ErrorResponse) => {
       return {
+        statusCode: error.statusCode,
         success: false,
         message: Array.isArray(error.message)
           ? error.message[0]
@@ -246,6 +251,7 @@ export async function recoverPassword(
     })
     .catch((error: ErrorResponse) => {
       return {
+        statusCode: error.statusCode,
         success: false,
         message: Array.isArray(error.message)
           ? error.message[0]

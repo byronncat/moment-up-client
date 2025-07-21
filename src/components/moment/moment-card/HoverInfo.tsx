@@ -13,7 +13,7 @@ import {
 
 type HoverableComponentProps = Readonly<{
   userInfo: UserCardDisplayInfo;
-  followHandler: (e: React.MouseEvent) => Promise<void>;
+  followHandler: (event: React.MouseEvent) => Promise<void>;
   children: React.ReactNode;
 }>;
 

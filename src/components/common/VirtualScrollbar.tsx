@@ -50,15 +50,15 @@ export default function VirtualScrollbar({
   );
 
   const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
+    (event: React.MouseEvent) => {
+      event.preventDefault();
       setIsDragging(true);
 
-      const startY = e.pageY;
+      const startY = event.pageY;
       const startScrollTop = thumbTop;
 
-      const handleMouseMove = (e: MouseEvent) => {
-        const delta = e.pageY - startY;
+      const handleMouseMove = (event: MouseEvent) => {
+        const delta = event.pageY - startY;
         const newThumbTop = Math.max(
           0,
           Math.min(maxScrollTop, startScrollTop + delta)
@@ -84,10 +84,10 @@ export default function VirtualScrollbar({
   );
 
   const handleFastScroll = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const track = e.currentTarget;
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      const track = event.currentTarget;
       const rect = track.getBoundingClientRect();
-      const clickY = e.clientY - rect.top;
+      const clickY = event.clientY - rect.top;
       if (clickY >= thumbTop && clickY <= thumbTop + thumbHeight) return;
       const newThumbTop = Math.max(
         0,

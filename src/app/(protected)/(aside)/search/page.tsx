@@ -104,8 +104,8 @@ export default function SearchPage() {
           <SearchInput
             id="side-search-input"
             defaultValue={initialQuery}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setQuery(e.target.value)
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setQuery(event.target.value)
             }
           />
         </div>

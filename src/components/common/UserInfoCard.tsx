@@ -23,7 +23,7 @@ import { useAuth } from "../providers";
 
 type UserInfoCardProps = Readonly<{
   user: UserCardDisplayInfo;
-  onFollow?: (e: React.MouseEvent) => Promise<void>;
+  onFollow?: (event: React.MouseEvent) => Promise<void>;
 }>;
 
 export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
@@ -191,16 +191,16 @@ function FollowedBy({
 
 type FollowButtonProps = Readonly<{
   isFollowing?: boolean;
-  followHandler?: (e: React.MouseEvent) => Promise<void>;
+  followHandler?: (event: React.MouseEvent) => Promise<void>;
 }>;
 
 function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
   const hoverRef = useRef<HTMLButtonElement>(null);
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
 
-  const handleClick = async (e: React.MouseEvent) => {
+  const handleClick = async (event: React.MouseEvent) => {
     if (!followHandler) return;
-    await followHandler(e);
+    await followHandler(event);
   };
 
   const renderIcon = () => {

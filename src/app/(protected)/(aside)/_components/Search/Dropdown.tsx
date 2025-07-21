@@ -106,8 +106,8 @@ function ItemList({
             <SearchItem data={item} />
             {showRemoveButtons && (
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={(event) => {
+                  event.stopPropagation();
                   onRemoveItem(item.id);
                 }}
                 className={cn(

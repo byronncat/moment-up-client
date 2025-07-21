@@ -20,9 +20,9 @@ export default function MessageInput({ onSendMessage }: MessageInputProps) {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
       handleSendMessage();
     }
   };
@@ -37,7 +37,7 @@ export default function MessageInput({ onSendMessage }: MessageInputProps) {
       <div className="grow relative">
         <Input
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(event) => setInputValue(event.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Aa"
           className={cn(
