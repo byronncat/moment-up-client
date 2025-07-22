@@ -36,13 +36,12 @@ export function useSearch(): UseSearchReturn {
   }
 
   function clearAllItems() {
-    setItems(null);
+    setItems([]);
   }
 
   function reset() {
-    clearAllItems();
+    setItems(null);
     setIsSearching(false);
-    setIsLoading(false);
   }
 
   const searchQuery = useRefreshApi(SearchApi.search);
