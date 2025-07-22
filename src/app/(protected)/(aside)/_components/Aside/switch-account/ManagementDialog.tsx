@@ -87,7 +87,7 @@ function AccountItem({ account }: Readonly<{ account: AccountInfo }>) {
   const { user, switchAccount, reload } = useAuth();
   const isMe = user?.id === account.id;
 
-  async function switchHandler(accountId: AccountInfo["id"]) {
+  async function handleSwitch(accountId: AccountInfo["id"]) {
     const { success, message } = await switchAccount(accountId);
     if (success) reload();
     else toast.error(message);
@@ -96,7 +96,7 @@ function AccountItem({ account }: Readonly<{ account: AccountInfo }>) {
   return (
     <div
       key={account.id}
-      onClick={() => switchHandler(account.id)}
+      onClick={() => handleSwitch(account.id)}
       role="button"
       tabIndex={!isMe ? 0 : -1}
       aria-disabled={isMe}

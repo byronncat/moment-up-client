@@ -19,7 +19,7 @@ export default function FeedModal() {
   const [totalFeeds, setTotalFeeds] = useState<FeedNotification[] | null>(null);
   const [totalLoading, setTotalLoading] = useState(true);
 
-  function closeHandler() {
+  function handleClose() {
     if (window.history.length > 1) router.back();
     else router.replace(ROUTE.HOME);
   }
@@ -44,12 +44,12 @@ export default function FeedModal() {
       <FeedView
         data={currentFeed}
         loading={detailLoading}
-        onClose={closeHandler}
+        onClose={handleClose}
       />
       <RightNav
         data={totalFeeds}
         loading={totalLoading}
-        onClose={closeHandler}
+        onClose={handleClose}
       />
     </Modal>
   );

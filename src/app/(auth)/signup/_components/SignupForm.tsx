@@ -37,7 +37,7 @@ export default function SignupForm() {
 
   const [showDetails, setShowDetails] = useState(false);
   const { signup } = useAuth();
-  async function signupHandler(values: z.infer<typeof zodSchema.auth.signup>) {
+  async function handleSignup(values: z.infer<typeof zodSchema.auth.signup>) {
     const { success, message } = await signup(values);
     if (success)
       toast("🎉 You're almost there!", {
@@ -65,7 +65,7 @@ export default function SignupForm() {
       </Tooltip>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(signupHandler)}>
+        <form onSubmit={form.handleSubmit(handleSignup)}>
           <div className={styles.inputGroup}>
             <FormField
               control={form.control}

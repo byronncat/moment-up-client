@@ -1,1 +1,1 @@
-export { useTextClamp } from "./use-text-clamp";
+export { useTextClamp } from "./useTextClamp";

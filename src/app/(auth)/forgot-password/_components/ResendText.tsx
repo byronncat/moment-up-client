@@ -8,7 +8,7 @@ export default function ResendText({
   const [resendTime, setResendTime] = useState(0);
   const isDisabled = resendTime > 0;
 
-  const resendHandler = () => {
+  const handleResend = () => {
     if (onClick) onClick();
     setResendTime(RESEND_TIME);
   };
@@ -38,7 +38,7 @@ export default function ResendText({
           "hover:opacity-60 transition-opacity duration-150 ease-in-out",
           "disabled:opacity-50 disabled:cursor-default"
         )}
-        onClick={resendHandler}
+        onClick={handleResend}
       >
         Resend
         {isDisabled && (

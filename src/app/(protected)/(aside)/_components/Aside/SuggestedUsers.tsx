@@ -60,7 +60,7 @@ function SuggestedUserItem({
 
   const follow = useRefreshApi(UserApi.follow);
 
-  async function followHandler(event: React.MouseEvent) {
+  async function handleFollow(event: React.MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
     if (isLoading) return;
@@ -90,7 +90,7 @@ function SuggestedUserItem({
         className="flex items-center gap-2"
         onClick={(event) => event.preventDefault()}
       >
-        <UserHoverCard user={user} onFollow={followHandler}>
+        <UserHoverCard user={user} onFollow={handleFollow}>
           <Link
             href={ROUTE.PROFILE(user.username)}
             className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
@@ -103,7 +103,7 @@ function SuggestedUserItem({
           </Link>
         </UserHoverCard>
         <div className="flex flex-col">
-          <UserHoverCard user={user} onFollow={followHandler}>
+          <UserHoverCard user={user} onFollow={handleFollow}>
             <Link href={ROUTE.PROFILE(user.username)}>
               <div
                 className={cn(
@@ -124,24 +124,23 @@ function SuggestedUserItem({
           </span>
         </div>
       </div>
-      <FollowText isFollowing={isFollowing} followHandler={followHandler} />
+      <FollowText isFollowing={isFollowing} onFollow={handleFollow} />
     </div>
   );
 }
 
-function FollowText({
-  isFollowing,
-  followHandler,
-}: Readonly<{
+type FollowTextProps = Readonly<{
   isFollowing: boolean;
-  followHandler: (event: React.MouseEvent) => void;
-}>) {
+  onFollow: (event: React.MouseEvent) => void;
+}>;
+
+function FollowText({ isFollowing, onFollow }: FollowTextProps) {
   const hoverRef = useRef<HTMLButtonElement>(null);
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
   return (
     <button
       ref={hoverRef}
-      onClick={followHandler}
+      onClick={onFollow}
       className={cn(
         "cursor-pointer",
         "text-xs font-semibold",

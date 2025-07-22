@@ -50,11 +50,12 @@ function Content({ user }: Readonly<{ user: AccountInfo }>) {
         </Link>
         <Link
           href={ROUTE.PROFILE(user.username)}
-          className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
+          className={cn(
+            "text-xs text-muted-foreground",
+            "hover:opacity-80 transition-opacity duration-150 ease-in-out"
+          )}
         >
-          <span className="text-sm text-muted-foreground">
-            @{user.username}
-          </span>
+          @{user.username}
         </Link>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/components/providers";
-import { useComment } from "@/components/moment/comment";
+// import { useComment } from "@/components/moment/comment";
 import { isEmpty } from "lodash";
 
 import { cn } from "@/libraries/utils";
@@ -15,22 +15,22 @@ type CommentInputProps = Readonly<{
 
 export default function CommentInput({ ref, className }: CommentInputProps) {
   const { user } = useAuth();
-  const { handleComment } = useComment();
+  // const { handleComment } = useComment();
   const [comment, setComment] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleSendComment() {
     if (!comment || !user) return;
     setIsLoading(true);
-    const success = await handleComment({
-      id: crypto.randomUUID(),
-      content: comment,
-      createdAt: "2025-07-11T09:20:12.345Z",
-      likes: 0,
-      isLiked: false,
-      user,
-    });
-    if (success) setComment("");
+    // const success = await handleComment({
+    //   id: crypto.randomUUID(),
+    //   content: comment,
+    //   createdAt: "2025-07-11T09:20:12.345Z",
+    //   likes: 0,
+    //   isLiked: false,
+    //   user,
+    // });
+    if (false) setComment("");
     setIsLoading(false);
   }
 

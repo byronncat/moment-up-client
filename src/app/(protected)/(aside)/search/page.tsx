@@ -128,7 +128,7 @@ export default function SearchPage() {
               results={results}
               type={activeCategory}
               loading={isSearching}
-              errorHandler={() => {
+              onError={() => {
                 setResults(null);
                 setIsSearching(false);
               }}

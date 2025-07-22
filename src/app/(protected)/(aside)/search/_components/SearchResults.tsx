@@ -14,7 +14,7 @@ type SearchResultsProps = Readonly<{
   results: SearchResult | null;
   type: SearchCategory;
   loading: boolean;
-  errorHandler: () => void;
+  onError: () => void;
 }>;
 
 const ItemStyles = cn(
@@ -123,7 +123,7 @@ export default function SearchResults({
   results,
   type,
   loading,
-  errorHandler,
+  onError,
 }: SearchResultsProps) {
   if (loading)
     return (
@@ -133,7 +133,7 @@ export default function SearchResults({
     );
 
   if (results === null)
-    return <ErrorContent onRefresh={errorHandler} className="h-fit py-6" />;
+    return <ErrorContent onRefresh={onError} className="h-fit py-6" />;
 
   return (
     <Wrapper>

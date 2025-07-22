@@ -47,14 +47,14 @@ export default function LoginForm() {
   });
 
   const { login } = useAuth();
-  async function loginHandler(values: z.infer<typeof zodSchema.auth.login>) {
+  async function handleLogin(values: z.infer<typeof zodSchema.auth.login>) {
     const { success, message } = await login(values);
     if (!success) toast.error(message);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(loginHandler)}>
+      <form onSubmit={form.handleSubmit(handleLogin)}>
         <div className={styles.inputGroup}>
           <FormField
             control={form.control}

@@ -3,12 +3,17 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/libraries/utils";
 import { Input } from "@/components/ui/input";
-import { MagnifyingGlass, X } from "@/components/icons";
+import { Loader, MagnifyingGlass, X } from "@/components/icons";
+
+interface SearchInput extends React.ComponentProps<"input"> {
+  loading?: boolean;
+}
 
 export default function SearchInput({
   defaultValue = "",
+  loading = false,
   ...props
-}: React.ComponentProps<"input">) {
+}: SearchInput) {
   const [query, setQuery] = useState(defaultValue);
 
   function changeQuery(event: React.ChangeEvent<HTMLInputElement>) {
@@ -29,13 +34,23 @@ export default function SearchInput({
 
   return (
     <div className="relative">
-      <MagnifyingGlass
-        className={cn(
-          "size-4",
-          "absolute left-3 top-1/2 -translate-y-1/2 z-10",
-          "fill-muted-foreground"
-        )}
-      />
+      {loading ? (
+        <Loader
+          className={cn(
+            "size-4 animate-spin",
+            "absolute left-3 top-1/2 -translate-y-1/2 z-10",
+            "text-muted-foreground"
+          )}
+        />
+      ) : (
+        <MagnifyingGlass
+          className={cn(
+            "size-4",
+            "absolute left-3 top-1/2 -translate-y-1/2 z-10",
+            "fill-muted-foreground"
+          )}
+        />
+      )}
       <Input
         type="text"
         placeholder="Search"
@@ -43,6 +58,7 @@ export default function SearchInput({
         {...props}
         value={query}
         onChange={changeQuery}
+        autoComplete="off"
       />
       {query && <ClearButton onClear={clearQuery} />}
     </div>

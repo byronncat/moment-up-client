@@ -30,7 +30,7 @@ export default function SendOtpForm({
   });
 
   const { sendOtpEmail } = useAuth();
-  async function sendEmailHandler(
+  async function handleSendEmail(
     values: z.infer<typeof zodSchema.auth.sendOtpEmail>
   ) {
     const { success, message } = await sendOtpEmail(values);
@@ -40,7 +40,7 @@ export default function SendOtpForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(sendEmailHandler)}>
+      <form onSubmit={form.handleSubmit(handleSendEmail)}>
         <div className={styles.inputGroup}>
           <FormField
             control={form.control}

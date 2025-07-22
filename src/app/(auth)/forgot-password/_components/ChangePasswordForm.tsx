@@ -41,7 +41,7 @@ export default function ChangePasswordForm({
   });
 
   const { recoverPassword: changePassword, sendOtpEmail } = useAuth();
-  async function verifyHandler(
+  async function handleVerify(
     values: z.infer<typeof zodSchema.auth.recoverPassword>
   ) {
     const { success, message } = await changePassword(values);
@@ -53,7 +53,7 @@ export default function ChangePasswordForm({
     else toast.error(message);
   }
 
-  async function resendHandler() {
+  async function handleResend() {
     toast.promise(sendOtpEmail({ identity: defaultValue }), {
       loading: "Sending recovery email...",
       success: (res) => {
@@ -67,7 +67,7 @@ export default function ChangePasswordForm({
   return (
     <div className={cn(className)}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(verifyHandler)}>
+        <form onSubmit={form.handleSubmit(handleVerify)}>
           <FormField
             control={form.control}
             name="otp"
@@ -131,7 +131,7 @@ export default function ChangePasswordForm({
       </Form>
 
       <div className="mt-4">
-        <ResendText onClick={resendHandler} />
+        <ResendText onClick={handleResend} />
       </div>
     </div>
   );

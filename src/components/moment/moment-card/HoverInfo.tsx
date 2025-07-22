@@ -13,14 +13,14 @@ import {
 
 type HoverableComponentProps = Readonly<{
   userInfo: UserCardDisplayInfo;
-  followHandler: (event: React.MouseEvent) => Promise<void>;
+  onFollow: (event: React.MouseEvent) => Promise<void>;
   children: React.ReactNode;
 }>;
 
 export default function HoverableComponent({
   children,
   userInfo,
-  followHandler,
+  onFollow,
 }: HoverableComponentProps) {
   return (
     <HoverCard>
@@ -34,7 +34,7 @@ export default function HoverableComponent({
         <Link href={ROUTE.PROFILE(userInfo.username)}>{children}</Link>
       </HoverCardTrigger>
       <HoverCardContent className="w-[288px]">
-        <UserInfoCard user={userInfo} onFollow={followHandler} />
+        <UserInfoCard user={userInfo} onFollow={onFollow} />
       </HoverCardContent>
     </HoverCard>
   );

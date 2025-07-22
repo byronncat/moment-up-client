@@ -87,10 +87,7 @@ export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
         {isCurrentUser ? (
           <EditProfileButton />
         ) : (
-          <FollowButton
-            isFollowing={user.isFollowing}
-            followHandler={onFollow}
-          />
+          <FollowButton isFollowing={user.isFollowing} onFollow={onFollow} />
         )}
       </CardFooter>
     </div>
@@ -191,16 +188,16 @@ function FollowedBy({
 
 type FollowButtonProps = Readonly<{
   isFollowing?: boolean;
-  followHandler?: (event: React.MouseEvent) => Promise<void>;
+  onFollow?: (event: React.MouseEvent) => Promise<void>;
 }>;
 
-function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
+function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {
   const hoverRef = useRef<HTMLButtonElement>(null);
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
 
   const handleClick = async (event: React.MouseEvent) => {
-    if (!followHandler) return;
-    await followHandler(event);
+    if (!onFollow) return;
+    await onFollow(event);
   };
 
   const renderIcon = () => {

@@ -39,7 +39,7 @@ export default function SidebarFooter({ open }: SidebarFooterProps) {
   const { logout } = useAuth();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
-  function logoutHandler() {
+  function handleLogout() {
     logout();
     setShowLogoutDialog(false);
   }
@@ -196,9 +196,7 @@ export default function SidebarFooter({ open }: SidebarFooterProps) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={logoutHandler}>
-              Logout
-            </AlertDialogAction>
+            <AlertDialogAction onClick={handleLogout}>Logout</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

@@ -47,7 +47,7 @@ export default function LoginDialog({
   });
 
   const { user, addAccount, reload } = useAuth();
-  async function loginHandler(values: z.infer<typeof zodSchema.auth.login>) {
+  async function handleLogin(values: z.infer<typeof zodSchema.auth.login>) {
     if (values.identity === user?.username || values.identity === user?.email) {
       toast.error("You cannot add yourself");
       return;
@@ -72,7 +72,7 @@ export default function LoginDialog({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(loginHandler)}>
+          <form onSubmit={form.handleSubmit(handleLogin)}>
             <div className={cn(styles.inputGroup, "mb-8")}>
               <FormField
                 control={form.control}

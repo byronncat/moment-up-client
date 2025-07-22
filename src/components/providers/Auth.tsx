@@ -1,7 +1,7 @@
 "use client";
 
 import type { z } from "zod";
-import type { API, UserInfo } from "api";
+import type { API, AccountInfo } from "api";
 
 import { useRouter } from "next/navigation";
 import {
@@ -26,7 +26,7 @@ export type Token = {
 };
 
 type AuthContextType = {
-  user: UserInfo | null;
+  user: AccountInfo | null;
   logged?: boolean;
   loaded: boolean;
   token: Token;
@@ -41,7 +41,7 @@ type AuthContextType = {
   recoverPassword: (
     values: z.infer<typeof zodSchema.auth.recoverPassword>
   ) => API;
-  switchAccount: (accountId: UserInfo["id"]) => API;
+  switchAccount: (accountId: AccountInfo["id"]) => API;
   reload: () => Promise<void>;
 };
 
@@ -87,7 +87,7 @@ export default function AuthProvider({
   const router = useRouter();
   const [logged, setLogged] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [user, setUser] = useState<UserInfo | null>(null);
+  const [user, setUser] = useState<AccountInfo | null>(null);
 
   const authCookie = useMemo(() => ClientCookie(AUTH_COOKIE_NAME), []);
   const token = useRef({
@@ -152,7 +152,7 @@ export default function AuthProvider({
     _refresh: refresh,
   });
   const switchAccount = useCallback(
-    async (accountId: UserInfo["id"]) => {
+    async (accountId: AccountInfo["id"]) => {
       const { success, message, data } = await switchApi(accountId);
       if (success && data) {
         setLogged(true);

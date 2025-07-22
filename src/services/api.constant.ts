@@ -38,7 +38,18 @@ export const ApiUrl = {
 
   // Search
   search: {
-    // Add search-specific URLs here when they exist
+    search: (
+      query: string,
+      type?: "user" | "post" | "hashtag",
+      page?: number,
+      limit?: number
+    ) =>
+      `${SERVER_HOST_URL}/v1/search?query=${query}` +
+      (type ? `&type=${type}` : "") +
+      (page ? `&page=${page}` : "") +
+      (limit ? `&limit=${limit}` : ""),
+    history: (limit?: number) =>
+      `${SERVER_HOST_URL}/v1/search/history` + (limit ? `?limit=${limit}` : ""),
   },
 
   // Notification

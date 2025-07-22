@@ -62,7 +62,7 @@ export default function UserInfo({ data }: UserInformationProps) {
       </div>
 
       <div className="flex gap-2 absolute top-42 right-2">
-        <FollowButton isFollowing={isFollowing} followHandler={follow} />
+        <FollowButton isFollowing={isFollowing} onFollow={follow} />
         <Link href={ROUTE.SETTINGS}>
           <Button
             className={cn("text-sm", "px-4 py-2")}
@@ -79,16 +79,16 @@ export default function UserInfo({ data }: UserInformationProps) {
 
 type FollowButtonProps = Readonly<{
   isFollowing?: boolean;
-  followHandler?: (event: React.MouseEvent) => Promise<void>;
+  onFollow?: (event: React.MouseEvent) => Promise<void>;
 }>;
 
-function FollowButton({ isFollowing, followHandler }: FollowButtonProps) {
+function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {
   const hoverRef = useRef<HTMLButtonElement>(null);
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
 
   const handleClick = async (event: React.MouseEvent) => {
-    if (!followHandler) return;
-    await followHandler(event);
+    if (!onFollow) return;
+    await onFollow(event);
   };
 
   const renderIcon = () => {

@@ -32,7 +32,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
     <div className={cn("px-4 pt-4 pb-3 space-y-0", "flex flex-row gap-2")}>
       <HoverableComponent
         userInfo={user}
-        followHandler={() => actions.follow(data.id)}
+        onFollow={() => actions.follow(data.id)}
       >
         <Avatar
           src={user.avatar}
@@ -45,7 +45,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
         <div className="flex items-center gap-1">
           <HoverableComponent
             userInfo={user}
-            followHandler={() => actions.follow(data.id)}
+            onFollow={() => actions.follow(data.id)}
           >
             <span
               className={cn(
@@ -66,7 +66,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
         <div className="w-fit">
           <HoverableComponent
             userInfo={user}
-            followHandler={() => actions.follow(data.id)}
+            onFollow={() => actions.follow(data.id)}
           >
             <span className="text-sm text-muted-foreground">
               @{user.username}
