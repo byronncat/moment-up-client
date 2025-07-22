@@ -48,8 +48,11 @@ export const ApiUrl = {
       (type ? `&type=${encodeURIComponent(type)}` : "") +
       (page ? `&page=${page}` : "") +
       (limit ? `&limit=${limit}` : ""),
-    history: (limit?: number) =>
+    getHistory: (limit?: number) =>
       `${SERVER_HOST_URL}/v1/search/history` + (limit ? `?limit=${limit}` : ""),
+    clearHistory: `${SERVER_HOST_URL}/v1/search/history/clear`,
+    removeHistoryItem: (itemId: string) =>
+      `${SERVER_HOST_URL}/v1/search/history/${itemId}`,
   },
 
   // Notification

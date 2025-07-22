@@ -39,10 +39,10 @@ export async function search(
     });
 }
 
-export async function getSearchHistory({
+export async function getHistory({
   accessToken,
 }: Omit<Token, "csrfToken">): API<SearchItem[]> {
-  return await fetch(ApiUrl.search.history(), {
+  return await fetch(ApiUrl.search.getHistory(), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -57,6 +57,64 @@ export async function getSearchHistory({
         success: true,
         message: "Search history fetched successfully",
         data: data.history,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        statusCode: error.statusCode,
+        success: false,
+        message: error.message as string,
+      };
+    });
+}
+
+export async function clearHistory({
+  accessToken,
+  csrfToken,
+}: Token): API {
+  return await fetch(ApiUrl.search.clearHistory, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+      "X-CSRF-Token": csrfToken,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Search history cleared successfully",
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        statusCode: error.statusCode,
+        success: false,
+        message: error.message as string,
+      };
+    });
+}
+
+export async function removeHistoryItem(
+  itemId: string,
+  { accessToken, csrfToken }: Token
+): API {
+  return await fetch(ApiUrl.search.removeHistoryItem(itemId), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+      "X-CSRF-Token": csrfToken,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Search history item removed successfully",
       };
     })
     .catch((error: ErrorResponse) => {

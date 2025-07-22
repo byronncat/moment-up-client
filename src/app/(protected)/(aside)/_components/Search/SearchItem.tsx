@@ -7,9 +7,10 @@ import { SearchItemType } from "@/constants/serverConfig";
 
 type SearchItemProps = Readonly<{
   data: SearchItem;
+  className?: string;
 }>;
 
-export default function SearchItem({ data }: SearchItemProps) {
+export default function SearchItem({ data, className }: SearchItemProps) {
   const variant = data.type;
   const Variant = {
     [SearchItemType.USER]: () => (
@@ -54,7 +55,11 @@ export default function SearchItem({ data }: SearchItemProps) {
     ),
   };
 
-  return <div className="flex items-center gap-3">{Variant[variant]()}</div>;
+  return (
+    <div className={cn("flex items-center gap-3", className)}>
+      {Variant[variant]()}
+    </div>
+  );
 }
 
 function IconContainer({ children }: Readonly<{ children: React.ReactNode }>) {
