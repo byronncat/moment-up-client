@@ -8,7 +8,7 @@ import {
 } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import { SearchApi, SuggestApi } from "@/services";
+import { SuggestApi } from "@/services";
 import {
   SEARCH_DEBOUNCE_TIME,
   SearchCategory,
@@ -141,7 +141,7 @@ export default function SearchPage() {
 }
 
 function NoSearchState() {
-  const [searchHistory, setSearchHistory] = useState<SearchItem[] | null>(null);
+  const [searchHistory] = useState<SearchItem[] | null>(null);
   const [isHistoryLoaded, setIsHistoryLoaded] = useState(false);
   const [popularAccounts, setPopularAccounts] = useState<
     ProfileSearchItem[] | null
@@ -149,8 +149,8 @@ function NoSearchState() {
   const [isPopularLoaded, setIsPopularLoaded] = useState(false);
 
   async function fetchSearchHistory() {
-    const res = await SearchApi.getSearchHistory();
-    if (res.success) setSearchHistory(res.data ?? []);
+    // const res = await SearchApi.getSearchHistory();
+    // if (res.success) setSearchHistory(res.data ?? []);
     setIsHistoryLoaded(true);
   }
 

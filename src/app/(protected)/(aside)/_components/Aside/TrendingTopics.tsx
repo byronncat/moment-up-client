@@ -63,19 +63,18 @@ const FEEDBACK_OPTIONS = [
 ];
 
 export default function TrendingTopics() {
-  const {
-    data: trendingTopics,
-    isLoading,
-    error,
-  } = useSWRImmutable(ApiUrl.suggestion.trending, SWRFetcher<Hashtag[]>);
+  const { data, isLoading, error } = useSWRImmutable(
+    ApiUrl.suggestion.trending,
+    SWRFetcher<{ topics: Hashtag[] }>
+  );
 
   if (isLoading) return <TrendingTopicsSkeleton />;
-  if (!trendingTopics || trendingTopics.length === 0 || error) return null;
+  if (!data || data.topics.length === 0 || error) return null;
   return (
     <div className="w-full">
       <SectionHeader className="mb-4">Trending topics</SectionHeader>
       <div>
-        {trendingTopics.map((topic) => (
+        {data.topics.map((topic) => (
           <TrendingTopicItem key={topic.id} topic={topic} />
         ))}
       </div>

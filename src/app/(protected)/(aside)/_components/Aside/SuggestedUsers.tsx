@@ -25,22 +25,21 @@ import SectionHeader, { HeaderSkeleton } from "./SectionHeader";
 
 export default function SuggestedUsers() {
   const { token } = useAuth();
-  const {
-    data: popularUsers,
-    isLoading,
-    error,
-  } = useSWRImmutable(
+  const { data, isLoading, error } = useSWRImmutable(
     [ApiUrl.suggestion.users, token.accessToken],
-    ([url, token]) => SWRFetcherWithToken<UserCardDisplayInfo[]>(url, token)
+    ([url, token]) =>
+      SWRFetcherWithToken<{
+        users: UserCardDisplayInfo[];
+      }>(url, token)
   );
 
   if (isLoading) return <SuggestedUsersSkeleton />;
-  if (!popularUsers || popularUsers.length === 0 || error) return null;
+  if (!data || data.users.length === 0 || error) return null;
   return (
     <div className="w-full">
       <SectionHeader className="mb-4">Suggested for you</SectionHeader>
       <div>
-        {popularUsers?.map((user) => (
+        {data.users.map((user) => (
           <SuggestedUserItem key={user.id} _user={user} />
         ))}
       </div>

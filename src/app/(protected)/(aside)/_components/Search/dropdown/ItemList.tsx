@@ -1,17 +1,18 @@
-import type { SearchItem as SearchItemType } from "api";
+import type { SearchItem } from "api";
 
 import { cn } from "@/libraries/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { X } from "@/components/icons";
-import SearchItem from "../SearchItem";
+import Item from "../SearchItem";
 import ClearButton from "./ClearButton";
+import { SearchItemType } from "@/constants/serverConfig";
 
 type ItemListProps = {
   query: string;
-  items: SearchItemType[];
-  onRemoveItem: (itemId: SearchItemType["id"]) => void;
+  items: SearchItem[];
+  onRemoveItem: (itemId: SearchItem["id"]) => void;
   onClearAllItems: () => void;
-  onClickItem: (item: SearchItemType) => void;
+  onClickItem: (item: SearchItem) => void;
 };
 
 export default function ItemList({
@@ -48,9 +49,9 @@ export default function ItemList({
             <button
               onClick={() => onClickItem(item)}
               type="button"
-              aria-label={`Search for ${item.type === "user" ? `@${item.username}` : item.id}`}
+              aria-label={`Search for ${item.type === SearchItemType.USER ? `@${item.username}` : item.id}`}
             >
-              <SearchItem data={item} />
+              <Item data={item} />
             </button>
             {showActionButtons && (
               <button
@@ -81,16 +82,14 @@ export default function ItemList({
             onClick={() =>
               onClickItem({
                 id: query,
-                type: "search",
-                query: query,
+                type: SearchItemType.QUERY,
               })
             }
           >
-            <SearchItem
+            <Item
               data={{
-                id: query,
-                type: "search",
-                query: `Search for "${query}"`,
+                id: `Search for "${query}"`,
+                type: SearchItemType.QUERY,
               }}
             />
           </button>

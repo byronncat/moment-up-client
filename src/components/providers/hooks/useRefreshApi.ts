@@ -9,7 +9,6 @@ type ApiResult = {
   success: boolean;
   statusCode?: number;
   message: string;
-  [key: string]: any;
 };
 
 interface Dependencies {

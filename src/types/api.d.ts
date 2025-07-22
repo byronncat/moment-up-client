@@ -100,6 +100,22 @@ declare module "api" {
 
   type NotificationInfo = SecurityNotification | CommunityNotification;
 
+  // === Search ===
+  interface UserSearchItem extends AccountInfo {
+    type: 0; // User enum type
+  }
+
+  interface QuerySearchItem {
+    type: 1; // Search enum type
+    id: string;
+  }
+
+  interface HashtagSearchItem extends Hashtag {
+    type: 2; // Hashtag enum type
+  }
+
+  type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;
+
   // === Others ===
   type Hashtag = {
     id: string;
@@ -112,23 +128,6 @@ declare module "api" {
     url: string;
     aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
   };
-
-  // Search
-  interface UserSearchItem extends AccountInfo {
-    type: "user";
-  }
-
-  interface QuerySearchItem {
-    type: "search";
-    id: string;
-    query: string;
-  }
-
-  interface HashtagSearchItem extends Hashtag {
-    type: "hashtag";
-  }
-
-  type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;
 
   type ProfileSearchItem = Omit<
     UserProfileInfo,

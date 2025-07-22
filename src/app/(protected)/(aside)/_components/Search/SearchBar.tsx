@@ -5,8 +5,9 @@ import type { SearchItem } from "api";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef } from "react";
 import { useOnClickOutside } from "usehooks-ts";
-import { ROUTE } from "@/constants/route";
 import { useSearch } from "./hooks/useSearch";
+import { ROUTE } from "@/constants/route";
+import { SearchItemType } from "@/constants/serverConfig";
 
 import { cn } from "@/libraries/utils";
 import SearchInput from "./SearchInput";
@@ -36,9 +37,11 @@ export default function SearchBar() {
 
   function handleClickItem(item: SearchItem) {
     reset();
-    if (item.type === "user") router.push(ROUTE.PROFILE(item.username));
-    else if (item.type === "search") router.push(ROUTE.SEARCH(item.query));
-    else if (item.type === "hashtag") router.push(ROUTE.SEARCH(`#${item.id}`));
+    if (item.type === SearchItemType.USER)
+      router.push(ROUTE.PROFILE(item.username));
+    else if (item.type === SearchItemType.HASHTAG)
+      router.push(ROUTE.SEARCH(`#${item.id}`));
+    else router.push(ROUTE.SEARCH(item.id));
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {

@@ -2,6 +2,7 @@ import type { SearchItem } from "api";
 
 import { useState, useEffect, useCallback } from "react";
 import { useDebounceValue } from "usehooks-ts";
+import { useRefreshApi } from "@/components/providers";
 import { toast } from "sonner";
 import { SearchApi } from "@/services";
 import { SEARCH_DEBOUNCE_TIME } from "@/constants/clientConfig";
@@ -35,7 +36,7 @@ export function useSearch(): UseSearchReturn {
   }
 
   function clearAllItems() {
-    setItems([]);
+    setItems(null);
   }
 
   function reset() {
@@ -44,29 +45,37 @@ export function useSearch(): UseSearchReturn {
     setIsLoading(false);
   }
 
-  const search = useCallback(async (query: string) => {
-    if (!query.trim()) return;
-    setIsLoading(true);
+  const searchQuery = useRefreshApi(SearchApi.search);
+  const search = useCallback(
+    async (query: string) => {
+      if (!query.trim()) return;
+      setIsLoading(true);
 
-    const { success, data: items } = await SearchApi.search({ query });
-    if (success) setItems(items ?? []);
-    else {
-      setItems([]);
-      toast.error("Failed to perform search");
-    }
+      const { success, data } = await searchQuery({
+        query,
+        type: "user&hashtag",
+      });
+      if (success) setItems(data ?? []);
+      else {
+        setItems([]);
+        toast.error("Failed to perform search");
+      }
 
-    setIsLoading(false);
-  }, []);
+      setIsLoading(false);
+    },
+    [searchQuery]
+  );
 
+  const getSearchHistory = useRefreshApi(SearchApi.getSearchHistory);
   const fetchSearchHistory = useCallback(async () => {
     setIsLoading(true);
 
-    const { success, data: items } = await SearchApi.getSearchHistory();
-    if (success) setItems(items ?? []);
+    const { success, data } = await getSearchHistory();
+    if (success) setItems(data ?? []);
     else toast.error("Failed to load search history");
 
     setIsLoading(false);
-  }, []);
+  }, [getSearchHistory]);
 
   useEffect(() => {
     if (query) search(query);

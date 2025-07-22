@@ -78,7 +78,7 @@ function ClearButton({ onClear }: Readonly<{ onClear: () => void }>) {
         "transition-colors duration-150 ease-in-out"
       )}
     >
-      <X className="size-3 fill-muted-foreground" />
+      <X className="size-3.5 text-muted-foreground" />
     </button>
   );
 }

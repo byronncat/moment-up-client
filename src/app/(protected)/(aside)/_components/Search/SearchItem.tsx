@@ -1,13 +1,9 @@
-import type {
-  SearchItem,
-  UserSearchItem,
-  QuerySearchItem,
-  HashtagSearchItem,
-} from "api";
+import type { SearchItem, UserSearchItem, HashtagSearchItem } from "api";
 
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
 import { MagnifyingGlass } from "@/components/icons";
+import { SearchItemType } from "@/constants/serverConfig";
 
 type SearchItemProps = Readonly<{
   data: SearchItem;
@@ -16,7 +12,7 @@ type SearchItemProps = Readonly<{
 export default function SearchItem({ data }: SearchItemProps) {
   const variant = data.type;
   const Variant = {
-    user: () => (
+    [SearchItemType.USER]: () => (
       <>
         <Avatar
           src={(data as UserSearchItem).avatar}
@@ -35,35 +31,21 @@ export default function SearchItem({ data }: SearchItemProps) {
         </div>
       </>
     ),
-    search: () => (
+    [SearchItemType.QUERY]: () => (
       <>
-        <div
-          className={cn(
-            "size-12 rounded-full",
-            "flex items-center justify-center",
-            "bg-accent/[.07]"
-          )}
-        >
+        <IconContainer>
           <MagnifyingGlass className="size-5 fill-muted-foreground" />
-        </div>
-        <span className="text-sm">{(data as QuerySearchItem).query}</span>
+        </IconContainer>
+        <span className="text-sm">{data.id}</span>
       </>
     ),
-    hashtag: () => (
+    [SearchItemType.HASHTAG]: () => (
       <>
-        <div
-          className={cn(
-            "size-12 rounded-full",
-            "flex items-center justify-center",
-            "bg-accent/[.07]"
-          )}
-        >
+        <IconContainer>
           <span className="text-xl">#</span>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-sm font-semibold">
-            {(data as HashtagSearchItem).id}
-          </span>
+        </IconContainer>
+        <div className="flex flex-col items-start">
+          <span className="text-sm font-semibold">{data.id}</span>
           <span className="text-sm text-muted-foreground">
             {`${(data as HashtagSearchItem).count} tagged`}
           </span>
@@ -73,4 +55,18 @@ export default function SearchItem({ data }: SearchItemProps) {
   };
 
   return <div className="flex items-center gap-3">{Variant[variant]()}</div>;
+}
+
+function IconContainer({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <div
+      className={cn(
+        "size-12 rounded-full",
+        "flex items-center justify-center",
+        "bg-accent/[.05]"
+      )}
+    >
+      {children}
+    </div>
+  );
 }

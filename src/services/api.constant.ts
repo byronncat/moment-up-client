@@ -40,12 +40,12 @@ export const ApiUrl = {
   search: {
     search: (
       query: string,
-      type?: "user" | "post" | "hashtag",
+      type?: SearchQueryParams,
       page?: number,
       limit?: number
     ) =>
-      `${SERVER_HOST_URL}/v1/search?query=${query}` +
-      (type ? `&type=${type}` : "") +
+      `${SERVER_HOST_URL}/v1/search?query=${encodeURIComponent(query)}` +
+      (type ? `&type=${encodeURIComponent(type)}` : "") +
       (page ? `&page=${page}` : "") +
       (limit ? `&limit=${limit}` : ""),
     history: (limit?: number) =>
@@ -57,3 +57,12 @@ export const ApiUrl = {
     // Add notification-specific URLs here when they exist
   },
 } as const;
+
+export type SearchQueryParams =
+  | "user"
+  | "post"
+  | "hashtag"
+  | "user&post"
+  | "user&hashtag"
+  | "post&hashtag"
+  | "user&post&hashtag";

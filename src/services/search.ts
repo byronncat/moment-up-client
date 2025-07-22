@@ -1,124 +1,69 @@
 import type { z } from "zod";
-import type {
-  API,
-  // HashtagSearchItem,
-  SearchItem,
-  SearchResult,
-  // UserSearchItem,
-} from "api";
+import type { API, SearchItem, ErrorResponse } from "api";
+import type { Token } from "@/components/providers/Auth";
 
 import zodSchema from "@/libraries/zodSchema";
-import { SearchCategory } from "@/constants/clientConfig";
+import { ApiUrl, type SearchQueryParams } from "./api.constant";
+
+interface SearchData extends z.infer<typeof zodSchema.core.search> {
+  type: SearchQueryParams;
+}
 
 export async function search(
-  data: z.infer<typeof zodSchema.core.search>
+  data: SearchData,
+  token: Omit<Token, "csrfToken">
 ): API<SearchItem[]> {
-  // console.log("search", data);
-  // await new Promise((resolve) => {
-  //   setTimeout(() => {
-  //     resolve(true);
-  //   }, 2000);
-  // });
-
-  // if (apiRes.search === "Search successful") {
-  //   const filteredData = mockSearches.filter((item) => {
-  //     if (item.type === "user")
-  //       return item.username.toLowerCase().includes(data.query.toLowerCase());
-  //     if (item.type === "hashtag")
-  //       return item.id.toLowerCase().includes(data.query.toLowerCase());
-  //     return item.query.toLowerCase().includes(data.query.toLowerCase());
-  //   });
-
-  //   return {
-  //     success: true,
-  //     message: "ok",
-  //     data: filteredData,
-  //   };
-  // }
-
-  return {
-    success: false,
-    message: "Internal error",
-  };
+  return await fetch(ApiUrl.search.search(data.query, data.type), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw data;
+      return {
+        success: true,
+        message: "Search performed successfully",
+        data: data.items,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        statusCode: error.statusCode,
+        success: false,
+        message: error.message as string,
+      };
+    });
 }
 
-export async function getSearchHistory(): API<SearchItem[]> {
-  // console.log("getSearchHistory");
-  // await new Promise((resolve) => {
-  //   setTimeout(() => {
-  //     resolve(true);
-  //   }, 2000);
-  // });
-
-  // if (apiRes.getSearchHistory === "Search history loaded") {
-  //   return {
-  //     success: true,
-  //     message: "ok",
-  //     data: mockSearches.slice(0, 5),
-  //   };
-  // }
-
-  return {
-    success: false,
-    message: "Internal error",
-  };
-}
-
-export async function detailSearch(
-  data: z.infer<typeof zodSchema.core.search>,
-  type: SearchCategory
-): API<SearchResult> {
-  // console.log("detailSearch", data, type);
-  // try {
-  //   await new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       resolve(true);
-  //     }, 2000);
-  //   });
-
-  //   const result: SearchResult = {
-  //     posts: mockMoments.filter((moment) =>
-  //       moment.post.text?.toLowerCase().includes(data.query.toLowerCase())
-  //     ),
-  //     users: mockSearches.filter(
-  //       (user) =>
-  //         user.type === "user" &&
-  //         user.username.toLowerCase().includes(data.query.toLowerCase())
-  //     ) as UserSearchItem[],
-  //     hashtags: mockSearches.filter(
-  //       (hashtag) =>
-  //         hashtag.type === "hashtag" &&
-  //         hashtag.id.toLowerCase().includes(data.query.toLowerCase())
-  //     ) as HashtagSearchItem[],
-  //   };
-
-  //   if (type === SearchCategory.PEOPLE) {
-  //     delete result.posts;
-  //     delete result.hashtags;
-  //   }
-  //   if (type === SearchCategory.MEDIA) {
-  //     delete result.users;
-  //     delete result.hashtags;
-  //   }
-  //   if (type === SearchCategory.POSTS) {
-  //     delete result.users;
-  //     delete result.hashtags;
-  //   }
-  //   if (type === SearchCategory.HASHTAG) {
-  //     delete result.posts;
-  //     delete result.users;
-  //   }
-
-  //   return {
-  //     success: true,
-  //     message: "ok",
-  //     data: result,
-  //   };
-  // } catch (error) {
-  //   console.error(error);
-  return {
-    success: false,
-    message: "internal error",
-  };
-  // }
+export async function getSearchHistory({
+  accessToken,
+}: Omit<Token, "csrfToken">): API<SearchItem[]> {
+  return await fetch(ApiUrl.search.history(), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw data;
+      return {
+        success: true,
+        message: "Search history fetched successfully",
+        data: data.history,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        statusCode: error.statusCode,
+        success: false,
+        message: error.message as string,
+      };
+    });
 }
