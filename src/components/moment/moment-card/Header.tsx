@@ -1,4 +1,4 @@
-import type { DetailedMomentInfo } from "api";
+import type { MomentInfo } from "api";
 import type { Actions } from "../../providers/MomentData";
 
 import dayjs from "dayjs";
@@ -19,7 +19,7 @@ import {
 import { MoreHorizontal, User, Ban, Flag } from "@/components/icons";
 
 type HeaderProps = Readonly<{
-  data: DetailedMomentInfo;
+  data: MomentInfo;
   actions: Pick<Actions, "follow" | "block" | "report">;
   sideButton?: React.ReactNode;
 }>;

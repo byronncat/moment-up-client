@@ -14,7 +14,7 @@ import { ApiUrl } from "@/services/api.constant";
 import { cn } from "@/libraries/utils";
 import { Chevron, MoreHorizontal } from "@/components/icons";
 import FeedItem from "./FeedItem";
-import FeedSkeletons from "./FeedSkeletons";
+import FeedSkeletons from "./FeedsSkeleton";
 import CreateFeedButton from "./CreateFeedButton";
 
 const ITEMS_PER_VIEW = 3;
@@ -43,7 +43,7 @@ export default function Feeds() {
   }, [error, setHideFeeds]);
 
   if (isLoading && !hideFeeds) return <FeedSkeletons />;
-  const isError = !data || data.feeds.length === 0 || error;
+  const isError = !data || error;
   return (
     <div
       className={cn(

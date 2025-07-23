@@ -15,8 +15,11 @@ export const ApiUrl = {
   },
 
   // Core
-  core: {
-    getMoments: (page: number) => `${SERVER_HOST_URL}/v1/moments?page=${page}`,
+  moment: {
+    home: (page?: number, limit?: number) =>
+      `${SERVER_HOST_URL}/v1/moments` +
+      (page ? `?page=${page}` : "") +
+      (limit ? `&limit=${limit}` : ""),
   },
 
   feed: {

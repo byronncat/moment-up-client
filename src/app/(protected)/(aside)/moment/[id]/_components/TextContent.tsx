@@ -1,4 +1,4 @@
-import type { DetailedMomentInfo } from "api";
+import type { MomentInfo } from "api";
 import { useRef, useState } from "react";
 import { useTextClamp } from "@/hooks";
 import { parseText } from "@/helpers/parser";
@@ -6,7 +6,7 @@ import { cn } from "@/libraries/utils";
 
 export default function TextContent({
   data,
-}: Readonly<{ data: DetailedMomentInfo["post"]["text"] }>) {
+}: Readonly<{ data: MomentInfo["post"]["text"] }>) {
   const textRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const isTextClamped = useTextClamp(textRef);

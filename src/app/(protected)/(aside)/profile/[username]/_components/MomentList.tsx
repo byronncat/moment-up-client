@@ -1,6 +1,6 @@
 "use client";
 
-import type { API, DetailedMomentInfo } from "api";
+import type { API, MomentInfo } from "api";
 import { useState, useRef, use, useEffect, Suspense } from "react";
 import { useMoment } from "@/components/providers/MomentData";
 import { useProfile } from "../_providers/ProfileProvider";
@@ -11,8 +11,8 @@ import ProfileZone from "./ProfileZone";
 import { MomentList as List, MomentSkeleton } from "@/components/moment";
 
 type MomentListProps = Readonly<{
-  username: DetailedMomentInfo["user"]["username"];
-  initialRes: API<{ items: DetailedMomentInfo[]; hasNextPage: boolean }>;
+  username: MomentInfo["user"]["username"];
+  initialRes: API<{ items: MomentInfo[]; hasNextPage: boolean }>;
 }>;
 
 export default function SuspenseWrapper({

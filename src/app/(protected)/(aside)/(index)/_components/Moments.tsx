@@ -1,35 +1,53 @@
 "use client";
 
-import type { API, DetailedMomentInfo } from "api";
+import type { MomentInfo, PaginationInfo } from "api";
 
-import { useState, useRef, use, useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import useSWRInfinite from "swr/infinite";
 import { useMoment } from "@/components/providers/MomentData";
+import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { useHome } from "../_providers/Home";
-import { CoreApi } from "@/services";
+import { ApiUrl } from "@/services";
 
 import { cn } from "@/libraries/utils";
 import { NoContent, ErrorContent } from "@/components/common";
-import { MomentList } from "@/components/moment";
+import { MomentList, MomentSkeleton } from "@/components/moment";
 import { Camera } from "@/components/icons";
 
-// Container
 const TOP_PADDING = 160;
 const BOTTOM_PADDING = 121;
+const INITIAL_PAGE = 1;
 
-type MomentsProps = Readonly<{
-  initialRes: API<{
-    items: DetailedMomentInfo[];
-    hasNextPage: boolean;
-  }>;
-}>;
+export default function Moments() {
+  const swrFetcherWithRefresh = useRefreshSWR();
+  const { token } = useAuth();
+  const { hideFeeds, loadedSuccess } = useHome();
 
-export default function Moments({ initialRes }: MomentsProps) {
-  const response = use(initialRes);
+  const getKey = (
+    pageIndex: number,
+    previousPageData: PaginationInfo<MomentInfo> | null
+  ) => {
+    if (previousPageData && !previousPageData.hasNextPage) return null;
+
+    const url = ApiUrl.moment.home(pageIndex + 1);
+    return [url, token.accessToken];
+  };
+
+  const { data, error, size, setSize, isLoading, isValidating, mutate } =
+    useSWRInfinite(
+      getKey,
+      ([url, accessToken]) =>
+        swrFetcherWithRefresh<PaginationInfo<MomentInfo>>(url, accessToken),
+      {
+        initialSize: INITIAL_PAGE,
+        revalidateFirstPage: false,
+      }
+    );
+
   const {
     moments,
     setMoments,
     setCurrentIndex,
-    addMoments,
     like,
     bookmark,
     report,
@@ -37,21 +55,21 @@ export default function Moments({ initialRes }: MomentsProps) {
     follow,
     block,
   } = useMoment();
-  const [hasNextPage, setHasNextPage] = useState(
-    response?.data?.hasNextPage ?? true
-  );
-  const [isNextPageLoading, setIsNextPageLoading] = useState(false);
-  const { hideFeeds, loadedSuccess } = useHome();
-  const pageRef = useRef(1);
 
-  async function fetchMoments(page?: number) {
-    const response = await CoreApi.getMoments(page ?? pageRef.current + 1);
-    if (response.success) {
-      addMoments(response.data?.items ?? []);
-      setHasNextPage(response.data?.hasNextPage ?? false);
-      pageRef.current = page ?? pageRef.current + 1;
-    } else setHasNextPage(false);
-    setIsNextPageLoading(false);
+  const hasNextPage = data
+    ? (data[data.length - 1]?.hasNextPage ?? false)
+    : true;
+  const isLoadingMore = !!(
+    isValidating &&
+    data &&
+    typeof data[size - 1] !== "undefined"
+  );
+  const allMoments = useMemo(() => {
+    return data ? data.flatMap((page) => page?.items || []) : [];
+  }, [data]);
+
+  async function loadNextPage() {
+    if (hasNextPage && !isLoadingMore) await setSize(size + 1);
   }
 
   function handleClick(index: number) {
@@ -59,19 +77,21 @@ export default function Moments({ initialRes }: MomentsProps) {
   }
 
   useEffect(() => {
-    if (response.data) setMoments(response.data.items);
-    loadedSuccess();
-  }, [response.data, setMoments, loadedSuccess]);
+    if (!error) setMoments(allMoments);
+  }, [allMoments, setMoments, error]);
 
-  if (response.success === false)
+  useEffect(() => {
+    if (size === INITIAL_PAGE && !isLoading) loadedSuccess();
+  }, [loadedSuccess, size, isLoading]);
+
+  const spaceClassName = cn(
+    hideFeeds ? "pt-[40px]" : "pt-[calc(145px+16px)]",
+    "transition-all duration-200"
+  );
+  if (isLoading) return <MomentSkeletons className={spaceClassName} />;
+  if (error)
     return (
-      <ErrorContent
-        onRefresh={() => {
-          setIsNextPageLoading(true);
-          fetchMoments(0);
-        }}
-        className="pt-[144px]"
-      />
+      <ErrorContent onRefresh={() => mutate()} className={spaceClassName} />
     );
 
   if (!moments) return null;
@@ -81,7 +101,7 @@ export default function Moments({ initialRes }: MomentsProps) {
         icon={<Camera className="size-16 text-muted-foreground" />}
         title="No moments yet"
         description="When anyone you follow posts, they'll show up here."
-        className="pt-[144px]"
+        className={spaceClassName}
       />
     );
 
@@ -89,8 +109,8 @@ export default function Moments({ initialRes }: MomentsProps) {
     <MomentList
       items={moments}
       hasNextPage={hasNextPage}
-      isNextPageLoading={isNextPageLoading}
-      loadNextPage={() => fetchMoments()}
+      isNextPageLoading={isLoadingMore}
+      loadNextPage={loadNextPage}
       onItemClick={handleClick}
       actions={{
         like,
@@ -105,9 +125,18 @@ export default function Moments({ initialRes }: MomentsProps) {
         bottomPadding: BOTTOM_PADDING,
         listClassName: cn(
           "transform transition-transform duration-200",
-          hideFeeds && "-translate-y-[120px]" // 120px = 160px (feed panel height) - 24px (hide button height) - 16px (gap)
+          hideFeeds && "-translate-y-[121px]" // 120px = 160px (feed panel height) - 24px (hide button height) - 16px (gap)
         ),
       }}
     />
+  );
+}
+
+function MomentSkeletons({ className }: Readonly<{ className: string }>) {
+  return (
+    <div className={cn("flex flex-col gap-4", className)}>
+      <MomentSkeleton haveText={true} media="none" />
+      <MomentSkeleton haveText={false} media="square" />
+    </div>
   );
 }

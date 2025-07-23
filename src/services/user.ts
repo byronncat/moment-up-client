@@ -1,7 +1,7 @@
 import { mockProfile, mockMoments } from "@/__mocks__";
 import type {
   API,
-  DetailedMomentInfo,
+  MomentInfo,
   ErrorResponse,
   UserProfileInfo,
 } from "api";
@@ -107,7 +107,7 @@ export async function getMoments(
   type: "all" | "media" | "tagged" | "likes" | "bookmarks",
   username: string,
   page: number
-): API<{ items: DetailedMomentInfo[]; hasNextPage: boolean }> {
+): API<{ items: MomentInfo[]; hasNextPage: boolean }> {
   console.log("getMoments", type, username, page);
   await new Promise((resolve) => setTimeout(resolve, 4000));
 

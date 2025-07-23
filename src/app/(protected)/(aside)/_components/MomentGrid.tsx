@@ -1,6 +1,6 @@
 "use client";
 
-import type { API, DetailedMomentInfo } from "api";
+import type { API, MomentInfo } from "api";
 import { use, useEffect, useState, useRef } from "react";
 import { useMoment } from "@/components/providers";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -18,7 +18,7 @@ import { Image } from "@/components/icons";
 
 type MediaGridProps = Readonly<{
   initialRes: API<{
-    items: DetailedMomentInfo[];
+    items: MomentInfo[];
     hasNextPage: boolean;
   }>;
 }>;

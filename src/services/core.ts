@@ -1,7 +1,6 @@
 import { mockComments, mockFeed, mockMoments } from "@/__mocks__";
-import type { API, FeedInfo, DetailedMomentInfo, CommentInfo } from "api";
+import type { API, FeedInfo, MomentInfo, CommentInfo } from "api";
 import { Audience, SortBy } from "@/constants/clientConfig";
-import { ApiUrl } from "./api.constant";
 
 const apiRes = {
   getMoments: "success" as "error" | "empty" | "success",
@@ -43,50 +42,9 @@ export async function getFeed(feedId: string): API<FeedInfo> {
   });
 }
 
-export async function getMoments(
-  page: number = 0,
-  token?: {
-    accessToken: string;
-    csrfToken: string;
-  }
-): API<{
-  items: DetailedMomentInfo[];
-  hasNextPage: boolean;
-}> {
-  console.log("getMoments", page, token);
-  return await fetch(ApiUrl.core.getMoments(page), {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      ...(token && {
-        "X-Csrf-Token": token.csrfToken,
-        Authorization: `Bearer ${token.accessToken}`,
-      }),
-    },
-    credentials: "include",
-  })
-    .then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) throw data;
-      return {
-        success: true,
-        message: "Fetch moments successful",
-        data,
-      };
-    })
-    .catch(async (error) => {
-      console.log("getMoments error", error);
-      return {
-        statusCode: error.statusCode,
-        success: false,
-        message: error.message,
-      };
-    });
-}
-
 export async function getMoment(
   momentId: string
-): API<DetailedMomentInfo | null> {
+): API<MomentInfo | null> {
   console.log("getMoment", momentId);
   await new Promise((resolve) => setTimeout(resolve, 3000));
   if (apiRes.getMoment === "error") {
@@ -162,7 +120,7 @@ export async function explore(
   type: "media" | "moments",
   page: number
 ): API<{
-  items: DetailedMomentInfo[];
+  items: MomentInfo[];
   hasNextPage: boolean;
 }> {
   console.log("explore", type, page);

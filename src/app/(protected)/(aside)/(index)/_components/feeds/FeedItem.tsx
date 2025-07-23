@@ -17,6 +17,8 @@ export default function FeedItem({
       <Link
         href={ROUTE.FEED(data.id)}
         className={cn("group", "cursor-pointer", "flex flex-col items-center")}
+        aria-label={`View feed from ${data.displayName}${!data.viewed ? " (unread)" : ""}`}
+        aria-describedby={`feed-${data.id}-status`}
       >
         <div className={cn("flex items-center justify-center", "size-18")}>
           <Avatar
@@ -39,6 +41,9 @@ export default function FeedItem({
           )}
         >
           {data.displayName}
+        </span>
+        <span id={`feed-${data.id}-status`} className="sr-only">
+          {data.viewed ? "Read" : "Unread"} feed
         </span>
       </Link>
     </div>

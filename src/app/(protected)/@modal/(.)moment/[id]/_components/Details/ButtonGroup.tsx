@@ -1,4 +1,4 @@
-import type { MomentInfo, UserCardDisplayInfo } from "api";
+import type { PostInfo, UserCardDisplayInfo } from "api";
 import type { Actions } from "@/components/providers/MomentData";
 import { useState } from "react";
 
@@ -8,7 +8,7 @@ import { Heart, Message, Share, Repeat, Bookmark } from "@/components/icons";
 import ShareDialog from "@/components/moment/moment-card/ShareDialog";
 
 type ButtonsProps = Readonly<{
-  postData: MomentInfo;
+  postData: PostInfo;
   momentId: string;
   className?: string;
 }>;

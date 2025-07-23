@@ -1,4 +1,4 @@
-import type { DetailedMomentInfo } from "api";
+import type { MomentInfo } from "api";
 
 import { useRef } from "react";
 import { useMoment } from "@/components/providers";
@@ -17,7 +17,7 @@ import TextContent from "@/app/(protected)/(aside)/moment/[id]/_components/TextC
 import { X } from "@/components/icons";
 
 type ContentProps = Readonly<{
-  data: DetailedMomentInfo;
+  data: MomentInfo;
   haveMedia?: boolean;
   onClose?: () => void;
   className?: string;

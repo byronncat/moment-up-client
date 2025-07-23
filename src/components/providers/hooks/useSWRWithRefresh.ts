@@ -3,15 +3,15 @@ import { useAuth } from "../Auth";
 import type { ErrorResponse } from "api";
 
 export function useRefreshSWR() {
-  const { token, refresh } = useAuth();
+  const { refresh } = useAuth();
 
   const swrFetcherWithRefresh = useCallback(
-    async <T = void>(url: string): Promise<T | undefined> => {
+    async <T = void>(url: string, _token: string): Promise<T | undefined> => {
       let response = await fetch(url, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token.accessToken}`,
+          Authorization: `Bearer ${_token}`,
         },
         credentials: "include",
       });
@@ -36,7 +36,7 @@ export function useRefreshSWR() {
 
       return await response.json();
     },
-    [token, refresh]
+    [refresh]
   );
 
   return swrFetcherWithRefresh;

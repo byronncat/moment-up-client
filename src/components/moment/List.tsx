@@ -1,6 +1,6 @@
 "use client";
 
-import type { DetailedMomentInfo } from "api";
+import type { MomentInfo } from "api";
 import type { Actions } from "@/components/providers/MomentData";
 
 import { useState, useRef, useEffect } from "react";
@@ -27,7 +27,7 @@ const BORDER_SIZE = 1;
 const ITEM_GAP = 16;
 
 type MomentListProps = Readonly<{
-  items: DetailedMomentInfo[];
+  items: MomentInfo[];
   hasNextPage: boolean;
   isNextPageLoading: boolean;
   loadNextPage: () => void;
@@ -77,7 +77,8 @@ export default function MomentList({
   const getItemSize = (index: number, _width: number) => {
     if (index === 0) return listOptions.topPadding ?? 0;
     if (index === itemCount - 1) return listOptions.bottomPadding ?? 0;
-    if (index === itemCount - 2) return LOADING_INDICATOR_HEIGHT;
+    if (index === itemCount - 2 && isNextPageLoading)
+      return LOADING_INDICATOR_HEIGHT;
 
     let width = _width;
     if (itemOptions?.maxWidth && _width > itemOptions.maxWidth)
@@ -180,6 +181,8 @@ export default function MomentList({
                       return items[index - 1].id;
                     }}
                     className={cn("scrollbar-hide", listOptions.listClassName)}
+                    aria-label="Moments feed"
+                    aria-busy={isNextPageLoading}
                   >
                     {Item}
                   </VariableSizeList>
@@ -205,7 +208,7 @@ export default function MomentList({
 type ItemProps = Readonly<{
   index: number;
   data: {
-    items: DetailedMomentInfo[];
+    items: MomentInfo[];
     actions: Actions;
     itemCount: number;
     topChildren?: React.ReactNode;

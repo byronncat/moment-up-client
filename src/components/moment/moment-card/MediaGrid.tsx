@@ -1,4 +1,4 @@
-import type { DetailedMomentInfo } from "api";
+import type { MomentInfo } from "api";
 import { useCallback, memo } from "react";
 import { ROUTE } from "@/constants/route";
 import { BLUR_DATA_URL } from "@/constants/clientConfig";
@@ -11,7 +11,7 @@ import { CardContent } from "../../ui/card";
 import { Play } from "../../icons";
 
 type MediaGridProps = Readonly<{
-  files: DetailedMomentInfo["post"]["files"];
+  files: MomentInfo["post"]["files"];
   momentId: string;
 }>;
 
@@ -203,7 +203,7 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
 }
 
 type MediaItemProps = Readonly<{
-  file: NonNullable<DetailedMomentInfo["post"]["files"]>[0];
+  file: NonNullable<MomentInfo["post"]["files"]>[0];
   index: number;
   momentId: string;
   className?: string;

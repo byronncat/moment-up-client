@@ -45,6 +45,11 @@ type AuthContextType = {
   reload: () => Promise<void>;
 };
 
+const defaultResponse = {
+  success: false,
+  message: "Something went wrong!",
+};
+
 const AuthContext = createContext<AuthContextType>({
   user: null,
   logged: false,
@@ -56,25 +61,13 @@ const AuthContext = createContext<AuthContextType>({
   refresh: async () => "",
   setLogged: () => {},
   setLoaded: () => {},
-  login: async () => ({ success: false, message: "Something went wrong!" }),
-  addAccount: async () => ({
-    success: false,
-    message: "Something went wrong!",
-  }),
-  signup: async () => ({ success: false, message: "Something went wrong!" }),
-  logout: async () => ({ success: false, message: "Something went wrong!" }),
-  sendOtpEmail: async () => ({
-    success: false,
-    message: "Something went wrong!",
-  }),
-  recoverPassword: async () => ({
-    success: false,
-    message: "Something went wrong!",
-  }),
-  switchAccount: async () => ({
-    success: false,
-    message: "Something went wrong!",
-  }),
+  login: async () => defaultResponse,
+  addAccount: async () => defaultResponse,
+  signup: async () => defaultResponse,
+  logout: async () => defaultResponse,
+  sendOtpEmail: async () => defaultResponse,
+  recoverPassword: async () => defaultResponse,
+  switchAccount: async () => defaultResponse,
   reload: async () => {},
 });
 

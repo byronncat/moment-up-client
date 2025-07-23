@@ -1,6 +1,6 @@
 "use client";
 
-import type { DetailedMomentInfo } from "api";
+import type { MomentInfo } from "api";
 import type { Actions } from "../../providers/MomentData";
 
 import { useRouter } from "next/navigation";
@@ -15,7 +15,7 @@ import ShareDialog from "./ShareDialog";
 import { Heart, Message, Share, Repeat, Bookmark } from "../../icons";
 
 type ButtonGroupProps = Readonly<{
-  data: DetailedMomentInfo;
+  data: MomentInfo;
   actions: Pick<Actions, "like" | "bookmark" | "share"> & {
     comment?: () => void;
   };

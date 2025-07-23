@@ -1,6 +1,6 @@
 "use client";
 
-import type { API, DetailedMomentInfo } from "api";
+import type { API, MomentInfo } from "api";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { use, useLayoutEffect, useRef } from "react";
@@ -15,7 +15,7 @@ import CommentInput from "./CommentInput";
 import ScrollArea from "./ScrollArea";
 
 type MomentDetailsProps = Readonly<{
-  initialRes: API<DetailedMomentInfo | null>;
+  initialRes: API<MomentInfo | null>;
 }>;
 
 export default function MomentDetails({ initialRes }: MomentDetailsProps) {

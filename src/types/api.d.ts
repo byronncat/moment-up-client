@@ -11,6 +11,14 @@ declare module "api" {
     statusCode: number;
   }
 
+  interface PaginationInfo<T> {
+    total: number;
+    page: number;
+    limit: number;
+    hasNextPage: boolean;
+    items: T[];
+  }
+
   // === User ===
   interface AccountInfo {
     id: string;
@@ -45,7 +53,7 @@ declare module "api" {
   }
 
   // === Core ===
-  type MomentInfo = {
+  type PostInfo = {
     text?: string;
     files?: {
       id: string;
@@ -60,10 +68,10 @@ declare module "api" {
     isBookmarked: boolean;
   };
 
-  type DetailedMomentInfo = {
+  type MomentInfo = {
     id: string;
     user: UserCardDisplayInfo;
-    post: MomentInfo;
+    post: PostInfo;
   };
 
   type CommentInfo = {
@@ -135,7 +143,7 @@ declare module "api" {
   >;
 
   type SearchResult = {
-    posts?: DetailedMomentInfo[];
+    posts?: MomentInfo[];
     users?: AccountInfo[];
     hashtags?: Hashtag[];
   };

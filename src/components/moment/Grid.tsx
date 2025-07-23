@@ -1,6 +1,6 @@
 "use client";
 
-import type { DetailedMomentInfo } from "api";
+import type { MomentInfo } from "api";
 import { useRef, useEffect, useState } from "react";
 import { debounce } from "lodash";
 
@@ -15,7 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const COLUMN_COUNT = 3;
 
 type GridProps = Readonly<{
-  items: DetailedMomentInfo[];
+  items: MomentInfo[];
   hasNextPage: boolean;
   isNextPageLoading: boolean;
   loadNextPage: () => void;
@@ -153,7 +153,7 @@ type RowProps = Readonly<{
   index: number;
   style: React.CSSProperties;
   data: {
-    items: DetailedMomentInfo[];
+    items: MomentInfo[];
     onClick: (index: number) => void;
     itemCount: number;
     hasNextPage: boolean;

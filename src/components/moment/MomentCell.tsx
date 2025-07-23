@@ -1,4 +1,4 @@
-import type { DetailedMomentInfo } from "api";
+import type { MomentInfo } from "api";
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 import { BLUR_DATA_URL } from "@/constants/clientConfig";
@@ -9,7 +9,7 @@ import { cn } from "@/libraries/utils";
 import { Heart, Message, Clone, Video } from "@/components/icons";
 
 type MomentCellProps = Readonly<{
-  data: DetailedMomentInfo;
+  data: MomentInfo;
   onClick?: () => void;
 }>;
 
@@ -66,7 +66,7 @@ export default function MomentCell({ data, onClick }: MomentCellProps) {
 }
 
 type HoverOverlayProps = Readonly<{
-  id: DetailedMomentInfo["id"];
+  id: MomentInfo["id"];
   isLiked: boolean;
   likes: number;
   comments: number;

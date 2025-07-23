@@ -1,14 +1,14 @@
 "use client";
 
-import type { DetailedMomentInfo } from "api";
+import type { MomentInfo } from "api";
 import type { Actions } from "../../providers/MomentData";
 
 import TextContent from "./Text";
 import MediaGrid from "./MediaGrid";
 
 type ContentProps = Readonly<{
-  momentId: DetailedMomentInfo["id"];
-  postData: DetailedMomentInfo["post"];
+  momentId: MomentInfo["id"];
+  postData: MomentInfo["post"];
   actions: Actions;
 }>;
 
