@@ -141,13 +141,12 @@ declare module "api" {
   };
 
   // Core
-  type FeedNotification = {
+  type FeedNotificationInfo = {
     id: string;
     userId: string;
     displayName: string;
     avatar?: string;
     viewed: boolean;
-    latestFeedTime: string;
   };
 
   type FeedInfo = {

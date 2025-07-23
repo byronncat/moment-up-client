@@ -1,11 +1,5 @@
-import { mockComments, mockFeed, mockFeeds, mockMoments } from "@/__mocks__";
-import type {
-  API,
-  FeedInfo,
-  FeedNotification,
-  DetailedMomentInfo,
-  CommentInfo,
-} from "api";
+import { mockComments, mockFeed, mockMoments } from "@/__mocks__";
+import type { API, FeedInfo, DetailedMomentInfo, CommentInfo } from "api";
 import { Audience, SortBy } from "@/constants/clientConfig";
 import { ApiUrl } from "./api.constant";
 
@@ -22,36 +16,6 @@ const apiRes = {
   toggleBookmark: "success" as "error" | "success",
   toggleCommentLike: "success" as "error" | "success",
 };
-
-export async function getFeeds(): API<FeedNotification[]> {
-  console.log("getFeeds");
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 3000);
-  });
-
-  if (apiRes.getFeeds === "error") {
-    return {
-      success: false,
-      message: "error",
-    };
-  }
-
-  if (apiRes.getFeeds === "empty") {
-    return {
-      success: true,
-      message: "ok",
-      data: [],
-    };
-  }
-
-  return {
-    success: true,
-    message: "ok",
-    data: mockFeeds,
-  };
-}
 
 export async function getFeed(feedId: string): API<FeedInfo> {
   console.log("getFeed", feedId);

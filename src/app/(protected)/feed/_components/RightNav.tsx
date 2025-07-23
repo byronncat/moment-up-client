@@ -1,6 +1,6 @@
-import type { FeedNotification } from "api";
+import type { FeedNotificationInfo } from "api";
 
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import { cn } from "@/libraries/utils";
 
 import { Avatar } from "@/components/common";
@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { X } from "@/components/icons";
 
 type RightNavProps = Readonly<{
-  data: FeedNotification[] | null;
+  data: FeedNotificationInfo[] | null;
   loading: boolean;
   onClose: () => void;
 }>;
@@ -94,7 +94,7 @@ export default function RightNav({ onClose, data, loading }: RightNavProps) {
                   <div className="flex-1">
                     <div className="font-semibold">{feed.displayName}</div>
                     <div className="text-sm text-muted-foreground">
-                      <span>{dayjs(feed.latestFeedTime).fromNow()}</span>
+                      {/* <span>{dayjs(feed.latestFeedTime).fromNow()}</span> */}
                     </div>
                   </div>
                 </div>

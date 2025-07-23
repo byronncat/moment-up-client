@@ -19,6 +19,10 @@ export const ApiUrl = {
     getMoments: (page: number) => `${SERVER_HOST_URL}/v1/moments?page=${page}`,
   },
 
+  feed: {
+    get: `${SERVER_HOST_URL}/v1/feeds`,
+  },
+
   // Suggestion
   suggestion: {
     users: `${SERVER_HOST_URL}/v1/suggestion/users`,

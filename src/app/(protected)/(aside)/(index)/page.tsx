@@ -1,25 +1,22 @@
-// import { CoreApi } from "@/services";
 
 import { Suspense } from "react";
 import HomeProvider from "./_providers/Home";
-import { FeedSkeletons } from "./_components";
 import { MomentSkeleton } from "@/components/moment";
+import { Feeds, Moments } from "./_components";
+import { CoreApi } from "@/services";
 
 export default async function HomePage() {
-  // const feedsRes = CoreApi.getFeeds();
-  // const momentsRes = CoreApi.getMoments(0);
+  const momentsRes = CoreApi.getMoments(0);
 
   return (
     <HomeProvider>
       <div className="relative">
-        <Suspense fallback={<FeedSkeletons />}>
-          {/* <Feeds initialRes={feedsRes} /> */}
-        </Suspense>
+        <Feeds />
       </div>
       <div className="size-full">
         <div className="max-w-[600px] size-full mx-auto">
           <Suspense fallback={<MomentSkeletons />}>
-            {/* <Moments initialRes={momentsRes} /> */}
+            <Moments initialRes={momentsRes} />
           </Suspense>
         </div>
       </div>

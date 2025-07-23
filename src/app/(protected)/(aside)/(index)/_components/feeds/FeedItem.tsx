@@ -1,4 +1,4 @@
-import type { FeedNotification } from "api";
+import type { FeedNotificationInfo } from "api";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -9,7 +9,7 @@ export default function FeedItem({
   data,
   className,
 }: Readonly<{
-  data: FeedNotification;
+  data: FeedNotificationInfo;
   className?: string;
 }>) {
   return (

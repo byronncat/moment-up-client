@@ -1,6 +1,6 @@
 "use client";
 
-import type { FeedInfo, FeedNotification } from "api";
+import type { FeedInfo, FeedNotificationInfo } from "api";
 
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,7 +16,7 @@ export default function FeedModal() {
   const feedId = params.id as string;
   const [currentFeed, setCurrentFeed] = useState<FeedInfo | null>(null);
   const [detailLoading, setDetailLoading] = useState(true);
-  const [totalFeeds, setTotalFeeds] = useState<FeedNotification[] | null>(null);
+  const [totalFeeds] = useState<FeedNotificationInfo[] | null>(null);
   const [totalLoading, setTotalLoading] = useState(true);
 
   function handleClose() {
@@ -31,8 +31,8 @@ export default function FeedModal() {
       setDetailLoading(false);
     }
     async function fetchTotalFeeds() {
-      const res = await CoreApi.getFeeds();
-      if (res.success) setTotalFeeds(res.data ?? null);
+      // const res = await CoreApi.getFeeds();
+      // if (res.success) setTotalFeeds(res.data ?? null);
       setTotalLoading(false);
     }
     fetchFeed();

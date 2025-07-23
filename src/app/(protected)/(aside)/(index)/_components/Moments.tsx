@@ -104,7 +104,7 @@ export default function Moments({ initialRes }: MomentsProps) {
         topPadding: TOP_PADDING,
         bottomPadding: BOTTOM_PADDING,
         listClassName: cn(
-          "transform transition-transform duration-300",
+          "transform transition-transform duration-200",
           hideFeeds && "-translate-y-[120px]" // 120px = 160px (feed panel height) - 24px (hide button height) - 16px (gap)
         ),
       }}
