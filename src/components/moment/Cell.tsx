@@ -16,12 +16,12 @@ type MomentCellProps = Readonly<{
 export default function MomentCell({ data, onClick }: MomentCellProps) {
   if (!data.post.files || data.post.files.length === 0) return null;
   const coverFile = data.post.files[0];
-  const isLiked = data.post.isLiked;
 
   return (
     <div
       className={cn("relative group", "shadow-lg overflow-hidden")}
       onClick={onClick}
+      role="button"
     >
       <div className={cn("bg-card aspect-square", "relative")}>
         {coverFile.type === "image" ? (
@@ -44,24 +44,49 @@ export default function MomentCell({ data, onClick }: MomentCellProps) {
           />
         )}
 
-        {data.post.files.some((file) => file.type === "video") ? (
-          <span className="absolute top-3 right-3">
-            <Video className="size-5 fill-white" type="solid" />
-          </span>
-        ) : data.post.files.length > 1 ? (
-          <span className="absolute top-3 right-3">
-            <Clone className="size-5 fill-white" type="solid" />
-          </span>
-        ) : null}
+        <MediaTypeIndicator
+          hasVideo={data.post.files.some((file) => file.type === "video")}
+          hasMultiple={data.post.files.length > 1}
+        />
 
         <HoverOverlay
           id={data.id}
-          isLiked={isLiked}
+          isLiked={data.post.isLiked}
           likes={data.post.likes}
           comments={data.post.comments}
         />
       </div>
     </div>
+  );
+}
+
+type MediaTypeIndicatorProps = Readonly<{
+  hasVideo: boolean;
+  hasMultiple: boolean;
+}>;
+
+function MediaTypeIndicator({
+  hasVideo,
+  hasMultiple,
+}: MediaTypeIndicatorProps) {
+  if (!hasVideo && !hasMultiple) return null;
+
+  const icon = hasVideo ? (
+    <Video className="size-5 fill-white drop-shadow-md" type="solid" />
+  ) : (
+    <Clone className="size-5 fill-white drop-shadow-md" type="solid" />
+  );
+
+  const label = hasVideo ? "Contains video" : "Multiple files";
+
+  return (
+    <span
+      className="absolute top-3 right-3 z-10"
+      aria-label={label}
+      title={label}
+    >
+      {icon}
+    </span>
   );
 }
 

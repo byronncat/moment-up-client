@@ -8,6 +8,7 @@ import { useMomentStore, useMoment } from "@/components/providers/MomentData";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { useHome } from "../_providers/Home";
 import { ApiUrl } from "@/services";
+import { INITIAL_PAGE } from "@/constants/serverConfig";
 
 import { cn } from "@/libraries/utils";
 import { NoContent, ErrorContent } from "@/components/common";
@@ -16,7 +17,6 @@ import { Camera } from "@/components/icons";
 
 const TOP_PADDING = 160;
 const BOTTOM_PADDING = 121;
-const INITIAL_PAGE = 1;
 
 export default function Moments() {
   const swrFetcherWithRefresh = useRefreshSWR();
