@@ -14,7 +14,7 @@ import {
 } from "react";
 import { useAuthOperations, useRefreshApi } from "./hooks";
 import { AuthApi, indexedDBService } from "@/services";
-import { ClientCookie } from "@/helpers/cookie";
+import ClientCookie from "@/helpers/client-cookie";
 import zodSchema from "@/libraries/zodSchema";
 import { ROUTE } from "@/constants/route";
 import { PAGE_RELOAD_TIME, AUTH_COOKIE_NAME } from "@/constants/clientConfig";

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useSidebar, SIDEBAR_COOKIE_NAME } from "@/components/ui/sidebar";
-import { ClientCookie } from "@/helpers/cookie";
+import ClientCookie from "@/helpers/client-cookie";
 import { XL_BREAKPOINT } from "@/constants/clientConfig";
 
 export function useResponsiveSidebar() {

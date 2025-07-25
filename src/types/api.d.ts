@@ -1,4 +1,6 @@
 declare module "api" {
+  import { SearchItemType } from "@/constants/serverConfig";
+
   type API<T = void> = Promise<{
     success: boolean;
     message: string;
@@ -64,6 +66,7 @@ declare module "api" {
     createdAt: string;
     likes: number;
     comments: number;
+    reposts: number;
     isLiked: boolean;
     isBookmarked: boolean;
   };
@@ -110,16 +113,16 @@ declare module "api" {
 
   // === Search ===
   interface UserSearchItem extends AccountInfo {
-    type: 0; // User enum type
+    type: SearchItemType.USER;
   }
 
   interface QuerySearchItem {
-    type: 1; // Search enum type
+    type: SearchItemType.QUERY;
     id: string;
   }
 
   interface HashtagSearchItem extends Hashtag {
-    type: 2; // Hashtag enum type
+    type: SearchItemType.HASHTAG;
   }
 
   type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;

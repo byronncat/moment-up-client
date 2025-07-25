@@ -1,6 +1,7 @@
 import type { MomentInfo } from "api";
 import type { Actions } from "../../providers/MomentData";
 
+import { useState } from "react";
 import dayjs from "dayjs";
 import Format from "@/utilities/format";
 
@@ -27,6 +28,14 @@ type HeaderProps = Readonly<{
 export default function Header({ data, actions, sideButton }: HeaderProps) {
   const user = data.user;
   const post = data.post;
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleAction = (actionFn: () => void | Promise<void>) => {
+    setIsDropdownOpen(false);
+    setTimeout(() => {
+      actionFn();
+    }, 0);
+  };
 
   return (
     <div className={cn("px-4 pt-4 pb-3 space-y-0", "flex flex-row gap-2")}>
@@ -76,7 +85,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
       </div>
 
       <div className="ml-auto flex gap-2">
-        <DropdownMenu>
+        <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
           <Tooltip content="More options">
             <DropdownMenuTrigger asChild>
               <Button
@@ -93,7 +102,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
             <DropdownMenuGroup>
               {user.isFollowing ? (
                 <DropdownMenuItem
-                  onClick={() => actions.follow(data.id)}
+                  onClick={() => handleAction(() => actions.follow(data.id))}
                   className="cursor-pointer"
                 >
                   <User variant="minus" className="size-4 shrink-0" />
@@ -101,7 +110,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
                 </DropdownMenuItem>
               ) : (
                 <DropdownMenuItem
-                  onClick={() => actions.follow(data.id)}
+                  onClick={() => handleAction(() => actions.follow(data.id))}
                   className="cursor-pointer"
                 >
                   <User variant="plus" className="size-4 shrink-0" />
@@ -109,8 +118,8 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem
-                onClick={() => actions.block(data.id)}
-                className="cursor-pointer text-destructive focus:text-destructive"
+                onClick={() => handleAction(() => actions.block(data.id))}
+                className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
               >
                 <Ban className="size-4 shrink-0" />
                 <span className="truncate">Block @{user.username}</span>
@@ -118,8 +127,8 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => actions.report(data.id)}
-              className="cursor-pointer text-destructive focus:text-destructive"
+              onClick={() => handleAction(() => actions.report(data.id))}
+              className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
             >
               <Flag className="size-4 shrink-0" />
               <span className="truncate">Report post</span>

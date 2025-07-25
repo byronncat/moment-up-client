@@ -2,17 +2,274 @@
 
 import type { MomentInfo } from "api";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-  useMemo,
-} from "react";
+import { createContext, useCallback, useContext, useMemo } from "react";
+import { useStore } from "@tanstack/react-store";
+import { Store } from "@tanstack/react-store";
 import { toast } from "sonner";
 import { CoreApi, UserApi } from "@/services";
 import { Link } from "@/components/icons";
+import { useRefreshApi } from "./hooks/useRefreshApi";
+
+type MomentState = {
+  moments: MomentInfo[] | undefined;
+  currentIndex: number;
+  actionLoading: {
+    mute: boolean;
+    block: boolean;
+    report: boolean;
+  };
+  undoBuffer: {
+    blockedMoments: { index: number; moment: MomentInfo }[];
+  }[];
+};
+
+export type Actions = {
+  like: (momentId: MomentInfo["id"]) => Promise<void>;
+  bookmark: (momentId: MomentInfo["id"]) => Promise<void>;
+  follow: (momentId: MomentInfo["id"]) => Promise<void>;
+  block: (momentId: MomentInfo["id"]) => Promise<void>;
+  share: (momentId: MomentInfo["id"]) => void;
+  report: (momentId: MomentInfo["id"]) => Promise<void>;
+};
+
+const momentStore = new Store<MomentState>({
+  moments: undefined,
+  currentIndex: 0,
+  actionLoading: {
+    mute: false,
+    block: false,
+    report: false,
+  },
+  undoBuffer: [],
+});
+
+const momentActions = {
+  setMoments: (moments: MomentInfo[]) => {
+    momentStore.setState((state) => ({
+      ...state,
+      moments,
+    }));
+  },
+
+  setCurrentIndex: (index: number) => {
+    momentStore.setState((state) => ({
+      ...state,
+      currentIndex: index,
+    }));
+  },
+
+  addMoments: (newMoments: MomentInfo[]) => {
+    if (newMoments.length > 0) {
+      momentStore.setState((state) => {
+        const updated = [...(state.moments ?? []), ...newMoments];
+        return {
+          ...state,
+          moments: updated,
+          currentIndex: updated.length - newMoments.length,
+        };
+      });
+    }
+  },
+
+  removeMoment: (momentId: string) => {
+    momentStore.setState((state) => ({
+      ...state,
+      moments: state.moments?.filter((moment) => moment.id !== momentId),
+    }));
+  },
+
+  toggleLikeState: (momentId: string) => {
+    momentStore.setState((state) => ({
+      ...state,
+      moments: state.moments?.map((moment) =>
+        moment.id === momentId
+          ? {
+              ...moment,
+              post: {
+                ...moment.post,
+                isLiked: !moment.post.isLiked,
+                likes: moment.post.isLiked
+                  ? moment.post.likes - 1
+                  : moment.post.likes + 1,
+              },
+            }
+          : moment
+      ),
+    }));
+  },
+
+  toggleBookmarkState: (momentId: string) => {
+    momentStore.setState((state) => ({
+      ...state,
+      moments: state.moments?.map((moment) =>
+        moment.id === momentId
+          ? {
+              ...moment,
+              post: {
+                ...moment.post,
+                isBookmarked: !moment.post.isBookmarked,
+              },
+            }
+          : moment
+      ),
+    }));
+  },
+
+  toggleFollowState: (momentId: MomentInfo["id"]) => {
+    momentStore.setState((state) => ({
+      ...state,
+      moments: state.moments?.map((moment) =>
+        moment.id === momentId
+          ? {
+              ...moment,
+              user: {
+                ...moment.user,
+                isFollowing: !moment.user.isFollowing,
+              },
+            }
+          : moment
+      ),
+    }));
+  },
+
+  toggleBlockState: (
+    userId: MomentInfo["user"]["id"],
+    options?: { undo?: boolean; remove?: boolean }
+  ) => {
+    if (!options?.remove) return;
+
+    const state = momentStore.state;
+    if (options?.undo) {
+      const lastState = state.undoBuffer[state.undoBuffer.length - 1];
+      if (lastState) {
+        momentStore.setState((currentState) => {
+          const newMoments = [...(currentState.moments ?? [])];
+          lastState.blockedMoments.forEach(({ index, moment }) => {
+            newMoments.splice(index, 0, moment);
+          });
+          return {
+            ...currentState,
+            moments: newMoments,
+            undoBuffer: currentState.undoBuffer.slice(0, -1),
+          };
+        });
+      }
+    } else if (state.moments) {
+      const blockedMoments: { index: number; moment: MomentInfo }[] = [];
+      for (let index = state.moments.length - 1; index >= 0; index--) {
+        const moment = state.moments[index];
+        if (moment.user.id === userId) blockedMoments.push({ index, moment });
+      }
+
+      if (blockedMoments.length > 0) {
+        momentStore.setState((currentState) => ({
+          ...currentState,
+          moments: currentState.moments?.filter(
+            (moment) => moment.user.id !== userId
+          ),
+          undoBuffer: [...currentState.undoBuffer, { blockedMoments }],
+        }));
+      }
+    }
+  },
+
+  setActionLoading: (
+    key: keyof MomentState["actionLoading"],
+    loading: boolean
+  ) => {
+    momentStore.setState((state) => ({
+      ...state,
+      actionLoading: {
+        ...state.actionLoading,
+        [key]: loading,
+      },
+    }));
+  },
+
+  report: async (momentId: string) => {
+    const state = momentStore.state;
+    if (state.actionLoading.report) return;
+
+    momentActions.setActionLoading("report", true);
+    toast.promise(CoreApi.report(momentId), {
+      loading: "Reporting...",
+      success: () => "Reported",
+      error: () => "Something went wrong!",
+    });
+    momentActions.setActionLoading("report", false);
+  },
+
+  share: (momentId: MomentInfo["id"]) => {
+    const url = window.location.href;
+    const { origin } = new URL(url);
+    navigator.clipboard.writeText(origin + "/moment/" + momentId);
+    toast(
+      <div className="flex items-center gap-2">
+        <Link size={16} />
+        <p>Copied to clipboard</p>
+      </div>
+    );
+  },
+
+  block: async (momentId: string, options?: { remove?: boolean }) => {
+    const state = momentStore.state;
+    if (state.actionLoading.block) return;
+
+    momentActions.setActionLoading("block", true);
+
+    const userId = state.moments?.find((moment) => moment.id === momentId)?.user
+      .id;
+    if (!userId) return;
+
+    momentActions.toggleBlockState(userId, { remove: options?.remove });
+    toast.loading("Waiting...");
+    const { success } = await UserApi.toggleBlock(userId);
+    toast.dismiss();
+
+    if (success) {
+      toast.success("Blocked", {
+        action: {
+          label: "Undo",
+          onClick: async () => {
+            toast.loading("Unblocking...");
+            const { success } = await UserApi.toggleBlock(userId);
+            if (success) {
+              momentActions.toggleBlockState(userId, {
+                undo: true,
+                remove: options?.remove,
+              });
+              toast.dismiss();
+              toast.success("Unblocked");
+            } else toast.error("Something went wrong!");
+          },
+        },
+      });
+    } else {
+      momentActions.toggleBlockState(userId, {
+        undo: true,
+        remove: options?.remove,
+      });
+      toast.error("Something went wrong!");
+    }
+    momentActions.setActionLoading("block", false);
+  },
+};
+
+export const useMomentStore = () => {
+  const state = useStore(momentStore);
+
+  const getCurrentMoment = useCallback(() => {
+    return state.moments?.[state.currentIndex];
+  }, [state.moments, state.currentIndex]);
+
+  return {
+    ...state,
+    getCurrentMoment,
+    ...momentActions,
+  };
+};
+
+// @deprecated
 
 type MomentContextType = {
   moments: MomentInfo[] | undefined;
@@ -27,15 +284,6 @@ type MomentContextType = {
   block: (momentId: string, options?: { remove?: boolean }) => Promise<void>;
   share: (momentId: string) => void;
   report: (momentId: string) => Promise<void>;
-};
-
-export type Actions = {
-  like: (momentId: MomentInfo["id"]) => Promise<void>;
-  bookmark: (momentId: MomentInfo["id"]) => Promise<void>;
-  follow: (momentId: MomentInfo["id"]) => Promise<void>;
-  block: (momentId: MomentInfo["id"]) => Promise<void>;
-  share: (momentId: MomentInfo["id"]) => void;
-  report: (momentId: MomentInfo["id"]) => Promise<void>;
 };
 
 const MomentDataContext = createContext<MomentContextType>({
@@ -62,264 +310,94 @@ type MomentDataProviderProps = Readonly<{
 export default function MomentDataProvider({
   children,
 }: MomentDataProviderProps) {
-  const [moments, setMoments] = useState<MomentInfo[] | undefined>(undefined);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const state = useStore(momentStore);
+  const likeApi = useRefreshApi(CoreApi.like);
+  const bookmarkApi = useRefreshApi(CoreApi.bookmark);
+  const followApi = useRefreshApi(UserApi.follow);
 
   const getCurrentMoment = useCallback(() => {
-    return moments?.[currentIndex];
-  }, [moments, currentIndex]);
-
-  const addMoments = useCallback(
-    (newMoments: MomentInfo[]) => {
-      if (newMoments.length > 0) {
-        setMoments((prev) => {
-          const updated = [...(prev ?? []), ...newMoments];
-          setCurrentIndex(updated.length - newMoments.length);
-          return updated;
-        });
-      }
-    },
-    [setMoments, setCurrentIndex]
-  );
-
-  const removeMoment = useCallback(
-    (momentId: string) => {
-      setMoments((prev) => prev?.filter((moment) => moment.id !== momentId));
-    },
-    [setMoments]
-  );
+    return state.moments?.[state.currentIndex];
+  }, [state.moments, state.currentIndex]);
 
   const like = useCallback(
-    (momentId: MomentInfo["id"]) => {
-      const foundMoment = moments?.find((moment) => moment.id === momentId);
-      if (foundMoment) {
-        foundMoment.post.isLiked = !foundMoment.post.isLiked;
-        setMoments((prev) =>
-          prev?.map((moment) => (moment.id === momentId ? foundMoment : moment))
-        );
-      }
-    },
-    [moments]
-  );
+    async (momentId: string) => {
+      const moment = state.moments?.find((m) => m.id === momentId);
+      if (!moment) return;
 
-  const follow = useCallback(
-    (momentId: MomentInfo["id"]) => {
-      const foundMoment = moments?.find((moment) => moment.id === momentId);
-      if (foundMoment) {
-        foundMoment.user.isFollowing = !foundMoment.user.isFollowing;
-        setMoments((prev) =>
-          prev?.map((moment) => (moment.id === momentId ? foundMoment : moment))
-        );
+      const shouldLike = !moment.post.isLiked;
+      momentActions.toggleLikeState(momentId);
+
+      const { success } = await likeApi({
+        momentId,
+        shouldLike,
+      });
+
+      if (!success) {
+        momentActions.toggleLikeState(momentId);
+        toast.error("Something went wrong! Please try again.");
       }
     },
-    [moments]
+    [state.moments, likeApi]
   );
 
   const bookmark = useCallback(
-    (momentId: MomentInfo["id"]) => {
-      const foundMoment = moments?.find((moment) => moment.id === momentId);
-      if (foundMoment) {
-        foundMoment.post.isBookmarked = !foundMoment.post.isBookmarked;
-        setMoments((prev) =>
-          prev?.map((moment) => (moment.id === momentId ? foundMoment : moment))
-        );
-      }
-    },
-    [moments]
-  );
-
-  const undoBuffer = useRef<
-    {
-      blockedMoments: { index: number; moment: MomentInfo }[];
-    }[]
-  >([]);
-
-  const block = useCallback(
-    (
-      userId: MomentInfo["user"]["id"],
-      options?: { undo?: boolean; remove?: boolean }
-    ) => {
-      if (!options?.remove) return;
-      if (options?.undo) {
-        const lastState = undoBuffer.current.pop();
-        if (lastState)
-          setMoments((prev) => {
-            const newMoments = [...(prev ?? [])];
-            lastState.blockedMoments.forEach(({ index, moment }) => {
-              newMoments.splice(index, 0, moment);
-            });
-            return newMoments;
-          });
-      } else if (moments) {
-        const blockedMoments: { index: number; moment: MomentInfo }[] = [];
-        for (let index = moments.length - 1; index >= 0; index--) {
-          const moment = moments[index];
-          if (moment.user.id === userId) blockedMoments.push({ index, moment });
-        }
-
-        if (blockedMoments.length > 0) {
-          undoBuffer.current.push({ blockedMoments });
-          setMoments((prev) =>
-            prev?.filter((moment) => moment.user.id !== userId)
-          );
-        }
-      }
-    },
-    [moments]
-  );
-
-  // == Actions ==
-  const actionLoading = useRef({
-    like: false,
-    follow: false,
-    bookmark: false,
-    mute: false,
-    block: false,
-    report: false,
-  });
-
-  const handleLike = useCallback(
     async (momentId: string) => {
-      if (actionLoading.current.like) return;
-      actionLoading.current.like = true;
-      const foundMoment = moments?.find((moment) => moment.id === momentId);
-      if (!foundMoment) return;
-      like(momentId);
-      const res = await CoreApi.toggleLike(momentId);
-      if (!res.success) {
-        like(momentId);
-        toast.error("Something went wrong!");
-      }
-      actionLoading.current.like = false;
-    },
-    [moments, like]
-  );
+      const moment = state.moments?.find((m) => m.id === momentId);
+      if (!moment) return;
 
-  const handleBookmark = useCallback(
-    async (momentId: string) => {
-      if (actionLoading.current.bookmark) return;
-      actionLoading.current.bookmark = true;
-      const foundMoment = moments?.find((moment) => moment.id === momentId);
-      if (!foundMoment) return;
-      toast.promise(CoreApi.toggleBookmark(momentId), {
-        loading: "Saving...",
-        success: (res) => {
-          if (res.success) {
-            bookmark(momentId);
-            return foundMoment.post.isBookmarked
-              ? "Bookmarked"
-              : "Unbookmarked";
-          } else throw new Error(res.message);
-        },
-        error: () => "Something went wrong!",
+      const shouldBookmark = !moment.post.isBookmarked;
+      momentActions.toggleBookmarkState(momentId);
+
+      const { success } = await bookmarkApi({
+        momentId,
+        shouldBookmark,
       });
-      actionLoading.current.bookmark = false;
+
+      if (!success) {
+        momentActions.toggleBookmarkState(momentId);
+        toast.error("Something went wrong! Please try again.");
+      }
     },
-    [moments, bookmark]
+    [state.moments, bookmarkApi]
   );
 
-  const handleReport = useCallback(async (momentId: string) => {
-    if (actionLoading.current.report) return;
-    actionLoading.current.report = true;
-    toast.promise(CoreApi.report(momentId), {
-      loading: "Reporting...",
-      success: () => "Reported",
-      error: () => "Something went wrong!",
-    });
-    actionLoading.current.report = false;
-  }, []);
-
-  const handleShare = useCallback((momentId: MomentInfo["id"]) => {
-    const url = window.location.href;
-    const { origin } = new URL(url);
-    navigator.clipboard.writeText(origin + "/moment/" + momentId);
-    toast(
-      <div className="flex items-center gap-2">
-        <Link size={16} />
-        <p>Copied to clipboard</p>
-      </div>
-    );
-  }, []);
-
-  const handleFollow = useCallback(
+  const follow = useCallback(
     async (momentId: string) => {
-      if (actionLoading.current.follow) return;
-      actionLoading.current.follow = true;
-      const foundMoment = moments?.find((moment) => moment.id === momentId);
-      if (!foundMoment) return;
-      follow(momentId);
-      const res = await UserApi.toggleFollow(foundMoment.user.id);
-      if (!res.success) {
-        follow(momentId);
-        toast.error("Something went wrong!");
-      }
-      actionLoading.current.follow = false;
-    },
-    [moments, follow]
-  );
+      const moment = state.moments?.find((m) => m.id === momentId);
+      if (!moment) return;
 
-  const handleBlock = useCallback(
-    async (momentId: string, options?: { remove?: boolean }) => {
-      if (actionLoading.current.block) return;
-      actionLoading.current.block = true;
+      const shouldFollow = !moment.user.isFollowing;
+      momentActions.toggleFollowState(momentId);
 
-      const userId = moments?.find((moment) => moment.id === momentId)?.user.id;
-      if (!userId) return;
-      block(userId, { remove: options?.remove });
-      toast.loading("Waiting...");
-      const res = await UserApi.toggleBlock(userId);
-      toast.dismiss();
-      if (res.success) {
-        toast.success("Blocked", {
-          action: {
-            label: "Undo",
-            onClick: async () => {
-              toast.loading("Unblocking...");
-              const res = await UserApi.toggleBlock(userId);
-              if (res.success) {
-                block(userId, { undo: true, remove: options?.remove });
-                toast.dismiss();
-                toast.success("Unblocked");
-              } else toast.error("Something went wrong!");
-            },
-          },
-        });
-      } else {
-        block(userId, { undo: true, remove: options?.remove });
-        toast.error("Something went wrong!");
+      const { success } = await followApi({
+        targetId: moment.user.id,
+        shouldFollow,
+      });
+
+      if (!success) {
+        momentActions.toggleFollowState(momentId);
+        toast.error("Something went wrong! Please try again.");
       }
-      actionLoading.current.block = false;
     },
-    [moments, block]
+    [state.moments, followApi]
   );
 
   const contextValue = useMemo(
     () => ({
-      moments,
+      moments: state.moments,
       getCurrentMoment,
-      setMoments,
-      setCurrentIndex,
-      addMoments,
-      removeMoment,
-      like: handleLike,
-      bookmark: handleBookmark,
-      share: handleShare,
-      follow: handleFollow,
-      block: handleBlock,
-      report: handleReport,
+      setMoments: momentActions.setMoments,
+      setCurrentIndex: momentActions.setCurrentIndex,
+      addMoments: momentActions.addMoments,
+      removeMoment: momentActions.removeMoment,
+      like,
+      bookmark,
+      share: momentActions.share,
+      follow,
+      block: momentActions.block,
+      report: momentActions.report,
     }),
-    [
-      moments,
-      getCurrentMoment,
-      addMoments,
-      removeMoment,
-      handleLike,
-      handleBookmark,
-      handleShare,
-      handleFollow,
-      handleBlock,
-      handleReport,
-    ]
+    [state.moments, getCurrentMoment, like, bookmark, follow]
   );
 
   return (

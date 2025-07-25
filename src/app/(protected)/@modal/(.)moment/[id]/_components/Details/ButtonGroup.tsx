@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { cn } from "@/libraries/utils";
 import { ColorfulIconButton, buttonStyles } from "@/components/common";
+import ShareDialog from "@/components/moment/moment-card/share-dialog";
 import { Heart, Message, Share, Repeat, Bookmark } from "@/components/icons";
-import ShareDialog from "@/components/moment/moment-card/ShareDialog";
 
 type ButtonsProps = Readonly<{
   postData: PostInfo;
@@ -99,7 +99,7 @@ function FirstGroup({
         momentId={momentId}
         userData={userData}
         open={isShareDialogOpen}
-        onOpenChange={setIsShareDialogOpen}
+        onClose={() => setIsShareDialogOpen(false)}
       />
     </>
   );

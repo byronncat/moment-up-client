@@ -11,7 +11,7 @@ import { ROUTE } from "@/constants/route";
 import ColorfulIconButton, {
   buttonStyles,
 } from "../../common/ColorfulIconButton";
-import ShareDialog from "./ShareDialog";
+import ShareDialog from "./share-dialog";
 import { Heart, Message, Share, Repeat, Bookmark } from "../../icons";
 
 type ButtonGroupProps = Readonly<{
@@ -83,7 +83,7 @@ export default function ButtonGroup({
         />
       ),
       color: "green" as const,
-      count: 73,
+      count: post.reposts,
       tooltip: "Repost",
       onClick: () => setIsShareDialogOpen(true),
     },
@@ -147,7 +147,7 @@ export default function ButtonGroup({
         momentId={momentId}
         userData={user}
         open={isShareDialogOpen}
-        onOpenChange={setIsShareDialogOpen}
+        onClose={() => setIsShareDialogOpen(false)}
       />
     </>
   );

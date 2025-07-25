@@ -4,7 +4,7 @@ import type { MomentInfo, PaginationInfo } from "api";
 
 import { useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
-import { useMoment } from "@/components/providers/MomentData";
+import { useMomentStore, useMoment } from "@/components/providers/MomentData";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { useHome } from "../_providers/Home";
 import { ApiUrl } from "@/services";
@@ -44,17 +44,9 @@ export default function Moments() {
       }
     );
 
-  const {
-    moments,
-    setMoments,
-    setCurrentIndex,
-    like,
-    bookmark,
-    report,
-    share,
-    follow,
-    block,
-  } = useMoment();
+  const { moments, setMoments, setCurrentIndex, ...momentActions } =
+    useMomentStore();
+  const { like, bookmark, follow } = useMoment();
 
   const hasNextPage = data
     ? (data[data.length - 1]?.hasNextPage ?? false)
@@ -65,7 +57,7 @@ export default function Moments() {
     typeof data[size - 1] !== "undefined"
   );
   const allMoments = useMemo(() => {
-    return data ? data.flatMap((page) => page?.items || []) : [];
+    return data ? data.flatMap((page) => page?.items || []) : undefined;
   }, [data]);
 
   async function loadNextPage() {
@@ -77,7 +69,7 @@ export default function Moments() {
   }
 
   useEffect(() => {
-    if (!error) setMoments(allMoments);
+    if (!error && allMoments) setMoments(allMoments);
   }, [allMoments, setMoments, error]);
 
   useEffect(() => {
@@ -116,9 +108,7 @@ export default function Moments() {
         like,
         bookmark,
         follow,
-        share,
-        block: (momentId) => block(momentId, { remove: true }),
-        report,
+        ...momentActions,
       }}
       listOptions={{
         topPadding: TOP_PADDING,
@@ -135,7 +125,7 @@ export default function Moments() {
 function MomentSkeletons({ className }: Readonly<{ className: string }>) {
   return (
     <div className={cn("flex flex-col gap-4", className)}>
-      <MomentSkeleton haveText={true} media="none" />
+      <MomentSkeleton haveText={true} media="horizontal" />
       <MomentSkeleton haveText={false} media="square" />
     </div>
   );

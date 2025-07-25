@@ -1,6 +1,11 @@
 import { mockComments, mockFeed, mockMoments } from "@/__mocks__";
-import type { API, FeedInfo, MomentInfo, CommentInfo } from "api";
-import { Audience, SortBy } from "@/constants/clientConfig";
+import type { FeedInfo, MomentInfo, CommentInfo } from "api";
+import { SortBy } from "@/constants/clientConfig";
+import { Audience } from "@/constants/serverConfig";
+
+import type { Token } from "@/components/providers/Auth";
+import type { API, ErrorResponse } from "api";
+import { ApiUrl } from "./api.constant";
 
 const apiRes = {
   getMoments: "success" as "error" | "empty" | "success",
@@ -15,6 +20,117 @@ const apiRes = {
   toggleBookmark: "success" as "error" | "success",
   toggleCommentLike: "success" as "error" | "success",
 };
+
+interface LikeDto {
+  momentId: string;
+  shouldLike: boolean;
+}
+
+interface BookmarkDto {
+  momentId: string;
+  shouldBookmark: boolean;
+}
+
+export async function like(data: LikeDto, token: Token): API {
+  const endpoint = data.shouldLike
+    ? ApiUrl.moment.like(data.momentId)
+    : ApiUrl.moment.unlike(data.momentId);
+  const method = data.shouldLike ? "POST" : "DELETE";
+  const successMessage = data.shouldLike ? "Liked" : "Unliked";
+
+  return await fetch(endpoint, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: successMessage,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        statusCode: error.statusCode,
+        success: false,
+        message: error.message as string,
+      };
+    });
+}
+
+export async function bookmark(data: BookmarkDto, token: Token): API {
+  const endpoint = data.shouldBookmark
+    ? ApiUrl.moment.bookmark(data.momentId)
+    : ApiUrl.moment.unbookmark(data.momentId);
+  const method = data.shouldBookmark ? "POST" : "DELETE";
+  const successMessage = data.shouldBookmark ? "Bookmarked" : "Unbookmarked";
+
+  return await fetch(endpoint, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: successMessage,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        statusCode: error.statusCode,
+        success: false,
+        message: error.message as string,
+      };
+    });
+}
+
+export async function repost(
+  data: {
+    momentId: string;
+    text: string;
+    audience: Audience;
+  },
+  token: Token
+): API {
+  return await fetch(ApiUrl.moment.repost(data.momentId), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      text: data.text,
+      audience: data.audience,
+    }),
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Reposted successfully",
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        statusCode: error.statusCode,
+        success: false,
+        message: error.message as string,
+      };
+    });
+}
 
 export async function getFeed(feedId: string): API<FeedInfo> {
   console.log("getFeed", feedId);
@@ -42,9 +158,7 @@ export async function getFeed(feedId: string): API<FeedInfo> {
   });
 }
 
-export async function getMoment(
-  momentId: string
-): API<MomentInfo | null> {
+export async function getMoment(momentId: string): API<MomentInfo | null> {
   console.log("getMoment", momentId);
   await new Promise((resolve) => setTimeout(resolve, 3000));
   if (apiRes.getMoment === "error") {
@@ -178,63 +292,10 @@ export async function comment(momentId: string, data: CommentInfo): API {
   };
 }
 
-export async function repost(
-  momentId: string,
-  data: {
-    comment: string;
-    audience: `${Audience}`;
-  }
-): API {
-  console.log("Repost feature is not implemented yet", momentId, data);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  if (apiRes.repost === "error") {
-    return {
-      success: false,
-      message: "error",
-    };
-  }
-
-  return {
-    success: true,
-    message: "ok",
-  };
-}
-
 export async function report(momentId: string) {
   console.log("Report feature is not implemented yet", momentId);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (apiRes.report === "error") {
-    return {
-      success: false,
-      message: "error",
-    };
-  }
-
-  return {
-    success: true,
-    message: "ok",
-  };
-}
-
-export async function toggleLike(momentId: string): API {
-  console.log("Like feature is not implemented yet", momentId);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  if (apiRes.toggleLike === "error") {
-    return {
-      success: false,
-      message: "error",
-    };
-  }
-  return {
-    success: true,
-    message: "ok",
-  };
-}
-
-export async function toggleBookmark(momentId: string): API {
-  console.log("Bookmark feature is not implemented yet", momentId);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  if (apiRes.toggleBookmark === "error") {
     return {
       success: false,
       message: "error",

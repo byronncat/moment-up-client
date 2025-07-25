@@ -58,14 +58,16 @@ function SuggestedUserItem({
   const isFollowing = user.isFollowing || false;
 
   const follow = useRefreshApi(UserApi.follow);
-
   async function handleFollow(event: React.MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
     if (isLoading) return;
     setIsLoading(true);
     setUser((prev) => ({ ...prev, isFollowing: !isFollowing }));
-    const { success } = await follow({ targetId: user.id, isFollowing });
+    const { success } = await follow({
+      targetId: user.id,
+      shouldFollow: !isFollowing,
+    });
     if (!success) {
       setUser((prev) => ({ ...prev, isFollowing }));
       toast.error("Something went wrong");

@@ -68,10 +68,7 @@ export async function getHistory({
     });
 }
 
-export async function clearHistory({
-  accessToken,
-  csrfToken,
-}: Token): API {
+export async function clearHistory({ accessToken, csrfToken }: Token): API {
   return await fetch(ApiUrl.search.clearHistory, {
     method: "DELETE",
     headers: {

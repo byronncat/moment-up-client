@@ -15,14 +15,6 @@ export const PAGE_CONFIG = {
   COMMENT_PAGE: 20,
 };
 
-export enum Audience {
-  PUBLIC = "public",
-  FOLLOWERS = "followers",
-  FRIENDS = "friends",
-  VERIFIED = "verified",
-  ONLY_ME = "only_me",
-}
-
 export enum SortBy {
   NEWEST = "newest",
   MOST_LIKED = "most_liked",

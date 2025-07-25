@@ -1,5 +1,6 @@
 import type { SearchResult } from "api";
 import { SearchCategory } from "@/constants/clientConfig";
+import { SearchItemType } from "@/constants/serverConfig";
 
 import { cn } from "@/libraries/utils";
 import { SearchItem } from "../../_components";
@@ -30,7 +31,7 @@ function UserList({ users }: { users: SearchResult["users"] }) {
     <div className="space-y-1 pb-10">
       {users.map((user) => (
         <div key={user.id} className={ItemStyles}>
-          <SearchItem data={{ ...user, type: "user" }} />
+          <SearchItem data={{ ...user, type: SearchItemType.USER }} />
         </div>
       ))}
     </div>
@@ -43,7 +44,7 @@ function HashtagList({ hashtags }: { hashtags: SearchResult["hashtags"] }) {
     <div className="space-y-1 pb-10">
       {hashtags.map((hashtag) => (
         <div key={hashtag.id} className={ItemStyles}>
-          <SearchItem data={{ ...hashtag, type: "hashtag" }} />
+          <SearchItem data={{ ...hashtag, type: SearchItemType.HASHTAG }} />
         </div>
       ))}
     </div>

@@ -1,6 +1,14 @@
 export const SERVER_HOST_URL =
   process.env.NEXT_PUBLIC_SERVER_HOST || "http://localhost:4000";
 
+export enum Audience {
+  PUBLIC,
+  FOLLOWERS,
+  FRIENDS,
+  VERIFIED,
+  ONLY_ME,
+}
+
 export enum ReportType {
   NOT_RELEVANT,
   SPAM,

@@ -8,7 +8,7 @@ interface TokenRef {
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import { AuthApi } from "@/services";
-import { ClientCookie } from "@/helpers/cookie";
+import ClientCookie from "@/helpers/client-cookie";
 import { PAGE_RELOAD_TIME, AUTH_COOKIE_NAME } from "@/constants/clientConfig";
 
 type AuthHookProps = {

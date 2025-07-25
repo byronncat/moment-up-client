@@ -150,7 +150,7 @@ function NavigationButton({
     className: cn(
       "size-6 -mt-3",
       "transition-colors duration-200",
-      disabled ? "fill-muted-foreground/50" : "fill-foreground"
+      disabled ? "text-muted-foreground/50" : "text-foreground"
     ),
   };
 

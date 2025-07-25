@@ -1,10 +1,5 @@
 import { mockProfile, mockMoments } from "@/__mocks__";
-import type {
-  API,
-  MomentInfo,
-  ErrorResponse,
-  UserProfileInfo,
-} from "api";
+import type { API, MomentInfo, ErrorResponse, UserProfileInfo } from "api";
 import type { Token } from "@/components/providers/Auth";
 import { ApiUrl } from "./api.constant";
 
@@ -17,29 +12,30 @@ const apiRes = {
 
 interface FollowDto {
   targetId: string;
-  isFollowing: boolean;
+  shouldFollow: boolean;
 }
 
-export async function follow(data: FollowDto, token: Token) {
-  return await fetch(
-    data.isFollowing
-      ? ApiUrl.user.unfollow(data.targetId)
-      : ApiUrl.user.follow(data.targetId),
-    {
-      method: data.isFollowing ? "DELETE" : "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Csrf-Token": token.csrfToken,
-        Authorization: `Bearer ${token.accessToken}`,
-      },
-      credentials: "include",
-    }
-  )
+export async function follow(data: FollowDto, token: Token): API {
+  const endpoint = data.shouldFollow
+    ? ApiUrl.user.follow(data.targetId)
+    : ApiUrl.user.unfollow(data.targetId);
+  const method = data.shouldFollow ? "POST" : "DELETE";
+  const successMessage = data.shouldFollow ? "Followed" : "Unfollowed";
+
+  return await fetch(endpoint, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
     .then(async (response) => {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: "Follow updated successfully",
+        message: successMessage,
       };
     })
     .catch((error: ErrorResponse) => {
@@ -49,21 +45,6 @@ export async function follow(data: FollowDto, token: Token) {
         message: error.message as string,
       };
     });
-}
-
-export async function toggleFollow(userId: string): API {
-  console.log("toggleFollow", userId);
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  if (apiRes.toggleFollow === "error")
-    return {
-      success: false,
-      message: "error",
-    };
-
-  return {
-    success: true,
-    message: "Follow updated successfully",
-  };
 }
 
 export async function toggleBlock(userId: string): API {

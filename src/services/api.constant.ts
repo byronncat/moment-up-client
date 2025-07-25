@@ -17,9 +17,30 @@ export const ApiUrl = {
   // Core
   moment: {
     home: (page?: number, limit?: number) =>
-      `${SERVER_HOST_URL}/v1/moments` +
+      `${SERVER_HOST_URL}/v1/moments/home` +
       (page ? `?page=${page}` : "") +
       (limit ? `&limit=${limit}` : ""),
+    explore: (type?: "media" | "post", page?: number, limit?: number) =>
+      `${SERVER_HOST_URL}/v1/moments/explore` +
+      (type ? `?type=${type}` : "") +
+      (page ? `&page=${page}` : "") +
+      (limit ? `&limit=${limit}` : ""),
+    user: (userId: string, page?: number, limit?: number) =>
+      `${SERVER_HOST_URL}/v1/moments/user/${userId}` +
+      (page ? `?page=${page}` : "") +
+      (limit ? `&limit=${limit}` : ""),
+    get: (momentId: string) =>
+      `${SERVER_HOST_URL}/v1/moments/${momentId}`,
+    like: (momentId: string) =>
+      `${SERVER_HOST_URL}/v1/moments/${momentId}/like`,
+    unlike: (momentId: string) =>
+      `${SERVER_HOST_URL}/v1/moments/${momentId}/unlike`,
+    bookmark: (momentId: string) =>
+      `${SERVER_HOST_URL}/v1/moments/${momentId}/bookmark`,
+    unbookmark: (momentId: string) =>
+      `${SERVER_HOST_URL}/v1/moments/${momentId}/unbookmark`,
+    repost: (momentId: string) =>
+      `${SERVER_HOST_URL}/v1/moments/${momentId}/repost`,
   },
 
   feed: {

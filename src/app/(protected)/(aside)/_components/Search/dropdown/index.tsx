@@ -24,11 +24,7 @@ export default function Dropdown({
 
   return (
     <Card
-      className={cn(
-        "absolute top-full mt-2 z-10",
-        "w-full",
-        "overflow-hidden"
-      )}
+      className={cn("absolute top-full mt-2 z-10", "w-full", "overflow-hidden")}
     >
       {items.length > 0 ? (
         <ItemList

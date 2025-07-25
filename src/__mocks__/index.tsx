@@ -70,7 +70,6 @@ function getRandomFile(
   return avatar[seed % avatar.length];
 }
 
-
 export const mockFeed: FeedInfo[] = [
   // {
   //   user: {

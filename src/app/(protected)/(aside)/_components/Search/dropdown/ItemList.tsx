@@ -27,7 +27,10 @@ export default function ItemList({
   return (
     <ScrollArea className="h-[320px]">
       <div
-        className={cn("flex items-center justify-between", "pl-4 pr-6 pt-4 pb-2")}
+        className={cn(
+          "flex items-center justify-between",
+          "pl-4 pr-6 pt-4 pb-2"
+        )}
       >
         <span className="text-sm font-semibold">
           {query ? "Search Results" : "Recent Searches"}
