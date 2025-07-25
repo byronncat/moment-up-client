@@ -29,8 +29,7 @@ export const ApiUrl = {
       `${SERVER_HOST_URL}/v1/moments/user/${userId}` +
       (page ? `?page=${page}` : "") +
       (limit ? `&limit=${limit}` : ""),
-    get: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/moments/${momentId}`,
+    get: (momentId: string) => `${SERVER_HOST_URL}/v1/moments/${momentId}`,
     like: (momentId: string) =>
       `${SERVER_HOST_URL}/v1/moments/${momentId}/like`,
     unlike: (momentId: string) =>

@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserProfileInfo } from "api";
+import type { ProfileInfo } from "api";
 import { useRef } from "react";
 import { useHover } from "usehooks-ts";
 import { useProfile } from "../_providers/ProfileProvider";
@@ -15,7 +15,7 @@ import { Settings, User } from "@/components/icons";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type UserInformationProps = Readonly<{
-  data: UserProfileInfo;
+  data: ProfileInfo;
 }>;
 
 export default function UserInfo({ data }: UserInformationProps) {

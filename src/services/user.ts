@@ -1,5 +1,5 @@
 import { mockProfile, mockMoments } from "@/__mocks__";
-import type { API, MomentInfo, ErrorResponse, UserProfileInfo } from "api";
+import type { API, MomentInfo, ErrorResponse, ProfileInfo } from "api";
 import type { Token } from "@/components/providers/Auth";
 import { ApiUrl } from "./api.constant";
 
@@ -62,7 +62,7 @@ export async function toggleBlock(userId: string): API {
   };
 }
 
-export async function getProfile(username: string): API<UserProfileInfo> {
+export async function getProfile(username: string): API<ProfileInfo> {
   console.log("getProfile", username);
   if (apiRes.getProfile === "not-found")
     return {

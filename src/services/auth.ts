@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { API, UserInfo, ErrorResponse } from "api";
+import type { API, AccountInfo, ErrorResponse } from "api";
 import type { Token } from "@/components/providers/Auth";
 
 import zodSchema from "@/libraries/zodSchema";
@@ -10,7 +10,7 @@ export async function login(
   csrfToken: string
 ): API<{
   accessToken: string;
-  user: UserInfo;
+  user: AccountInfo;
 }> {
   return await fetch(ApiUrl.auth.login, {
     method: "POST",
@@ -42,11 +42,11 @@ export async function login(
 }
 
 export async function switchAccount(
-  accountId: UserInfo["id"],
+  accountId: AccountInfo["id"],
   token: Token
 ): API<{
   accessToken: string;
-  user: UserInfo;
+  user: AccountInfo;
 }> {
   return await fetch(ApiUrl.auth.switch, {
     method: "POST",
@@ -171,7 +171,7 @@ export async function refresh() {
     });
 }
 
-export async function getUser(accessToken: string): API<{ user: UserInfo }> {
+export async function getUser(accessToken: string): API<{ user: AccountInfo }> {
   return await fetch(ApiUrl.auth.me, {
     method: "GET",
     headers: {

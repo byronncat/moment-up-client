@@ -1,14 +1,14 @@
 "use client";
 
-import type { API, UserProfileInfo } from "api";
+import type { API, ProfileInfo } from "api";
 import { notFound } from "next/navigation";
 import { createContext, useContext, use, useState, useRef } from "react";
-import { UserApi } from "@/services";
+// import { UserApi } from "@/services";
 
 const ProfileContext = createContext(
   {} as {
     username: string;
-    profile: UserProfileInfo;
+    profile: ProfileInfo;
     isFollowing: boolean;
     follow: () => Promise<void>;
   }
@@ -18,7 +18,7 @@ export const useProfile = () => useContext(ProfileContext);
 
 type ProfileProviderProps = {
   username: string;
-  initialRes: API<UserProfileInfo>;
+  initialRes: API<ProfileInfo>;
   children: React.ReactNode;
 };
 
@@ -37,8 +37,8 @@ export default function ProfileProvider({
     if (loading.current) return;
     loading.current = true;
     setIsFollowing((prev) => !prev);
-    const { success } = await UserApi.toggleFollow(username);
-    if (!success) setIsFollowing((prev) => !prev);
+    // const { success } = await UserApi.toggleFollow(username);
+    // if (!success) setIsFollowing((prev) => !prev);
     loading.current = false;
   }
 

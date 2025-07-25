@@ -1,5 +1,5 @@
 import type {
-  UserProfileInfo,
+  ProfileInfo,
   UserCardDisplayInfo,
   NotificationInfo,
   CommentInfo,
@@ -1450,7 +1450,7 @@ export const mockComments: CommentInfo[] = [
   },
 ];
 
-export const mockProfile: UserProfileInfo = {
+export const mockProfile: ProfileInfo = {
   id: "a9a6d7c2-1e20-2439-a50b-51a1deh131da1",
   email: "",
   username: "byronat445",

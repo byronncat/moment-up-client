@@ -1,4 +1,4 @@
-import type { UserProfileInfo } from "api";
+import type { ProfileInfo } from "api";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -7,7 +7,7 @@ import { NavigationBar, type NavItem } from "@/components/common";
 import { TableOfContents, Image, Tag } from "@/components/icons";
 
 type ProfileZoneProps = Readonly<{
-  data: UserProfileInfo;
+  data: ProfileInfo;
   className?: string;
 }>;
 

@@ -1,4 +1,4 @@
-import type { UserInfo } from "api";
+import type { AccountInfo } from "api";
 import type { Token } from "../Auth";
 
 interface TokenRef {
@@ -14,7 +14,7 @@ import { PAGE_RELOAD_TIME, AUTH_COOKIE_NAME } from "@/constants/clientConfig";
 type AuthHookProps = {
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
-  setUser: (user: UserInfo | null) => void;
+  setUser: (user: AccountInfo | null) => void;
   token: TokenRef;
 };
 

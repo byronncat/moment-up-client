@@ -30,17 +30,17 @@ declare module "api" {
     avatar?: string;
   }
 
-  interface UserInfo extends AccountInfo {
+  interface ProfileInfo extends AccountInfo {
     bio?: string;
     backgroundImage?: string;
     followers: number;
     following: number;
     hasFeed: boolean;
-  }
-
-  interface UserProfileInfo extends UserInfo {
     isFollowing?: boolean;
   }
+
+  // interface UserProfileInfo extends UserInfo {
+  // }
 
   interface UserCardDisplayInfo
     extends Omit<UserProfileInfo, "backgroundImage"> {
