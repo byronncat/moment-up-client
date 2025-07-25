@@ -18,11 +18,12 @@ export default function Layout({
   children: React.ReactNode;
   params: Promise<{ username: string }>;
 }>) {
-  const username = use(params).username;
-  const profileRes = UserApi.getProfile(username);
+  const { username } = use(params);
+  const profileApi = UserApi.getProfile(username);
+  console.log(username);
   return (
     <Suspense fallback={<ProfileZoneSkeleton />}>
-      <ProfileProvider username={username} initialRes={profileRes}>
+      <ProfileProvider username={username} api={profileApi}>
         {children}
       </ProfileProvider>
     </Suspense>

@@ -85,7 +85,6 @@ function MomentList({ username, initialRes }: MomentListProps) {
   }, [momentsRes.data, setMoments]);
 
   if (!momentsRes.success) {
-    throw new Error("Failed to fetch moments");
   }
 
   return (

@@ -13,6 +13,7 @@ import { Avatar } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Settings, User } from "@/components/icons";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/components/providers";
 
 type UserInformationProps = Readonly<{
   data: ProfileInfo;
@@ -20,6 +21,8 @@ type UserInformationProps = Readonly<{
 
 export default function UserInfo({ data }: UserInformationProps) {
   const { isFollowing, follow } = useProfile();
+  const { user } = useAuth();
+  const isSelf = user?.id === data.id;
 
   return (
     <div className={cn("w-full relative", "flex flex-col items-center")}>
@@ -43,7 +46,9 @@ export default function UserInfo({ data }: UserInformationProps) {
       <div className={cn("mt-3 mb-6", "flex flex-col items-center")}>
         <span className="font-semibold text-xl">{data.username}</span>
         <span className="text-muted-foreground text-sm">@{data.username}</span>
-        <p className="mt-3 text-muted-foreground">{data.bio}</p>
+        <div className="mt-3 w-4/5">
+          <p className="text-muted-foreground text-center">{data.bio}</p>
+        </div>
       </div>
 
       <div className={cn("grid grid-cols-2 gap-10", "text-sm", "mb-6")}>
@@ -62,16 +67,19 @@ export default function UserInfo({ data }: UserInformationProps) {
       </div>
 
       <div className="flex gap-2 absolute top-42 right-2">
-        <FollowButton isFollowing={isFollowing} onFollow={follow} />
-        <Link href={ROUTE.SETTINGS}>
-          <Button
-            className={cn("text-sm", "px-4 py-2")}
-            size="icon"
-            variant="outline"
-          >
-            <Settings className="size-4" />
-          </Button>
-        </Link>
+        {isSelf ? (
+          <Link href={ROUTE.SETTINGS}>
+            <Button
+              className={cn("text-sm", "px-4 py-2")}
+              size="icon"
+              variant="outline"
+            >
+              <Settings className="size-4" />
+            </Button>
+          </Link>
+        ) : (
+          <FollowButton isFollowing={isFollowing} onFollow={follow} />
+        )}
       </div>
     </div>
   );

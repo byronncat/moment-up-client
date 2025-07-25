@@ -1,12 +1,9 @@
-import { mockProfile, mockMoments } from "@/__mocks__";
 import type { API, MomentInfo, ErrorResponse, ProfileInfo } from "api";
 import type { Token } from "@/components/providers/Auth";
 import { ApiUrl } from "./api.constant";
 
 const apiRes = {
-  toggleFollow: "success" as "error" | "success",
   toggleBlock: "success" as "error" | "success",
-  getProfile: "success" as "error" | "success" | "not-found",
   getMoments: "success" as "error" | "success" | "empty",
 };
 
@@ -47,6 +44,34 @@ export async function follow(data: FollowDto, token: Token): API {
     });
 }
 
+export async function getProfile(username: string): API<{
+  profile: ProfileInfo;
+}> {
+  return await fetch(ApiUrl.user.getProfile(username), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw data;
+      return {
+        success: true,
+        message: "Profile fetched successfully",
+        data,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        statusCode: error.statusCode,
+        success: false,
+        message: error.message as string,
+      };
+    });
+}
+
 export async function toggleBlock(userId: string): API {
   console.log("toggleBlock", userId);
   await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -62,73 +87,17 @@ export async function toggleBlock(userId: string): API {
   };
 }
 
-export async function getProfile(username: string): API<ProfileInfo> {
-  console.log("getProfile", username);
-  if (apiRes.getProfile === "not-found")
-    return {
-      success: false,
-      message: "error",
-    };
-
-  if (apiRes.getProfile === "error")
-    return {
-      success: false,
-      message: "error",
-    };
-
-  await new Promise((resolve) => setTimeout(resolve, 12000));
-  return {
-    success: true,
-    message: "User fetched successfully",
-    data: mockProfile,
-  };
-}
-
 export async function getMoments(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   type: "all" | "media" | "tagged" | "likes" | "bookmarks",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   username: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   page: number
 ): API<{ items: MomentInfo[]; hasNextPage: boolean }> {
-  console.log("getMoments", type, username, page);
   await new Promise((resolve) => setTimeout(resolve, 4000));
-
   return {
     success: false,
     message: "error",
-  };
-
-  if (apiRes.getMoments === "empty")
-    return {
-      success: true,
-      message: "Moments fetched successfully",
-      data: {
-        items: [],
-        hasNextPage: false,
-      },
-    };
-
-  if (apiRes.getMoments === "error")
-    return {
-      success: false,
-      message: "Failed to fetch moments",
-    };
-
-  const filteredMoments =
-    type === "all" ||
-    type === "tagged" ||
-    type === "likes" ||
-    type === "bookmarks"
-      ? mockMoments
-      : mockMoments.filter(
-          (moment) => moment.post.files && moment.post.files.length > 0
-        );
-
-  return {
-    success: true,
-    message: "Moments fetched successfully",
-    data: {
-      items: filteredMoments,
-      hasNextPage: page < 10,
-    },
   };
 }

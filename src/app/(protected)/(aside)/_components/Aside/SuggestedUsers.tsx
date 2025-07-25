@@ -75,6 +75,11 @@ function SuggestedUserItem({
     setIsLoading(false);
   }
 
+  function handleClick(event: React.MouseEvent) {
+    if (event.target !== event.currentTarget) return;
+    router.push(ROUTE.PROFILE(user.username));
+  }
+
   return (
     <div
       className={cn(
@@ -83,9 +88,7 @@ function SuggestedUserItem({
         "hover:bg-accent/[.05] cursor-pointer",
         "transition-colors duration-150 ease-in-out"
       )}
-      onClick={() => {
-        router.push(ROUTE.PROFILE(user.username));
-      }}
+      onClick={handleClick}
     >
       <div
         className="flex items-center gap-2"

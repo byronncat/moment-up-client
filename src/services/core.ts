@@ -230,52 +230,6 @@ export async function getComments(
   };
 }
 
-export async function explore(
-  type: "media" | "moments",
-  page: number
-): API<{
-  items: MomentInfo[];
-  hasNextPage: boolean;
-}> {
-  console.log("explore", type, page);
-  const filteredMoments =
-    type === "media"
-      ? mockMoments.filter(
-          (moment) => moment.post.files && moment.post.files.length > 0
-        )
-      : mockMoments;
-  const moments = filteredMoments;
-
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
-  if (apiRes.explore === "error") {
-    return {
-      success: false,
-      message: "error",
-    };
-  }
-
-  if (apiRes.explore === "empty") {
-    return {
-      success: true,
-      message: "ok",
-      data: {
-        items: [],
-        hasNextPage: false,
-      },
-    };
-  }
-
-  return {
-    success: true,
-    message: "ok",
-    data: {
-      items: moments,
-      hasNextPage: page <= 5,
-    },
-  };
-}
-
 export async function comment(momentId: string, data: CommentInfo): API {
   console.log("comment", momentId, data);
   await new Promise((resolve) => setTimeout(resolve, 1000));

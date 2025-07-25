@@ -61,6 +61,7 @@ export const ApiUrl = {
     block: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/block`,
     unblock: (userId: string) =>
       `${SERVER_HOST_URL}/v1/users/${userId}/unblock`,
+    getProfile: (username: string) => `${SERVER_HOST_URL}/v1/users/${username}`,
   },
 
   // Search
