@@ -51,7 +51,7 @@ function Content({ user }: Readonly<{ user: AccountInfo }>) {
         <Link
           href={ROUTE.PROFILE(user.username)}
           className={cn(
-            "text-xs text-muted-foreground",
+            "text-sm text-muted-foreground",
             "hover:opacity-80 transition-opacity duration-150 ease-in-out"
           )}
         >

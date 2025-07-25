@@ -72,7 +72,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const useAuth = () => useContext(AuthContext);
-export * from "./hooks";
+export { useRefreshApi, useRefreshSWR } from "./hooks";
 
 export default function AuthProvider({
   children,
