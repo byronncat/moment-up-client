@@ -24,8 +24,8 @@ function ExploreSkeleton() {
     <div
       className={cn(
         "grid grid-cols-3",
-        "gap-1 px-1 max-laptop:pt-[calc(45px+4px)]!"
-      )} // Navigation bar height + 4px
+        "gap-1 px-1 max-laptop:pt-[calc(45px+4px)]!" // Navigation bar height + 4px
+      )}
       style={{ paddingTop: TOP_PADDING + CELL_GAP }}
     >
       {Array.from({ length: 9 }).map((_, index) => (

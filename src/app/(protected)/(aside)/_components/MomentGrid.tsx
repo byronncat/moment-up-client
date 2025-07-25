@@ -92,7 +92,8 @@ export default function MomentGrid({
   }, [allMoments, setMoments, error]);
 
   if (isLoading) return loadingSkeleton;
-  if (error) return <ErrorContent onRefresh={() => mutate()} />;
+  if (error)
+    return <ErrorContent onRefresh={() => mutate()} className="pt-[121px]" />;
   if (!allMoments) return null;
   if (allMoments.length === 0)
     return (
@@ -100,6 +101,7 @@ export default function MomentGrid({
         icon={noContentConfig.icon}
         title={noContentConfig.title}
         description={noContentConfig.description}
+        className="pt-[121px]"
       />
     );
 

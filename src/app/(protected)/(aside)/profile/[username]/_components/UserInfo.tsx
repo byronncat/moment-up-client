@@ -29,9 +29,11 @@ export default function UserInfo({ data }: UserInformationProps) {
       <div
         className={cn("w-full h-40", "-mb-15 bg-muted")}
         style={{
-          backgroundImage: `url(${data.backgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          ...(data.backgroundImage && {
+            backgroundImage: `url(${data.backgroundImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }),
         }}
       />
 
@@ -43,11 +45,22 @@ export default function UserInfo({ data }: UserInformationProps) {
         showRing={data.hasFeed}
       />
 
-      <div className={cn("mt-3 mb-6", "flex flex-col items-center")}>
+      <div className={cn("mt-3 mb-6", "flex flex-col items-center w-full")}>
         <span className="font-semibold text-xl">{data.username}</span>
         <span className="text-muted-foreground text-sm">@{data.username}</span>
-        <div className="mt-3 w-4/5">
-          <p className="text-muted-foreground text-center">{data.bio}</p>
+        <div
+          className={cn(
+            "mt-3 w-4/5 h-[48px] ",
+            "flex items-center justify-center"
+          )}
+        >
+          <p className="text-muted-foreground text-center text-sm line-clamp-2">
+            {data.bio || (
+              <span className="italic text-sm text-muted-foreground/60">
+                Write something here...
+              </span>
+            )}
+          </p>
         </div>
       </div>
 
@@ -107,7 +120,7 @@ function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {
 
   return (
     <Button
-      variant="outline"
+      variant={isFollowing && isHover ? "destructive" : "outline"}
       className={cn("text-sm", "px-4 py-2", "[&_svg]:size-4")}
       onClick={handleClick}
       ref={hoverRef}
@@ -120,22 +133,24 @@ function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {
 
 export function UserInfoSkeleton() {
   return (
-    <div className={cn("w-full relative", "flex flex-col items-center")}>
+    <div
+      className={cn("h-[420px] w-full relative", "flex flex-col items-center")}
+    >
       <Skeleton className={cn("w-full h-40 -mb-15", "rounded-none")} />
       <Skeleton className="size-28 rounded-full" />
 
-      <div className={cn("mt-3 mb-7", "flex flex-col items-center")}>
-        <Skeleton className="h-6 w-32" />
+      <div className={cn("mt-4 mb-10", "flex flex-col items-center")}>
+        <Skeleton className="h-5 w-32" />
         <Skeleton className="h-4 w-24 mt-2" />
-        <Skeleton className="h-4 w-48 mt-4" />
+        <Skeleton className="h-4 w-48 mt-7" />
       </div>
 
       <div className={cn("grid grid-cols-2 gap-12", "text-sm", "mb-6")}>
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-1.5">
           <Skeleton className="h-4 w-8" />
           <Skeleton className="h-4 w-16" />
         </div>
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-1.5">
           <Skeleton className="h-4 w-8" />
           <Skeleton className="h-4 w-16" />
         </div>

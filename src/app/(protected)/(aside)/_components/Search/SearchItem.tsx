@@ -1,5 +1,6 @@
 import type { SearchItem, UserSearchItem, HashtagSearchItem } from "api";
 
+import { Format } from "@/utilities";
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
 import { MagnifyingGlass } from "@/components/icons";
@@ -20,14 +21,19 @@ export default function SearchItem({ data, className }: SearchItemProps) {
           alt={(data as UserSearchItem).username}
           size="12"
         />
-        <div className="flex flex-col">
+        <div className="flex flex-col items-start">
           <div
-            className={cn("flex items-center gap-2", "text-sm font-semibold")}
+            className={cn("text-sm font-semibold", "max-w-[180px] truncate")}
           >
             {(data as UserSearchItem).username}
           </div>
-          <span className="text-sm text-muted-foreground">
-            {(data as UserSearchItem).displayName}
+          <span
+            className={cn(
+              "text-sm text-muted-foreground",
+              "max-w-[180px] truncate"
+            )}
+          >
+            @{(data as UserSearchItem).displayName}
           </span>
         </div>
       </>
@@ -37,7 +43,9 @@ export default function SearchItem({ data, className }: SearchItemProps) {
         <IconContainer>
           <MagnifyingGlass className="size-5 fill-muted-foreground" />
         </IconContainer>
-        <span className="text-sm">{data.id}</span>
+        <span className={cn("text-sm", "max-w-[180px] truncate")}>
+          {data.id}
+        </span>
       </>
     ),
     [SearchItemType.HASHTAG]: () => (
@@ -46,9 +54,18 @@ export default function SearchItem({ data, className }: SearchItemProps) {
           <span className="text-xl">#</span>
         </IconContainer>
         <div className="flex flex-col items-start">
-          <span className="text-sm font-semibold">{data.id}</span>
-          <span className="text-sm text-muted-foreground">
-            {`${(data as HashtagSearchItem).count} tagged`}
+          <span
+            className={cn("text-sm font-semibold", "max-w-[180px] truncate")}
+          >
+            {data.id}
+          </span>
+          <span
+            className={cn(
+              "text-sm text-muted-foreground",
+              "max-w-[180px] truncate"
+            )}
+          >
+            {`${Format.number((data as HashtagSearchItem).count)} tagged`}
           </span>
         </div>
       </>

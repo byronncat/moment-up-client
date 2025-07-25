@@ -25,9 +25,15 @@ export const ApiUrl = {
       (type ? `?type=${type}` : "") +
       (page ? `&page=${page}` : "") +
       (limit ? `&limit=${limit}` : ""),
-    user: (userId: string, page?: number, limit?: number) =>
+    user: (
+      userId: string,
+      filter?: "media" | "tagged" | "reposts" | "liked",
+      page?: number,
+      limit?: number
+    ) =>
       `${SERVER_HOST_URL}/v1/moments/user/${userId}` +
       (page ? `?page=${page}` : "") +
+      (filter ? `&filter=${filter}` : "") +
       (limit ? `&limit=${limit}` : ""),
     get: (momentId: string) => `${SERVER_HOST_URL}/v1/moments/${momentId}`,
     like: (momentId: string) =>

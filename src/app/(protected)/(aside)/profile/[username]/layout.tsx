@@ -20,7 +20,6 @@ export default function Layout({
 }>) {
   const { username } = use(params);
   const profileApi = UserApi.getProfile(username);
-  console.log(username);
   return (
     <Suspense fallback={<ProfileZoneSkeleton />}>
       <ProfileProvider username={username} api={profileApi}>
