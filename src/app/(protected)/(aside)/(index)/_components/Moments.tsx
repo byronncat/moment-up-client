@@ -51,17 +51,12 @@ export default function Moments() {
   const hasNextPage = data
     ? (data[data.length - 1]?.hasNextPage ?? false)
     : true;
-  const isLoadingMore = !!(
-    isValidating &&
-    data &&
-    typeof data[size - 1] !== "undefined"
-  );
   const allMoments = useMemo(() => {
     return data ? data.flatMap((page) => page?.items || []) : undefined;
   }, [data]);
 
-  async function loadNextPage() {
-    if (hasNextPage && !isLoadingMore) await setSize(size + 1);
+  async function handleLoadNextPage() {
+    if (hasNextPage && !isValidating) await setSize(size + 1);
   }
 
   function handleClick(index: number) {
@@ -82,9 +77,7 @@ export default function Moments() {
   );
   if (isLoading) return <MomentSkeletons className={spaceClassName} />;
   if (error)
-    return (
-      <ErrorContent onRefresh={() => mutate()} className={spaceClassName} />
-    );
+    return <ErrorContent onRefresh={mutate} className={spaceClassName} />;
 
   if (!moments) return null;
   if (moments.length === 0)
@@ -101,8 +94,8 @@ export default function Moments() {
     <MomentList
       items={moments}
       hasNextPage={hasNextPage}
-      isNextPageLoading={isLoadingMore}
-      loadNextPage={loadNextPage}
+      isNextPageLoading={isValidating}
+      loadNextPage={handleLoadNextPage}
       onItemClick={handleClick}
       actions={{
         like,
@@ -113,9 +106,10 @@ export default function Moments() {
       listOptions={{
         topPadding: TOP_PADDING,
         bottomPadding: BOTTOM_PADDING,
+        heightOffset: 121,
         listClassName: cn(
           "transform transition-transform duration-200",
-          hideFeeds && "-translate-y-[121px]" // 120px = 160px (feed panel height) - 24px (hide button height) - 16px (gap)
+          hideFeeds && "-translate-y-[121px]" // 121px = 161px (feed panel height) - 24px (hide button height) - 16px (gap)
         ),
       }}
     />

@@ -22,7 +22,7 @@ export default function Text({ text, hasFiles, momentId }: TextProps) {
       className={cn(
         "flex px-4 pb-2",
         "text-sm",
-        hasFiles ? "flex-row items-center" : "flex-col items-start gap-1"
+        hasFiles ? "flex-row items-center" : "flex-col items-start gap-1 h-[72px]"
       )}
     >
       <div
@@ -40,8 +40,7 @@ export default function Text({ text, hasFiles, momentId }: TextProps) {
           "font-semibold text-sm text-muted-foreground",
           "cursor-pointer hover:underline",
           "shrink-0",
-          "opacity-0",
-          isTextClamped && "!opacity-100"
+          isTextClamped ? "block" : "hidden"
         )}
       >
         Show details

@@ -70,17 +70,12 @@ export default function Moments({
   const hasNextPage = data
     ? (data[data.length - 1]?.hasNextPage ?? false)
     : true;
-  const isLoadingMore = !!(
-    isValidating &&
-    data &&
-    typeof data[size - 1] !== "undefined"
-  );
   const allMoments = useMemo(() => {
     return data ? data.flatMap((page) => page?.items || []) : undefined;
   }, [data]);
 
-  async function loadNextPage() {
-    if (hasNextPage && !isLoadingMore) await setSize(size + 1);
+  async function handleLoadNextPage() {
+    if (hasNextPage && !isValidating) await setSize(size + 1);
   }
 
   function handleClick(index: number) {
@@ -92,8 +87,7 @@ export default function Moments({
   }, [allMoments, setMoments, error]);
 
   if (isLoading) return loadingSkeleton;
-  if (error)
-    return <ErrorContent onRefresh={() => mutate()} className="pt-[121px]" />;
+  if (error) return <ErrorContent onRefresh={mutate} className="pt-[121px]" />;
   if (!allMoments) return null;
   if (allMoments.length === 0)
     return (
@@ -110,8 +104,8 @@ export default function Moments({
       <MomentList
         items={allMoments}
         hasNextPage={hasNextPage}
-        isNextPageLoading={isLoadingMore}
-        loadNextPage={loadNextPage}
+        isNextPageLoading={isValidating}
+        loadNextPage={handleLoadNextPage}
         onItemClick={handleClick}
         actions={{
           like,

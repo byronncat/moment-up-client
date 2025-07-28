@@ -3,13 +3,13 @@
 import type { MomentInfo } from "api";
 import { useRef, useEffect, useState } from "react";
 import { debounce } from "lodash";
-
-import { MomentCell } from "@/components/moment";
+import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
 
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
 import { VariableSizeList } from "react-window";
 import { VirtualScrollbar } from "@/components/common";
+import { MomentCell } from "@/components/moment";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const COLUMN_COUNT = 3;
@@ -65,7 +65,7 @@ export default function Grid({
   useEffect(() => {
     const handleResize = debounce(() => {
       setIsResizing(false);
-    }, 1000);
+    }, PAGE_RELOAD_TIME);
 
     const onResize = () => {
       setIsResizing(true);

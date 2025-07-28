@@ -529,7 +529,6 @@ function useProgressTimer(delay: number) {
 // Custom hook for managing Embla Carousel with autoplay integration
 function useEmblaCarouselWithProgress(
   options: EmblaCarouselOptions = {},
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   plugins: any[] = []
 ) {
   const [currentIndex, setCurrentIndex] = useState(0);

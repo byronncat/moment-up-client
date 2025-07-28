@@ -5,6 +5,7 @@ import type { Actions } from "@/components/providers/MomentData";
 
 import { useState, useRef, useEffect } from "react";
 import { debounce } from "lodash";
+import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -37,6 +38,7 @@ type MomentListProps = Readonly<{
     topChildren?: React.ReactNode;
     topPadding?: number;
     bottomPadding?: number;
+    heightOffset?: number;
     listClassName?: string;
   };
   itemOptions?: {
@@ -66,8 +68,7 @@ export default function MomentList({
   const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
 
   function isItemLoaded(index: number) {
-    if (!hasNextPage) return true;
-    return index !== itemCount - 2;
+    return !hasNextPage || index !== itemCount - 2;
   }
 
   function handleCustomScroll(newScrollTop: number) {
@@ -77,8 +78,8 @@ export default function MomentList({
   const getItemSize = (index: number, _width: number) => {
     if (index === 0) return listOptions.topPadding ?? 0;
     if (index === itemCount - 1) return listOptions.bottomPadding ?? 0;
-    if (index === itemCount - 2 && isNextPageLoading)
-      return LOADING_INDICATOR_HEIGHT;
+    if (hasNextPage && index === itemCount - 2)
+      return isNextPageLoading ? LOADING_INDICATOR_HEIGHT : 0;
 
     let width = _width;
     if (itemOptions?.maxWidth && _width > itemOptions.maxWidth)
@@ -121,7 +122,7 @@ export default function MomentList({
   useEffect(() => {
     const handleResize = debounce(() => {
       setIsResizing(false);
-    }, 1000);
+    }, PAGE_RELOAD_TIME);
 
     const onResize = () => {
       setIsResizing(true);
@@ -160,7 +161,7 @@ export default function MomentList({
                     itemCount={itemCount}
                     onItemsRendered={onItemsRendered}
                     itemSize={(index) => getItemSize(index, width)}
-                    height={height + 120} // read comment below
+                    height={height + (listOptions.heightOffset ?? 0)}
                     width={width}
                     onScroll={({ scrollOffset }) =>
                       updateScrollbarRef.current?.(scrollOffset)
@@ -177,7 +178,8 @@ export default function MomentList({
                     itemKey={(index) => {
                       if (index === 0) return "top";
                       if (index === itemCount - 1) return "bottom";
-                      if (index === itemCount - 2) return "loading-indicator";
+                      if (hasNextPage && index === itemCount - 2)
+                        return "loading-indicator";
                       return items[index - 1].id;
                     }}
                     className={cn("scrollbar-hide", listOptions.listClassName)}
@@ -224,13 +226,13 @@ type ItemProps = Readonly<{
 
 function Item({ index, data, style }: ItemProps) {
   if (index === 0) return data.topChildren;
-  if (index === data.itemCount - 1) return <div style={style} />;
+  if (index === data.itemCount - 1) return null;
 
   const { isItemLoaded, items, actions, onClick } = data;
 
   let content;
   const dataIndex = index - 1;
-  if (isItemLoaded(index)) {
+  if (isItemLoaded(index))
     content = (
       <MomentCard
         data={items[dataIndex]}
@@ -239,7 +241,7 @@ function Item({ index, data, style }: ItemProps) {
         className={data.itemOptions?.className}
       />
     );
-  } else
+  else
     content = (
       <MomentSkeleton
         haveText
