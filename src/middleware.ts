@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 
 import { NextResponse } from "next/server";
-import { PROTECTED_ROUTES, AUTH_ROUTES, ROUTE } from "@/constants/route";
+import { PRIVATE_ROUTES, AUTH_ROUTES, ROUTE } from "@/constants/route";
 import { AUTH_COOKIE_NAME } from "@/constants/clientConfig";
 
 export async function middleware(request: NextRequest) {
@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
 
   if (
     !hasSession &&
-    PROTECTED_ROUTES.some(
+    PRIVATE_ROUTES.some(
       (route) => pathname === route || pathname.startsWith(route + "/")
     )
   )

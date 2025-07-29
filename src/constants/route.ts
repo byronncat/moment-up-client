@@ -31,14 +31,9 @@ export const ROUTE = {
   ARCHIVE: (type: "bookmarks" | "likes" = "bookmarks") => `/archive/${type}`,
 };
 
-export const PROTECTED_ROUTES = [ROUTE.HOME];
+export const PRIVATE_ROUTES = [ROUTE.HOME, ROUTE.EXPLORE()];
 export const AUTH_ROUTES = [ROUTE.LOGIN, ROUTE.SIGNUP, ROUTE.FORGOT_PASSWORD];
-export const PUBLIC_ROUTES = [
-  ROUTE.LOGIN,
-  ROUTE.SIGNUP,
-  ROUTE.FORGOT_PASSWORD,
-  ROUTE.PROFILE(""),
-];
+export const PUBLIC_ROUTES = [ROUTE.PROFILE("")];
 
 export const LOGIN_ERRORS = {
   missing_token:

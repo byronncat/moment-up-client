@@ -49,7 +49,18 @@ export default function LoginForm() {
   const { login } = useAuth();
   async function handleLogin(values: z.infer<typeof zodSchema.auth.login>) {
     const { success, message } = await login(values);
-    if (!success) toast.error(message);
+    if (!success) {
+      if (
+        message.includes("Email not verified") ||
+        message.includes("verification email has been sent")
+      )
+        toast("🎉 You're almost there!", {
+          duration: 12000,
+          description:
+            "We've sent a verification link to your email. Click it to activate your account and log in.",
+        });
+      else toast.error(message);
+    }
   }
 
   return (
