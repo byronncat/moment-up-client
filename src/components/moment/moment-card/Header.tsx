@@ -25,9 +25,15 @@ type HeaderProps = Readonly<{
   data: MomentInfo;
   actions: Pick<Actions, "follow" | "block" | "report">;
   sideButton?: React.ReactNode;
+  truncateClassName?: string;
 }>;
 
-export default function Header({ data, actions, sideButton }: HeaderProps) {
+export default function Header({
+  data,
+  actions,
+  sideButton,
+  truncateClassName,
+}: HeaderProps) {
   const { id: momentId, user, post } = data;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -51,10 +57,7 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
             onFollow={() => actions.follow(momentId)}
           >
             <span
-              className={cn(
-                "font-semibold text-base/tight",
-                "truncate max-w-[192px] md:max-w-[320px]"
-              )}
+              className={cn("font-semibold text-base/tight", truncateClassName)}
             >
               {user.displayName}
             </span>
@@ -71,7 +74,9 @@ export default function Header({ data, actions, sideButton }: HeaderProps) {
             userInfo={user}
             onFollow={() => actions.follow(momentId)}
           >
-            <span className="text-sm text-muted-foreground">
+            <span
+              className={cn("text-sm text-muted-foreground", truncateClassName)}
+            >
               @{user.username}
             </span>
           </HoverableComponent>

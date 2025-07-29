@@ -23,7 +23,11 @@ export default function MomentCard({
 }: MomentCardProps) {
   return (
     <Card className={cn("overflow-hidden", className)} onClick={onClick}>
-      <MomentHeader data={data} actions={actions} />
+      <MomentHeader
+        data={data}
+        actions={actions}
+        truncateClassName="truncate max-w-[192px] md:max-w-[320px]"
+      />
       <MomentContent momentId={data.id} postData={data.post} />
       <MomentButtonGroup data={data} actions={actions} />
     </Card>

@@ -51,6 +51,7 @@ export default function Content({
       <div className="relative">
         <MomentHeader
           data={data}
+          truncateClassName="truncate max-w-[120px]"
           actions={{
             follow,
             block: async (momentId) => {
