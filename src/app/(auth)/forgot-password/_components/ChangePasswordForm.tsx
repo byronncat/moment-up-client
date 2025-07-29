@@ -50,7 +50,7 @@ export default function ChangePasswordForm({
         duration: 12000,
         description: "You can now log in with your new password.",
       });
-    else toast.error(message);
+    else toast.error(message || "Failed to change password");
   }
 
   async function handleResend() {

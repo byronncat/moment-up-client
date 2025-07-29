@@ -53,7 +53,7 @@ export default function RepostForm({
       toast.success("Repost successful");
       reset();
       onClose();
-    } else toast.error(message);
+    } else toast.error(message || "Failed to repost");
 
     setIsLoading(false);
   }

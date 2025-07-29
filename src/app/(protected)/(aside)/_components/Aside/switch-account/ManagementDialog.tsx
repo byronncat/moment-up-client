@@ -33,11 +33,12 @@ export default function ManagementDialog({
     if (!open) return;
     async function fetchAccounts() {
       setLoading(true);
-      const { success, data } = await indexedDBService.getAllAccounts();
+      const { success, message, data } =
+        await indexedDBService.getAllAccounts();
       if (success) setAccounts(data ?? []);
       else {
         onClose();
-        toast.error("Something went wrong! Please try again later.");
+        toast.error(message || "Failed to fetch accounts");
       }
       setLoading(false);
     }
@@ -90,7 +91,7 @@ function AccountItem({ account }: Readonly<{ account: AccountInfo }>) {
   async function handleSwitch(accountId: AccountInfo["id"]) {
     const { success, message } = await switchAccount(accountId);
     if (success) reload();
-    else toast.error(message);
+    else toast.error(message || "Failed to switch account");
   }
 
   return (

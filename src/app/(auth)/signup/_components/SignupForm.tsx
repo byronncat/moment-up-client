@@ -45,7 +45,7 @@ export default function SignupForm() {
         description:
           "We've sent a verification link to your email. Click it to activate your account and log in.",
       });
-    else toast.error(message);
+    else toast.error(message || "Failed to sign up");
   }
 
   return (

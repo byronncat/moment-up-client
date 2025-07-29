@@ -223,7 +223,7 @@ const momentActions = {
 
     momentActions.toggleBlockState(userId, { remove: options?.remove });
     toast.loading("Waiting...");
-    const { success } = await UserApi.toggleBlock(userId);
+    const { success, message } = await UserApi.toggleBlock(userId);
     toast.dismiss();
 
     if (success) {
@@ -232,7 +232,7 @@ const momentActions = {
           label: "Undo",
           onClick: async () => {
             toast.loading("Unblocking...");
-            const { success } = await UserApi.toggleBlock(userId);
+            const { success, message } = await UserApi.toggleBlock(userId);
             if (success) {
               momentActions.toggleBlockState(userId, {
                 undo: true,
@@ -240,7 +240,7 @@ const momentActions = {
               });
               toast.dismiss();
               toast.success("Unblocked");
-            } else toast.error("Something went wrong!");
+            } else toast.error(message || "Failed to unblock");
           },
         },
       });
@@ -249,7 +249,7 @@ const momentActions = {
         undo: true,
         remove: options?.remove,
       });
-      toast.error("Something went wrong!");
+      toast.error(message || "Failed to unblock");
     }
     momentActions.setActionLoading("block", false);
   },
@@ -327,14 +327,14 @@ export default function MomentDataProvider({
       const shouldLike = !moment.post.isLiked;
       momentActions.toggleLikeState(momentId);
 
-      const { success } = await likeApi({
+      const { success, message } = await likeApi({
         momentId,
         shouldLike,
       });
 
       if (!success) {
         momentActions.toggleLikeState(momentId);
-        toast.error("Something went wrong! Please try again.");
+        toast.error(message || "Failed to like moment");
       }
     },
     [state.moments, likeApi]
@@ -348,14 +348,14 @@ export default function MomentDataProvider({
       const shouldBookmark = !moment.post.isBookmarked;
       momentActions.toggleBookmarkState(momentId);
 
-      const { success } = await bookmarkApi({
+      const { success, message } = await bookmarkApi({
         momentId,
         shouldBookmark,
       });
 
       if (!success) {
         momentActions.toggleBookmarkState(momentId);
-        toast.error("Something went wrong! Please try again.");
+        toast.error(message || "Failed to bookmark moment");
       }
     },
     [state.moments, bookmarkApi]
@@ -369,14 +369,14 @@ export default function MomentDataProvider({
       const shouldFollow = !moment.user.isFollowing;
       momentActions.toggleFollowState(momentId);
 
-      const { success } = await followApi({
+      const { success, message } = await followApi({
         targetId: moment.user.id,
         shouldFollow,
       });
 
       if (!success) {
         momentActions.toggleFollowState(momentId);
-        toast.error("Something went wrong! Please try again.");
+        toast.error(message || "Failed to follow/unfollow user");
       }
     },
     [state.moments, followApi]

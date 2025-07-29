@@ -30,7 +30,7 @@ export default function LoginForm() {
   useEffect(() => {
     if (errorParam) {
       const errorMessage = LOGIN_ERRORS[errorParam] || LOGIN_ERRORS.default;
-      toast.error(errorMessage);
+      toast.error(errorMessage || "An error occurred during login");
 
       const url = new URL(window.location.href);
       url.searchParams.delete("error");
@@ -59,7 +59,7 @@ export default function LoginForm() {
           description:
             "We've sent a verification link to your email. Click it to activate your account and log in.",
         });
-      else toast.error(message);
+      else toast.error(message || "Failed to login");
     }
   }
 

@@ -64,13 +64,13 @@ function SuggestedUserItem({
     if (isLoading) return;
     setIsLoading(true);
     setUser((prev) => ({ ...prev, isFollowing: !isFollowing }));
-    const { success } = await follow({
+    const { success, message } = await follow({
       targetId: user.id,
       shouldFollow: !isFollowing,
     });
     if (!success) {
       setUser((prev) => ({ ...prev, isFollowing }));
-      toast.error("Something went wrong");
+      toast.error(message || "Failed to follow/unfollow user");
     }
     setIsLoading(false);
   }

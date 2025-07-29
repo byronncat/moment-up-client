@@ -55,7 +55,7 @@ export default function LoginDialog({
 
     const { success, message } = await addAccount(values);
     if (success) reload();
-    else toast.error(message);
+    else toast.error(message || "Failed to add account");
   }
 
   useEffect(() => {

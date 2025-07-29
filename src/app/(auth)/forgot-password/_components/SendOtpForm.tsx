@@ -35,7 +35,7 @@ export default function SendOtpForm({
   ) {
     const { success, message } = await sendOtpEmail(values);
     if (success) onSuccess(values.identity);
-    else toast.error(message);
+    else toast.error(message || "Failed to send recovery email");
   }
 
   return (
