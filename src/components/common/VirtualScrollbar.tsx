@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState, useEffect } from "react";
 import { cn } from "@/libraries/utils";
 
-const SCROLLBAR_WIDTH = 12;
+const SCROLLBAR_WIDTH = 14;
 
 type VirtualScrollbarProps = Readonly<{
   height: number;
@@ -29,7 +29,8 @@ export default function VirtualScrollbar({
   const { thumbHeight, maxScrollTop, thumbTop } = (() => {
     const thumbHeight = Math.max(30, (height / totalHeight) * height);
     const maxScrollTop = height - thumbHeight;
-    const scrollRatio = scrollTop / (totalHeight - height);
+    const scrollableHeight = Math.max(1, totalHeight - height);
+    const scrollRatio = scrollTop / scrollableHeight;
     const thumbTop = scrollRatio * maxScrollTop;
 
     return { thumbHeight, maxScrollTop, thumbTop };
@@ -122,20 +123,23 @@ export default function VirtualScrollbar({
       )}
       style={{ width, height }}
       onMouseDown={handleFastScroll}
+      aria-orientation="vertical"
+      aria-valuemin={0}
+      aria-valuemax={totalHeight - height}
+      aria-valuenow={scrollTop}
     >
       <div
         className={cn(
           "absolute left-[2px]",
           "w-[calc(100%-4px)] rounded-full",
-          "cursor-pointer transition-colors duration-150 ease-in-out",
+          "cursor-pointer",
           "will-change-transform",
           "bg-accent/30 relative flex-1",
-          isDragging
-            ? "bg-accent/50"
-            : "transition-transform duration-75 ease-in-out"
+          "transition-transform duration-[50ms] ease-in-out",
+          isDragging && "bg-accent/50"
         )}
         style={{
-          transform: `translateY(${thumbTop}px)`,
+          transform: `translateY(${thumbTop}px)`, // use transform instead of top better performance
           height: thumbHeight,
         }}
         onMouseDown={handleMouseDown}
