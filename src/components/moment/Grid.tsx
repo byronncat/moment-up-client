@@ -128,6 +128,13 @@ export default function Grid({
                     baseColumnWidth,
                   }}
                   className="scrollbar-hide"
+                  itemKey={(index) => {
+                    if (index === 0) return "top";
+                    if (index === itemCount - 1) return "bottom";
+                    if (hasNextPage && index === itemCount - 2)
+                      return "loading-indicator";
+                    return items[(index - 1) * COLUMN_COUNT].id || `item-${index}`;
+                  }}
                 >
                   {Row}
                 </VariableSizeList>

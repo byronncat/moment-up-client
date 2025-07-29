@@ -3,8 +3,10 @@
 import type { MomentInfo } from "api";
 import type { Actions } from "@/components/providers/MomentData";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import { debounce } from "lodash";
+import memoize from "memoize-one";
+import { areEqual } from "react-window";
 import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
@@ -26,6 +28,31 @@ const SINGLE_TEXT_HEIGHT = 28;
 const MULTI_TEXT_HEIGHT = 72;
 const BORDER_SIZE = 1;
 const ITEM_GAP = 16;
+
+// This helper function memoizes incoming props,
+// to avoid causing unnecessary re-renders of memoized Item components.
+const createItemData = memoize(
+  (
+    itemCount: number,
+    topChildren: React.ReactNode | undefined,
+    isItemLoaded: (index: number) => boolean,
+    items: MomentInfo[],
+    actions: Actions,
+    onClick: (index: number) => void,
+    itemOptions?: {
+      maxWidth?: number;
+      className?: string;
+    }
+  ) => ({
+    itemCount,
+    topChildren,
+    isItemLoaded,
+    items,
+    actions,
+    onClick,
+    itemOptions,
+  })
+);
 
 type MomentListProps = Readonly<{
   items: MomentInfo[];
@@ -145,6 +172,18 @@ export default function MomentList({
             .map((_, i) => getItemSize(i, width))
             .reduce((a, b) => a + b, 0);
 
+          // Bundle additional data to list items using the "itemData" prop.
+          // Memoize this data to avoid bypassing shouldComponentUpdate().
+          const itemData = createItemData(
+            itemCount,
+            listOptions.topChildren,
+            isItemLoaded,
+            items,
+            actions,
+            onItemClick,
+            itemOptions
+          );
+
           return (
             <InfiniteLoader
               isItemLoaded={isItemLoaded}
@@ -166,21 +205,13 @@ export default function MomentList({
                     onScroll={({ scrollOffset }) =>
                       updateScrollbarRef.current?.(scrollOffset)
                     }
-                    itemData={{
-                      itemCount,
-                      topChildren: listOptions.topChildren,
-                      isItemLoaded,
-                      items,
-                      actions,
-                      onClick: onItemClick,
-                      itemOptions,
-                    }}
+                    itemData={itemData}
                     itemKey={(index) => {
                       if (index === 0) return "top";
                       if (index === itemCount - 1) return "bottom";
                       if (hasNextPage && index === itemCount - 2)
                         return "loading-indicator";
-                      return items[index - 1].id;
+                      return items[index - 1].id || `item-${index}`;
                     }}
                     className={cn("scrollbar-hide", listOptions.listClassName)}
                     aria-label="Moments feed"
@@ -224,7 +255,9 @@ type ItemProps = Readonly<{
   style: React.CSSProperties;
 }>;
 
-function Item({ index, data, style }: ItemProps) {
+// If list items are expensive to render,
+// Consider using React.memo to avoid unnecessary re-renders.
+const Item = memo(({ index, data, style }: ItemProps) => {
   if (index === 0) return data.topChildren;
   if (index === data.itemCount - 1) return null;
 
@@ -251,4 +284,6 @@ function Item({ index, data, style }: ItemProps) {
     );
 
   return <div style={style}>{content}</div>;
-}
+}, areEqual);
+
+Item.displayName = "MemoizedItem";

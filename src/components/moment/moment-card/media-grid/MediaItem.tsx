@@ -1,5 +1,4 @@
 import type { MomentInfo } from "api";
-import { memo } from "react";
 import { ROUTE } from "@/constants/route";
 import { BLUR_DATA_URL } from "@/constants/clientConfig";
 
@@ -43,11 +42,10 @@ export default function MediaItem({
   );
 }
 
-const VideoItem = memo(function VideoItem({ url }: Readonly<{ url: string }>) {
+const VideoItem = function VideoItem({ url }: Readonly<{ url: string }>) {
   return (
     <>
       <video
-        key={url}
         src={url}
         className="absolute inset-0 size-full object-cover"
         playsInline
@@ -66,4 +64,4 @@ const VideoItem = memo(function VideoItem({ url }: Readonly<{ url: string }>) {
       </div>
     </>
   );
-});
+};
