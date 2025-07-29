@@ -49,8 +49,8 @@ export default function Feeds() {
       className={cn(
         "absolute top-0 left-0 right-0 z-10",
         "bg-background/[.93] backdrop-blur-sm",
-        hideFeeds && "-translate-y-[calc(100%-24px)]", // HIDE_OFFSET: -24px
-        "transition-all duration-200"
+        hideFeeds && "-translate-y-[calc(100%-24px)]" // HIDE_OFFSET: -24px
+        // "transition-all duration-200"
       )}
       role="region"
       aria-label="Feed navigation"
@@ -60,8 +60,8 @@ export default function Feeds() {
           className={cn(
             "overflow-hidden",
             "flex",
-            "transition-all duration-200",
             "border-b border-border"
+            // "transition-all duration-200",
           )}
         >
           <NavigationButton
@@ -102,12 +102,12 @@ function FeedToggleButton({
 }: Readonly<{
   disabled: boolean;
 }>) {
-  const { hideFeeds, setHideFeeds, momentLoaded } = useHome();
+  const { hideFeeds, setHideFeeds } = useHome();
 
   return (
     <button
       onClick={() => setHideFeeds(!hideFeeds)}
-      disabled={!momentLoaded || disabled}
+      disabled={disabled}
       className={cn(
         "flex justify-center items-center",
         "h-6 w-full",

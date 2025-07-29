@@ -21,7 +21,7 @@ const BOTTOM_PADDING = 121;
 export default function Moments() {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
-  const { hideFeeds, loadedSuccess } = useHome();
+  const { hideFeeds } = useHome();
 
   const getKey = (
     pageIndex: number,
@@ -67,10 +67,6 @@ export default function Moments() {
     if (!error && allMoments) setMoments(allMoments);
   }, [allMoments, setMoments, error]);
 
-  useEffect(() => {
-    if (size === INITIAL_PAGE && !isLoading) loadedSuccess();
-  }, [loadedSuccess, size, isLoading]);
-
   const spaceClassName = cn(
     hideFeeds ? "pt-[40px]" : "pt-[calc(145px+16px)]",
     "transition-all duration-200"
@@ -108,7 +104,7 @@ export default function Moments() {
         bottomPadding: BOTTOM_PADDING,
         heightOffset: 121,
         listClassName: cn(
-          "transform transition-transform duration-200",
+          // "transform transition-transform duration-200",
           hideFeeds && "-translate-y-[121px]" // 121px = 161px (feed panel height) - 24px (hide button height) - 16px (gap)
         ),
       }}

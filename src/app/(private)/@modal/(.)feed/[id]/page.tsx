@@ -8,7 +8,7 @@ import { CoreApi } from "@/services";
 import { ROUTE } from "@/constants/route";
 
 import { Modal } from "@/components/common";
-import { FeedView, RightNav } from "@/app/(protected)/feed/_components";
+import { FeedView, RightNav } from "@/app/(private)/feed/_components";
 
 export default function FeedModal() {
   const router = useRouter();
