@@ -17,7 +17,8 @@ export const ROUTE = {
     const queryString = params.toString();
     return `/search${queryString ? `?${queryString}` : ""}`;
   },
-  EXPLORE: (type: "media" | "moments" = "media") => `/explore/${type}`,
+  EXPLORE: (type?: "media" | "moments") =>
+    "/explore" + (type ? `/${type}` : ""),
   FEED: (feedId: string) => `/feed/${feedId}`,
   MOMENT: (momentId: string, imgIndex?: number) =>
     `/moment/${momentId}${imgIndex ? `?imgIndex=${imgIndex}` : ""}`,
