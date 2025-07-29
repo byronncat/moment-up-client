@@ -41,7 +41,7 @@ export function getNavigationItems(
           className="size-5 laptop:size-4"
         />
       ),
-      matchPath: () => pathname.startsWith(ROUTE.EXPLORE()),
+      matchPath: () => pathname.startsWith(ROUTE.EXPLORE("media")),
     },
     {
       title: "Create",
