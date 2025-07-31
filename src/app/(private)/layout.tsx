@@ -14,7 +14,7 @@ export default async function Layout({ children, modal }: LayoutProps) {
   const defaultOpen = cookieStore.get("sidebar-state")?.value === "true";
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <main
+      <div
         className={cn(
           "w-screen h-screen relative",
           "pt-14 pb-[57px] laptop:py-0"
@@ -23,13 +23,13 @@ export default async function Layout({ children, modal }: LayoutProps) {
         <div className="size-full flex">
           <Sidebar />
           <MomentDataProvider>
-            <section className="size-full relative" role="main">
+            <div className="size-full relative">
               {children}
-            </section>
+            </div>
             {modal}
           </MomentDataProvider>
         </div>
-      </main>
+      </div>
     </SidebarProvider>
   );
 }

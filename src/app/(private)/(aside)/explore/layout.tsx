@@ -36,7 +36,7 @@ export default function ExploreLayout({
           <NavigationBar items={tabs} />
         </PageHeader>
       </div>
-      <div className="flex-1">{children}</div>
+      <main className="flex-1">{children}</main>
     </div>
   );
 }

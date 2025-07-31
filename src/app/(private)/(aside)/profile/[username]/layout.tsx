@@ -23,7 +23,7 @@ export default function Layout({
   return (
     <Suspense fallback={<ProfileZoneSkeleton />}>
       <ProfileProvider username={username} api={profileApi}>
-        {children}
+        <main className="size-full">{children}</main>
       </ProfileProvider>
     </Suspense>
   );

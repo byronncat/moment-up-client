@@ -168,9 +168,10 @@ export default function MomentList({
     <>
       <AutoSizer>
         {({ height, width }) => {
-          const totalHeight = Array.from({ length: itemCount })
-            .map((_, i) => getItemSize(i, width))
-            .reduce((a, b) => a + b, 0) - (listOptions.heightOffset ?? 0);
+          const totalHeight =
+            Array.from({ length: itemCount })
+              .map((_, i) => getItemSize(i, width))
+              .reduce((a, b) => a + b, 0) - (listOptions.heightOffset ?? 0);
 
           // Bundle additional data to list items using the "itemData" prop.
           // Memoize this data to avoid bypassing shouldComponentUpdate().
