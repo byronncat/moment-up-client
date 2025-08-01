@@ -18,11 +18,11 @@ export default async function GoogleButton() {
         className={cn(
           "cursor-pointer",
           "size-full h-10 rounded-lg",
-          "border border-input",
           "flex justify-center items-center gap-x-2",
           "bg-white text-black/[.8]",
           "text-sm font-semibold",
-          "dark:hover:bg-white/[.7] hover:bg-black/[.08] transition-colors duration-200 ease-in-out"
+          "dark:hover:bg-white/[.7] hover:bg-black/[.08]",
+          "transition-colors duration-200 ease-in-out"
         )}
       >
         <span>

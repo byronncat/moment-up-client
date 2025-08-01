@@ -52,13 +52,14 @@ export async function like(data: LikeDto, token: Token): API {
       return {
         success: true,
         message: successMessage,
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -84,13 +85,14 @@ export async function bookmark(data: BookmarkDto, token: Token): API {
       return {
         success: true,
         message: successMessage,
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -121,13 +123,14 @@ export async function repost(
       return {
         success: true,
         message: "Reposted successfully",
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -141,6 +144,7 @@ export async function getFeed(feedId: string): API<FeedInfo> {
         resolve({
           success: false,
           message: "Feed data not available",
+          statusCode: 404,
           data: undefined,
         });
         return;
@@ -152,6 +156,7 @@ export async function getFeed(feedId: string): API<FeedInfo> {
       resolve({
         success: true,
         message: "ok",
+        statusCode: 200,
         data: feed,
       });
     }, 1000);
@@ -166,6 +171,7 @@ export async function getMoment(momentId: string): API<MomentInfo | null> {
       success: false,
       message: "Something went wrong",
       data: undefined,
+      statusCode: 500,
     };
   }
   if (apiRes.getMoment === "empty") {
@@ -173,12 +179,14 @@ export async function getMoment(momentId: string): API<MomentInfo | null> {
       success: false,
       message: "Moment not found",
       data: null,
+      statusCode: 404,
     };
   }
   return {
     success: true,
     message: "ok",
     data: mockMoments.find((moment) => moment.id === momentId),
+    statusCode: 200,
   };
 }
 
@@ -203,6 +211,7 @@ export async function getComments(
     return {
       success: true,
       message: "ok",
+      statusCode: 200,
       data: {
         items: [],
         hasNextPage: false,
@@ -214,12 +223,14 @@ export async function getComments(
     return {
       success: false,
       message: "error",
+      statusCode: 500,
     };
   }
 
   return {
     success: true,
     message: "ok",
+    statusCode: 200,
     data: {
       items: comments.map((comment) => ({
         ...comment,
@@ -237,12 +248,14 @@ export async function comment(momentId: string, data: CommentInfo): API {
     return {
       success: false,
       message: "error",
+      statusCode: 500,
     };
   }
 
   return {
     success: true,
     message: "ok",
+    statusCode: 200,
   };
 }
 
@@ -253,12 +266,14 @@ export async function report(momentId: string) {
     return {
       success: false,
       message: "error",
+      statusCode: 500,
     };
   }
 
   return {
     success: true,
     message: "ok",
+    statusCode: 200,
   };
 }
 
@@ -269,11 +284,13 @@ export async function toggleCommentLike(commentId: string): API {
     return {
       success: false,
       message: "error",
+      statusCode: 500,
     };
   }
 
   return {
     success: true,
     message: "ok",
+    statusCode: 200,
   };
 }

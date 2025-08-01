@@ -1,4 +1,5 @@
 import type { ProfileInfo } from "api";
+import { useAuth } from "@/components/providers/Auth";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -12,6 +13,7 @@ type ProfileZoneProps = Readonly<{
 }>;
 
 export default function ProfileZone({ data, className }: ProfileZoneProps) {
+  const { user } = useAuth();
   const tabs: NavItem[] = [
     {
       id: "moments",
@@ -23,13 +25,13 @@ export default function ProfileZone({ data, className }: ProfileZoneProps) {
       id: "media",
       label: "Media",
       icon: <Image aria-label="User's media" className="size-4" />,
-      href: ROUTE.PROFILE(data.username, "media"),
+      href: user ? ROUTE.PROFILE(data.username, "media") : ROUTE.LOGIN,
     },
     {
       id: "tagged",
       label: "Tagged",
       icon: <Tag className="size-4" />,
-      href: ROUTE.PROFILE(data.username, "tagged"),
+      href: user ? ROUTE.PROFILE(data.username, "tagged") : ROUTE.LOGIN,
     },
   ];
 

@@ -30,8 +30,8 @@ export function useRefreshSWR() {
       }
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error((error as ErrorResponse).message as string);
+        const error: ErrorResponse = await response.json();
+        throw error;
       }
 
       return await response.json();

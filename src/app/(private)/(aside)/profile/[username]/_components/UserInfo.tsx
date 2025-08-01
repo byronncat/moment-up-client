@@ -1,8 +1,10 @@
 "use client";
 
 import type { ProfileInfo } from "api";
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { useHover } from "usehooks-ts";
+import { useAuth } from "@/components/providers";
 import { useProfile } from "../_providers/ProfileProvider";
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
@@ -13,7 +15,6 @@ import { Avatar } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Settings, User } from "@/components/icons";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/components/providers";
 
 type UserInformationProps = Readonly<{
   data: ProfileInfo;
@@ -47,21 +48,31 @@ export default function UserInfo({ data }: UserInformationProps) {
 
       <div className={cn("mt-3 mb-6", "flex flex-col items-center w-full")}>
         <span className="font-semibold text-xl">{data.username}</span>
-        <span className="text-muted-foreground text-sm">@{data.username}</span>
-        <div
-          className={cn(
-            "mt-3 w-4/5 h-[48px] ",
-            "flex items-center justify-center"
-          )}
-        >
-          <p className="text-muted-foreground text-center text-sm line-clamp-2">
-            {data.bio || (
-              <span className="italic text-sm text-muted-foreground/60">
+        <span className={cn("text-muted-foreground text-sm", "mb-3")}>
+          @{data.username}
+        </span>
+        {data.bio ? (
+          <div
+            className={cn("w-4/5 h-[48px]", "flex items-center justify-center")}
+          >
+            <p className="text-muted-foreground text-center text-sm line-clamp-2">
+              {data.bio}
+            </p>
+          </div>
+        ) : (
+          isSelf && (
+            <div
+              className={cn(
+                "w-4/5 h-[48px]",
+                "flex items-center justify-center"
+              )}
+            >
+              <p className="text-muted-foreground/60 text-center text-sm italic">
                 Write something here...
-              </span>
-            )}
-          </p>
-        </div>
+              </p>
+            </div>
+          )
+        )}
       </div>
 
       <div className={cn("grid grid-cols-2 gap-10", "text-sm", "mb-6")}>
@@ -106,11 +117,18 @@ type FollowButtonProps = Readonly<{
 function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {
   const hoverRef = useRef<HTMLButtonElement>(null);
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
+  const router = useRouter();
+  const { user } = useAuth();
 
-  const handleClick = async (event: React.MouseEvent) => {
+  function handleNavigate(event: React.MouseEvent) {
+    event.preventDefault();
+    router.push(ROUTE.LOGIN);
+  }
+
+  async function handleClick(event: React.MouseEvent) {
     if (!onFollow) return;
     await onFollow(event);
-  };
+  }
 
   const renderIcon = () => {
     if (isFollowing)
@@ -122,7 +140,7 @@ function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {
     <Button
       variant={isFollowing && isHover ? "destructive" : "outline"}
       className={cn("text-sm", "px-4 py-2", "[&_svg]:size-4")}
-      onClick={handleClick}
+      onClick={user ? handleClick : handleNavigate}
       ref={hoverRef}
     >
       {renderIcon()}

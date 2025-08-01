@@ -33,12 +33,11 @@ export default function ManagementDialog({
     if (!open) return;
     async function fetchAccounts() {
       setLoading(true);
-      const { success, message, data } =
-        await indexedDBService.getAllAccounts();
-      if (success) setAccounts(data ?? []);
+      const data = await indexedDBService.getAllAccounts();
+      if (data) setAccounts(data);
       else {
         onClose();
-        toast.error(message || "Failed to fetch accounts");
+        toast.error("Failed to fetch accounts");
       }
       setLoading(false);
     }

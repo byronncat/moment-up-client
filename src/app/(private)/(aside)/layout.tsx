@@ -1,5 +1,5 @@
 import { cn } from "@/libraries/utils";
-import { Aside } from "./_components";
+import Aside from "./_components/Aside";
 
 export default function Layout({
   children,

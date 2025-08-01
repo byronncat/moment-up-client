@@ -15,11 +15,13 @@ import { NoContent, ErrorContent } from "@/components/common";
 import { MomentGrid as Grid } from "@/components/moment";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Image } from "@/components/icons";
+import ProfileWrapper from "./Wrapper";
 
 export default function MomentGrid() {
   const swrFetcherWithRefresh = useRefreshSWR();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const { profile } = useProfile();
+  const isSelf = user?.username === profile?.username;
 
   const getKey = (
     pageIndex: number,
@@ -39,6 +41,7 @@ export default function MomentGrid() {
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,
+        errorRetryCount: 0,
       }
     );
 
@@ -47,17 +50,12 @@ export default function MomentGrid() {
   const hasNextPage = data
     ? (data[data.length - 1]?.hasNextPage ?? false)
     : true;
-  const isLoadingMore = !!(
-    isValidating &&
-    data &&
-    typeof data[size - 1] !== "undefined"
-  );
   const allMoments = useMemo(() => {
     return data ? data.flatMap((page) => page?.items || []) : undefined;
   }, [data]);
 
   async function loadNextPage() {
-    if (hasNextPage && !isLoadingMore) await setSize(size + 1);
+    if (hasNextPage && !isValidating) await setSize(size + 1);
   }
 
   function handleClick(index: number) {
@@ -70,41 +68,46 @@ export default function MomentGrid() {
 
   if (isLoading) {
     return (
-      <div>
-        <ProfileZone data={profile} />
+      <ProfileWrapper data={profile}>
         <div className="grid grid-cols-3 gap-1 px-1 pt-1">
           {Array.from({ length: 9 }).map((_, index) => (
             <Skeleton className="aspect-square rounded-none" key={index} />
           ))}
         </div>
-      </div>
+      </ProfileWrapper>
     );
   }
 
-  if (error)
-    return <ErrorContent onRefresh={() => mutate()} className="pt-[121px]" />;
+  if (error && error.statusCode !== 403)
+    return (
+      <ProfileWrapper data={profile}>
+        <ErrorContent onRefresh={() => mutate()} className="pt-[80px]" />
+      </ProfileWrapper>
+    );
   if (!allMoments) return null;
   if (allMoments.length === 0)
     return (
-      <NoContent
-        // eslint-disable-next-line jsx-a11y/alt-text
-        icon={<Image className="size-16 text-muted-foreground" />}
-        title="No media found"
-        description="This user has not posted any media yet."
-        className="pt-[121px]"
-      />
+      <ProfileWrapper data={profile}>
+        <NoContent
+          // eslint-disable-next-line jsx-a11y/alt-text
+          icon={<Image className="size-16 text-muted-foreground" />}
+          title="No media found"
+          description="This user has not posted any media yet."
+          className="pt-[80px]"
+        />
+      </ProfileWrapper>
     );
 
   return (
     <Grid
       items={allMoments}
-      hasNextPage={hasNextPage}
-      isNextPageLoading={isLoadingMore}
+      hasNextPage={hasNextPage && error?.statusCode !== 403}
+      isNextPageLoading={isValidating}
       loadNextPage={loadNextPage}
       onItemClick={handleClick}
       listOptions={{
         topChildren: <ProfileZone data={profile} />,
-        topPadding: PROFILE_ZONE_HEIGHT + 4,
+        topPadding: PROFILE_ZONE_HEIGHT(isSelf || !!profile.bio) + 4,
         bottomPadding: 16,
       }}
     />

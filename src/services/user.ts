@@ -33,20 +33,21 @@ export async function follow(data: FollowDto, token: Token): API {
       return {
         success: true,
         message: successMessage,
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
 
 export async function getProfile(username: string): API<{
   profile: ProfileInfo;
-}> {
+}>  {
   return await fetch(ApiUrl.user.getProfile(username), {
     method: "GET",
     headers: {
@@ -60,14 +61,15 @@ export async function getProfile(username: string): API<{
       return {
         success: true,
         message: "Profile fetched successfully",
+        statusCode: response.status,
         data,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -79,11 +81,13 @@ export async function toggleBlock(userId: string): API {
     return {
       success: false,
       message: "error",
+      statusCode: 500,
     };
 
   return {
     success: true,
     message: "Block updated successfully",
+    statusCode: 200,
   };
 }
 
@@ -99,5 +103,6 @@ export async function getMoments(
   return {
     success: false,
     message: "error",
+    statusCode: 500,
   };
 }

@@ -6,10 +6,8 @@ export const ROUTE = {
   FORGOT_PASSWORD: "/forgot-password",
 
   HOME: "/",
-  PROFILE: (
-    username: string,
-    type: "default" | "media" | "tagged" = "default"
-  ) => `/profile/${username}${type !== "default" ? `/${type}` : ""}`,
+  PROFILE: (username?: string, type?: "media" | "tagged") =>
+    `/profile${username ? `/${username}` : ""}${type ? `/${type}` : ""}`,
   SEARCH: (query?: string, filter?: SearchCategory) => {
     const params = new URLSearchParams();
     if (query) params.set("q", query);
@@ -33,7 +31,7 @@ export const ROUTE = {
 
 export const PRIVATE_ROUTES = [ROUTE.HOME, ROUTE.EXPLORE()];
 export const AUTH_ROUTES = [ROUTE.LOGIN, ROUTE.SIGNUP, ROUTE.FORGOT_PASSWORD];
-export const PUBLIC_ROUTES = [ROUTE.PROFILE("")];
+export const PUBLIC_ROUTES = [ROUTE.PROFILE()];
 
 export const LOGIN_ERRORS = {
   missing_token:

@@ -52,6 +52,7 @@ export const getNotifications = async (
   return {
     success: true,
     message: "Notifications fetched successfully",
+    statusCode: 200,
     data: {
       items: generateUniqueNotifications(10),
       hasNextPage: page < 2,

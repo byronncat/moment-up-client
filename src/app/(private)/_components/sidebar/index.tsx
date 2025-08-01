@@ -23,6 +23,7 @@ export default function Sidebar() {
   const { isMobile } = useSidebar();
   const { open, isAboveXl } = useResponsiveSidebar();
 
+  if (!user) return null;
   const items = getNavigationItems(pathname, user?.username);
   const [notificationItem, profileItem] = items.slice(-2);
 

@@ -18,7 +18,7 @@ export default function SubmitButton({
       type="submit"
       disabled={loading}
       className={cn(
-        "size-full h-10",
+        "w-full",
         "text-white font-semibold",
         "flex justify-center items-center",
         className

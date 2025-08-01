@@ -27,14 +27,15 @@ export async function search(
       return {
         success: true,
         message: "Search performed successfully",
+        statusCode: response.status,
         data: data.items,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -56,14 +57,15 @@ export async function getHistory({
       return {
         success: true,
         message: "Search history fetched successfully",
+        statusCode: response.status,
         data: data.history,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -83,13 +85,14 @@ export async function clearHistory({ accessToken, csrfToken }: Token): API {
       return {
         success: true,
         message: "Search history cleared successfully",
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -112,13 +115,14 @@ export async function removeHistoryItem(
       return {
         success: true,
         message: "Search history item removed successfully",
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }

@@ -30,187 +30,71 @@ class IndexedDBService {
     });
   }
 
-  async getAllAccounts(): Promise<API<AccountInfo[]>> {
+  async getAllAccounts() {
     try {
       if (!this.db) await this.init();
 
-      return new Promise((resolve) => {
-        const transaction = this.db!.transaction([ACCOUNTS_STORE], "readonly");
-        const store = transaction.objectStore(ACCOUNTS_STORE);
-        const request = store.getAll();
+      const transaction = this.db!.transaction([ACCOUNTS_STORE], "readonly");
+      const store = transaction.objectStore(ACCOUNTS_STORE);
+      const request = store.getAll();
 
-        request.onsuccess = () => {
-          resolve({
-            success: true,
-            message: "Accounts fetched successfully",
-            data: request.result,
-          });
-        };
-
-        request.onerror = () => {
-          resolve({
-            success: false,
-            message: "Failed to fetch accounts from IndexedDB",
-          });
-        };
+      return new Promise<AccountInfo[] | null>((resolve) => {
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => resolve(null);
       });
-    } catch (error) {
-      console.error("IndexedDB error:", error);
-      return {
-        success: false,
-        message: "Failed to access IndexedDB",
-      };
+    } catch {
+      return null;
     }
   }
 
-  async storeAccount(account: AccountInfo): Promise<API<void>> {
+  async storeAccount(account: AccountInfo) {
     try {
       if (!this.db) await this.init();
 
+      const transaction = this.db!.transaction([ACCOUNTS_STORE], "readwrite");
+      const store = transaction.objectStore(ACCOUNTS_STORE);
+      const request = store.put(account);
+
       return new Promise((resolve) => {
-        const transaction = this.db!.transaction([ACCOUNTS_STORE], "readwrite");
-        const store = transaction.objectStore(ACCOUNTS_STORE);
-        const request = store.put(account);
-
-        request.onsuccess = () => {
-          resolve({
-            success: true,
-            message: "Account stored successfully",
-          });
-        };
-
-        request.onerror = () => {
-          resolve({
-            success: false,
-            message: "Failed to store account in IndexedDB",
-          });
-        };
+        request.onsuccess = () => resolve(true);
+        request.onerror = () => resolve(false);
       });
-    } catch (error) {
-      console.error("IndexedDB error:", error);
-      return {
-        success: false,
-        message: "Failed to access IndexedDB",
-      };
+    } catch {
+      return false;
     }
   }
 
-  async storeMultipleAccounts(accounts: AccountInfo[]): Promise<API<void>> {
+  async removeAccount(accountId: string) {
     try {
       if (!this.db) await this.init();
 
+      const transaction = this.db!.transaction([ACCOUNTS_STORE], "readwrite");
+      const store = transaction.objectStore(ACCOUNTS_STORE);
+      const request = store.delete(accountId);
+
       return new Promise((resolve) => {
-        const transaction = this.db!.transaction([ACCOUNTS_STORE], "readwrite");
-        const store = transaction.objectStore(ACCOUNTS_STORE);
-
-        let completedCount = 0;
-        let hasError = false;
-
-        if (accounts.length === 0) {
-          resolve({
-            success: true,
-            message: "No accounts to store",
-          });
-          return;
-        }
-
-        for (const account of accounts) {
-          const request = store.put(account);
-
-          request.onsuccess = () => {
-            completedCount++;
-            if (completedCount === accounts.length) {
-              resolve({
-                success: !hasError,
-                message: hasError
-                  ? "Some accounts failed to store"
-                  : "All accounts stored successfully",
-              });
-            }
-          };
-
-          request.onerror = () => {
-            hasError = true;
-            completedCount++;
-            if (completedCount === accounts.length) {
-              resolve({
-                success: false,
-                message: "Failed to store some accounts",
-              });
-            }
-          };
-        }
+        request.onsuccess = () => resolve(true);
+        request.onerror = () => resolve(false);
       });
-    } catch (error) {
-      console.error("IndexedDB error:", error);
-      return {
-        success: false,
-        message: "Failed to access IndexedDB",
-      };
+    } catch {
+      return false;
     }
   }
 
-  async removeAccount(accountId: string): Promise<API<void>> {
+  async clearAllAccounts() {
     try {
       if (!this.db) await this.init();
 
-      return new Promise((resolve) => {
-        const transaction = this.db!.transaction([ACCOUNTS_STORE], "readwrite");
-        const store = transaction.objectStore(ACCOUNTS_STORE);
-        const request = store.delete(accountId);
-
-        request.onsuccess = () => {
-          resolve({
-            success: true,
-            message: "Account removed successfully",
-          });
-        };
-
-        request.onerror = () => {
-          resolve({
-            success: false,
-            message: "Failed to remove account from IndexedDB",
-          });
-        };
-      });
-    } catch (error) {
-      console.error("IndexedDB error:", error);
-      return {
-        success: false,
-        message: "Failed to access IndexedDB",
-      };
-    }
-  }
-
-  async clearAllAccounts(): Promise<API<void>> {
-    try {
-      if (!this.db) await this.init();
+      const transaction = this.db!.transaction([ACCOUNTS_STORE], "readwrite");
+      const store = transaction.objectStore(ACCOUNTS_STORE);
+      const request = store.clear();
 
       return new Promise((resolve) => {
-        const transaction = this.db!.transaction([ACCOUNTS_STORE], "readwrite");
-        const store = transaction.objectStore(ACCOUNTS_STORE);
-        const request = store.clear();
-
-        request.onsuccess = () => {
-          resolve({
-            success: true,
-            message: "All accounts cleared successfully",
-          });
-        };
-
-        request.onerror = () => {
-          resolve({
-            success: false,
-            message: "Failed to clear accounts from IndexedDB",
-          });
-        };
+        request.onsuccess = () => resolve(true);
+        request.onerror = () => resolve(false);
       });
-    } catch (error) {
-      console.error("IndexedDB error:", error);
-      return {
-        success: false,
-        message: "Failed to access IndexedDB",
-      };
+    } catch {
+      return false;
     }
   }
 }

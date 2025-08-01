@@ -27,16 +27,17 @@ export async function login(
       return {
         success: true,
         message: "Login successful",
+        statusCode: response.status,
         data,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: Array.isArray(error.message)
           ? error.message[0]
           : error.message,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -64,16 +65,17 @@ export async function switchAccount(
       return {
         success: true,
         message: "Account switched successfully",
+        statusCode: response.status,
         data,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: Array.isArray(error.message)
           ? error.message[0]
           : error.message,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -96,15 +98,16 @@ export async function signup(
       return {
         success: true,
         message: "Signup successful",
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: Array.isArray(error.message)
           ? error.message[0]
           : error.message,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -124,13 +127,14 @@ export async function logout(token: Token): API {
       return {
         success: true,
         message: "Logout successful",
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -186,14 +190,15 @@ export async function getUser(accessToken: string): API<{ user: AccountInfo }> {
       return {
         success: true,
         message: "User fetched successfully",
+        statusCode: response.status,
         data,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -216,15 +221,16 @@ export async function sendOtpEmail(
       return {
         success: true,
         message: "Send successful",
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: Array.isArray(error.message)
           ? error.message[0]
           : error.message,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -247,15 +253,16 @@ export async function recoverPassword(
       return {
         success: true,
         message: "Password changed successfully",
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: Array.isArray(error.message)
           ? error.message[0]
           : error.message,
+        statusCode: error.statusCode,
       };
     });
 }

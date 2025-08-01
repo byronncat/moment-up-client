@@ -4,6 +4,7 @@ declare module "api" {
   type API<T = void> = Promise<{
     success: boolean;
     message: string;
+    statusCode: number;
     data?: T;
   }>;
 

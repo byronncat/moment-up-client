@@ -47,6 +47,7 @@ type AuthContextType = {
 
 const defaultResponse = {
   success: false,
+  statusCode: 500,
   message: "Something went wrong!",
 };
 
@@ -103,7 +104,7 @@ export default function AuthProvider({
 
   const login = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
-      const { success, message, data } = await AuthApi.login(
+      const { success, message, statusCode, data } = await AuthApi.login(
         values,
         token.current.csrfToken
       );
@@ -116,14 +117,14 @@ export default function AuthProvider({
 
         router.push(ROUTE.HOME);
       }
-      return { success, message };
+      return { success, message, statusCode };
     },
     [router, authCookie]
   );
 
   const addAccount = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
-      const { success, message, data } = await AuthApi.login(
+      const { success, message, statusCode, data } = await AuthApi.login(
         values,
         token.current.csrfToken
       );
@@ -135,7 +136,7 @@ export default function AuthProvider({
 
         router.push(ROUTE.HOME);
       }
-      return { success, message };
+      return { success, message, statusCode };
     },
     [router]
   );
@@ -146,7 +147,7 @@ export default function AuthProvider({
   });
   const switchAccount = useCallback(
     async (accountId: AccountInfo["id"]) => {
-      const { success, message, data } = await switchApi(accountId);
+      const { success, message, statusCode, data } = await switchApi(accountId);
       if (success && data) {
         setLogged(true);
         setUser(data.user);
@@ -154,14 +155,14 @@ export default function AuthProvider({
 
         router.push(ROUTE.HOME);
       }
-      return { success, message };
+      return { success, message, statusCode };
     },
     [router, switchApi]
   );
 
   const signup = useCallback(
     async (values: z.infer<typeof zodSchema.auth.signup>) => {
-      const { success, message } = await AuthApi.signup(
+      const { success, message, statusCode } = await AuthApi.signup(
         values,
         token.current.csrfToken
       );
@@ -170,7 +171,7 @@ export default function AuthProvider({
         token.current.accessToken = "";
         router.push(`${ROUTE.LOGIN}?email=${encodeURIComponent(values.email)}`);
       }
-      return { success, message };
+      return { success, message, statusCode };
     },
     [router]
   );
@@ -181,7 +182,7 @@ export default function AuthProvider({
   });
   const logout = useCallback(async () => {
     setLoaded(false);
-    const { success, message } = await logoutApi();
+    const { success, message, statusCode } = await logoutApi();
     if (success) {
       if (user?.id) await indexedDBService.removeAccount(user.id);
       setLogged(false);
@@ -194,7 +195,7 @@ export default function AuthProvider({
       }, PAGE_RELOAD_TIME);
     } else setLoaded(true);
 
-    return { success, message };
+    return { success, message, statusCode };
   }, [router, authCookie, logoutApi, user]);
 
   const sendOtpEmail = useCallback(

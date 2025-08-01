@@ -10,10 +10,10 @@ import { ApiUrl } from "@/services/api.constant";
 import { INITIAL_PAGE } from "@/constants/serverConfig";
 import { PROFILE_ZONE_HEIGHT } from "./spacing.constant";
 
-import { cn } from "@/libraries/utils";
-import ProfileZone from "./ProfileZone";
 import { MomentList as List, MomentSkeleton } from "@/components/moment";
 import { NoContent, ErrorContent } from "@/components/common";
+import ProfileZone from "./ProfileZone";
+import ProfileWrapper from "./Wrapper";
 import { Camera } from "@/components/icons";
 
 type MomentListProps = Readonly<{
@@ -22,8 +22,9 @@ type MomentListProps = Readonly<{
 
 export default function MomentList({ filter }: MomentListProps) {
   const swrFetcherWithRefresh = useRefreshSWR();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const { profile } = useProfile();
+  const isSelf = user?.username === profile?.username;
 
   const getKey = (
     pageIndex: number,
@@ -43,6 +44,7 @@ export default function MomentList({ filter }: MomentListProps) {
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,
+        errorRetryCount: 0,
       }
     );
 
@@ -52,17 +54,12 @@ export default function MomentList({ filter }: MomentListProps) {
   const hasNextPage = data
     ? (data[data.length - 1]?.hasNextPage ?? false)
     : true;
-  const isLoadingMore = !!(
-    isValidating &&
-    data &&
-    typeof data[size - 1] !== "undefined"
-  );
   const allMoments = useMemo(() => {
     return data ? data.flatMap((page) => page?.items || []) : undefined;
   }, [data]);
 
   async function loadNextPage() {
-    if (hasNextPage && !isLoadingMore) await setSize(size + 1);
+    if (hasNextPage && !isValidating) await setSize(size + 1);
   }
 
   function handleClick(index: number) {
@@ -75,39 +72,36 @@ export default function MomentList({ filter }: MomentListProps) {
 
   if (isLoading) {
     return (
-      <div>
-        <ProfileZone data={profile} />
-        <div
-          className={cn(
-            "flex flex-col gap-4",
-            "max-w-[600px] size-full mx-auto",
-            "pt-4"
-          )}
-        >
-          <MomentSkeleton haveText media="none" />
-          <MomentSkeleton media="horizontal" />
-        </div>
-      </div>
+      <ProfileWrapper data={profile}>
+        <MomentSkeleton haveText media="none" />
+        <MomentSkeleton media="horizontal" />
+      </ProfileWrapper>
     );
   }
-  if (error)
-    return <ErrorContent onRefresh={() => mutate()} className="pt-[121px]" />;
+  if (error && error.statusCode !== 403)
+    return (
+      <ProfileWrapper data={profile}>
+        <ErrorContent onRefresh={() => mutate()} className="pt-[80px]" />
+      </ProfileWrapper>
+    );
   if (!allMoments) return null;
   if (allMoments.length === 0)
     return (
-      <NoContent
-        icon={<Camera className="size-16 text-muted-foreground" />}
-        title="No moments found"
-        description="This user has not posted any moments yet."
-        className="pt-[121px]"
-      />
+      <ProfileWrapper data={profile}>
+        <NoContent
+          icon={<Camera className="size-16 text-muted-foreground" />}
+          title="No moments found"
+          description="This user has not posted any moments yet."
+          className="pt-[80px]"
+        />
+      </ProfileWrapper>
     );
 
   return (
     <List
       items={allMoments}
-      hasNextPage={hasNextPage}
-      isNextPageLoading={isLoadingMore}
+      hasNextPage={hasNextPage && error?.statusCode !== 403}
+      isNextPageLoading={isValidating}
       loadNextPage={loadNextPage}
       onItemClick={handleClick}
       actions={{
@@ -126,7 +120,7 @@ export default function MomentList({ filter }: MomentListProps) {
       }}
       listOptions={{
         topChildren: <ProfileZone data={profile} />,
-        topPadding: PROFILE_ZONE_HEIGHT + 16,
+        topPadding: PROFILE_ZONE_HEIGHT(isSelf || !!profile.bio) + 16,
         bottomPadding: 121,
       }}
       itemOptions={{

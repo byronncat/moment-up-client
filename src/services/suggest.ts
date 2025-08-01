@@ -29,13 +29,14 @@ export async function reportTopic(data: ReportTopicDto, token: Token): API {
       return {
         success: true,
         message: "Report submitted successfully",
+        statusCode: response.status,
       };
     })
     .catch((error: ErrorResponse) => {
       return {
-        statusCode: error.statusCode,
         success: false,
         message: error.message as string,
+        statusCode: error.statusCode,
       };
     });
 }
@@ -53,11 +54,13 @@ export async function getPopularAccounts(): API<ProfileSearchItem[]> {
       success: true,
       message: "ok",
       data: mockPopularAccounts,
+      statusCode: 200,
     };
   } catch (error) {
     console.error(error);
     return {
       success: false,
+      statusCode: 500,
       message: "internal error",
     };
   }
