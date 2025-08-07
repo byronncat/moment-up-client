@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useState } from "react";
 import { useAuth } from "@/components/providers";
 import { ROUTE } from "@/constants/route";
+import { FIRST } from "@/constants/clientConfig";
 
 type FeedContextType = {
   feeds: FeedNotificationInfo[] | undefined;
@@ -61,14 +62,11 @@ export default function FeedDataProvider({ children }: FeedDataProviderProps) {
 
       if (isMyFeed) {
         if (direction === "next")
-          router.replace(ROUTE.FEED(feeds[0].username, feeds[0].id));
-        else
-          router.replace(
-            ROUTE.FEED(
-              feeds[feeds.length - 1].username,
-              feeds[feeds.length - 1].id
-            )
-          );
+          router.replace(ROUTE.FEED(feeds[FIRST].username, feeds[FIRST].id));
+        else {
+          const LAST = totalFeeds - 1;
+          router.replace(ROUTE.FEED(feeds[LAST].username, feeds[LAST].id));
+        }
         return;
       }
 
@@ -79,14 +77,14 @@ export default function FeedDataProvider({ children }: FeedDataProviderProps) {
           return;
         } else
           nextIndex =
-            currentFeedIndex < feeds.length - 1 ? currentFeedIndex + 1 : 0;
+            currentFeedIndex < totalFeeds - 1 ? currentFeedIndex + 1 : 0;
       } else {
         if (myFeed && currentFeedIndex === 0) {
           router.replace(ROUTE.FEED(myFeed.username, myFeed.id));
           return;
         } else
           nextIndex =
-            currentFeedIndex > 0 ? currentFeedIndex - 1 : feeds.length - 1;
+            currentFeedIndex > 0 ? currentFeedIndex - 1 : totalFeeds - 1;
       }
 
       const nextFeed = feeds[nextIndex];

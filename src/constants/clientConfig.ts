@@ -1,3 +1,6 @@
+export const FIRST = 0;
+
+// === STORAGE ===
 export enum CookieName {
   AUTH_GUARD = "_guard",
   SIDEBAR = "sidebar-state",

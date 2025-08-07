@@ -2,6 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { FIRST } from "@/constants/clientConfig";
+
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 
@@ -23,7 +25,7 @@ export default function HorizontalNavigationBar({
   className,
 }: NavigationProps) {
   const pathname = usePathname();
-  const [activeTab, setActiveTab] = useState(items[0]?.id);
+  const [activeTab, setActiveTab] = useState(items[FIRST]?.id);
 
   return (
     <div className={cn("w-full", "border-b border-border", className)}>

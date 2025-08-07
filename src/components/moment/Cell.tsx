@@ -1,7 +1,7 @@
 import type { MomentInfo } from "api";
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
-import { BLUR_DATA_URL } from "@/constants/clientConfig";
+import { BLUR_DATA_URL, FIRST } from "@/constants/clientConfig";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -15,7 +15,7 @@ type MomentCellProps = Readonly<{
 
 export default function MomentCell({ data, onClick }: MomentCellProps) {
   if (!data.post.files || data.post.files.length === 0) return null;
-  const coverFile = data.post.files[0];
+  const coverFile = data.post.files[FIRST];
 
   return (
     <div

@@ -7,7 +7,7 @@ import { useState, useRef, useEffect, memo } from "react";
 import { debounce } from "lodash";
 import memoize from "memoize-one";
 import { areEqual } from "react-window";
-import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { PAGE_RELOAD_TIME, FIRST } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -117,7 +117,7 @@ export default function MomentList({
     let height = HEADER_HEIGHT + FOOTER_HEIGHT + ITEM_GAP + 2 * BORDER_SIZE;
     if (moment.post.files?.length) {
       if (moment.post.files.length === 1) {
-        const file = moment.post.files[0];
+        const file = moment.post.files[FIRST];
         switch (file.aspectRatio) {
           case "1:1":
             height += width; // Square

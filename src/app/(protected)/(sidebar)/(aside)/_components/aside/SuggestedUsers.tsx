@@ -11,6 +11,7 @@ import { SWRFetcherWithToken } from "@/libraries/swr";
 import { toast } from "sonner";
 import { ApiUrl, UserApi } from "@/services";
 import { ROUTE } from "@/constants/route";
+import { FIRST } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -123,7 +124,7 @@ function SuggestedUserItem({
           </UserHoverCard>
           <span className="text-xs text-muted-foreground">
             {user.followedBy
-              ? `Followed by ${user.followedBy.displayItems[0].displayName}`
+              ? `Followed by ${user.followedBy.displayItems[FIRST].displayName}`
               : `Popular user`}
           </span>
         </div>

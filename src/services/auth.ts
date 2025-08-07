@@ -4,6 +4,7 @@ import type { Token } from "@/components/providers/Auth";
 
 import zodSchema from "@/libraries/zodSchema";
 import { ApiUrl } from "./api.constant";
+import { FIRST } from "@/constants/clientConfig";
 
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>,
@@ -35,7 +36,7 @@ export async function login(
       return {
         success: false,
         message: Array.isArray(error.message)
-          ? error.message[0]
+          ? error.message[FIRST]
           : error.message,
         statusCode: error.statusCode,
       };
@@ -73,7 +74,7 @@ export async function switchAccount(
       return {
         success: false,
         message: Array.isArray(error.message)
-          ? error.message[0]
+          ? error.message[FIRST]
           : error.message,
         statusCode: error.statusCode,
       };
@@ -105,7 +106,7 @@ export async function signup(
       return {
         success: false,
         message: Array.isArray(error.message)
-          ? error.message[0]
+          ? error.message[FIRST]
           : error.message,
         statusCode: error.statusCode,
       };
@@ -228,7 +229,7 @@ export async function sendOtpEmail(
       return {
         success: false,
         message: Array.isArray(error.message)
-          ? error.message[0]
+          ? error.message[FIRST]
           : error.message,
         statusCode: error.statusCode,
       };
@@ -260,7 +261,7 @@ export async function recoverPassword(
       return {
         success: false,
         message: Array.isArray(error.message)
-          ? error.message[0]
+          ? error.message[FIRST]
           : error.message,
         statusCode: error.statusCode,
       };
