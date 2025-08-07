@@ -7,6 +7,7 @@ const sizeConfig = {
   "10": { ring: "size-12", avatar: "size-10", userFallback: "size-5" },
   "12": { ring: "size-14", avatar: "size-12", userFallback: "size-6" },
   "14": { ring: "size-16", avatar: "size-14", userFallback: "size-8" },
+  "20": { ring: "size-22", avatar: "size-20", userFallback: "size-10" },
   "26": { ring: "size-28", avatar: "size-26", userFallback: "size-14" },
 } as const;
 

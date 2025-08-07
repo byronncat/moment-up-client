@@ -17,7 +17,7 @@ export const ROUTE = {
   },
   EXPLORE: (type?: "media" | "moments") =>
     "/explore" + (type ? `/${type}` : ""),
-  FEED: (userId: string, feedId: string) => `/feeds/${userId}/${feedId}`,
+  FEED: (username: string, feedId: string) => `/feeds/${username}/${feedId}`,
   FEED_CREATE: "/feeds/create",
   MOMENT: (momentId: string, imgIndex?: number) =>
     `/moment/${momentId}${imgIndex ? `?imgIndex=${imgIndex}` : ""}`,

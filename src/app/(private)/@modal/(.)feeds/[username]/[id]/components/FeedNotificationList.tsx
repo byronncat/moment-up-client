@@ -1,15 +1,19 @@
 import type { FeedNotificationInfo } from "api";
 
-import { useFeed } from "../../../@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
+import { usePathname } from "next/navigation";
+import { useFeed } from "../hooks/useFeedData";
 import { cn } from "@/libraries/utils";
+import Link from "next/link";
 import { Avatar } from "@/components/common";
 import { Format } from "@/utilities";
+import { ROUTE } from "@/constants/route";
 
 export default function FeedNotificationList({
   className,
 }: Readonly<{ className?: string }>) {
-  const { feeds, getCurrentUserId } = useFeed();
-  const currentUserId = getCurrentUserId();
+  const { feeds } = useFeed();
+  const pathname = usePathname();
+  const username = pathname.split("/")[2];
 
   return (
     <div className={cn(className, "flex flex-col")}>
@@ -19,7 +23,7 @@ export default function FeedNotificationList({
           <FeedItem
             key={feed.id}
             data={feed}
-            isCurrent={feed.userId === currentUserId}
+            isCurrent={feed.username === username}
           />
         ))}
       </div>
@@ -33,22 +37,27 @@ type FeedItemProps = Readonly<{
 }>;
 
 function FeedItem({ data, isCurrent }: FeedItemProps) {
-  const { setUserId } = useFeed();
-  function handleClick() {
-    if (isCurrent) return;
-    setUserId(data.userId);
+  const { setCurrentUser } = useFeed();
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (isCurrent) {
+      event.preventDefault();
+      return;
+    }
+    setCurrentUser(data.username);
   }
 
   return (
-    <div
+    <Link
+      href={ROUTE.FEED(data.username, data.id)}
+      onClick={handleClick}
+      replace
       className={cn(
         "flex items-center gap-3",
         "px-4 py-2",
         "hover:bg-accent-dark/[.12]",
         "transition-colors duration-150 ease-in-out",
-        isCurrent ? "bg-accent-dark/[.12]" : "cursor-pointer"
+        isCurrent && "bg-accent-dark/[.12] cursor-default"
       )}
-      onClick={handleClick}
     >
       <div className="w-[56px]">
         <Avatar
@@ -68,6 +77,6 @@ function FeedItem({ data, isCurrent }: FeedItemProps) {
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

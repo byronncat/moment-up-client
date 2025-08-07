@@ -8,8 +8,7 @@ type FeedContextType = {
   totalFeeds: number;
   setFeeds: (feeds: FeedNotificationInfo[]) => void;
   currentUser: string | null;
-  setUserId: (id: string | null) => void;
-  getCurrentUserId: () => string | null;
+  setCurrentUser: (id: string | null) => void;
   navigateUser: (direction?: "next" | "prev") => boolean;
 };
 
@@ -18,8 +17,7 @@ const FeedDataContext = createContext<FeedContextType>({
   totalFeeds: 0,
   setFeeds: () => {},
   currentUser: null,
-  setUserId: () => {},
-  getCurrentUserId: () => null,
+  setCurrentUser: () => {},
   navigateUser: () => false,
 });
 
@@ -31,14 +29,9 @@ type FeedDataProviderProps = Readonly<{
 
 export default function FeedDataProvider({ children }: FeedDataProviderProps) {
   const [feeds, setFeeds] = useState<FeedNotificationInfo[]>([]);
-  const [currentUser, setUserId] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
 
   const totalFeeds = feeds.length;
-
-  const getCurrentUserId = useCallback(() => {
-    const currentFeed = feeds.find((feed) => feed.userId === currentUser);
-    return currentFeed?.userId || null;
-  }, [feeds, currentUser]);
 
   const navigateUser = useCallback(
     (direction: "next" | "prev" = "next") => {
@@ -55,7 +48,7 @@ export default function FeedDataProvider({ children }: FeedDataProviderProps) {
         nextIndex =
           currentFeedIndex > 0 ? currentFeedIndex - 1 : feeds.length - 1;
 
-      setUserId(feeds[nextIndex].userId);
+      setCurrentUser(feeds[nextIndex].username);
       return true;
     },
     [feeds, currentUser]
@@ -68,8 +61,7 @@ export default function FeedDataProvider({ children }: FeedDataProviderProps) {
         totalFeeds,
         setFeeds,
         currentUser,
-        setUserId,
-        getCurrentUserId,
+        setCurrentUser,
         navigateUser,
       }}
     >

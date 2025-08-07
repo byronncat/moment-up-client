@@ -97,7 +97,7 @@ declare module "api" {
       };
 
   type FeedInfo = {
-    user: AccountInfo;
+    user: Omit<AccountInfo, "email">;
     feeds: {
       id: string;
       content: FeedContent;

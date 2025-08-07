@@ -50,7 +50,8 @@ export const ApiUrl = {
 
   feed: {
     get: `${SERVER_HOST_URL}/v1/feeds`,
-    getById: (userId: string) => `${SERVER_HOST_URL}/v1/feeds/user/${userId}`,
+    getByUsername: (username: string) =>
+      `${SERVER_HOST_URL}/v1/feeds/user/${username}`,
   },
 
   // === Suggestion ===

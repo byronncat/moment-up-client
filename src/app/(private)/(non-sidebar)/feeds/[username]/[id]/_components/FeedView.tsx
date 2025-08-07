@@ -2,28 +2,30 @@
 
 import type { FeedInfo } from "api";
 
-import { useState, useCallback, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { useContentProgress, useSound } from "./hooks";
 import { useFeed } from "@/app/(private)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
 
 import { cn } from "@/libraries/utils";
+import { ROUTE } from "@/constants/route";
 
 import Container from "./Container";
 import Content from "./Content";
+import { ConfirmState, LoadingState, ErrorState } from "./state";
 import {
-  LoadingState,
-  ErrorState,
   ActionButtons,
   NavigateButtons,
   ProgressBar,
   UserInfo,
-} from "./components";
+} from "./controls";
 
 type FeedViewProps = Readonly<{
   data: FeedInfo | undefined;
-  initialIndex: number;
   loading: boolean;
   onClose: () => void;
+  confirm?: boolean;
+  initialIndex?: number;
   className?: string;
 }>;
 
@@ -31,38 +33,63 @@ export default function FeedView({
   data,
   loading,
   onClose,
+  confirm = false,
+  initialIndex = 0,
   className,
 }: FeedViewProps) {
+  const pathname = usePathname();
   const { totalFeeds, currentUser, navigateUser } = useFeed();
-  const [currentFeedIndex, setCurrentFeedIndex] = useState(0);
+
+  const [currentFeedIndex, setCurrentFeedIndex] = useState(initialIndex);
+  const [_confirm, setConfirm] = useState(confirm);
+
+  const username = useMemo(() => {
+    return pathname.split("/")[2];
+  }, [pathname]);
+
+  const changeUrl = useCallback(
+    (index: number) => {
+      if (username && data?.feeds[index].id) {
+        const newUrl = ROUTE.FEED(username, data.feeds[index].id);
+        window.history.replaceState(null, "", newUrl);
+      }
+    },
+    [username, data?.feeds]
+  );
 
   const navigate = useCallback(
     (direction: "prev" | "next") => {
       const feedsLength = data?.feeds.length ?? 0;
+      const isPrev = direction === "prev";
+      const isNext = direction === "next";
 
-      if (direction === "prev") {
-        if (currentFeedIndex > 0) setCurrentFeedIndex(currentFeedIndex - 1);
-        else {
+      if (isPrev || isNext) {
+        const offset = isPrev ? -1 : 1;
+        const limit = isPrev ? 0 : feedsLength - 1;
+
+        const atBoundary = isPrev
+          ? currentFeedIndex <= limit
+          : currentFeedIndex >= limit;
+
+        if (!atBoundary) {
+          const newIndex = currentFeedIndex + offset;
+          setCurrentFeedIndex(newIndex);
+          changeUrl(newIndex);
+        } else {
           setCurrentFeedIndex(0);
-          navigateUser("prev");
-        }
-      } else {
-        if (currentFeedIndex < feedsLength - 1)
-          setCurrentFeedIndex(currentFeedIndex + 1);
-        else {
-          setCurrentFeedIndex(0);
-          navigateUser("next");
+          navigateUser(direction);
         }
       }
     },
-    [data?.feeds.length, currentFeedIndex, navigateUser]
+    [data?.feeds, currentFeedIndex, navigateUser, changeUrl]
   );
 
   const handleSegmentClick = useCallback(
     (index: number) => {
       setCurrentFeedIndex(index);
+      changeUrl(index);
     },
-    [setCurrentFeedIndex]
+    [setCurrentFeedIndex, changeUrl]
   );
 
   const handleViewComplete = useCallback(() => {
@@ -78,7 +105,8 @@ export default function FeedView({
     setVideoRef: setContentVideoRef,
   } = useContentProgress(
     data?.feeds[currentFeedIndex]?.content,
-    handleViewComplete
+    handleViewComplete,
+    _confirm
   );
 
   const {
@@ -104,10 +132,19 @@ export default function FeedView({
     [navigate, reset]
   );
 
+  const handleConfirm = useCallback(() => {
+    // Update currentFeedIndex when initialIndex changes (when data loads)
+    setCurrentFeedIndex(initialIndex);
+    setConfirm(true);
+    play();
+  }, [play, initialIndex]);
+
   useEffect(() => {
     if (currentUser) reset();
   }, [currentUser, reset]);
 
+  if (!_confirm)
+    return <ConfirmState onConfirm={handleConfirm} className={className} />;
   if (loading) return <LoadingState className={className} />;
   if (!data?.feeds[currentFeedIndex])
     return <ErrorState onClose={onClose} className={className} />;

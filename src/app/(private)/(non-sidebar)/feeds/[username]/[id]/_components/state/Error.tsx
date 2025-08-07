@@ -1,6 +1,6 @@
 import { cn } from "@/libraries/utils";
 import { TriangleAlert } from "@/components/icons";
-import Container from "../../Container";
+import Container from "../Container";
 
 type ErrorStateProps = Readonly<{
   onClose: () => void;

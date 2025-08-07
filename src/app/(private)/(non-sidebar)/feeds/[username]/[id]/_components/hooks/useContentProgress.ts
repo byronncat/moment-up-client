@@ -8,10 +8,11 @@ type ContentType = FeedInfo["feeds"][number]["content"];
 
 export function useContentProgress(
   content: ContentType | undefined,
-  onComplete?: () => void
+  onComplete?: () => void,
+  initialPlay = true
 ) {
   const [progress, setProgress] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(initialPlay);
   const [duration, setDuration] = useState(DEFAULT_DURATION);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);

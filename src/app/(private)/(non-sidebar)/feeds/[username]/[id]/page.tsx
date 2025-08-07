@@ -12,15 +12,16 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
-import FeedView from "@/app/(private)/(non-sidebar)/feeds/[username]/[id]/_components/FeedView";
-import RightNav from "./components/RightNav";
+import FeedView from "./_components/FeedView";
 import { X } from "@/components/icons";
 
 export default function FeedModal() {
-  const { token } = useAuth();
+  const router = useRouter();
   const params = useParams();
+  const feedId = params.id as string;
   const username = params.username as string;
 
+  const { token } = useAuth();
   const { data, isLoading } = useSWRImmutable(
     [ApiUrl.feed.getByUsername(username), token.accessToken],
     ([url, token]) =>
@@ -29,14 +30,16 @@ export default function FeedModal() {
       }>(url, token)
   );
 
-  const router = useRouter();
   function handleClose() {
     if (window.history.length > 1) router.back();
     else router.replace(ROUTE.HOME);
   }
 
+  const initialIndex =
+    data?.feed.feeds.findIndex((feed) => feed.id === feedId) || 0;
+
   return (
-    <Modal className="flex">
+    <Modal>
       <Button
         onClick={handleClose}
         size="icon"
@@ -53,11 +56,10 @@ export default function FeedModal() {
       <FeedView
         data={data?.feed}
         loading={isLoading}
+        initialIndex={initialIndex}
         onClose={handleClose}
-        confirm
         className="flex-1"
       />
-      <RightNav className="[@media(max-width:1024px)]:hidden" />
     </Modal>
   );
 }

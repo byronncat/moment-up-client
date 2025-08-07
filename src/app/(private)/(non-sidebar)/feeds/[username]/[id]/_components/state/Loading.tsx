@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader } from "@/components/icons";
-import Container from "../../Container";
+import Container from "../Container";
 
 export default function LoadingState({
   className,

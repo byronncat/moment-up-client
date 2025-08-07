@@ -1,4 +1,4 @@
-import type { AccountInfo } from "api";
+import type { FeedInfo } from "api";
 
 import Link from "next/link";
 import { Avatar } from "@/components/common";
@@ -6,7 +6,7 @@ import { Format } from "@/utilities";
 import { ROUTE } from "@/constants/route";
 
 type UserInfoProps = Readonly<{
-  data: AccountInfo;
+  data: FeedInfo["user"];
   timestamp: string;
 }>;
 

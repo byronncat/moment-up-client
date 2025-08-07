@@ -14,12 +14,12 @@ export default function FeedItem({
   data: FeedNotificationInfo;
   className?: string;
 }>) {
-  const { setUserId } = useFeed();
+  const { setCurrentUser } = useFeed();
   return (
     <div className={className}>
       <Link
         href={ROUTE.FEED(data.username, data.id)}
-        onClick={() => setUserId(data.userId)}
+        onClick={() => setCurrentUser(data.username)}
         className={cn("group", "cursor-pointer", "flex flex-col items-center")}
         aria-label={`View feed from ${data.displayName}${!data.viewed ? " (unread)" : ""}`}
         aria-describedby={`feed-${data.id}-status`}
