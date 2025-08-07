@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import { AuthApi } from "@/services";
 import ClientCookie from "@/helpers/client-cookie";
-import { PAGE_RELOAD_TIME, AUTH_COOKIE_NAME } from "@/constants/clientConfig";
+import { PAGE_RELOAD_TIME, CookieName } from "@/constants/clientConfig";
 import { ROUTE } from "@/constants/route";
 
 type AuthHookProps = {
@@ -26,7 +26,7 @@ export function useAuthOperations({
   token,
 }: AuthHookProps) {
   const router = useRouter();
-  const authCookie = useMemo(() => ClientCookie(AUTH_COOKIE_NAME), []);
+  const authCookie = useMemo(() => ClientCookie(CookieName.AUTH_GUARD), []);
 
   const handlePageReload = useCallback(
     (callback?: () => void) => {

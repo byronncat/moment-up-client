@@ -2,11 +2,11 @@ import type { NextRequest } from "next/server";
 
 import { NextResponse } from "next/server";
 import { PRIVATE_ROUTES, AUTH_ROUTES, ROUTE } from "@/constants/route";
-import { AUTH_COOKIE_NAME } from "@/constants/clientConfig";
+import { CookieName } from "@/constants/clientConfig";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const hasSession = request.cookies.has(AUTH_COOKIE_NAME);
+  const hasSession = request.cookies.has(CookieName.AUTH_GUARD);
 
   if (hasSession && AUTH_ROUTES.some((route) => pathname.startsWith(route)))
     return NextResponse.redirect(new URL(ROUTE.HOME, request.url));

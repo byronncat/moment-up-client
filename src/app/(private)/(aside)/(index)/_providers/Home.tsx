@@ -2,6 +2,7 @@
 
 import { createContext, useContext } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import { LocalStorageKey } from "@/constants/clientConfig";
 
 type HomeContextType = {
   hideFeeds: boolean;
@@ -18,7 +19,10 @@ export const useHome = () => useContext(HomeContext);
 export default function HomeProvider({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [hideFeeds, setHideFeeds] = useLocalStorage("hide-feeds", false);
+  const [hideFeeds, setHideFeeds] = useLocalStorage(
+    LocalStorageKey.FEEDS_DISPLAY,
+    false
+  );
   return (
     <HomeContext.Provider
       value={{

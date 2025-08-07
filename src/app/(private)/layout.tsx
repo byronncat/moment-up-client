@@ -4,6 +4,7 @@ import { Sidebar } from "./_components";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { MomentDataProvider } from "@/components/providers";
 import FeedDataProvider from "./@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
+import { CookieName } from "@/constants/clientConfig";
 
 type LayoutProps = Readonly<{
   children: React.ReactNode;
@@ -12,7 +13,7 @@ type LayoutProps = Readonly<{
 
 export default async function Layout({ children, modal }: LayoutProps) {
   const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get("sidebar-state")?.value === "true";
+  const defaultOpen = cookieStore.get(CookieName.SIDEBAR)?.value === "true";
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <div

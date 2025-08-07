@@ -7,13 +7,13 @@ import Footer from "./Footer";
 import NoAuth from "./NoAuth";
 
 import { cookies } from "next/headers";
-import { AUTH_COOKIE_NAME } from "@/constants/clientConfig";
+import { CookieName } from "@/constants/clientConfig";
 
 export default async function Aside({
   className,
 }: Readonly<{ className?: string }>) {
   const cookieStore = await cookies();
-  const isAuth = cookieStore.has(AUTH_COOKIE_NAME);
+  const isAuth = cookieStore.has(CookieName.AUTH_GUARD);
 
   return (
     <aside className={cn("h-fit w-[320px]", "space-y-6", className)}>

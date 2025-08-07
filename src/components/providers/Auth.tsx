@@ -17,7 +17,7 @@ import { AuthApi, indexedDBService } from "@/services";
 import ClientCookie from "@/helpers/client-cookie";
 import zodSchema from "@/libraries/zodSchema";
 import { ROUTE } from "@/constants/route";
-import { PAGE_RELOAD_TIME, AUTH_COOKIE_NAME } from "@/constants/clientConfig";
+import { PAGE_RELOAD_TIME, CookieName } from "@/constants/clientConfig";
 import { LoadingPage } from "../pages";
 
 export type Token = {
@@ -83,7 +83,7 @@ export default function AuthProvider({
   const [loaded, setLoaded] = useState(false);
   const [user, setUser] = useState<AccountInfo | null>(null);
 
-  const authCookie = useMemo(() => ClientCookie(AUTH_COOKIE_NAME), []);
+  const authCookie = useMemo(() => ClientCookie(CookieName.AUTH_GUARD), []);
   const token = useRef({
     accessToken: "",
     csrfToken: "",

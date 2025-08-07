@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { useSidebar, SIDEBAR_COOKIE_NAME } from "@/components/ui/sidebar";
+import { useSidebar } from "@/components/ui/sidebar";
 import ClientCookie from "@/helpers/client-cookie";
-import { XL_BREAKPOINT } from "@/constants/clientConfig";
+import { BreakPoint, CookieName } from "@/constants/clientConfig";
 
 export function useResponsiveSidebar() {
   const { open, setOpen } = useSidebar();
@@ -9,7 +9,7 @@ export function useResponsiveSidebar() {
   const userPreferenceRef = useRef<boolean | null>(null);
   const isFirstRender = useRef(true);
 
-  const sidebarCookie = ClientCookie(SIDEBAR_COOKIE_NAME);
+  const sidebarCookie = ClientCookie(CookieName.SIDEBAR);
 
   useEffect(() => {
     const cookieValue = sidebarCookie.get();
@@ -19,7 +19,7 @@ export function useResponsiveSidebar() {
 
   useEffect(() => {
     const handleResize = () => {
-      const isXl = window.innerWidth >= XL_BREAKPOINT;
+      const isXl = window.innerWidth >= BreakPoint.XL;
 
       if (isFirstRender.current) {
         setIsAboveXl(isXl);

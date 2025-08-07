@@ -1,4 +1,11 @@
-export const AUTH_COOKIE_NAME = "_guard";
+export enum CookieName {
+  AUTH_GUARD = "_guard",
+  SIDEBAR = "sidebar-state",
+}
+export enum LocalStorageKey {
+  FEEDS_DISPLAY = "hide-feeds",
+  THEME = "theme",
+}
 
 // === UI ===
 export const BLUR_DATA_URL =
@@ -25,7 +32,9 @@ export enum SearchCategory {
   MEDIA = "media",
 }
 
-export const MOBILE_BREAKPOINT = 560;
-export const XL_BREAKPOINT = 1280;
+export enum BreakPoint {
+  MOBILE = 560,
+  XL = 1280,
+}
 
 export const PAGE_RELOAD_TIME = 500;
