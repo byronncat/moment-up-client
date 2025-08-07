@@ -1,17 +1,17 @@
 "use client";
 
 import type { FeedNotificationInfo } from "api";
+import { usePathname, useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useState } from "react";
 import { useAuth } from "@/components/providers";
+import { ROUTE } from "@/constants/route";
 
 type FeedContextType = {
   feeds: FeedNotificationInfo[] | undefined;
   myFeed: FeedNotificationInfo | null;
   totalFeeds: number;
   setFeeds: (feeds: FeedNotificationInfo[]) => void;
-  currentUser: string | null;
-  setCurrentUser: (id: string | null) => void;
-  navigateUser: (direction?: "next" | "prev") => boolean;
+  navigateUser: (direction?: "next" | "prev") => void;
 };
 
 const FeedDataContext = createContext<FeedContextType>({
@@ -19,8 +19,6 @@ const FeedDataContext = createContext<FeedContextType>({
   myFeed: null,
   totalFeeds: 0,
   setFeeds: () => {},
-  currentUser: null,
-  setCurrentUser: () => {},
   navigateUser: () => false,
 });
 
@@ -34,7 +32,9 @@ export default function FeedDataProvider({ children }: FeedDataProviderProps) {
   const { user } = useAuth();
   const [feeds, _setFeeds] = useState<FeedNotificationInfo[]>([]);
   const [myFeed, setMyFeed] = useState<FeedNotificationInfo | null>(null);
-  const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+  const username = pathname.split("/")[2];
 
   const totalFeeds = feeds.length;
 
@@ -51,23 +51,48 @@ export default function FeedDataProvider({ children }: FeedDataProviderProps) {
 
   const navigateUser = useCallback(
     (direction: "next" | "prev" = "next") => {
+      if (totalFeeds === 0) return;
+
+      const isMyFeed = myFeed?.username === username;
       const currentFeedIndex = feeds.findIndex(
-        (feed) => feed.userId === currentUser
+        (feed) => feed.username === username
       );
-      if (currentFeedIndex === -1) return false;
+      if (!isMyFeed && currentFeedIndex === -1) return;
+
+      if (isMyFeed) {
+        if (direction === "next")
+          router.replace(ROUTE.FEED(feeds[0].username, feeds[0].id));
+        else
+          router.replace(
+            ROUTE.FEED(
+              feeds[feeds.length - 1].username,
+              feeds[feeds.length - 1].id
+            )
+          );
+        return;
+      }
 
       let nextIndex: number;
-      if (direction === "next")
-        nextIndex =
-          currentFeedIndex < feeds.length - 1 ? currentFeedIndex + 1 : 0;
-      else
-        nextIndex =
-          currentFeedIndex > 0 ? currentFeedIndex - 1 : feeds.length - 1;
+      if (direction === "next") {
+        if (myFeed && currentFeedIndex === totalFeeds - 1) {
+          router.replace(ROUTE.FEED(myFeed.username, myFeed.id));
+          return;
+        } else
+          nextIndex =
+            currentFeedIndex < feeds.length - 1 ? currentFeedIndex + 1 : 0;
+      } else {
+        if (myFeed && currentFeedIndex === 0) {
+          router.replace(ROUTE.FEED(myFeed.username, myFeed.id));
+          return;
+        } else
+          nextIndex =
+            currentFeedIndex > 0 ? currentFeedIndex - 1 : feeds.length - 1;
+      }
 
-      setCurrentUser(feeds[nextIndex].username);
-      return true;
+      const nextFeed = feeds[nextIndex];
+      if (nextFeed) router.replace(ROUTE.FEED(nextFeed.username, nextFeed.id));
     },
-    [feeds, currentUser]
+    [feeds, myFeed, totalFeeds, username, router]
   );
 
   return (
@@ -77,8 +102,6 @@ export default function FeedDataProvider({ children }: FeedDataProviderProps) {
         myFeed,
         totalFeeds,
         setFeeds,
-        currentUser,
-        setCurrentUser,
         navigateUser,
       }}
     >

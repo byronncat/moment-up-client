@@ -38,7 +38,7 @@ export default function FeedView({
   className,
 }: FeedViewProps) {
   const pathname = usePathname();
-  const { totalFeeds, currentUser, navigateUser } = useFeed();
+  const { totalFeeds, navigateUser } = useFeed();
 
   const [currentFeedIndex, setCurrentFeedIndex] = useState(initialIndex);
   const [_confirm, setConfirm] = useState(confirm);
@@ -140,8 +140,8 @@ export default function FeedView({
   }, [play, initialIndex]);
 
   useEffect(() => {
-    if (currentUser) reset();
-  }, [currentUser, reset]);
+    if (username) reset();
+  }, [username, reset]);
 
   if (!_confirm)
     return <ConfirmState onConfirm={handleConfirm} className={className} />;

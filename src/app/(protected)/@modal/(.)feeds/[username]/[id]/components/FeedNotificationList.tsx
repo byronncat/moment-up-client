@@ -37,13 +37,8 @@ type FeedItemProps = Readonly<{
 }>;
 
 export function FeedItem({ data, isCurrent }: FeedItemProps) {
-  const { setCurrentUser } = useFeed();
   function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
-    if (isCurrent) {
-      event.preventDefault();
-      return;
-    }
-    setCurrentUser(data.username);
+    if (isCurrent) event.preventDefault();
   }
 
   return (

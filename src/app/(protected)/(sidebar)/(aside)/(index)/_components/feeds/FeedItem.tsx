@@ -1,11 +1,9 @@
 import type { FeedNotificationInfo } from "api";
 
-import { useFeed } from "@/app/(protected)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
-import { ROUTE } from "@/constants/route";
-
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Avatar } from "@/components/common";
+import { ROUTE } from "@/constants/route";
 
 export default function FeedItem({
   data,
@@ -14,12 +12,10 @@ export default function FeedItem({
   data: FeedNotificationInfo;
   className?: string;
 }>) {
-  const { setCurrentUser } = useFeed();
   return (
     <div className={className}>
       <Link
         href={ROUTE.FEED(data.username, data.id)}
-        onClick={() => setCurrentUser(data.username)}
         className={cn("group", "cursor-pointer", "flex flex-col items-center")}
         aria-label={`View feed from ${data.displayName}${!data.viewed ? " (unread)" : ""}`}
         aria-describedby={`feed-${data.id}-status`}
