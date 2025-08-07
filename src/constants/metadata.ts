@@ -5,7 +5,6 @@ export type MetadataMap = {
   login: NextMetadata;
   signup: NextMetadata;
   forgotPassword: NextMetadata;
-  home: NextMetadata;
   explore: NextMetadata;
   search: NextMetadata;
   profile: (username: string) => NextMetadata;
@@ -36,10 +35,6 @@ export const Metadata: MetadataMap = {
   forgotPassword: {
     title: "Recover",
     description: "Recover your password",
-  },
-  home: {
-    title: "Home",
-    description: "Home page",
   },
   explore: {
     title: "Explore",
