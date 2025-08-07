@@ -114,7 +114,7 @@ export default function FeedView({
     isSoundOn,
     toggleSoundOn,
     setVideoRef: setSoundVideoRef,
-  } = useSound(data?.feeds[currentFeedIndex], isPlaying);
+  } = useSound(data?.feeds[currentFeedIndex], isPlaying, _confirm);
 
   const handleSetVideoRef = useCallback(
     (video: HTMLVideoElement | null) => {
