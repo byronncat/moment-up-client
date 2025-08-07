@@ -28,7 +28,7 @@ export function useSound(
     setIsSoundOn((prev) => !prev);
   }, []);
 
-  const toggleSound = useCallback(() => {
+  const toggleUrlSound = useCallback(() => {
     if (audioRef.current) {
       if (isSoundOn && isPlaying)
         audioRef.current.play().catch((error) => {
@@ -57,19 +57,19 @@ export function useSound(
     return () => {
       cleanUpAudio();
     };
-  }, [soundUrl, cleanUpAudio, isActive]);
+  }, [soundUrl, cleanUpAudio, isActive, feed]);
 
   useEffect(() => {
     if (!isActive) return;
-    
-    toggleSound();
-  }, [soundUrl, isSoundOn, isPlaying, isActive, toggleSound]);
+
+    toggleUrlSound();
+  }, [soundUrl, isSoundOn, isPlaying, isActive, feed, toggleUrlSound]);
 
   useEffect(() => {
     if (!isActive) return;
 
     if (videoRef.current) videoRef.current.muted = soundUrl ? true : !isSoundOn;
-  }, [isSoundOn, soundUrl, videoRef, isActive]);
+  }, [isSoundOn, soundUrl, videoRef, isActive, feed]);
 
   return {
     haveSound,
