@@ -12,7 +12,7 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
-import FeedView from "@/app/(private)/(non-sidebar)/feeds/[username]/[id]/_components/FeedView";
+import FeedView from "@/app/(protected)/(non-sidebar)/feeds/[username]/[id]/_components/FeedView";
 import RightNav from "./components/RightNav";
 import { X } from "@/components/icons";
 

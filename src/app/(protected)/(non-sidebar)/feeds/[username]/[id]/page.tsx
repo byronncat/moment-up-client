@@ -58,7 +58,7 @@ export default function FeedModal() {
         loading={isLoading}
         initialIndex={initialIndex}
         onClose={handleClose}
-        className="flex-1"
+        className="size-full"
       />
     </Modal>
   );

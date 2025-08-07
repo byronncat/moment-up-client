@@ -5,7 +5,7 @@ import type { FeedInfo } from "api";
 import { usePathname } from "next/navigation";
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { useContentProgress, useSound } from "./hooks";
-import { useFeed } from "@/app/(private)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
+import { useFeed } from "@/app/(protected)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
 
 import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/route";

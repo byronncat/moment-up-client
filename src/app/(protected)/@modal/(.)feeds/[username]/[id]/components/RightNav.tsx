@@ -1,8 +1,11 @@
+import { usePathname } from "next/navigation";
+import { useFeed } from "../hooks/useFeedData";
+import { ROUTE } from "@/constants/route";
+
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import FeedNotificationList from "./FeedNotificationList";
-import { ROUTE } from "@/constants/route";
+import FeedNotificationList, { FeedItem } from "./FeedNotificationList";
 
 type RightNavProps = Readonly<{
   className?: string;
@@ -22,7 +25,7 @@ export default function RightNav({ className }: RightNavProps) {
       thumbClassName="bg-accent-dark/30"
     >
       <Header className="px-4 pt-7" />
-      <CreateSection className="px-4 mt-6" />
+      <CreateSection className="mt-6" />
       <FeedNotificationList className="mt-4 grow" />
     </ScrollArea>
   );
@@ -37,28 +40,37 @@ function Header({ className }: Readonly<{ className?: string }>) {
 }
 
 function CreateSection({ className }: Readonly<{ className?: string }>) {
+  const { myFeed } = useFeed();
+  const pathname = usePathname();
+  const username = pathname.split("/")[2];
+
   return (
     <div className={className}>
-      <h3 className={cn("mb-2", "font-semibold")}>Your feeds</h3>
-      <Link href={ROUTE.FEED_CREATE}>
-        <div className={cn("py-2", "flex items-center gap-3")}>
-          <div
-            className={cn(
-              "size-14 shrink-0",
-              "bg-accent-dark/[.12] rounded-full",
-              "flex items-center justify-center"
-            )}
-          >
-            <span className="text-3xl">+</span>
-          </div>
-          <div className="flex-1">
-            <div className="font-semibold">Create a feed</div>
-            <div className="text-sm text-muted-foreground">
-              Add media file or text.
+      <h3 className={cn("mb-2 px-4", "font-semibold")}>Your feeds</h3>
+      <div>
+        <Link href={ROUTE.FEED_CREATE}>
+          <div className={cn("px-4 py-2", "flex items-center gap-3")}>
+            <div
+              className={cn(
+                "size-14 shrink-0",
+                "bg-accent-dark/[.12] rounded-full",
+                "flex items-center justify-center"
+              )}
+            >
+              <span className="text-3xl">+</span>
+            </div>
+            <div className="flex-1">
+              <div className="font-semibold">Create a feed</div>
+              <div className="text-sm text-muted-foreground">
+                Add media file or text.
+              </div>
             </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+        {myFeed && (
+          <FeedItem data={myFeed} isCurrent={myFeed.username === username} />
+        )}
+      </div>
     </div>
   );
 }

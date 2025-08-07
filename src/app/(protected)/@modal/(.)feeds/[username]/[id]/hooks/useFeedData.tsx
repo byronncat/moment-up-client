@@ -2,9 +2,11 @@
 
 import type { FeedNotificationInfo } from "api";
 import { createContext, useCallback, useContext, useState } from "react";
+import { useAuth } from "@/components/providers";
 
 type FeedContextType = {
   feeds: FeedNotificationInfo[] | undefined;
+  myFeed: FeedNotificationInfo | null;
   totalFeeds: number;
   setFeeds: (feeds: FeedNotificationInfo[]) => void;
   currentUser: string | null;
@@ -14,6 +16,7 @@ type FeedContextType = {
 
 const FeedDataContext = createContext<FeedContextType>({
   feeds: undefined,
+  myFeed: null,
   totalFeeds: 0,
   setFeeds: () => {},
   currentUser: null,
@@ -28,10 +31,23 @@ type FeedDataProviderProps = Readonly<{
 }>;
 
 export default function FeedDataProvider({ children }: FeedDataProviderProps) {
-  const [feeds, setFeeds] = useState<FeedNotificationInfo[]>([]);
+  const { user } = useAuth();
+  const [feeds, _setFeeds] = useState<FeedNotificationInfo[]>([]);
+  const [myFeed, setMyFeed] = useState<FeedNotificationInfo | null>(null);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
 
   const totalFeeds = feeds.length;
+
+  const setFeeds = useCallback(
+    (feeds: FeedNotificationInfo[]) => {
+      const mine =
+        feeds.find((feed) => feed.username === user?.username) ?? null;
+      const others = feeds.filter((feed) => feed.username !== user?.username);
+      _setFeeds(others);
+      setMyFeed(mine);
+    },
+    [user?.username]
+  );
 
   const navigateUser = useCallback(
     (direction: "next" | "prev" = "next") => {
@@ -58,6 +74,7 @@ export default function FeedDataProvider({ children }: FeedDataProviderProps) {
     <FeedDataContext.Provider
       value={{
         feeds,
+        myFeed,
         totalFeeds,
         setFeeds,
         currentUser,

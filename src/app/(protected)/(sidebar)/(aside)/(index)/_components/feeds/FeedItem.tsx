@@ -1,6 +1,6 @@
 import type { FeedNotificationInfo } from "api";
 
-import { useFeed } from "@/app/(private)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
+import { useFeed } from "@/app/(protected)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";

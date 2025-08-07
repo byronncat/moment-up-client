@@ -17,7 +17,8 @@ export const ROUTE = {
   },
   EXPLORE: (type?: "media" | "moments") =>
     "/explore" + (type ? `/${type}` : ""),
-  FEED: (username: string, feedId: string) => `/feeds/${username}/${feedId}`,
+  FEED: (username?: string, feedId?: string) =>
+    `/feeds${username ? `/${username}` : ""}${feedId ? `/${feedId}` : ""}`,
   FEED_CREATE: "/feeds/create",
   MOMENT: (momentId: string, imgIndex?: number) =>
     `/moment/${momentId}${imgIndex ? `?imgIndex=${imgIndex}` : ""}`,
@@ -30,7 +31,7 @@ export const ROUTE = {
   ARCHIVE: (type: "bookmarks" | "likes" = "bookmarks") => `/archive/${type}`,
 };
 
-export const PRIVATE_ROUTES = [ROUTE.HOME, ROUTE.EXPLORE()];
+export const PRIVATE_ROUTES = [ROUTE.HOME, ROUTE.EXPLORE(), ROUTE.FEED()];
 export const AUTH_ROUTES = [ROUTE.LOGIN, ROUTE.SIGNUP, ROUTE.FORGOT_PASSWORD];
 export const PUBLIC_ROUTES = [ROUTE.PROFILE()];
 

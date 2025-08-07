@@ -36,7 +36,7 @@ type FeedItemProps = Readonly<{
   isCurrent: boolean;
 }>;
 
-function FeedItem({ data, isCurrent }: FeedItemProps) {
+export function FeedItem({ data, isCurrent }: FeedItemProps) {
   const { setCurrentUser } = useFeed();
   function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
     if (isCurrent) {
@@ -59,7 +59,7 @@ function FeedItem({ data, isCurrent }: FeedItemProps) {
         isCurrent && "bg-accent-dark/[.12] cursor-default"
       )}
     >
-      <div className="w-[56px]">
+      <div className="size-[56px] flex items-center justify-center">
         <Avatar
           src={data.avatar}
           alt={`${data.displayName}'s avatar`}

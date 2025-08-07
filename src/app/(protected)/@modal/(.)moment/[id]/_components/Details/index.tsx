@@ -13,7 +13,7 @@ import {
 } from "@/components/moment";
 import ButtonGroup from "./ButtonGroup";
 import CommentInput from "./CommentInput";
-import TextContent from "@/app/(private)/(sidebar)/(aside)/moment/[id]/_components/TextContent";
+import TextContent from "@/app/(protected)/(sidebar)/(aside)/moment/[id]/_components/TextContent";
 import { X } from "@/components/icons";
 
 type ContentProps = Readonly<{

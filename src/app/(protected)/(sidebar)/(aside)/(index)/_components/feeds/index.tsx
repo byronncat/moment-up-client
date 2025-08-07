@@ -8,7 +8,7 @@ import useSWRImmutable from "swr/immutable";
 import { useAuth } from "@/components/providers";
 import { useHome } from "../../_providers/Home";
 import { useHorizontalScroll } from "./hooks/useHorizontalScroll";
-import { useFeed } from "@/app/(private)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
+import { useFeed } from "@/app/(protected)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services/api.constant";
 
