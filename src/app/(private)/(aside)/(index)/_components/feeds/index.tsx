@@ -35,6 +35,7 @@ export default function Feeds() {
   );
   const { hideFeeds, setHideFeeds } = useHome();
   const { handleScroll, canScrollLeft, canScrollRight } = useHorizontalScroll(
+    data,
     scrollContainerRef,
     ITEMS_PER_VIEW,
     ITEM_WIDTH
@@ -48,18 +49,6 @@ export default function Feeds() {
   useEffect(() => {
     if (data?.feeds) setFeeds(data.feeds);
   }, [data?.feeds, setFeeds]);
-
-  // Re-trigger scroll event after data fetch to ensure scrollability is checked
-  // useEffect(() => {
-  //   if (scrollContainerRef.current && data?.feeds) {
-  //     const timeoutId = setTimeout(() => {
-  //       const event = new Event('scroll');
-  //       scrollContainerRef.current?.dispatchEvent(event);
-  //     }, 100);
-
-  //     return () => clearTimeout(timeoutId);
-  //   }
-  // }, [data?.feeds]);
 
   if (isLoading && !hideFeeds) return <FeedSkeletons />;
   return (

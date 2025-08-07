@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 const ROUNDING_ERROR = 1;
 
 export function useHorizontalScroll(
+  data: any | undefined,
   scrollContainerRef: React.RefObject<HTMLDivElement | null>,
   itemsPerView: number,
   itemWidth: number
@@ -40,7 +41,7 @@ export function useHorizontalScroll(
     return () => {
       scrollContainer.removeEventListener("scroll", checkScrollability);
     };
-  }, [checkScrollability, scrollContainerRef]);
+  }, [checkScrollability, scrollContainerRef, data]);
 
   return {
     canScrollLeft,
