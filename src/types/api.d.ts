@@ -83,6 +83,7 @@ declare module "api" {
     displayName: string;
     avatar?: string;
     viewed: boolean;
+    total: number;
     createdAt: string;
   };
 

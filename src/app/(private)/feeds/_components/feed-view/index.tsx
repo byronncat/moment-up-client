@@ -134,7 +134,10 @@ export default function FeedView({
           }}
         />
         <div className={cn("flex justify-between items-start", "mt-3")}>
-          <UserInfo data={data.user} />
+          <UserInfo
+            data={data.user}
+            timestamp={data.feeds[currentFeedIndex].createdAt}
+          />
           <ActionButtons
             isPlaying={isPlaying}
             isSoundOn={haveSound ? isSoundOn : null}
