@@ -8,6 +8,7 @@ import useSWRImmutable from "swr/immutable";
 import { useAuth } from "@/components/providers";
 import { useHome } from "../../_providers/Home";
 import { useHorizontalScroll } from "./hooks/useHorizontalScroll";
+import { useFeed } from "@/app/(private)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services/api.constant";
 
@@ -24,6 +25,7 @@ export default function Feeds() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const { token } = useAuth();
+  const { setFeeds } = useFeed();
   const { data, isLoading, error } = useSWRImmutable(
     [ApiUrl.feed.get, token.accessToken],
     ([url, token]) =>
@@ -38,12 +40,28 @@ export default function Feeds() {
     ITEM_WIDTH
   );
 
+  const isError = !isLoading && (!data || error);
   useEffect(() => {
-    if (error) setHideFeeds(true);
-  }, [error, setHideFeeds]);
+    if (isError) setHideFeeds(true);
+  }, [isError, setHideFeeds]);
+
+  useEffect(() => {
+    if (data?.feeds) setFeeds(data.feeds);
+  }, [data?.feeds, setFeeds]);
+
+  // Re-trigger scroll event after data fetch to ensure scrollability is checked
+  // useEffect(() => {
+  //   if (scrollContainerRef.current && data?.feeds) {
+  //     const timeoutId = setTimeout(() => {
+  //       const event = new Event('scroll');
+  //       scrollContainerRef.current?.dispatchEvent(event);
+  //     }, 100);
+
+  //     return () => clearTimeout(timeoutId);
+  //   }
+  // }, [data?.feeds]);
 
   if (isLoading && !hideFeeds) return <FeedSkeletons />;
-  const isError = !data || error;
   return (
     <div
       className={cn(
@@ -55,43 +73,42 @@ export default function Feeds() {
       role="region"
       aria-label="Feed navigation"
     >
-      {!isError && (
+      <div
+        className={cn(
+          "overflow-hidden",
+          "flex",
+          "border-b border-border",
+          isError && "hidden"
+          // "transition-all duration-200",
+        )}
+      >
+        <NavigationButton
+          direction="left"
+          onScroll={handleScroll}
+          disabled={!canScrollLeft}
+        />
         <div
+          ref={scrollContainerRef}
           className={cn(
-            "overflow-hidden",
-            "flex",
-            "border-b border-border"
-            // "transition-all duration-200",
+            "grow pt-4 pb-2",
+            "flex gap-3",
+            "overflow-x-auto scrollbar-hide",
+            "scroll-smooth snap-x snap-mandatory will-change-scroll transform-gpu"
           )}
+          role="list"
+          aria-label="Feed items"
         >
-          <NavigationButton
-            direction="left"
-            onScroll={handleScroll}
-            disabled={!canScrollLeft}
-          />
-          <div
-            ref={scrollContainerRef}
-            className={cn(
-              "grow pt-4 pb-2",
-              "flex gap-3",
-              "overflow-x-auto scrollbar-hide",
-              "scroll-smooth snap-x snap-mandatory will-change-scroll transform-gpu"
-            )}
-            role="list"
-            aria-label="Feed items"
-          >
-            <CreateFeedButton className="snap-start" />
-            {data?.feeds.map((feed) => (
-              <FeedItem key={feed.id} data={feed} className="snap-start" />
-            ))}
-          </div>
-          <NavigationButton
-            direction="right"
-            onScroll={handleScroll}
-            disabled={!canScrollRight}
-          />
+          <CreateFeedButton className="snap-start" />
+          {data?.feeds.map((feed) => (
+            <FeedItem key={feed.id} data={feed} className="snap-start" />
+          ))}
         </div>
-      )}
+        <NavigationButton
+          direction="right"
+          onScroll={handleScroll}
+          disabled={!canScrollRight}
+        />
+      </div>
       <FeedToggleButton disabled={isError} />
     </div>
   );

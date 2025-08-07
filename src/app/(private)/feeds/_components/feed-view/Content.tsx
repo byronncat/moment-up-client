@@ -1,0 +1,51 @@
+import type { FeedInfo } from "api";
+
+import { cn } from "@/libraries/utils";
+import Image from "next/image";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { BLUR_DATA_URL } from "@/constants/clientConfig";
+
+type ContentProps = Readonly<{
+  content: FeedInfo["feeds"][number]["content"];
+  setVideoRef?: (video: HTMLVideoElement | null) => void;
+}>;
+
+export default function Content({ content, setVideoRef }: ContentProps) {
+  return (
+    <AspectRatio ratio={9 / 16}>
+      {typeof content === "string" ? (
+        <div
+          className={cn(
+            "bg-blue-500",
+            "size-full p-5",
+            "flex items-center justify-center",
+            "text-center font-bold text-2xl"
+          )}
+        >
+          {content}
+        </div>
+      ) : content.type === "image" ? (
+        <Image
+          src={content.url}
+          alt={`Feed ${content.id}`}
+          fill
+          sizes="(max-width: 768px) 100vw, 800px"
+          quality={100}
+          className="object-cover"
+          placeholder="blur"
+          blurDataURL={BLUR_DATA_URL}
+        />
+      ) : (
+        <video
+          className="size-full object-cover"
+          autoPlay
+          ref={(element) => {
+            setVideoRef?.(element);
+          }}
+        >
+          <source src={content.url} type="video/mp4" />
+        </video>
+      )}
+    </AspectRatio>
+  );
+}

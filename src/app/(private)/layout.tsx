@@ -1,8 +1,9 @@
 import { cookies } from "next/headers";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { MomentDataProvider } from "@/components/providers";
 import { cn } from "@/libraries/utils";
 import { Sidebar } from "./_components";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { MomentDataProvider } from "@/components/providers";
+import FeedDataProvider from "./@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
 
 type LayoutProps = Readonly<{
   children: React.ReactNode;
@@ -23,10 +24,10 @@ export default async function Layout({ children, modal }: LayoutProps) {
         <div className="size-full flex">
           <Sidebar />
           <MomentDataProvider>
-            <div className="size-full relative">
-              {children}
-            </div>
-            {modal}
+            <FeedDataProvider>
+              <div className="size-full relative">{children}</div>
+              {modal}
+            </FeedDataProvider>
           </MomentDataProvider>
         </div>
       </div>

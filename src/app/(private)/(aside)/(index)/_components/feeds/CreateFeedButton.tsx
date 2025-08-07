@@ -1,5 +1,7 @@
 import { cn } from "@/libraries/utils";
+import Link from "next/link";
 import { Plus } from "@/components/icons";
+import { ROUTE } from "@/constants/route";
 
 export default function CreateFeedButton({
   className,
@@ -7,9 +9,14 @@ export default function CreateFeedButton({
   className?: string;
 }>) {
   return (
-    <button
-      type="button"
-      className={cn("relative group", "cursor-pointer", className)}
+    <Link
+      href={ROUTE.FEED_CREATE}
+      className={cn(
+        "relative group",
+        "flex flex-col items-center",
+        "cursor-pointer",
+        className
+      )}
     >
       <div className={cn("flex items-center justify-center", "size-18")}>
         <div
@@ -34,6 +41,6 @@ export default function CreateFeedButton({
       >
         Create
       </span>
-    </button>
+    </Link>
   );
 }

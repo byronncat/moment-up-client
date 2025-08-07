@@ -1,7 +1,7 @@
 import { SERVER_HOST_URL } from "@/constants/serverConfig";
 
 export const ApiUrl = {
-  // Auth
+  // === Auth ===
   auth: {
     login: `${SERVER_HOST_URL}/v1/auth/login`,
     switch: `${SERVER_HOST_URL}/v1/auth/switch-account`,
@@ -14,7 +14,7 @@ export const ApiUrl = {
     recoverPassword: `${SERVER_HOST_URL}/v1/auth/recover-password`,
   },
 
-  // Core
+  // === Core ===
   moment: {
     home: (page?: number, limit?: number) =>
       `${SERVER_HOST_URL}/v1/moments/home` +
@@ -50,16 +50,17 @@ export const ApiUrl = {
 
   feed: {
     get: `${SERVER_HOST_URL}/v1/feeds`,
+    getById: (userId: string) => `${SERVER_HOST_URL}/v1/feeds/user/${userId}`,
   },
 
-  // Suggestion
+  // === Suggestion ===
   suggestion: {
     users: `${SERVER_HOST_URL}/v1/suggestion/users`,
     trending: `${SERVER_HOST_URL}/v1/suggestion/trending`,
     report: `${SERVER_HOST_URL}/v1/suggestion/trending/report`,
   },
 
-  // User
+  // === User ===
   user: {
     follow: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/follow`,
     unfollow: (userId: string) =>
@@ -70,7 +71,7 @@ export const ApiUrl = {
     getProfile: (username: string) => `${SERVER_HOST_URL}/v1/users/${username}`,
   },
 
-  // Search
+  // === Search ===
   search: {
     search: (
       query: string,
@@ -89,7 +90,7 @@ export const ApiUrl = {
       `${SERVER_HOST_URL}/v1/search/history/${itemId}`,
   },
 
-  // Notification
+  // === Notification ===
   notification: {
     // Add notification-specific URLs here when they exist
   },

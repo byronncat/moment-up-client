@@ -76,7 +76,8 @@ export function getNavigationItems(
           className="size-5 laptop:size-4"
         />
       ),
-      matchPath: () => username ? pathname.startsWith(ROUTE.PROFILE(username)) : false,
+      matchPath: () =>
+        username ? pathname.startsWith(ROUTE.PROFILE(username)) : false,
     },
   ];
 }

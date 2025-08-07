@@ -40,9 +40,6 @@ declare module "api" {
     isFollowing?: boolean;
   }
 
-  // interface UserProfileInfo extends UserInfo {
-  // }
-
   interface UserCardDisplayInfo
     extends Omit<UserProfileInfo, "backgroundImage"> {
     followedBy?: {
@@ -55,7 +52,7 @@ declare module "api" {
     };
   }
 
-  // === Core ===
+  // === Moment ===
   type PostInfo = {
     text?: string;
     files?: {
@@ -78,13 +75,34 @@ declare module "api" {
     post: PostInfo;
   };
 
-  type CommentInfo = {
+  // === Feed ===
+  type FeedNotificationInfo = {
     id: string;
-    content: string;
-    user: UserCardDisplayInfo;
-    likes: number;
-    isLiked: boolean;
+    userId: string;
+    username: string;
+    displayName: string;
+    avatar?: string;
+    viewed: boolean;
     createdAt: string;
+  };
+
+  type FeedContent =
+    | string
+    | {
+        id: string;
+        type: "image" | "video";
+        url: string;
+        aspectRatio: "9:16";
+      };
+
+  type FeedInfo = {
+    user: AccountInfo;
+    feeds: {
+      id: string;
+      content: FeedContent;
+      sound?: string;
+      createdAt: string;
+    }[];
   };
 
   // === Notification ===
@@ -152,36 +170,12 @@ declare module "api" {
     hashtags?: Hashtag[];
   };
 
-  // Core
-  type FeedNotificationInfo = {
+  type CommentInfo = {
     id: string;
-    userId: string;
-    displayName: string;
-    avatar?: string;
-    viewed: boolean;
-  };
-
-  type FeedInfo = {
-    user: AccountInfo & {
-      isViewed: boolean;
-    };
-    feeds: {
-      id: string;
-      content:
-        | string
-        | {
-            id: string;
-            type: "image" | "video" | "audio";
-            url: string;
-            aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
-          };
-      sound?: {
-        id: string;
-        type: "image" | "video" | "audio";
-        url: string;
-        aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
-      };
-      createdAt: string;
-    }[];
+    content: string;
+    user: UserCardDisplayInfo;
+    likes: number;
+    isLiked: boolean;
+    createdAt: string;
   };
 }

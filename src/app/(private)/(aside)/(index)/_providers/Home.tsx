@@ -18,8 +18,7 @@ export const useHome = () => useContext(HomeContext);
 export default function HomeProvider({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [hideFeeds, setHideFeeds] = useLocalStorage("hideFeeds", false);
-
+  const [hideFeeds, setHideFeeds] = useLocalStorage("hide-feeds", false);
   return (
     <HomeContext.Provider
       value={{

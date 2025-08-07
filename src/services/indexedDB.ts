@@ -1,4 +1,4 @@
-import type { AccountInfo, API } from "api";
+import type { AccountInfo } from "api";
 
 const DATABASE_NAME = "moment-up-db";
 const DATABASE_VERSION = 1;

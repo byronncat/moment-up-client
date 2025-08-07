@@ -8,7 +8,7 @@ import { CoreApi } from "@/services";
 import { ROUTE } from "@/constants/route";
 
 import { Modal } from "@/components/common";
-import { FeedView, RightNav } from "../_components";
+import { FeedView, RightNav } from "../../_components";
 
 export default function FeedModal() {
   const router = useRouter();
@@ -42,15 +42,16 @@ export default function FeedModal() {
   return (
     <Modal>
       <FeedView
-        data={currentFeed}
+        data={currentFeed ?? undefined}
+        initialIndex={0}
         loading={detailLoading}
         onClose={handleClose}
       />
-      <RightNav
-        data={totalFeeds}
+      {/* <RightNav
+        data={totalFeeds ?? []}
         loading={totalLoading}
         onClose={handleClose}
-      />
+      /> */}
     </Modal>
   );
 }

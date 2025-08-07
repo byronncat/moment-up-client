@@ -47,7 +47,7 @@ export async function follow(data: FollowDto, token: Token): API {
 
 export async function getProfile(username: string): API<{
   profile: ProfileInfo;
-}>  {
+}> {
   return await fetch(ApiUrl.user.getProfile(username), {
     method: "GET",
     headers: {

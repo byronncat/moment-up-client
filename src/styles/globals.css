@@ -2,7 +2,7 @@
 
 @plugin 'tailwindcss-animate';
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-abel: Abel, sans-serif;
@@ -29,7 +29,7 @@
   --color-muted: hsl(var(--muted));
   --color-muted-foreground: hsl(var(--muted-foreground));
 
-  --color-accent: rgb(var(--accent));
+  --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-foreground));
 
   --color-destructive: hsl(var(--destructive));
@@ -91,6 +91,44 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
+
+  /* for forced dark mode */
+  --color-background-dark: hsl(var(--background-dark));
+  --color-foreground-dark: hsl(var(--foreground-dark));
+  --color-card-dark: hsl(var(--card-dark));
+  --color-card-foreground-dark: hsl(var(--card-foreground-dark));
+  --color-popover-dark: hsl(var(--popover-dark));
+  --color-popover-foreground-dark: hsl(var(--popover-foreground-dark));
+  --color-primary-dark: hsl(var(--primary-dark));
+  --color-primary-foreground-dark: hsl(var(--primary-foreground-dark));
+  --color-secondary-dark: hsl(var(--secondary-dark));
+  --color-secondary-foreground-dark: hsl(var(--secondary-foreground-dark));
+  --color-muted-dark: hsl(var(--muted-dark));
+  --color-muted-foreground-dark: hsl(var(--muted-foreground-dark));
+  --color-accent-dark: hsl(var(--accent-dark));
+  --color-accent-foreground-dark: hsl(var(--accent-foreground-dark));
+  --color-destructive-dark: hsl(var(--destructive-dark));
+  --color-destructive-foreground-dark: hsl(var(--destructive-foreground-dark));
+  --color-border-dark: hsl(var(--border-dark));
+  --color-input-dark: hsl(var(--input-dark));
+  --color-ring-dark: hsl(var(--ring-dark));
+  --color-chart-1-dark: hsl(var(--chart-1-dark));
+  --color-chart-2-dark: hsl(var(--chart-2-dark));
+  --color-chart-3-dark: hsl(var(--chart-3-dark));
+  --color-chart-4-dark: hsl(var(--chart-4-dark));
+  --color-chart-5-dark: hsl(var(--chart-5-dark));
+  --color-sidebar-background-dark: hsl(var(--sidebar-background-dark));
+  --color-sidebar-foreground-dark: hsl(var(--sidebar-foreground-dark));
+  --color-sidebar-primary-dark: hsl(var(--sidebar-primary-dark));
+  --color-sidebar-primary-foreground-dark: hsl(
+    var(--sidebar-primary-foreground-dark)
+  );
+  --color-sidebar-accent-dark: hsl(var(--sidebar-accent-dark));
+  --color-sidebar-accent-foreground-dark: hsl(
+    var(--sidebar-accent-foreground-dark)
+  );
+  --color-sidebar-border-dark: hsl(var(--sidebar-border-dark));
+  --color-sidebar-ring-dark: hsl(var(--sidebar-ring-dark));
 }
 
 /*
@@ -187,7 +225,7 @@
     --secondary-foreground: 240 5.9% 10%;
     --muted: 0 0% 90%;
     --muted-foreground: 240 3.8% 46.1%;
-    --accent: 0 0 0;
+    --accent: 0 0% 20%;
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -208,7 +246,41 @@
     --sidebar-accent-foreground: 0 0% 21%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --background-dark: 240 2% 11%;
+    --foreground-dark: 214 13.7% 90%;
+    --card-dark: 200 4% 15%;
+    --card-foreground-dark: 0 0% 98%;
+    --popover-dark: 200 4% 15%;
+    --popover-foreground-dark: 0 0% 98%;
+    --primary-dark: 342 84% 70%;
+    --primary-foreground-dark: 240 5.9% 10%;
+    --secondary-dark: 240 3.7% 15.9%;
+    --secondary-foreground-dark: 0 0% 98%;
+    --muted-dark: 210 2% 9%;
+    --muted-foreground-dark: 240 5% 64.9%;
+    --accent-dark: 0 0% 100%;
+    --accent-foreground-dark: 0 0% 98%;
+    --destructive-dark: 0 79% 63%;
+    --destructive-foreground-dark: 0 0% 98%;
+    --border-dark: 240 5% 20%;
+    --input-dark: 220 7% 8%;
+    --ring-dark: 0 0 48%;
+    --chart-1-dark: 220 70% 50%;
+    --chart-2-dark: 160 60% 45%;
+    --chart-3-dark: 30 80% 55%;
+    --chart-4-dark: 280 65% 60%;
+    --chart-5-dark: 340 75% 55%;
+    --sidebar-background-dark: 240 5.9% 10%;
+    --sidebar-foreground-dark: 240 4.8% 95.9%;
+    --sidebar-primary-dark: 224.3 76.3% 48%;
+    --sidebar-primary-foreground-dark: 0 0% 100%;
+    --sidebar-accent-dark: 240 1% 20%;
+    --sidebar-accent-foreground-dark: 240 4.8% 95.9%;
+    --sidebar-border-dark: 240 3.7% 15.9%;
+    --sidebar-ring-dark: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --background: 240 2% 11%;
     --foreground: 214 13.7% 90%;
@@ -222,7 +294,7 @@
     --secondary-foreground: 0 0% 98%;
     --muted: 210 2% 9%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 255 255 255;
+    --accent: 0 0% 100%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 79% 63%;
     --destructive-foreground: 0 0% 98%;

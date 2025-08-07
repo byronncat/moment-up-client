@@ -1,7 +1,7 @@
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, VolumeOff } from "lucide-react";
 
 type VolumeProps = Readonly<{
-  variant?: "regular" | "x";
+  variant?: "regular" | "x" | "off";
   className?: string;
 }>;
 
@@ -10,5 +10,6 @@ export default function Volume({
   className,
 }: VolumeProps) {
   if (variant === "regular") return <Volume2 className={className} />;
-  return <VolumeX className={className} />;
+  if (variant === "x") return <VolumeX className={className} />;
+  return <VolumeOff className={className} />;
 }
