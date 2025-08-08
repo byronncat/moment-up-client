@@ -16,6 +16,7 @@ import MobileNav from "./MobileNav";
 import SidebarHeader from "./SidebarHeader";
 import SidebarBody from "./SidebarBody";
 import SidebarFooter from "./SidebarFooter";
+import { sourceCodePro } from "@/styles/fonts";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -23,7 +24,20 @@ export default function Sidebar() {
   const { isMobile } = useSidebar();
   const { open, isAboveXl } = useResponsiveSidebar();
 
-  if (!user) return null;
+  if (!user)
+    return (
+      <div
+        className={cn(
+          "text-primary",
+          "font-bold text-2xl tracking-wide",
+          "px-4 py-2",
+          "hidden xl:block",
+          sourceCodePro.className
+        )}
+      >
+        MomentUp
+      </div>
+    );
   const items = getNavigationItems(pathname, user?.username);
   const [notificationItem, profileItem] = items.slice(-2);
 
