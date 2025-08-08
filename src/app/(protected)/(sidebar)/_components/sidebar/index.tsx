@@ -32,6 +32,7 @@ export default function Sidebar() {
           "font-bold text-2xl tracking-wide",
           "px-4 py-2",
           "hidden xl:block",
+          "select-none",
           sourceCodePro.className
         )}
       >

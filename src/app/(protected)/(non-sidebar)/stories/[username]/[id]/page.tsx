@@ -14,6 +14,7 @@ import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import StoryView from "./_components/StoryView";
 import { X } from "@/components/icons";
+import { sourceCodePro } from "@/styles/fonts";
 
 export default function StoryModal() {
   const router = useRouter();
@@ -40,12 +41,25 @@ export default function StoryModal() {
 
   return (
     <Modal>
+      <div
+        className={cn(
+          "text-primary",
+          "font-bold text-2xl tracking-wide",
+          "absolute top-0 left-0",
+          "px-4 py-2",
+          "hidden xl:block",
+          "select-none",
+          sourceCodePro.className
+        )}
+      >
+        MomentUp
+      </div>
       <Button
         onClick={handleClose}
         size="icon"
         variant="ghost"
         className={cn(
-          "absolute top-2 left-2",
+          "absolute top-2 right-2",
           "rounded-full",
           "hover:bg-accent-dark/[.2]",
           "text-muted-foreground-dark hover:text-accent-foreground-dark"
