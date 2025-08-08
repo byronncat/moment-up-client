@@ -1,5 +1,5 @@
 import { Metadata } from "@/constants/metadata";
-export const metadata = Metadata.feed;
+export const metadata = Metadata.story;
 
 export default function Layout({
   children,

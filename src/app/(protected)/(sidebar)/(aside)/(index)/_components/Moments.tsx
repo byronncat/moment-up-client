@@ -21,7 +21,7 @@ const BOTTOM_PADDING = 121;
 export default function Moments() {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
-  const { hideFeeds } = useHome();
+  const { hideStories } = useHome();
 
   const getKey = (
     pageIndex: number,
@@ -68,7 +68,7 @@ export default function Moments() {
   }, [allMoments, setMoments, error]);
 
   const spaceClassName = cn(
-    hideFeeds ? "pt-[40px]" : "pt-[calc(145px+16px)]",
+    hideStories ? "pt-[40px]" : "pt-[calc(145px+16px)]",
     "transition-all duration-200"
   );
   if (isLoading) return <MomentSkeletons className={spaceClassName} />;
@@ -105,7 +105,7 @@ export default function Moments() {
         heightOffset: 121,
         listClassName: cn(
           // "transform transition-transform duration-200",
-          hideFeeds && "-translate-y-[121px]" // 121px = 161px (feed panel height) - 24px (hide button height) - 16px (gap)
+          hideStories && "-translate-y-[121px]" // 121px = 161px (story panel height) - 24px (hide button height) - 16px (gap)
         ),
       }}
     />

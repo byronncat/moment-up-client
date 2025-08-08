@@ -36,7 +36,7 @@ declare module "api" {
     backgroundImage?: string;
     followers: number;
     following: number;
-    hasFeed: boolean;
+    hasStory: boolean;
     isFollowing?: boolean;
   }
 
@@ -75,8 +75,8 @@ declare module "api" {
     post: PostInfo;
   };
 
-  // === Feed ===
-  type FeedNotificationInfo = {
+  // === Story ===
+  type StoryNotificationInfo = {
     id: string;
     userId: string;
     username: string;
@@ -87,7 +87,7 @@ declare module "api" {
     createdAt: string;
   };
 
-  type FeedContent =
+  type StoryContent =
     | string
     | {
         id: string;
@@ -96,11 +96,11 @@ declare module "api" {
         aspectRatio: "9:16";
       };
 
-  type FeedInfo = {
+  type StoryInfo = {
     user: Omit<AccountInfo, "email">;
-    feeds: {
+    stories: {
       id: string;
-      content: FeedContent;
+      content: StoryContent;
       sound?: string;
       createdAt: string;
     }[];
@@ -162,7 +162,7 @@ declare module "api" {
 
   type ProfileSearchItem = Omit<
     UserProfileInfo,
-    "followers" | "following" | "hasFeed"
+    "followers" | "following" | "hasStory"
   >;
 
   type SearchResult = {

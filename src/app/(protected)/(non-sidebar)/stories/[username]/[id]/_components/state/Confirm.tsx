@@ -25,7 +25,7 @@ export default function ConfirmState({
         <Avatar src={user?.avatar} alt={`Avatar of ${username}`} size="20" />
         <div className="mt-4 text-lg font-bold">View as {user?.username}?</div>
         <p className="mt-1 text-sm">
-          {username} will be able to see that you are viewing their feed.
+          {username} will be able to see that you are viewing their story.
         </p>
         <button
           onClick={onConfirm}
@@ -38,7 +38,7 @@ export default function ConfirmState({
             "transition-colors duration-75 ease-in-out cursor-pointer"
           )}
         >
-          View feed
+          View story
         </button>
       </div>
     </Container>

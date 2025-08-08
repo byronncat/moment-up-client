@@ -1,11 +1,11 @@
 import { usePathname } from "next/navigation";
-import { useFeed } from "../hooks/useFeedData";
+import { useStory } from "../hooks/useStoryData";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import FeedNotificationList, { FeedItem } from "./FeedNotificationList";
+import StoryNotificationList, { StoryItem } from "./StoryNotificationList";
 
 type RightNavProps = Readonly<{
   className?: string;
@@ -26,7 +26,7 @@ export default function RightNav({ className }: RightNavProps) {
     >
       <Header className="px-4 pt-7" />
       <CreateSection className="mt-6" />
-      <FeedNotificationList className="mt-4 grow" />
+      <StoryNotificationList className="mt-4 grow" />
     </ScrollArea>
   );
 }
@@ -40,15 +40,15 @@ function Header({ className }: Readonly<{ className?: string }>) {
 }
 
 function CreateSection({ className }: Readonly<{ className?: string }>) {
-  const { myFeed } = useFeed();
+  const { myStory } = useStory();
   const pathname = usePathname();
   const username = pathname.split("/")[2];
 
   return (
     <div className={className}>
-      <h3 className={cn("mb-2 px-4", "font-semibold")}>Your feeds</h3>
+      <h3 className={cn("mb-2 px-4", "font-semibold")}>Your stories</h3>
       <div>
-        <Link href={ROUTE.FEED_CREATE}>
+        <Link href={ROUTE.STORY_CREATE}>
           <div className={cn("px-4 py-2", "flex items-center gap-3")}>
             <div
               className={cn(
@@ -60,15 +60,15 @@ function CreateSection({ className }: Readonly<{ className?: string }>) {
               <span className="text-3xl">+</span>
             </div>
             <div className="flex-1">
-              <div className="font-semibold">Create a feed</div>
+              <div className="font-semibold">Create a story</div>
               <div className="text-sm text-muted-foreground">
                 Add media file or text.
               </div>
             </div>
           </div>
         </Link>
-        {myFeed && (
-          <FeedItem data={myFeed} isCurrent={myFeed.username === username} />
+        {myStory && (
+          <StoryItem data={myStory} isCurrent={myStory.username === username} />
         )}
       </div>
     </div>
@@ -78,7 +78,7 @@ function CreateSection({ className }: Readonly<{ className?: string }>) {
 // @deprecated
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function RightNavSkeleton() {
-  const FeedItemSkeleton = () => (
+  const StoryItemSkeleton = () => (
     <div className={cn("flex items-center gap-3", "py-2")}>
       <DarkSkeleton className="size-14 rounded-full" />
       <div className="flex-1">
@@ -92,14 +92,14 @@ function RightNavSkeleton() {
     <>
       <div className="px-4 mt-6">
         <DarkSkeleton className="h-4 w-22 mt-1 mb-3" />
-        <FeedItemSkeleton />
+        <StoryItemSkeleton />
       </div>
 
       <div className="px-4 mt-4">
         <DarkSkeleton className="h-4 w-20 mt-1 mb-3" />
         <div>
           {Array.from({ length: 5 }).map((_, index) => (
-            <FeedItemSkeleton key={index} />
+            <StoryItemSkeleton key={index} />
           ))}
         </div>
       </div>

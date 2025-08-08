@@ -1,6 +1,6 @@
 "use client";
 
-import type { FeedInfo } from "api";
+import type { StoryInfo } from "api";
 
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/components/providers";
@@ -12,21 +12,21 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
-import FeedView from "./_components/FeedView";
+import StoryView from "./_components/StoryView";
 import { X } from "@/components/icons";
 
-export default function FeedModal() {
+export default function StoryModal() {
   const router = useRouter();
   const params = useParams();
-  const feedId = params.id as string;
+  const storyId = params.id as string;
   const username = params.username as string;
 
   const { token } = useAuth();
   const { data, isLoading } = useSWRImmutable(
-    [ApiUrl.feed.getByUsername(username), token.accessToken],
+    [ApiUrl.story.getByUsername(username), token.accessToken],
     ([url, token]) =>
       SWRFetcherWithToken<{
-        feed: FeedInfo;
+        story: StoryInfo;
       }>(url, token)
   );
 
@@ -36,7 +36,7 @@ export default function FeedModal() {
   }
 
   const initialIndex =
-    data?.feed.feeds.findIndex((feed) => feed.id === feedId) || 0;
+    data?.story.stories.findIndex((story) => story.id === storyId) || 0;
 
   return (
     <Modal>
@@ -53,8 +53,8 @@ export default function FeedModal() {
       >
         <X className="size-6" />
       </Button>
-      <FeedView
-        data={data?.feed}
+      <StoryView
+        data={data?.story}
         loading={isLoading}
         initialIndex={initialIndex}
         onClose={handleClose}

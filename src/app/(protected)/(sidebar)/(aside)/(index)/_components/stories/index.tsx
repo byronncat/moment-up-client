@@ -1,6 +1,6 @@
 "use client";
 
-import type { FeedNotificationInfo } from "api";
+import type { StoryNotificationInfo } from "api";
 import type { Direction } from "./types";
 
 import { useEffect, useRef } from "react";
@@ -8,32 +8,32 @@ import useSWRImmutable from "swr/immutable";
 import { useAuth } from "@/components/providers";
 import { useHome } from "../../_providers/Home";
 import { useHorizontalScroll } from "./hooks/useHorizontalScroll";
-import { useFeed } from "@/app/(protected)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
+import { useStory } from "@/app/(protected)/@modal/(.)stories/[username]/[id]/hooks/useStoryData";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services/api.constant";
 
 import { cn } from "@/libraries/utils";
 import { Chevron, MoreHorizontal } from "@/components/icons";
-import FeedItem from "./FeedItem";
-import FeedSkeletons from "./FeedsSkeleton";
-import CreateFeedButton from "./CreateFeedButton";
+import StoryItem from "./StoryItem";
+import StorySkeletons from "./StoriesSkeleton";
+import CreateStoryButton from "./CreateStoryButton";
 
 const ITEMS_PER_VIEW = 3;
 const ITEM_WIDTH = 88; // size-18 (72px) + gap (16px)
 
-export default function Feeds() {
+export default function Stories() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const { token } = useAuth();
-  const { setFeeds } = useFeed();
+  const { setStories } = useStory();
   const { data, isLoading, error } = useSWRImmutable(
-    [ApiUrl.feed.get, token.accessToken],
+    [ApiUrl.story.get, token.accessToken],
     ([url, token]) =>
       SWRFetcherWithToken<{
-        feeds: FeedNotificationInfo[];
+        stories: StoryNotificationInfo[];
       }>(url, token)
   );
-  const { hideFeeds, setHideFeeds } = useHome();
+  const { hideStories, setHideStories } = useHome();
   const { handleScroll, canScrollLeft, canScrollRight } = useHorizontalScroll(
     data,
     scrollContainerRef,
@@ -43,24 +43,24 @@ export default function Feeds() {
 
   const isError = !isLoading && (!data || error);
   useEffect(() => {
-    if (isError) setHideFeeds(true);
-  }, [isError, setHideFeeds]);
+    if (isError) setHideStories(true);
+  }, [isError, setHideStories]);
 
   useEffect(() => {
-    if (data?.feeds) setFeeds(data.feeds);
-  }, [data?.feeds, setFeeds]);
+    if (data?.stories) setStories(data.stories);
+  }, [data?.stories, setStories]);
 
-  if (isLoading && !hideFeeds) return <FeedSkeletons />;
+  if (isLoading && !hideStories) return <StorySkeletons />;
   return (
     <div
       className={cn(
         "absolute top-0 left-0 right-0 z-10",
         "bg-background/[.93] backdrop-blur-sm",
-        hideFeeds && "-translate-y-[calc(100%-24px)]" // HIDE_OFFSET: -24px
+        hideStories && "-translate-y-[calc(100%-24px)]" // HIDE_OFFSET: -24px
         // "transition-all duration-200"
       )}
       role="region"
-      aria-label="Feed navigation"
+      aria-label="Story navigation"
     >
       <div
         className={cn(
@@ -85,11 +85,11 @@ export default function Feeds() {
             "scroll-smooth snap-x snap-mandatory will-change-scroll transform-gpu"
           )}
           role="list"
-          aria-label="Feed items"
+          aria-label="Story items"
         >
-          <CreateFeedButton className="snap-start" />
-          {data?.feeds.map((feed) => (
-            <FeedItem key={feed.id} data={feed} className="snap-start" />
+          <CreateStoryButton className="snap-start" />
+          {data?.stories.map((story) => (
+            <StoryItem key={story.id} data={story} className="snap-start" />
           ))}
         </div>
         <NavigationButton
@@ -98,21 +98,21 @@ export default function Feeds() {
           disabled={!canScrollRight}
         />
       </div>
-      <FeedToggleButton disabled={isError} />
+      <StoryToggleButton disabled={isError} />
     </div>
   );
 }
 
-function FeedToggleButton({
+function StoryToggleButton({
   disabled,
 }: Readonly<{
   disabled: boolean;
 }>) {
-  const { hideFeeds, setHideFeeds } = useHome();
+  const { hideStories, setHideStories } = useHome();
 
   return (
     <button
-      onClick={() => setHideFeeds(!hideFeeds)}
+      onClick={() => setHideStories(!hideStories)}
       disabled={disabled}
       className={cn(
         "flex justify-center items-center",
@@ -123,14 +123,14 @@ function FeedToggleButton({
         "disabled:hover:bg-transparent disabled:cursor-default"
       )}
       type="button"
-      aria-label={hideFeeds ? "Show feeds" : "Hide feeds"}
-      aria-expanded={!hideFeeds}
+      aria-label={hideStories ? "Show stories" : "Hide stories"}
+      aria-expanded={!hideStories}
     >
       {disabled ? (
         <MoreHorizontal className="size-4 text-muted-foreground" />
       ) : (
         <Chevron
-          direction={hideFeeds ? "down" : "up"}
+          direction={hideStories ? "down" : "up"}
           multiple
           className="size-4 text-muted-foreground"
         />

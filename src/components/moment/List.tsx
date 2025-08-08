@@ -215,7 +215,7 @@ export default function MomentList({
                       return items[index - 1].id || `item-${index}`;
                     }}
                     className={cn("scrollbar-hide", listOptions.listClassName)}
-                    aria-label="Moments feed"
+                    aria-label="Moments story"
                     aria-busy={isNextPageLoading}
                   >
                     {Item}

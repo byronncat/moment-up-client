@@ -1,10 +1,10 @@
-import type { FeedInfo } from "api";
+import type { StoryInfo } from "api";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 const DEFAULT_DURATION = 7000;
 const UPDATE_INTERVAL = 50;
 
-type ContentType = FeedInfo["feeds"][number]["content"];
+type ContentType = StoryInfo["stories"][number]["content"];
 
 export function useContentProgress(
   content: ContentType | undefined,

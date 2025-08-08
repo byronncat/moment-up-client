@@ -1,11 +1,11 @@
 "use client";
 
-import type { FeedInfo } from "api";
+import type { StoryInfo } from "api";
 
 import { usePathname } from "next/navigation";
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { useContentProgress, useSound } from "./hooks";
-import { useFeed } from "@/app/(protected)/@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
+import { useStory } from "@/app/(protected)/@modal/(.)stories/[username]/[id]/hooks/useStoryData";
 
 import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/route";
@@ -20,8 +20,8 @@ import {
   UserInfo,
 } from "./controls";
 
-type FeedViewProps = Readonly<{
-  data: FeedInfo | undefined;
+type StoryViewProps = Readonly<{
+  data: StoryInfo | undefined;
   loading: boolean;
   onClose: () => void;
   confirm?: boolean;
@@ -29,18 +29,18 @@ type FeedViewProps = Readonly<{
   className?: string;
 }>;
 
-export default function FeedView({
+export default function StoryView({
   data,
   loading,
   onClose,
   confirm = false,
   initialIndex = 0,
   className,
-}: FeedViewProps) {
+}: StoryViewProps) {
   const pathname = usePathname();
-  const { totalFeeds, navigateUser } = useFeed();
+  const { totalStories, navigateUser } = useStory();
 
-  const [currentFeedIndex, setCurrentFeedIndex] = useState(initialIndex);
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(initialIndex);
   const [_confirm, setConfirm] = useState(confirm);
 
   const username = useMemo(() => {
@@ -49,47 +49,47 @@ export default function FeedView({
 
   const changeUrl = useCallback(
     (index: number) => {
-      if (username && data?.feeds[index].id) {
-        const newUrl = ROUTE.FEED(username, data.feeds[index].id);
+      if (username && data?.stories[index].id) {
+        const newUrl = ROUTE.STORY(username, data.stories[index].id);
         window.history.replaceState(null, "", newUrl);
       }
     },
-    [username, data?.feeds]
+    [username, data?.stories]
   );
 
   const navigate = useCallback(
     (direction: "prev" | "next") => {
-      const feedsLength = data?.feeds.length ?? 0;
+      const storiesLength = data?.stories.length ?? 0;
       const isPrev = direction === "prev";
       const isNext = direction === "next";
 
       if (isPrev || isNext) {
         const offset = isPrev ? -1 : 1;
-        const limit = isPrev ? 0 : feedsLength - 1;
+        const limit = isPrev ? 0 : storiesLength - 1;
 
         const atBoundary = isPrev
-          ? currentFeedIndex <= limit
-          : currentFeedIndex >= limit;
+          ? currentStoryIndex <= limit
+          : currentStoryIndex >= limit;
 
         if (!atBoundary) {
-          const newIndex = currentFeedIndex + offset;
-          setCurrentFeedIndex(newIndex);
+          const newIndex = currentStoryIndex + offset;
+          setCurrentStoryIndex(newIndex);
           changeUrl(newIndex);
         } else {
-          setCurrentFeedIndex(0);
+          setCurrentStoryIndex(0);
           navigateUser(direction);
         }
       }
     },
-    [data?.feeds, currentFeedIndex, navigateUser, changeUrl]
+    [data?.stories, currentStoryIndex, navigateUser, changeUrl]
   );
 
   const handleSegmentClick = useCallback(
     (index: number) => {
-      setCurrentFeedIndex(index);
+      setCurrentStoryIndex(index);
       changeUrl(index);
     },
-    [setCurrentFeedIndex, changeUrl]
+    [setCurrentStoryIndex, changeUrl]
   );
 
   const handleViewComplete = useCallback(() => {
@@ -104,7 +104,7 @@ export default function FeedView({
     reset,
     setVideoRef: setContentVideoRef,
   } = useContentProgress(
-    data?.feeds[currentFeedIndex]?.content,
+    data?.stories[currentStoryIndex]?.content,
     handleViewComplete,
     _confirm
   );
@@ -114,7 +114,7 @@ export default function FeedView({
     isSoundOn,
     toggleSoundOn,
     setVideoRef: setSoundVideoRef,
-  } = useSound(data?.feeds[currentFeedIndex], isPlaying, _confirm);
+  } = useSound(data?.stories[currentStoryIndex], isPlaying, _confirm);
 
   const handleSetVideoRef = useCallback(
     (video: HTMLVideoElement | null) => {
@@ -133,8 +133,8 @@ export default function FeedView({
   );
 
   const handleConfirm = useCallback(() => {
-    // Update currentFeedIndex when initialIndex changes (when data loads)
-    setCurrentFeedIndex(initialIndex);
+    // Update currentStoryIndex when initialIndex changes (when data loads)
+    setCurrentStoryIndex(initialIndex);
     setConfirm(true);
     play();
   }, [play, initialIndex]);
@@ -146,7 +146,7 @@ export default function FeedView({
   if (!_confirm)
     return <ConfirmState onConfirm={handleConfirm} className={className} />;
   if (loading) return <LoadingState className={className} />;
-  if (!data?.feeds[currentFeedIndex])
+  if (!data?.stories[currentStoryIndex])
     return <ErrorState onClose={onClose} className={className} />;
   return (
     <Container className={className}>
@@ -162,8 +162,8 @@ export default function FeedView({
           }}
         />
         <ProgressBar
-          total={data.feeds.length}
-          current={currentFeedIndex}
+          total={data.stories.length}
+          current={currentStoryIndex}
           progress={progress}
           onSegmentClick={(index) => {
             handleSegmentClick(index);
@@ -173,7 +173,7 @@ export default function FeedView({
         <div className={cn("flex justify-between items-start", "mt-3")}>
           <UserInfo
             data={data.user}
-            timestamp={data.feeds[currentFeedIndex].createdAt}
+            timestamp={data.stories[currentStoryIndex].createdAt}
           />
           <ActionButtons
             isPlaying={isPlaying}
@@ -185,11 +185,11 @@ export default function FeedView({
         </div>
       </div>
       <Content
-        key={data?.feeds[currentFeedIndex].id} // Force re-render on content change to reset video
-        content={data?.feeds[currentFeedIndex].content}
+        key={data?.stories[currentStoryIndex].id} // Force re-render on content change to reset video
+        content={data?.stories[currentStoryIndex].content}
         setVideoRef={handleSetVideoRef}
       />
-      {(data.feeds.length > 1 || totalFeeds > 1) && (
+      {(data.stories.length > 1 || totalStories > 1) && (
         <NavigateButtons onNavigate={handleNavigate} />
       )}
     </Container>

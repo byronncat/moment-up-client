@@ -6,7 +6,7 @@ export enum CookieName {
   SIDEBAR = "sidebar-state",
 }
 export enum LocalStorageKey {
-  FEEDS_DISPLAY = "hide-feeds",
+  STORIES_DISPLAY = "hide-stories",
   THEME = "theme",
 }
 

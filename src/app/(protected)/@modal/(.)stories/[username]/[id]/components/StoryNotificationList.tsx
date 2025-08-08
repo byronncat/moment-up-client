@@ -1,29 +1,29 @@
-import type { FeedNotificationInfo } from "api";
+import type { StoryNotificationInfo } from "api";
 
 import { usePathname } from "next/navigation";
-import { useFeed } from "../hooks/useFeedData";
+import { useStory } from "../hooks/useStoryData";
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Avatar } from "@/components/common";
 import { Format } from "@/utilities";
 import { ROUTE } from "@/constants/route";
 
-export default function FeedNotificationList({
+export default function StoryNotificationList({
   className,
 }: Readonly<{ className?: string }>) {
-  const { feeds } = useFeed();
+  const { stories } = useStory();
   const pathname = usePathname();
   const username = pathname.split("/")[2];
 
   return (
     <div className={cn(className, "flex flex-col")}>
-      <h3 className={cn("mb-2 px-4", "font-semibold")}>All feeds</h3>
+      <h3 className={cn("mb-2 px-4", "font-semibold")}>All stories</h3>
       <div className="grow pb-4">
-        {feeds?.map((feed) => (
-          <FeedItem
-            key={feed.id}
-            data={feed}
-            isCurrent={feed.username === username}
+        {stories?.map((story) => (
+          <StoryItem
+            key={story.id}
+            data={story}
+            isCurrent={story.username === username}
           />
         ))}
       </div>
@@ -31,19 +31,19 @@ export default function FeedNotificationList({
   );
 }
 
-type FeedItemProps = Readonly<{
-  data: FeedNotificationInfo;
+type StoryItemProps = Readonly<{
+  data: StoryNotificationInfo;
   isCurrent: boolean;
 }>;
 
-export function FeedItem({ data, isCurrent }: FeedItemProps) {
+export function StoryItem({ data, isCurrent }: StoryItemProps) {
   function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
     if (isCurrent) event.preventDefault();
   }
 
   return (
     <Link
-      href={ROUTE.FEED(data.username, data.id)}
+      href={ROUTE.STORY(data.username, data.id)}
       onClick={handleClick}
       replace
       className={cn(

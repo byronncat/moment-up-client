@@ -1,20 +1,20 @@
-import type { FeedInfo } from "api";
+import type { StoryInfo } from "api";
 import { useEffect, useRef, useCallback, useState, useMemo } from "react";
 
 export function useSound(
-  feed: FeedInfo["feeds"][number] | undefined,
+  story: StoryInfo["stories"][number] | undefined,
   isPlaying: boolean,
   isActive: boolean
 ) {
   const haveSound = useMemo(() => {
-    if (!feed || !isActive) return false;
+    if (!story || !isActive) return false;
 
-    if (typeof feed?.content === "object" && feed?.content?.type === "video")
+    if (typeof story?.content === "object" && story?.content?.type === "video")
       return true;
 
-    return !!feed.sound;
-  }, [feed, isActive]);
-  const soundUrl = useMemo(() => feed?.sound, [feed]);
+    return !!story.sound;
+  }, [story, isActive]);
+  const soundUrl = useMemo(() => story?.sound, [story]);
 
   const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -57,19 +57,19 @@ export function useSound(
     return () => {
       cleanUpAudio();
     };
-  }, [soundUrl, cleanUpAudio, isActive, feed]);
+  }, [soundUrl, cleanUpAudio, isActive, story]);
 
   useEffect(() => {
     if (!isActive) return;
 
     toggleUrlSound();
-  }, [soundUrl, isSoundOn, isPlaying, isActive, feed, toggleUrlSound]);
+  }, [soundUrl, isSoundOn, isPlaying, isActive, story, toggleUrlSound]);
 
   useEffect(() => {
     if (!isActive) return;
 
     if (videoRef.current) videoRef.current.muted = soundUrl ? true : !isSoundOn;
-  }, [isSoundOn, soundUrl, videoRef, isActive, feed]);
+  }, [isSoundOn, soundUrl, videoRef, isActive, story]);
 
   return {
     haveSound,

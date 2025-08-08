@@ -43,7 +43,7 @@ export default function UserInfo({ data }: UserInformationProps) {
         alt={`${data.username}'s profile`}
         size="26"
         ring
-        showRing={data.hasFeed}
+        showRing={data.hasStory}
       />
 
       <div className={cn("mt-3 mb-6", "flex flex-col items-center w-full")}>

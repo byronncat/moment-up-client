@@ -1,8 +1,8 @@
 import { cn } from "@/libraries/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import CreateFeedButton from "./CreateFeedButton";
+import CreateStoryButton from "./CreateStoryButton";
 
-export default function FeedSkeletons() {
+export default function StorySkeletons() {
   return (
     <div
       className={cn(
@@ -14,10 +14,10 @@ export default function FeedSkeletons() {
       <div className="flex grow">
         <div className={cn("w-8", "border-r border-border")} />
         <div className={cn("flex gap-3", "pt-4 pb-2 grow")}>
-          <CreateFeedButton />
-          <FeedSkeleton />
-          <FeedSkeleton />
-          <FeedSkeleton />
+          <CreateStoryButton />
+          <StorySkeleton />
+          <StorySkeleton />
+          <StorySkeleton />
         </div>
         <div className={cn("w-8", "border-l border-border")} />
       </div>
@@ -26,7 +26,7 @@ export default function FeedSkeletons() {
   );
 }
 
-function FeedSkeleton() {
+function StorySkeleton() {
   return (
     <div className={cn("flex flex-col items-center", "h-24")}>
       <div className={cn("flex items-center justify-center", "size-18")}>

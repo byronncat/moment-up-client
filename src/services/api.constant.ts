@@ -48,10 +48,10 @@ export const ApiUrl = {
       `${SERVER_HOST_URL}/v1/moments/${momentId}/repost`,
   },
 
-  feed: {
-    get: `${SERVER_HOST_URL}/v1/feeds`,
+  story: {
+    get: `${SERVER_HOST_URL}/v1/stories`,
     getByUsername: (username: string) =>
-      `${SERVER_HOST_URL}/v1/feeds/user/${username}`,
+      `${SERVER_HOST_URL}/v1/stories/user/${username}`,
   },
 
   // === Suggestion ===

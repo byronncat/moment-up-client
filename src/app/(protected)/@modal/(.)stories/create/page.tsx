@@ -8,7 +8,7 @@ import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { X } from "@/components/icons";
 
-export default function FeedModal() {
+export default function StoryModal() {
   const router = useRouter();
   function handleClose() {
     if (window.history.length > 1) router.back();

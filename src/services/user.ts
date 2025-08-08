@@ -1,11 +1,6 @@
-import type { API, MomentInfo, ErrorResponse, ProfileInfo } from "api";
+import type { API, ErrorResponse, ProfileInfo } from "api";
 import type { Token } from "@/components/providers/Auth";
 import { ApiUrl } from "./api.constant";
-
-const apiRes = {
-  toggleBlock: "success" as "error" | "success",
-  getMoments: "success" as "error" | "success" | "empty",
-};
 
 interface FollowDto {
   targetId: string;
@@ -77,32 +72,9 @@ export async function getProfile(username: string): API<{
 export async function toggleBlock(userId: string): API {
   console.log("toggleBlock", userId);
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  if (apiRes.toggleBlock === "error")
-    return {
-      success: false,
-      message: "error",
-      statusCode: 500,
-    };
-
   return {
     success: true,
     message: "Block updated successfully",
     statusCode: 200,
-  };
-}
-
-export async function getMoments(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  type: "all" | "media" | "tagged" | "likes" | "bookmarks",
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  username: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  page: number
-): API<{ items: MomentInfo[]; hasNextPage: boolean }> {
-  await new Promise((resolve) => setTimeout(resolve, 4000));
-  return {
-    success: false,
-    message: "error",
-    statusCode: 500,
   };
 }

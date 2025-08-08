@@ -10,7 +10,7 @@ export type MetadataMap = {
   profile: (username: string) => NextMetadata;
   notifications: NextMetadata;
   moment: (username: string, content?: string) => NextMetadata;
-  feed: NextMetadata;
+  story: NextMetadata;
   notFound: NextMetadata;
 };
 
@@ -60,9 +60,9 @@ export const Metadata: MetadataMap = {
       description: `Moment page of ${username}${content ? ` | ${content}` : ""}`,
     };
   },
-  feed: {
-    title: "Feed",
-    description: "Feed page",
+  story: {
+    title: "Story",
+    description: "Story page",
   },
   notFound: {
     title: "Page Not Found",

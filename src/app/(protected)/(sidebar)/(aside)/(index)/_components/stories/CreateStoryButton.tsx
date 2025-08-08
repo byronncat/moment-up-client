@@ -3,14 +3,14 @@ import Link from "next/link";
 import { Plus } from "@/components/icons";
 import { ROUTE } from "@/constants/route";
 
-export default function CreateFeedButton({
+export default function CreateStoryButton({
   className,
 }: Readonly<{
   className?: string;
 }>) {
   return (
     <Link
-      href={ROUTE.FEED_CREATE}
+      href={ROUTE.STORY_CREATE}
       className={cn(
         "relative group",
         "flex flex-col items-center",

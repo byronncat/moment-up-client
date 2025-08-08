@@ -1,5 +1,5 @@
 import { MomentDataProvider } from "@/components/providers";
-import FeedDataProvider from "./@modal/(.)feeds/[username]/[id]/hooks/useFeedData";
+import StoryDataProvider from "./@modal/(.)stories/[username]/[id]/hooks/useStoryData";
 
 type LayoutProps = Readonly<{
   children: React.ReactNode;
@@ -9,10 +9,10 @@ type LayoutProps = Readonly<{
 export default function Layout({ children, modal }: LayoutProps) {
   return (
     <MomentDataProvider>
-      <FeedDataProvider>
+      <StoryDataProvider>
         {children}
         {modal}
-      </FeedDataProvider>
+      </StoryDataProvider>
     </MomentDataProvider>
   );
 }

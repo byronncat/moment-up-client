@@ -1,24 +1,24 @@
-import type { FeedNotificationInfo } from "api";
+import type { StoryNotificationInfo } from "api";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Avatar } from "@/components/common";
 import { ROUTE } from "@/constants/route";
 
-export default function FeedItem({
+export default function StoryItem({
   data,
   className,
 }: Readonly<{
-  data: FeedNotificationInfo;
+  data: StoryNotificationInfo;
   className?: string;
 }>) {
   return (
     <div className={className}>
       <Link
-        href={ROUTE.FEED(data.username, data.id)}
+        href={ROUTE.STORY(data.username, data.id)}
         className={cn("group", "cursor-pointer", "flex flex-col items-center")}
-        aria-label={`View feed from ${data.displayName}${!data.viewed ? " (unread)" : ""}`}
-        aria-describedby={`feed-${data.id}-status`}
+        aria-label={`View story from ${data.displayName}${!data.viewed ? " (unread)" : ""}`}
+        aria-describedby={`story-${data.id}-status`}
       >
         <div className={cn("flex items-center justify-center", "size-18")}>
           <Avatar
@@ -42,8 +42,8 @@ export default function FeedItem({
         >
           {data.displayName}
         </span>
-        <span id={`feed-${data.id}-status`} className="sr-only">
-          {data.viewed ? "Read" : "Unread"} feed
+        <span id={`story-${data.id}-status`} className="sr-only">
+          {data.viewed ? "Read" : "Unread"} story
         </span>
       </Link>
     </div>

@@ -3,7 +3,6 @@ import type {
   UserCardDisplayInfo,
   NotificationInfo,
   CommentInfo,
-  FeedInfo,
   ProfileSearchItem,
 } from "api";
 import sound1 from "./1.mp3";
@@ -69,96 +68,6 @@ function getRandomFile(
   if (type === "audio") return audio[seed % audio.length];
   return avatar[seed % avatar.length];
 }
-
-export const mockFeed: FeedInfo[] = [
-  // {
-  //   user: {
-  //     id: "1",
-  //     username: "Renata Fan",
-  //     displayName: "Renata Fan",
-  //     avatar: getRandomFile("renata_fan"),
-  //     isViewed: false,
-  //   },
-  //   feeds: [
-  //     {
-  //       id: "1",
-  //       content: {
-  //         id: "1",
-  //         type: "image",
-  //         url: getRandomFile("1"),
-  //       },
-  //       sound: {
-  //         id: "1",
-  //         type: "audio",
-  //         url: audio[1],
-  //       },
-  //       createdAt: "2025-07-11T09:20:12.345Z",
-  //     },
-  //     {
-  //       id: "4",
-  //       content: "This is a test! And this is a test!",
-  //       createdAt: "2025-07-11T09:20:12.345Z",
-  //     },
-  //     {
-  //       id: "2",
-  //       content: {
-  //         id: "2",
-  //         type: "image",
-  //         url: getRandomFile("image", "3"),
-  //       },
-  //       sound: {
-  //         id: "2",
-  //         type: "audio",
-  //         url: audio[2],
-  //       },
-  //       createdAt: "2025-07-11T09:20:12.345Z",
-  //     },
-  //     {
-  //       id: "3",
-  //       content: {
-  //         id: "3",
-  //         type: "video",
-  //         url: getRandomFile("video", "3"),
-  //       },
-  //       createdAt: "2025-07-11T09:20:12.345Z",
-  //     },
-  //   ],
-  // },
-  // {
-  //   user: {
-  //     id: "2",
-  //     username: "Feint heart",
-  //     displayName: "Feint heart",
-  //     avatar: getRandomFile("feint_heart"),
-  //     isViewed: false,
-  //   },
-  //   feeds: [
-  //     {
-  //       id: "1",
-  //       content: {
-  //         id: "1",
-  //         type: "image",
-  //         url: getRandomFile("image", "thompson"),
-  //       },
-  //       createdAt: "2025-07-11T09:20:12.345Z",
-  //     },
-  //     {
-  //       id: "3",
-  //       content: {
-  //         id: "3",
-  //         type: "image",
-  //         url: getRandomFile("image", "omtspson"),
-  //       },
-  //       sound: {
-  //         id: "2",
-  //         type: "audio",
-  //         url: getRandomFile("audio", "mockTrendingTopics"),
-  //       },
-  //       createdAt: "2025-07-11T09:20:12.345Z",
-  //     },
-  //   ],
-  // },
-];
 
 export const mockMoments: any[] = isDev
   ? [
@@ -1459,7 +1368,7 @@ export const mockProfile: ProfileInfo = {
   backgroundImage: isDev
     ? "https://pbs.twimg.com/media/GjlpiyBaIAENj43?format=jpg&name=large"
     : undefined,
-  hasFeed: true,
+  hasStory: true,
   bio: "I'm a software engineer and a coffee addict.",
   followers: 1234,
   following: 567,

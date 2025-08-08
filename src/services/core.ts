@@ -1,5 +1,5 @@
-import { mockComments, mockFeed, mockMoments } from "@/__mocks__";
-import type { FeedInfo, MomentInfo, CommentInfo } from "api";
+import { mockComments, mockMoments } from "@/__mocks__";
+import type { MomentInfo, CommentInfo } from "api";
 import { SortBy } from "@/constants/clientConfig";
 import { Audience } from "@/constants/serverConfig";
 
@@ -11,7 +11,6 @@ const apiRes = {
   getMoments: "success" as "error" | "empty" | "success",
   getMoment: "success" as "error" | "empty" | "success",
   getComments: "success" as "error" | "success" | "empty",
-  getFeeds: "success" as "error" | "empty" | "success",
   explore: "success" as "error" | "empty" | "success",
   repost: "success" as "error" | "success",
   comment: "success" as "error" | "success",
@@ -133,34 +132,6 @@ export async function repost(
         statusCode: error.statusCode,
       };
     });
-}
-
-export async function getFeed(feedId: string): API<FeedInfo> {
-  console.log("getFeed", feedId);
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Make sure mockFeed array exists and has elements
-      if (!Array.isArray(mockFeed) || mockFeed.length === 0) {
-        resolve({
-          success: false,
-          message: "Feed data not available",
-          statusCode: 404,
-          data: undefined,
-        });
-        return;
-      }
-
-      // Find the feed with the matching ID, or default to the first feed if not found
-      const feed = mockFeed[0];
-
-      resolve({
-        success: true,
-        message: "ok",
-        statusCode: 200,
-        data: feed,
-      });
-    }, 1000);
-  });
 }
 
 export async function getMoment(momentId: string): API<MomentInfo | null> {

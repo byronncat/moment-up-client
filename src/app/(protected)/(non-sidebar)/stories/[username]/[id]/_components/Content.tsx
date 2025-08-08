@@ -1,4 +1,4 @@
-import type { FeedInfo } from "api";
+import type { StoryInfo } from "api";
 
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
@@ -6,7 +6,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { BLUR_DATA_URL } from "@/constants/clientConfig";
 
 type ContentProps = Readonly<{
-  content: FeedInfo["feeds"][number]["content"];
+  content: StoryInfo["stories"][number]["content"];
   setVideoRef?: (video: HTMLVideoElement | null) => void;
 }>;
 
@@ -27,7 +27,7 @@ export default function Content({ content, setVideoRef }: ContentProps) {
       ) : content.type === "image" ? (
         <Image
           src={content.url}
-          alt={`Feed ${content.id}`}
+          alt={`Story ${content.id}`}
           fill
           sizes="(max-width: 768px) 100vw, 800px"
           quality={100}

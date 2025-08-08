@@ -1,2 +1,2 @@
-export { default as Feeds } from "./feeds";
+export { default as Stories } from "./stories";
 export { default as Moments } from "./Moments";
