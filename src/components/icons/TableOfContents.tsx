@@ -1,3 +1,1 @@
-import { TableOfContents } from "lucide-react";
-
-export default TableOfContents;
+export { TableOfContents as default } from "lucide-react";

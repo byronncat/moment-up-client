@@ -1,3 +1,1 @@
-import { SquarePlus } from "lucide-react";
-
-export default SquarePlus;
+export { SquarePlus as default } from "lucide-react";

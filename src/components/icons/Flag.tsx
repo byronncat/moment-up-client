@@ -1,3 +1,1 @@
-import { Flag } from "lucide-react";
-
-export default Flag;
+export { Flag as default } from "lucide-react";

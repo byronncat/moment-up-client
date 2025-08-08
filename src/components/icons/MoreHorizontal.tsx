@@ -1,3 +1,1 @@
-import { MoreHorizontal } from "lucide-react";
-
-export default MoreHorizontal;
+export { MoreHorizontal as default } from "lucide-react";

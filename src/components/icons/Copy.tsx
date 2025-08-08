@@ -1,3 +1,1 @@
-import { Copy } from "lucide-react";
-
-export default Copy;
+export { Copy as default } from "lucide-react";

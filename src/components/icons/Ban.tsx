@@ -1,3 +1,1 @@
-import { Ban } from "lucide-react";
-
-export default Ban;
+export { Ban as default } from "lucide-react";

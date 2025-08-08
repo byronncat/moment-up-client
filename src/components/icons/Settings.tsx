@@ -1,3 +1,1 @@
-import { Settings } from "lucide-react";
-
-export default Settings;
+export { Settings as default } from "lucide-react";

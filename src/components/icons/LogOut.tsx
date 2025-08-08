@@ -1,3 +1,1 @@
-import { LogOut } from "lucide-react";
-
-export default LogOut;
+export { LogOut as default } from "lucide-react";

@@ -45,6 +45,7 @@ export { default as SquarePlus } from "./SquarePlus";
 export { default as Sun } from "./Sun";
 export { default as TableOfContents } from "./TableOfContents";
 export { default as Tag } from "./Tag";
+export { default as Trash } from "./Trash";
 export { default as TriangleAlert } from "./TriangleAlert";
 export { default as User } from "./User";
 export { default as Video } from "./Video";

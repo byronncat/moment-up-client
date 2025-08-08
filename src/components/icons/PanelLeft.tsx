@@ -1,3 +1,1 @@
-import { PanelLeft } from "lucide-react";
-
-export default PanelLeft;
+export { PanelLeft as default } from "lucide-react";

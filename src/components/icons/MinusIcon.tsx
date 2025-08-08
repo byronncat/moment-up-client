@@ -1,3 +1,1 @@
-import { MinusIcon } from "lucide-react";
-
-export default MinusIcon;
+export { MinusIcon as default } from "lucide-react";

@@ -1,3 +1,1 @@
-import { Archive } from "lucide-react";
-
-export default Archive;
+export { Archive as default } from "lucide-react";

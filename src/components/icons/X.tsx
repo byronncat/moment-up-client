@@ -1,3 +1,1 @@
-import { X } from "lucide-react";
-
-export default X;
+export { X as default } from "lucide-react";

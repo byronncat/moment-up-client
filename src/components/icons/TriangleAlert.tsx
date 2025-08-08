@@ -1,3 +1,1 @@
-import { TriangleAlert } from "lucide-react";
-
-export default TriangleAlert;
+export { TriangleAlert as default } from "lucide-react";

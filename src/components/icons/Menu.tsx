@@ -1,3 +1,1 @@
-import { Menu } from "lucide-react";
-
-export default Menu;
+export { Menu as default } from "lucide-react";

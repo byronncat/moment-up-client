@@ -1,3 +1,1 @@
-import { AlertCircle } from "lucide-react";
-
-export default AlertCircle;
+export { AlertCircle as default } from "lucide-react";

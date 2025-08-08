@@ -1,3 +1,1 @@
-import { Camera } from "lucide-react";
-
-export default Camera;
+export { Camera as default } from "lucide-react";

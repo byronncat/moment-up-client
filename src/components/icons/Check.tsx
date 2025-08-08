@@ -1,3 +1,1 @@
-import { Check } from "lucide-react";
-
-export default Check;
+export { Check as default } from "lucide-react";

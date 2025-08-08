@@ -1,3 +1,1 @@
-import { Palette } from "lucide-react";
-
-export default Palette;
+export { Palette as default } from "lucide-react";

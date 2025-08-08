@@ -1,3 +1,1 @@
-import { RotateCw } from "lucide-react";
-
-export default RotateCw;
+export { RotateCw as default } from "lucide-react";

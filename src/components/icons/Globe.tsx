@@ -1,3 +1,1 @@
-import { Globe } from "lucide-react";
-
-export default Globe;
+export { Globe as default } from "lucide-react";
