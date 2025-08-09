@@ -44,7 +44,7 @@ export default function StoryView({
 
   const currentStory = useMemo(() => {
     const totalStories = viewingStory?.stories.length ?? FIRST;
-    
+
     if (currentStoryIndex >= totalStories) {
       const index = totalStories - 1 > FIRST ? totalStories - 1 : FIRST;
       setCurrentStoryIndex(index);

@@ -163,13 +163,13 @@ export default function StoryDataProvider({
         }
 
         if (stories.length === 0) {
-          if (otherStories.length > 0) {
-            setViewingStory(null);
+          // No need to set viewingStory to null here because it rerenders the page (navigateFully)
+          if (otherStories.length > 0)
             changeUrl(
               ROUTE.STORY(otherStories[FIRST].username, otherStories[FIRST].id),
               "navigateFully"
             );
-          } else changeUrl(ROUTE.HOME, "navigateFully");
+          else changeUrl(ROUTE.HOME, "navigateFully");
           return;
         }
 
@@ -178,7 +178,6 @@ export default function StoryDataProvider({
             if (!prev) return null;
             return { ...prev, stories };
           });
-          console.log(currentStoryIndex, stories.at(currentStoryIndex)?.id);
           changeUrl(
             ROUTE.STORY(myStory.username, stories.at(currentStoryIndex)?.id),
             "updateOnly"
