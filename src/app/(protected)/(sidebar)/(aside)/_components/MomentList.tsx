@@ -3,7 +3,7 @@
 import type { MomentInfo, PaginationInfo } from "api";
 import { useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
-import { useMomentStore, useMoment } from "@/components/providers/MomentData";
+import { useMomentStore, useMoment } from "@/components/providers/MomentStorage";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { useSidebar } from "@/components/ui/sidebar";
 import { INITIAL_PAGE } from "@/constants/serverConfig";

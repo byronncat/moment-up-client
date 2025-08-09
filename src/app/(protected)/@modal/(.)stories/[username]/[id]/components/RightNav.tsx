@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import { useStory } from "../hooks/useStoryData";
+import { useStory } from "@/components/providers";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";

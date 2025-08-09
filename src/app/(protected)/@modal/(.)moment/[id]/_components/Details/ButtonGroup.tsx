@@ -1,5 +1,5 @@
 import type { PostInfo, UserCardDisplayInfo } from "api";
-import type { Actions } from "@/components/providers/MomentData";
+import type { Actions } from "@/components/providers/MomentStorage";
 import { useState } from "react";
 
 import { cn } from "@/libraries/utils";

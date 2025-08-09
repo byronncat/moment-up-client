@@ -3,7 +3,8 @@
 import type { StoryInfo } from "api";
 
 import { useRouter, useParams } from "next/navigation";
-import { useAuth } from "@/components/providers";
+import { useEffect } from "react";
+import { useAuth, useStory } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
@@ -12,7 +13,7 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
-import StoryView from "@/app/(protected)/(non-sidebar)/stories/[username]/[id]/_components/StoryView";
+import StoryView from "@/components/story/StoryView";
 import RightNav from "./components/RightNav";
 import { X } from "@/components/icons";
 
@@ -21,7 +22,8 @@ export default function StoryModal() {
   const params = useParams();
   const username = params.username as string;
 
-  const { data, isLoading } = useSWRImmutable(
+  const { setViewingStory } = useStory();
+  const { data, isValidating } = useSWRImmutable(
     [ApiUrl.story.getByUsername(username), token.accessToken],
     ([url, token]) =>
       SWRFetcherWithToken<{
@@ -34,6 +36,10 @@ export default function StoryModal() {
     if (window.history.length > 1) router.back();
     else router.replace(ROUTE.HOME);
   }
+
+  useEffect(() => {
+    if (data?.story) setViewingStory(data.story);
+  }, [data?.story, setViewingStory]);
 
   return (
     <Modal className="flex">
@@ -51,8 +57,7 @@ export default function StoryModal() {
         <X className="size-6" />
       </Button>
       <StoryView
-        data={data?.story}
-        loading={isLoading}
+        loading={isValidating}
         onClose={handleClose}
         confirm
         className="flex-1"

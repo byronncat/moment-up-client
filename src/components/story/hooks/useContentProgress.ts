@@ -72,7 +72,6 @@ export function useContentProgress(
 
   useEffect(() => {
     if (!isPlaying || !content) return;
-
     const increment = 100 / (duration / UPDATE_INTERVAL);
 
     intervalRef.current = setInterval(() => {
@@ -91,9 +90,12 @@ export function useContentProgress(
     }, UPDATE_INTERVAL);
 
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
-  }, [isPlaying, content, duration, onComplete]);
+  }, [isPlaying, duration, content, onComplete]);
 
   useEffect(() => {
     return () => {

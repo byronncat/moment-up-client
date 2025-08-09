@@ -1,5 +1,5 @@
 import type { MomentInfo } from "api";
-import type { Actions } from "../../providers/MomentData";
+import type { Actions } from "../../providers/MomentStorage";
 
 import { Card } from "../../ui/card";
 import { cn } from "@/libraries/utils";

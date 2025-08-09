@@ -4,6 +4,7 @@ export { default as Arrow } from "./Arrow";
 export { default as Ban } from "./Ban";
 export { default as Bell } from "./Bell";
 export { default as Bookmark } from "./Bookmark";
+export { default as Bug } from "./Bug";
 export { default as Camera } from "./Camera";
 export { default as Check } from "./Check";
 export { default as Chevron } from "./Chevron";

@@ -1,5 +1,7 @@
-import { MomentDataProvider } from "@/components/providers";
-import StoryDataProvider from "./@modal/(.)stories/[username]/[id]/hooks/useStoryData";
+import {
+  MomentStorageProvider,
+  StoryStorageProvider,
+} from "@/components/providers";
 
 type LayoutProps = Readonly<{
   children: React.ReactNode;
@@ -8,11 +10,11 @@ type LayoutProps = Readonly<{
 
 export default function Layout({ children, modal }: LayoutProps) {
   return (
-    <MomentDataProvider>
-      <StoryDataProvider>
+    <MomentStorageProvider>
+      <StoryStorageProvider>
         {children}
         {modal}
-      </StoryDataProvider>
-    </MomentDataProvider>
+      </StoryStorageProvider>
+    </MomentStorageProvider>
   );
 }

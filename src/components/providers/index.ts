@@ -5,4 +5,5 @@ export {
   useRefreshApi,
   useRefreshSWR,
 } from "./Auth";
-export { default as MomentDataProvider, useMoment } from "./MomentData";
+export { default as MomentStorageProvider, useMoment } from "./MomentStorage";
+export { default as StoryStorageProvider, useStory } from "./StoryStorage";

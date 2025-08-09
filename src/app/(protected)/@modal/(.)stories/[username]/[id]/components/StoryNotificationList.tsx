@@ -1,7 +1,7 @@
 import type { StoryNotificationInfo } from "api";
 
 import { usePathname } from "next/navigation";
-import { useStory } from "../hooks/useStoryData";
+import { useStory } from "@/components/providers";
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Avatar } from "@/components/common";
@@ -11,7 +11,7 @@ import { ROUTE } from "@/constants/route";
 export default function StoryNotificationList({
   className,
 }: Readonly<{ className?: string }>) {
-  const { stories } = useStory();
+  const { otherStories: stories } = useStory();
   const pathname = usePathname();
   const username = pathname.split("/")[2];
 

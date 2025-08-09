@@ -52,6 +52,7 @@ export const ApiUrl = {
     get: `${SERVER_HOST_URL}/v1/stories`,
     getByUsername: (username: string) =>
       `${SERVER_HOST_URL}/v1/stories/user/${username}`,
+    delete: (id: string) => `${SERVER_HOST_URL}/v1/stories/${id}`,
   },
 
   // === Suggestion ===

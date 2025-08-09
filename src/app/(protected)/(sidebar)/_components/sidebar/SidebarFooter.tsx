@@ -30,6 +30,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
+import { styles } from "@/constants/clientConfig";
 
 type SidebarFooterProps = Readonly<{
   open: boolean;
@@ -100,7 +101,7 @@ export default function SidebarFooter({ open }: SidebarFooterProps) {
                     <DropdownMenuItem
                       className={cn(
                         "cursor-pointer",
-                        "text-destructive focus:text-destructive focus:bg-destructive/10"
+                        styles.destructiveDropdownMenuItem
                       )}
                       onClick={() => setShowLogoutDialog(true)}
                     >
@@ -169,7 +170,7 @@ export default function SidebarFooter({ open }: SidebarFooterProps) {
                     <DropdownMenuItem
                       className={cn(
                         "cursor-pointer",
-                        "text-destructive focus:text-destructive focus:bg-destructive/10"
+                        styles.destructiveDropdownMenuItem
                       )}
                       onClick={() => setShowLogoutDialog(true)}
                     >

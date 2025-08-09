@@ -6,11 +6,12 @@ import { Format } from "@/utilities";
 import { ROUTE } from "@/constants/route";
 
 type UserInfoProps = Readonly<{
-  data: StoryInfo["user"];
+  data: StoryInfo["user"] | undefined;
   timestamp: string;
 }>;
 
 export default function UserInfo({ data, timestamp }: UserInfoProps) {
+  if (!data) return null;
   return (
     <div className="flex items-center gap-2">
       <Link href={ROUTE.PROFILE(data.username)}>

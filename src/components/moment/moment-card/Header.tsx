@@ -1,7 +1,7 @@
 "use client";
 
 import type { MomentInfo } from "api";
-import type { Actions } from "../../providers/MomentData";
+import type { Actions } from "../../providers/MomentStorage";
 
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import { MoreHorizontal, User, Ban, Flag } from "@/components/icons";
+import { styles } from "@/constants/clientConfig";
 
 type HeaderProps = Readonly<{
   data: MomentInfo;
@@ -145,7 +146,7 @@ function MoreMenu({ isOpen, setOpen, user, momentId, actions }: MoreMenuProps) {
           )}
           <DropdownMenuItem
             onClick={() => handleAction(() => actions.block(momentId))}
-            className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+            className={cn("cursor-pointer", styles.destructiveDropdownMenuItem)}
           >
             <Ban className="size-4 shrink-0" />
             <span className="truncate">Block @{user.username}</span>
@@ -154,7 +155,7 @@ function MoreMenu({ isOpen, setOpen, user, momentId, actions }: MoreMenuProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => handleAction(() => actions.report(momentId))}
-          className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+          className={cn("cursor-pointer", styles.destructiveDropdownMenuItem)}
         >
           <Flag className="size-4 shrink-0" />
           <span className="truncate">Report post</span>

@@ -1,7 +1,7 @@
 "use client";
 
 import type { MomentInfo } from "api";
-import type { Actions } from "@/components/providers/MomentData";
+import type { Actions } from "@/components/providers/MomentStorage";
 
 import { useState, useRef, useEffect, memo } from "react";
 import { debounce } from "lodash";

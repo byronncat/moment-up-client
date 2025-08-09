@@ -8,15 +8,10 @@ import type { API, ErrorResponse } from "api";
 import { ApiUrl } from "./api.constant";
 
 const apiRes = {
-  getMoments: "success" as "error" | "empty" | "success",
   getMoment: "success" as "error" | "empty" | "success",
   getComments: "success" as "error" | "success" | "empty",
-  explore: "success" as "error" | "empty" | "success",
-  repost: "success" as "error" | "success",
   comment: "success" as "error" | "success",
   report: "success" as "error" | "success",
-  toggleLike: "success" as "error" | "success",
-  toggleBookmark: "success" as "error" | "success",
   toggleCommentLike: "success" as "error" | "success",
 };
 
@@ -122,6 +117,33 @@ export async function repost(
       return {
         success: true,
         message: "Reposted successfully",
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        success: false,
+        message: error.message as string,
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+export async function deleteStory(storyId: string, token: Token): API {
+  return await fetch(ApiUrl.story.delete(storyId), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Story deleted successfully",
         statusCode: response.status,
       };
     })

@@ -8,7 +8,7 @@ import useSWRImmutable from "swr/immutable";
 import { useAuth } from "@/components/providers";
 import { useHome } from "../../_providers/Home";
 import { useHorizontalScroll } from "./hooks/useHorizontalScroll";
-import { useStory } from "@/app/(protected)/@modal/(.)stories/[username]/[id]/hooks/useStoryData";
+import { useStory } from "@/components/providers/StoryStorage";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services/api.constant";
 
@@ -25,7 +25,7 @@ export default function Stories() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const { token } = useAuth();
-  const { setStories } = useStory();
+  const { allStories, setStories } = useStory();
   const { data, isLoading, error } = useSWRImmutable(
     [ApiUrl.story.get, token.accessToken],
     ([url, token]) =>
@@ -34,8 +34,9 @@ export default function Stories() {
       }>(url, token)
   );
   const { hideStories, setHideStories } = useHome();
+
   const { handleScroll, canScrollLeft, canScrollRight } = useHorizontalScroll(
-    data,
+    allStories,
     scrollContainerRef,
     ITEMS_PER_VIEW,
     ITEM_WIDTH
@@ -88,8 +89,8 @@ export default function Stories() {
           aria-label="Story items"
         >
           <CreateStoryButton className="snap-start" />
-          {data?.stories.map((story) => (
-            <StoryItem key={story.id} data={story} className="snap-start" />
+          {allStories.map((story) => (
+            <StoryItem key={story?.id} data={story} className="snap-start" />
           ))}
         </div>
         <NavigationButton

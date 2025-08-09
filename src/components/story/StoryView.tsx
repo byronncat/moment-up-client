@@ -1,11 +1,9 @@
 "use client";
 
-import type { StoryInfo } from "api";
-
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useCallback, useEffect, useMemo } from "react";
+import { useStory } from "@/components/providers";
 import { useContentProgress, useSound } from "./hooks";
-import { useStory } from "@/app/(protected)/@modal/(.)stories/[username]/[id]/hooks/useStoryData";
 
 import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/route";
@@ -19,47 +17,56 @@ import {
   ProgressBar,
   UserInfo,
 } from "./controls";
+import { FIRST } from "@/constants/clientConfig";
 
 type StoryViewProps = Readonly<{
-  data: StoryInfo | undefined;
   loading: boolean;
   onClose: () => void;
   confirm?: boolean;
-  initialIndex?: number;
   className?: string;
 }>;
 
 export default function StoryView({
-  data,
   loading,
   onClose,
   confirm = false,
-  initialIndex = 0,
   className,
 }: StoryViewProps) {
   const pathname = usePathname();
-  const { totalStories, navigateUser } = useStory();
-
-  const [currentStoryIndex, setCurrentStoryIndex] = useState(initialIndex);
+  const router = useRouter();
+  const { viewingStory, otherStories, nextUserStory } = useStory();
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [_confirm, setConfirm] = useState(confirm);
 
   const username = useMemo(() => {
     return pathname.split("/")[2];
   }, [pathname]);
 
+  const currentStory = useMemo(() => {
+    const totalStories = viewingStory?.stories.length ?? FIRST;
+    
+    if (currentStoryIndex >= totalStories) {
+      const index = totalStories - 1 > FIRST ? totalStories - 1 : FIRST;
+      setCurrentStoryIndex(index);
+      return viewingStory?.stories.at(index);
+    }
+
+    return viewingStory?.stories[currentStoryIndex];
+  }, [viewingStory, currentStoryIndex]);
+
   const changeUrl = useCallback(
-    (index: number) => {
-      if (username && data?.stories[index].id) {
-        const newUrl = ROUTE.STORY(username, data.stories[index].id);
-        window.history.replaceState(null, "", newUrl);
-      }
+    (url: string, type: "updateOnly" | "navigateFully") => {
+      setTimeout(() => {
+        if (type === "updateOnly") window.history.replaceState(null, "", url);
+        else router.replace(url);
+      }, 0);
     },
-    [username, data?.stories]
+    [router]
   );
 
-  const navigate = useCallback(
+  const handleNavigate = useCallback(
     (direction: "prev" | "next") => {
-      const storiesLength = data?.stories.length ?? 0;
+      const storiesLength = viewingStory?.stories.length ?? 0;
       const isPrev = direction === "prev";
       const isNext = direction === "next";
 
@@ -74,27 +81,46 @@ export default function StoryView({
         if (!atBoundary) {
           const newIndex = currentStoryIndex + offset;
           setCurrentStoryIndex(newIndex);
-          changeUrl(newIndex);
+          changeUrl(
+            ROUTE.STORY(username, viewingStory?.stories[newIndex].id),
+            "updateOnly"
+          );
         } else {
-          setCurrentStoryIndex(0);
-          navigateUser(direction);
+          // No need to set currentStoryIndex to 0 here because it rerenders the page (navigateFully)
+          const nextStory = nextUserStory(direction);
+          if (nextStory)
+            changeUrl(
+              ROUTE.STORY(nextStory.username, nextStory.id),
+              "navigateFully"
+            );
+          else onClose();
         }
       }
     },
-    [data?.stories, currentStoryIndex, navigateUser, changeUrl]
+    [
+      username,
+      viewingStory,
+      currentStoryIndex,
+      nextUserStory,
+      changeUrl,
+      onClose,
+    ]
   );
 
   const handleSegmentClick = useCallback(
     (index: number) => {
       setCurrentStoryIndex(index);
-      changeUrl(index);
+      changeUrl(
+        ROUTE.STORY(username, viewingStory?.stories[index].id),
+        "updateOnly"
+      );
     },
-    [setCurrentStoryIndex, changeUrl]
+    [username, viewingStory, setCurrentStoryIndex, changeUrl]
   );
 
   const handleViewComplete = useCallback(() => {
-    navigate("next");
-  }, [navigate]);
+    handleNavigate("next");
+  }, [handleNavigate]);
 
   const {
     isPlaying,
@@ -103,18 +129,14 @@ export default function StoryView({
     play,
     reset,
     setVideoRef: setContentVideoRef,
-  } = useContentProgress(
-    data?.stories[currentStoryIndex]?.content,
-    handleViewComplete,
-    _confirm
-  );
+  } = useContentProgress(currentStory?.content, handleViewComplete, _confirm);
 
   const {
     haveSound,
     isSoundOn,
     toggleSoundOn,
     setVideoRef: setSoundVideoRef,
-  } = useSound(data?.stories[currentStoryIndex], isPlaying, _confirm);
+  } = useSound(currentStory, isPlaying, _confirm);
 
   const handleSetVideoRef = useCallback(
     (video: HTMLVideoElement | null) => {
@@ -124,29 +146,26 @@ export default function StoryView({
     [setContentVideoRef, setSoundVideoRef]
   );
 
-  const handleNavigate = useCallback(
-    (direction: "next" | "prev") => {
-      navigate(direction);
-      reset();
-    },
-    [navigate, reset]
-  );
-
   const handleConfirm = useCallback(() => {
-    // Update currentStoryIndex when initialIndex changes (when data loads)
-    setCurrentStoryIndex(initialIndex);
+    const currentIndex = viewingStory?.stories.findIndex(
+      (story) => story.id === pathname.split("/")[3]
+    );
+    setCurrentStoryIndex(
+      currentIndex !== undefined && currentIndex !== -1 ? currentIndex : 0
+    );
+
     setConfirm(true);
     play();
-  }, [play, initialIndex]);
+  }, [play, pathname, viewingStory]);
 
   useEffect(() => {
-    if (username) reset();
-  }, [username, reset]);
+    reset();
+  }, [currentStory, reset]);
 
   if (!_confirm)
     return <ConfirmState onConfirm={handleConfirm} className={className} />;
   if (loading) return <LoadingState className={className} />;
-  if (!data?.stories[currentStoryIndex])
+  if (!currentStory)
     return <ErrorState onClose={onClose} className={className} />;
   return (
     <Container className={className}>
@@ -162,18 +181,15 @@ export default function StoryView({
           }}
         />
         <ProgressBar
-          total={data.stories.length}
+          total={viewingStory?.stories.length ?? 0}
           current={currentStoryIndex}
           progress={progress}
-          onSegmentClick={(index) => {
-            handleSegmentClick(index);
-            reset();
-          }}
+          onSegmentClick={(index) => handleSegmentClick(index)}
         />
         <div className={cn("flex justify-between items-start", "mt-3")}>
           <UserInfo
-            data={data.user}
-            timestamp={data.stories[currentStoryIndex].createdAt}
+            data={viewingStory?.user}
+            timestamp={currentStory.createdAt}
           />
           <ActionButtons
             isPlaying={isPlaying}
@@ -185,11 +201,11 @@ export default function StoryView({
         </div>
       </div>
       <Content
-        key={data?.stories[currentStoryIndex].id} // Force re-render on content change to reset video
-        content={data?.stories[currentStoryIndex].content}
+        key={currentStory.id} // Force re-render on content change to reset video
+        content={currentStory.content}
         setVideoRef={handleSetVideoRef}
       />
-      {(data.stories.length > 1 || totalStories > 1) && (
+      {((viewingStory?.stories.length ?? 0) > 1 || otherStories.length > 1) && (
         <NavigateButtons onNavigate={handleNavigate} />
       )}
     </Container>

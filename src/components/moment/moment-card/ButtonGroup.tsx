@@ -1,7 +1,7 @@
 "use client";
 
 import type { MomentInfo } from "api";
-import type { Actions } from "../../providers/MomentData";
+import type { Actions } from "../../providers/MomentStorage";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
