@@ -18,6 +18,7 @@ import {
 } from "@/components/icons";
 import { styles } from "@/constants/clientConfig";
 import { usePathname } from "next/navigation";
+import Tooltip from "@/components/common/Tooltip";
 
 type ActionButtonsProps = Readonly<{
   isPlaying: boolean;
@@ -46,32 +47,58 @@ export default function ActionButtons({
 }: ActionButtonsProps) {
   return (
     <div className={cn(className, "flex items-center gap-2")}>
-      <button
-        type="button"
-        onClick={onSoundToggle}
-        disabled={isSoundOn === null}
-        className={buttonStyles}
-        aria-label={
+      <Tooltip
+        content={
           isSoundOn === null
             ? "No sound"
             : isSoundOn
               ? "Mute sound"
               : "Unmute sound"
         }
+        variant="borderless"
+        side="bottom"
+        sideOffset={12}
+        dark
       >
-        <Volume
-          variant={isSoundOn === null ? "x" : isSoundOn ? "regular" : "off"}
-          className={cn("size-6")}
-        />
-      </button>
-      <button
-        type="button"
-        onClick={isPlaying ? onPause : onPlay}
-        className={buttonStyles}
-        aria-label={isPlaying ? "Pause" : "Play"}
+        <button
+          type="button"
+          onClick={onSoundToggle}
+          disabled={isSoundOn === null}
+          className={buttonStyles}
+          aria-label={
+            isSoundOn === null
+              ? "No sound"
+              : isSoundOn
+                ? "Mute sound"
+                : "Unmute sound"
+          }
+        >
+          <Volume
+            variant={isSoundOn === null ? "x" : isSoundOn ? "regular" : "off"}
+            className={cn("size-6")}
+          />
+        </button>
+      </Tooltip>
+      <Tooltip
+        content={isPlaying ? "Pause" : "Play"}
+        variant="borderless"
+        side="bottom"
+        sideOffset={12}
+        dark
       >
-        {isPlaying ? <Pause className="size-6" /> : <Play className="size-5" />}
-      </button>
+        <button
+          type="button"
+          onClick={isPlaying ? onPause : onPlay}
+          className={buttonStyles}
+          aria-label={isPlaying ? "Pause" : "Play"}
+        >
+          {isPlaying ? (
+            <Pause className="size-6" />
+          ) : (
+            <Play className="size-5" />
+          )}
+        </button>
+      </Tooltip>
       <MoreMenu />
     </div>
   );
@@ -88,9 +115,17 @@ function MoreMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button type="button" className={buttonStyles} aria-label="More">
-          <MoreHorizontal className="size-6" />
-        </button>
+        <Tooltip
+          content="More options"
+          variant="borderless"
+          side="bottom"
+          sideOffset={12}
+          dark
+        >
+          <button type="button" className={buttonStyles} aria-label="More">
+            <MoreHorizontal className="size-6" />
+          </button>
+        </Tooltip>
       </DropdownMenuTrigger>
       {isMe ? (
         <MyMenuContent storyId={storyId} />

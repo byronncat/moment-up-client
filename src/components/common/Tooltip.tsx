@@ -7,22 +7,26 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const tooltipStyles = {
+const tooltipStyles = (forceDark: boolean) => ({
   default: cn(
-    "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
+    forceDark
+      ? "bg-zinc-800 text-white"
+      : "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
+    forceDark ? "border border-border" : "dark:border border-border",
     "text-xs",
     "px-2 py-1 rounded-md",
-    "dark:border border-border",
     "shadow-md"
   ),
   borderless: cn(
-    "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
+    forceDark
+      ? "bg-zinc-800 text-white"
+      : "bg-gray-500 text-white dark:bg-zinc-800 dark:text-white",
     "text-xs",
     "px-2 py-1 rounded-md",
     "border-none",
     "shadow-md"
   ),
-};
+});
 
 type TooltipProps = Readonly<{
   children: React.ReactNode;
@@ -31,6 +35,7 @@ type TooltipProps = Readonly<{
   side?: "top" | "right" | "bottom" | "left";
   variant?: "default" | "borderless";
   align?: "start" | "center" | "end";
+  dark?: boolean;
   className?: string;
 }>;
 
@@ -41,13 +46,14 @@ export default function Tooltip({
   side,
   variant = "default",
   align,
+  dark: forceDark = false,
   className,
 }: TooltipProps) {
   return (
     <TooltipUI>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipContent
-        className={cn(tooltipStyles[variant], className)}
+        className={cn(tooltipStyles(forceDark)[variant], className)}
         sideOffset={sideOffset}
         side={side}
         align={align}
