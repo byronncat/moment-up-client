@@ -80,7 +80,7 @@ export default function StoryDataProvider({
       const others = stories.filter(
         (story) => story.username !== user?.username
       );
-      // setOtherStories(others);
+      setOtherStories(others);
       setMyStory(mine);
     },
     [user?.username]

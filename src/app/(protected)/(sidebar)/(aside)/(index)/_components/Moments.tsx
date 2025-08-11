@@ -68,7 +68,7 @@ export default function Moments() {
 
   useEffect(() => {
     if (!error && allMoments) setMoments(allMoments);
-  }, [allMoments, setMoments, error]);
+  }, [allMoments, error, setMoments]);
 
   const spaceClassName = cn(
     hideStories ? "pt-[40px]" : "pt-[calc(145px+16px)]",

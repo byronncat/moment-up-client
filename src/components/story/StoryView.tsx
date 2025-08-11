@@ -115,7 +115,7 @@ export default function StoryView({
         "updateOnly"
       );
     },
-    [username, viewingStory, setCurrentStoryIndex, changeUrl]
+    [username, viewingStory, changeUrl]
   );
 
   const handleViewComplete = useCallback(() => {
@@ -159,8 +159,8 @@ export default function StoryView({
   }, [play, pathname, viewingStory]);
 
   useEffect(() => {
-    reset();
-  }, [currentStory, reset]);
+    if (_confirm) reset();
+  }, [currentStory, _confirm, reset]);
 
   if (!_confirm)
     return <ConfirmState onConfirm={handleConfirm} className={className} />;
