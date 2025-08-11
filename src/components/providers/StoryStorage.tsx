@@ -80,7 +80,7 @@ export default function StoryDataProvider({
       const others = stories.filter(
         (story) => story.username !== user?.username
       );
-      setOtherStories(others);
+      // setOtherStories(others);
       setMyStory(mine);
     },
     [user?.username]
@@ -164,12 +164,13 @@ export default function StoryDataProvider({
 
         if (stories.length === 0) {
           // No need to set viewingStory to null here because it rerenders the page (navigateFully)
+          setMyStory(null);
           if (otherStories.length > 0)
             changeUrl(
               ROUTE.STORY(otherStories[FIRST].username, otherStories[FIRST].id),
               "navigateFully"
             );
-          else changeUrl(ROUTE.HOME, "navigateFully");
+          else setTimeout(() => router.back(), 0);
           return;
         }
 
@@ -185,7 +186,7 @@ export default function StoryDataProvider({
         }
       } else toast.error(message);
     },
-    [myStory, otherStories, viewingStory, token, changeUrl]
+    [myStory, otherStories, viewingStory, token, router, changeUrl]
   );
 
   return (
