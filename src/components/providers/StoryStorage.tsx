@@ -174,19 +174,17 @@ export default function StoryDataProvider({
           return;
         }
 
-        if (myStory) {
-          setViewingStory((prev) => {
-            if (!prev) return null;
-            return { ...prev, stories };
-          });
-          changeUrl(
-            ROUTE.STORY(myStory.username, stories.at(currentStoryIndex)?.id),
-            "updateOnly"
-          );
-        }
+        setViewingStory((prev) => {
+          if (!prev) return null;
+          return { ...prev, stories };
+        });
+        changeUrl(
+          ROUTE.STORY(username, stories.at(currentStoryIndex)?.id),
+          "updateOnly"
+        );
       } else toast.error(message);
     },
-    [myStory, otherStories, viewingStory, token, router, changeUrl]
+    [otherStories, viewingStory, token, router, username, changeUrl]
   );
 
   return (
