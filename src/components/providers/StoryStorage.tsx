@@ -114,14 +114,21 @@ export default function StoryDataProvider({
       let nextIndex: number;
       if (direction === "next") {
         if (myStory && currentStoryIndex === otherStories.length - 1)
-          return null;
+          return {
+            username: myStory?.username,
+            id: myStory?.id,
+          };
         else
           nextIndex =
             currentStoryIndex < otherStories.length - 1
               ? currentStoryIndex + 1
               : 0;
       } else {
-        if (myStory && currentStoryIndex === 0) return null;
+        if (myStory && currentStoryIndex === 0)
+          return {
+            username: myStory?.username,
+            id: myStory?.id,
+          };
         else
           nextIndex =
             currentStoryIndex > 0
