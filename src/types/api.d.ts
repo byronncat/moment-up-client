@@ -1,5 +1,6 @@
 declare module "api" {
-  import { SearchItemType } from "@/constants/serverConfig";
+  import type { SearchItemType } from "@/constants/serverConfig";
+  import type { StoryBackground } from "@/constants/serverConfig";
 
   type API<T = void> = Promise<{
     success: boolean;
@@ -88,7 +89,7 @@ declare module "api" {
   };
 
   type StoryContent =
-    | string
+    | { type: "text"; text: string; background: StoryBackground }
     | {
         id: string;
         type: "image" | "video";

@@ -3,7 +3,7 @@ import type { StoryInfo } from "api";
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { BLUR_DATA_URL } from "@/constants/clientConfig";
+import { BLUR_DATA_URL, TextBackground } from "@/constants/clientConfig";
 
 type ContentProps = Readonly<{
   content: StoryInfo["stories"][number]["content"];
@@ -13,16 +13,16 @@ type ContentProps = Readonly<{
 export default function Content({ content, setVideoRef }: ContentProps) {
   return (
     <AspectRatio ratio={9 / 16}>
-      {typeof content === "string" ? (
+      {content.type === "text" ? (
         <div
           className={cn(
-            "bg-blue-500",
             "size-full p-5",
             "flex items-center justify-center",
             "text-center font-bold text-2xl"
           )}
+          style={TextBackground[content.background]}
         >
-          {content}
+          {content.text}
         </div>
       ) : content.type === "image" ? (
         <Image
