@@ -178,13 +178,13 @@ function MyMenuContent({ storyId }: MyMenuContentProps) {
 }
 
 function OtherMenuContent({ ownBy }: Readonly<{ ownBy: string }>) {
+  const { muteStory } = useStory();
   function handleCopyLink() {
     navigator.clipboard.writeText(window.location.href);
   }
 
   function handleMute() {
-    // TODO: Implement this feature
-    console.warn("This feature is not implemented yet");
+    muteStory(ownBy);
   }
 
   function handleReport() {
@@ -206,10 +206,9 @@ function OtherMenuContent({ ownBy }: Readonly<{ ownBy: string }>) {
       <DropdownMenuItem
         onClick={handleMute}
         className={menuItemStyles}
-        disabled
       >
         <Volume className="size-4" />
-        <span>Mute {ownBy}</span>
+        <span>Mute @{ownBy}</span>
       </DropdownMenuItem>
       <DropdownMenuItem
         onClick={handleReport}

@@ -1,4 +1,4 @@
-import { mockComments, mockMoments } from "@/__mocks__";
+import { mockComments } from "@/__mocks__";
 import type { MomentInfo, CommentInfo } from "api";
 import { SortBy } from "@/constants/clientConfig";
 import { Audience } from "@/constants/serverConfig";
@@ -159,26 +159,10 @@ export async function deleteStory(storyId: string, token: Token): API {
 export async function getMoment(momentId: string): API<MomentInfo | null> {
   console.log("getMoment", momentId);
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  if (apiRes.getMoment === "error") {
-    return {
-      success: false,
-      message: "Something went wrong",
-      data: undefined,
-      statusCode: 500,
-    };
-  }
-  if (apiRes.getMoment === "empty") {
-    return {
-      success: false,
-      message: "Moment not found",
-      data: null,
-      statusCode: 404,
-    };
-  }
   return {
     success: true,
     message: "ok",
-    data: mockMoments.find((moment) => moment.id === momentId),
+    data: null,
     statusCode: 200,
   };
 }

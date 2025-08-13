@@ -27,6 +27,7 @@ type StoryContextType = {
     username: string;
     id: string;
   } | null;
+  muteStory: (username: string) => void;
 };
 
 const StoryDataContext = createContext<StoryContextType>({
@@ -38,6 +39,7 @@ const StoryDataContext = createContext<StoryContextType>({
   setStories: () => {},
   deleteStory: () => Promise.resolve(),
   nextUserStory: () => null,
+  muteStory: () => {},
 });
 
 export const useStory = () => useContext(StoryDataContext);
@@ -194,6 +196,33 @@ export default function StoryDataProvider({
     [otherStories, viewingStory, token, router, username, changeUrl]
   );
 
+  const muteStory = useCallback(
+    (username: string) => {
+      const nextStoryIndex =
+        otherStories.findIndex((story) => story.username === username) + 1;
+      if (nextStoryIndex === -1) return;
+
+      const nextStory = otherStories.at(
+        nextStoryIndex === otherStories.length ? -1 : nextStoryIndex
+      );
+      // If there is no next story or there is only one story, navigate to the home page
+      if (!nextStory || otherStories.length === 1) {
+        setOtherStories([]);
+        if (myStory)
+          changeUrl(ROUTE.STORY(user?.username, myStory?.id), "navigateFully");
+        else setTimeout(() => router.back(), 0);
+        return;
+      }
+
+      setOtherStories((prev) =>
+        prev.filter((story) => story.username !== username)
+      );
+
+      changeUrl(ROUTE.STORY(nextStory.username, nextStory.id), "navigateFully");
+    },
+    [myStory, otherStories, user?.username, router, changeUrl]
+  );
+
   return (
     <StoryDataContext.Provider
       value={{
@@ -205,6 +234,7 @@ export default function StoryDataProvider({
         setStories,
         deleteStory,
         nextUserStory,
+        muteStory,
       }}
     >
       {children}
