@@ -22,17 +22,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.(mp3|mp4)$/,
-      type: "asset/resource",
-      generator: {
-        filename: "static/media/[name][ext]",
-      },
-    });
-
-    return config;
-  },
 };
 
 export default nextConfig;
