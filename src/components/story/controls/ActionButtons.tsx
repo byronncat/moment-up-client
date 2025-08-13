@@ -114,19 +114,19 @@ function MoreMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Tooltip
-          content="More options"
-          variant="borderless"
-          side="bottom"
-          sideOffset={12}
-          dark
-        >
+      <Tooltip
+        content="More options"
+        variant="borderless"
+        side="bottom"
+        sideOffset={12}
+        dark
+      >
+        <DropdownMenuTrigger asChild>
           <button type="button" className={buttonStyles} aria-label="More">
             <MoreHorizontal className="size-6" />
           </button>
-        </Tooltip>
-      </DropdownMenuTrigger>
+        </DropdownMenuTrigger>
+      </Tooltip>
       {isMe ? (
         <MyMenuContent storyId={storyId} />
       ) : (
