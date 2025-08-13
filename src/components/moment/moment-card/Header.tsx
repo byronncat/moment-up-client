@@ -23,21 +23,21 @@ import { styles } from "@/constants/clientConfig";
 type HeaderProps = Readonly<{
   data: MomentInfo;
   actions: Pick<Actions, "follow" | "block" | "report">;
-  sideButton?: React.ReactNode;
+  sideElement?: React.ReactNode;
   truncateClassName?: string;
 }>;
 
 export default function Header({
   data,
   actions,
-  sideButton,
+  sideElement,
   truncateClassName,
 }: HeaderProps) {
   const { id: momentId, user, post } = data;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <div className={cn("px-4 pt-4 pb-3 space-y-0", "flex flex-row gap-2")}>
+    <div className={cn("px-4 pt-4 pb-3 space-y-0", "flex gap-2")}>
       <HoverableComponent
         userInfo={user}
         onFollow={() => actions.follow(momentId)}
@@ -81,6 +81,7 @@ export default function Header({
           </HoverableComponent>
         </div>
       </div>
+
       <MoreMenu
         isOpen={isDropdownOpen}
         setOpen={setIsDropdownOpen}
@@ -88,7 +89,8 @@ export default function Header({
         momentId={momentId}
         actions={actions}
       />
-      <div className="ml-auto flex gap-2">{sideButton}</div>
+
+      {sideElement && <div className="flex gap-2">{sideElement}</div>}
     </div>
   );
 }

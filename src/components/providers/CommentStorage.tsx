@@ -7,7 +7,7 @@ import { CoreApi } from "@/services";
 import { toast } from "sonner";
 import { SortBy } from "@/constants/clientConfig";
 
-import CommentSkeletons from "../CommentSkeletons";
+import CommentSkeletons from "../moment/comment/CommentSkeletons";
 import { ErrorContent, NoContent } from "@/components/common";
 import { Message } from "@/components/icons";
 

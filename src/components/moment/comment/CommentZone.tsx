@@ -3,8 +3,8 @@
 import type { CommentInfo } from "api";
 
 import { useRef, useState } from "react";
+import { useComment } from "@/components/providers";
 import { useTextClamp } from "@/hooks";
-import { useComment } from "./provider/CommentData";
 import dayjs from "dayjs";
 import Format from "@/utilities/format";
 import { toast } from "sonner";

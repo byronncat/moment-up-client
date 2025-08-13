@@ -4,7 +4,7 @@ import Tooltip from "./Tooltip";
 
 export const buttonStyles = {
   iconSize: "size-5",
-  transition: null,
+  transition: "transition-colors duration-75 ease-in-out",
 };
 
 const colorVariants = {

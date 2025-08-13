@@ -17,7 +17,7 @@ export default function TextContent({
 
   if (!data) return <div className="h-2" />;
   return (
-    <div className={cn("px-4 pb-3", "text-sm")}>
+    <div className={cn("pl-4 pr-5 pb-3", "text-sm")}>
       <div
         ref={textRef}
         className={cn(!isExpanded && "line-clamp-5", "space-y-2")}

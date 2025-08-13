@@ -4,11 +4,11 @@ import type { API, MomentInfo } from "api";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { use, useLayoutEffect, useRef } from "react";
-import { useMoment } from "@/components/providers";
+import { useMoment, CommentDataProvider } from "@/components/providers";
 import { ROUTE } from "@/constants/route";
 
 import { CommentZone, MomentHeader } from "@/components/moment";
-import { MomentButtonGroup, CommentDataProvider } from "@/components/moment";
+import { MomentButtonGroup } from "@/components/moment";
 import TextContent from "./TextContent";
 import MediaCarousel from "./MediaCarousel";
 import CommentInput from "./CommentInput";

@@ -20,7 +20,7 @@ export default function Text({ text, hasFiles, momentId }: TextProps) {
   return (
     <div
       className={cn(
-        "flex px-4 pb-2",
+        "flex pl-4 pr-5 pb-2",
         "text-sm",
         hasFiles
           ? "flex-row items-center"

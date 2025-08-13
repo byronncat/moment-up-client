@@ -1,9 +1,7 @@
 "use client";
 
 import type { FileInfo } from "api";
-import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { CardContent } from "@/components/ui/card";
@@ -32,7 +30,6 @@ export default function MediaCarousel({
   const [api, setApi] = useState<CarouselApi>();
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
-  const router = useRouter();
 
   useEffect(() => {
     if (!api) return;
@@ -40,9 +37,7 @@ export default function MediaCarousel({
     const onSelect = () => {
       const currentIndex = api.selectedScrollSnap();
       const newUrl = `${window.location.pathname}?imgIndex=${currentIndex}`;
-      router.replace(newUrl, {
-        scroll: false,
-      });
+      window.history.replaceState(null, "", newUrl);
 
       Object.values(videoRefs.current).forEach((videoEl) => {
         if (videoEl && !videoEl.paused) videoEl.pause();
@@ -53,7 +48,7 @@ export default function MediaCarousel({
     return () => {
       api.off("select", onSelect);
     };
-  }, [api, router]);
+  }, [api]);
 
   useEffect(() => {
     if (api && files && initialIndex > 0 && initialIndex < files.length) {
