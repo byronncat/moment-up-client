@@ -14,9 +14,7 @@ import { Button } from "../../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import { MoreHorizontal, User, Ban, Flag } from "@/components/icons";
@@ -126,33 +124,30 @@ function MoreMenu({ isOpen, setOpen, user, momentId, actions }: MoreMenuProps) {
         </DropdownMenuTrigger>
       </Tooltip>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuGroup>
-          {user.isFollowing ? (
-            <DropdownMenuItem
-              onClick={() => handleAction(() => actions.follow(momentId))}
-              className="cursor-pointer"
-            >
-              <User variant="minus" className="size-4 shrink-0" />
-              <span className="truncate">Unfollow @{user.username}</span>
-            </DropdownMenuItem>
-          ) : (
-            <DropdownMenuItem
-              onClick={() => handleAction(() => actions.follow(momentId))}
-              className="cursor-pointer"
-            >
-              <User variant="plus" className="size-4 shrink-0" />
-              <span className="truncate">Follow @{user.username}</span>
-            </DropdownMenuItem>
-          )}
+        {user.isFollowing ? (
           <DropdownMenuItem
-            onClick={() => handleAction(() => actions.block(momentId))}
-            className={cn("cursor-pointer", styles.destructiveDropdownMenuItem)}
+            onClick={() => handleAction(() => actions.follow(momentId))}
+            className="cursor-pointer"
           >
-            <Ban className="size-4 shrink-0" />
-            <span className="truncate">Block @{user.username}</span>
+            <User variant="minus" className="size-4 shrink-0" />
+            <span className="truncate">Unfollow @{user.username}</span>
           </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+        ) : (
+          <DropdownMenuItem
+            onClick={() => handleAction(() => actions.follow(momentId))}
+            className="cursor-pointer"
+          >
+            <User variant="plus" className="size-4 shrink-0" />
+            <span className="truncate">Follow @{user.username}</span>
+          </DropdownMenuItem>
+        )}
+        <DropdownMenuItem
+          onClick={() => handleAction(() => actions.block(momentId))}
+          className={cn("cursor-pointer", styles.destructiveDropdownMenuItem)}
+        >
+          <Ban className="size-4 shrink-0" />
+          <span className="truncate">Block @{user.username}</span>
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => handleAction(() => actions.report(momentId))}
           className={cn("cursor-pointer", styles.destructiveDropdownMenuItem)}

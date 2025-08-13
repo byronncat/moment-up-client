@@ -13,8 +13,8 @@ import {
   MoreHorizontal,
   Link,
   Trash,
-  TriangleAlert,
   Bug,
+  Flag,
 } from "@/components/icons";
 import { styles } from "@/constants/clientConfig";
 import { usePathname } from "next/navigation";
@@ -203,10 +203,7 @@ function OtherMenuContent({ ownBy }: Readonly<{ ownBy: string }>) {
         <Link className="size-4" />
         <span>Copy link to share this story</span>
       </DropdownMenuItem>
-      <DropdownMenuItem
-        onClick={handleMute}
-        className={menuItemStyles}
-      >
+      <DropdownMenuItem onClick={handleMute} className={menuItemStyles}>
         <Volume className="size-4" />
         <span>Mute @{ownBy}</span>
       </DropdownMenuItem>
@@ -215,7 +212,7 @@ function OtherMenuContent({ ownBy }: Readonly<{ ownBy: string }>) {
         className={cn(menuItemStyles, styles.destructiveDropdownMenuItem)}
         disabled
       >
-        <TriangleAlert className="size-4" />
+        <Flag className="size-4" />
         <span>Report this story</span>
       </DropdownMenuItem>
       <DropdownMenuItem onClick={handleBug} className={menuItemStyles} disabled>
