@@ -4,6 +4,7 @@ import type { Token } from "@/components/providers/Auth";
 
 import zodSchema from "@/libraries/zodSchema";
 import { ApiUrl, type SearchQueryParams } from "./api.constant";
+import { parseErrorMessage } from "./helper";
 
 interface SearchData extends z.infer<typeof zodSchema.core.search> {
   type: SearchQueryParams;
@@ -34,7 +35,7 @@ export async function search(
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message as string,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
@@ -64,7 +65,7 @@ export async function getHistory({
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message as string,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
@@ -91,7 +92,7 @@ export async function clearHistory({ accessToken, csrfToken }: Token): API {
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message as string,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
@@ -121,7 +122,7 @@ export async function removeHistoryItem(
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message as string,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });

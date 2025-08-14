@@ -1,7 +1,7 @@
 import type { MomentInfo } from "api";
 
 import { useRef } from "react";
-import { useMoment, CommentDataProvider } from "@/components/providers";
+import { useMoment, CommentStorageProvider } from "@/components/providers";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
@@ -92,10 +92,10 @@ export default function Content({
         }}
         onCommentClick={focusCommentInput}
       />
-      <CommentDataProvider momentId={data.id}>
+      <CommentStorageProvider momentId={data.id}>
         <CommentInput ref={commentInputRef} className="min-h-[68px]" />
         <CommentZone className="grow" />
-      </CommentDataProvider>
+      </CommentStorageProvider>
     </ScrollArea>
   );
 }

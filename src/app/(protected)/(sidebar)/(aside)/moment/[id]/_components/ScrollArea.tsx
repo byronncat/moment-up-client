@@ -33,7 +33,6 @@ export default function ScrollArea({
       </div>
       <VirtualScrollbar
         height={height}
-        width={12}
         totalHeight={totalHeight ?? 0}
         onScroll={handleCustomScroll}
         onScrollUpdate={(updateFn) => {

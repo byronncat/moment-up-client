@@ -76,6 +76,15 @@ declare module "api" {
     post: PostInfo;
   };
 
+  type CommentInfo = {
+    id: string;
+    user: UserCardDisplayInfo;
+    content: string;
+    likes: number;
+    isLiked: boolean;
+    updatedAt: string;
+  };
+
   // === Story ===
   type StoryNotificationInfo = {
     id: string;
@@ -170,14 +179,5 @@ declare module "api" {
     posts?: MomentInfo[];
     users?: AccountInfo[];
     hashtags?: Hashtag[];
-  };
-
-  type CommentInfo = {
-    id: string;
-    content: string;
-    user: UserCardDisplayInfo;
-    likes: number;
-    isLiked: boolean;
-    createdAt: string;
   };
 }

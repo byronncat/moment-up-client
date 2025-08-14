@@ -1,4 +1,4 @@
-import type { NotificationInfo, CommentInfo, ProfileSearchItem } from "api";
+import type { NotificationInfo, ProfileSearchItem } from "api";
 
 const avatar = [
   "https://pbs.twimg.com/media/GgHsZ5vakAAz5jI?format=jpg&name=large",
@@ -51,85 +51,6 @@ function getRandomFile(
   if (type === "video") return video[seed % video.length];
   return avatar[seed % avatar.length];
 }
-
-export const mockComments: CommentInfo[] = [
-  {
-    id: "979491b0-13a7-41c7-9b5e-1c60c96684b2",
-    content:
-      "Aliquam eget lectus eget felis aliquam rhoncus eget at augue. Ut quis tincidunt nibh. Fusce tincidunt tincidunt dui, et condimentum orci ornare non. Mauris laoreet ante nec mi rutrum, ac rhoncus lorem ultricies. In scelerisque ut ipsum ut viverra. Nullam posuere lectus eget odio mollis, ut varius enim tristique. Integer vitae nisl ac metus tempus vulputate non non diam. Cras cursus viverra feugiat. Nulla sed dolor est./nQuisque et lectus id magna laoreet dapibus. Morbi feugiat libero non mattis bibendum. Morbi sem augue, pretium tristique nibh in, suscipit pulvinar arcu. Aenean ultrices tellus et sapien egestas pulvinar. Aenean ipsum risus, fringilla et luctus id, dignissim at tellus. Etiam aliquam posuere ultricies. Phasellus placerat nunc eget hendrerit dignissim. Mauris purus dolor, facilisis at nulla id, finibus tincidunt felis. In ullamcorper ullamcorper ligula, in ultricies justo faucibus ut. Aenean porttitor dictum nibh, eget mollis tellus pellentesque ut. Pellentesque luctus lorem et mi mollis, eget lacinia mauris viverra. Morbi sit amet commodo dolor. Cras orci enim, varius non molestie eu, facilisis in ligula. Ut ornare fermentum velit quis semper. Nam non viverra neque. Cras ac eros rhoncus, vehicula quam nec, eleifend arcu./nCras sagittis quam id sem vehicula placerat. Nunc condimentum mattis leo, non mollis odio maximus luctus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Praesent semper, risus at faucibus varius, tellus orci semper ligula, nec posuere turpis mauris ac leo. Praesent sed ipsum volutpat, imperdiet lorem et, hendrerit diam. Proin ut auctor purus. Morbi porta neque at dui vestibulum posuere. Fusce nec velit et elit volutpat posuere id at velit. In nec accumsan lacus, in luctus purus. Quisque venenatis ac ipsum vel efficitur. Donec sed mauris vehicula, tempor nibh sed, fringilla magna. Integer ornare dui non libero tincidunt, quis pulvinar nunc porttitor. Ut efficitur sagittis pharetra. Ut in augue et turpis placerat pretium pulvinar vitae sapien.",
-    user: {
-      email: "",
-      id: "979491b0-13a7-41c7-9b5e-1c60c96684b2",
-      username: "anonymous",
-      displayName: "Anonymous",
-      avatar: getRandomFile("979491b0-13a7-41c7-9b5e-1c60c96684b2"),
-      followers: 1000,
-      following: 1000,
-      isFollowing: false,
-      hasFeed: true,
-    },
-    likes: 10000,
-    isLiked: true,
-    createdAt: "2025-07-11T09:20:12.345Z",
-  },
-  {
-    id: "979491b0-13a7-41c7-9b5e-1c60c96684b3",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan et diam vitae tincidunt. Integer lectus tortor, sollicitudin consequat est id, ultrices gravida neque. Etiam congue arcu quam. Praesent quis interdum diam. Donec cursus nulla ligula, eget imperdiet neque posuere in.",
-    user: {
-      email: "",
-      id: "979491b0-13a7-41c7-9b5e-1c60c96684b3",
-      username: "anonymous",
-      displayName: "Anonymous",
-      avatar: getRandomFile("979491b0-13a7-41c7-9b5e-1c60c96684b3"),
-      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan et diam vitae tincidunt. Integer lectus tortor, sollicitudin consequat est id, ultrices gravida neque. Etiam congue arcu quam. Praesent quis interdum diam. Donec cursus nulla ligula, eget imperdiet neque posuere in.",
-      followers: 1000,
-      following: 1000,
-      isFollowing: false,
-      hasFeed: true,
-    },
-    likes: 30000,
-    isLiked: false,
-    createdAt: "2004-07-12T00:00:00.000Z",
-  },
-  {
-    id: "979491b0-13a7-41c7-9b5e-1c60c96684b4",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan et diam vitae tincidunt. Integer lectus tortor, sollicitudin consequat est id, ultrices gravida neque. Etiam congue arcu quam. Praesent quis interdum diam. Donec cursus nulla ligula, eget imperdiet neque posuere in.",
-    user: {
-      email: "",
-      id: "979491b0-13a7-41c7-9b5e-1c60c96684b4",
-      username: "anonymous",
-      displayName: "Anonymous",
-      avatar: getRandomFile("979491b0-13a7-41c7-9b5e-1c60c96684b4"),
-      followers: 1000,
-      following: 1000,
-      isFollowing: false,
-      hasFeed: true,
-    },
-    likes: 70000,
-    isLiked: false,
-    createdAt: "2003-07-12T00:00:00.000Z",
-  },
-  {
-    id: "979491b0-13a7-41c7-9b5e-1c60c9668467",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    user: {
-      email: "",
-      id: "979491b0-13a7-41c7-9b5e-1c60c9668467",
-      username: "anonymous",
-      displayName: "Anonymous",
-      avatar: getRandomFile("979491b0-13a7-41c7-9b5e-1c60c9668467"),
-      followers: 1000,
-      following: 1000,
-      isFollowing: false,
-      hasFeed: true,
-    },
-    likes: 70000,
-    isLiked: false,
-    createdAt: "2025-07-12T00:00:00.000Z",
-  },
-];
 
 // Chat mocks
 export type Message = {

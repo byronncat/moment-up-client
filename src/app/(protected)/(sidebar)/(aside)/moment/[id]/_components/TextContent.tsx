@@ -1,5 +1,5 @@
 import type { MomentInfo } from "api";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useTextClamp } from "@/hooks";
 import { parseText } from "@/helpers/parser";
 import { cn } from "@/libraries/utils";
@@ -8,12 +8,21 @@ export default function TextContent({
   data,
 }: Readonly<{ data: MomentInfo["post"]["text"] }>) {
   const textRef = useRef<HTMLDivElement>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
   const isTextClamped = useTextClamp(textRef);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [canExpand, setCanExpand] = useState(false);
+  const isFirstRender = useRef(true);
 
-  const handleToggleExpand = () => {
+  function handleToggleExpand() {
     setIsExpanded(!isExpanded);
-  };
+  }
+
+  useEffect(() => {
+    if (isFirstRender.current && isTextClamped) {
+      setCanExpand(isTextClamped);
+      isFirstRender.current = false;
+    }
+  }, [isTextClamped]);
 
   if (!data) return <div className="h-2" />;
   return (
@@ -24,20 +33,7 @@ export default function TextContent({
       >
         {parseText(data)}
       </div>
-      {isTextClamped && !isExpanded && (
-        <button
-          onClick={handleToggleExpand}
-          className={cn(
-            "pt-1",
-            "font-semibold text-sm text-muted-foreground",
-            "cursor-pointer hover:underline",
-            "transition-opacity duration-150"
-          )}
-        >
-          Show more
-        </button>
-      )}
-      {isTextClamped && isExpanded && (
+      {canExpand && (
         <ShowToggle
           onClick={handleToggleExpand}
           text={isExpanded ? "Show less" : "Show more"}
@@ -47,13 +43,13 @@ export default function TextContent({
   );
 }
 
-function ShowToggle({
-  onClick,
-  text,
-}: Readonly<{
+type ShowToggleProps = Readonly<{
   onClick: () => void;
   text: string;
-}>) {
+  className?: string | boolean;
+}>;
+
+function ShowToggle({ onClick, text, className }: ShowToggleProps) {
   return (
     <button
       onClick={onClick}
@@ -61,7 +57,8 @@ function ShowToggle({
         "pt-1",
         "font-semibold text-sm text-muted-foreground",
         "cursor-pointer hover:underline",
-        "transition-opacity duration-150"
+        "transition-opacity duration-150",
+        className
       )}
     >
       {text}

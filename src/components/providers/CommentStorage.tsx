@@ -1,85 +1,114 @@
 "use client";
 
-import type { CommentInfo } from "api";
+import type { CommentInfo, PaginationInfo } from "api";
 
-import { createContext, useContext, useState, useEffect, useRef } from "react";
-import { CoreApi } from "@/services";
+import { createContext, useContext, useState, useEffect } from "react";
+import useSWRInfinite from "swr/infinite";
+import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
+import { ApiUrl, CoreApi } from "@/services";
 import { toast } from "sonner";
 import { SortBy } from "@/constants/clientConfig";
+import { INITIAL_PAGE } from "@/constants/serverConfig";
 
-import CommentSkeletons from "../moment/comment/CommentSkeletons";
 import { ErrorContent, NoContent } from "@/components/common";
+import CommentSkeletons from "../moment/comment/Skeletons";
 import { Message } from "@/components/icons";
 
-const CommentDataContext = createContext(
-  {} as {
-    comments: CommentInfo[];
-    setComments: (comments: CommentInfo[]) => void;
-    handleComment: (comment: CommentInfo) => Promise<boolean>;
-    loading: boolean;
-    sort: SortBy;
-    sortBy: (value: SortBy) => void;
-    isExpanded: (commentId: CommentInfo["id"]) => boolean;
-    toggleExpansion: (commentId: CommentInfo["id"]) => void;
-    fetchMore: () => void;
-    hasNextPage: boolean;
-  }
-);
+type CommentContextType = {
+  comments: CommentInfo[] | undefined;
+  loading: boolean;
+  sort: SortBy;
+  hasNextPage: boolean;
+  setComments: (comments: CommentInfo[]) => void;
+  addComment: (text: string) => Promise<boolean>;
+  sortBy: (value: SortBy) => void;
+  isExpanded: (commentId: CommentInfo["id"]) => boolean;
+  toggleExpansion: (commentId: CommentInfo["id"]) => void;
+  loadNextPage: () => void;
+};
 
-export const useComment = () => useContext(CommentDataContext);
+const CommentContext = createContext<CommentContextType>({} as any);
 
-type CommentDataProviderProps = Readonly<{
+export const useComment = () => useContext(CommentContext);
+const COMMENTS_PER_PAGE = 12;
+
+type CommentStorageProviderProps = Readonly<{
   momentId: string;
   children: React.ReactNode;
 }>;
 
-export default function CommentDataProvider({
+export default function CommentStorageProvider({
   momentId,
   children,
-}: CommentDataProviderProps) {
-  const page = useRef(1);
-  const [comments, setComments] = useState<CommentInfo[]>([]);
+}: CommentStorageProviderProps) {
+  const swrFetcherWithRefresh = useRefreshSWR();
+  const { token } = useAuth();
+
+  const getKey = (
+    pageIndex: number,
+    previousPageData: PaginationInfo<CommentInfo> | null
+  ) => {
+    if (previousPageData && !previousPageData.hasNextPage) return null;
+
+    const url = ApiUrl.comment.get(momentId, pageIndex + 1, COMMENTS_PER_PAGE);
+    return [url, token.accessToken];
+  };
+
+  const { data, error, size, setSize, isLoading, isValidating } =
+    useSWRInfinite(
+      getKey,
+      ([url, accessToken]) =>
+        swrFetcherWithRefresh<PaginationInfo<CommentInfo>>(url, accessToken),
+      {
+        initialSize: INITIAL_PAGE,
+        revalidateFirstPage: false,
+        errorRetryCount: 0,
+        revalidateOnFocus: false,
+      }
+    );
+
+  const [comments, setComments] = useState<CommentInfo[] | undefined>(
+    undefined
+  );
   const [expandedComments, setExpandedComments] = useState<
     Set<CommentInfo["id"]>
   >(new Set());
   const [sort, setSort] = useState<SortBy>(SortBy.MOST_LIKED);
-  const [loaded, setLoaded] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const [error, setError] = useState(false);
 
-  async function fetchMore() {
-    setLoading(true);
-    const res = await CoreApi.getComments(
+  const hasNextPage = data
+    ? (data[data.length - 1]?.hasNextPage ?? false)
+    : true;
+
+  useEffect(() => {
+    const comments = data
+      ? data.flatMap((page) => page?.items || [])
+      : undefined;
+    if (comments) setComments(comments);
+  }, [data]);
+
+  async function loadNextPage() {
+    if (hasNextPage && !isValidating) await setSize(size + 1);
+  }
+
+  async function addComment(text: string) {
+    const { success, message, data } = await CoreApi.addComment(
       momentId,
-      page.current,
-      SortBy.MOST_LIKED
+      text,
+      token
     );
-    if (res.success) {
-      setComments((prev) => [...(prev || []), ...(res.data?.items || [])]);
-      setHasNextPage(res.data?.hasNextPage || false);
-      page.current++;
-    } else toast.error("Failed to load comments");
-    setLoading(false);
+    if (success && data) setComments((prev) => [data, ...(prev || [])]);
+    else toast.error(message || "Failed to comment! Please try again later.");
+    return success;
   }
 
-  async function handleComment(comment: CommentInfo) {
-    const res = await CoreApi.comment(momentId, comment);
-    if (res.success) setComments((prev) => [comment, ...(prev || [])]);
-    else toast.error("Something went wrong!");
-    return res.success;
-  }
-
-  function handleSort(value: SortBy) {
+  function sortBy(value: SortBy) {
     if (!comments) return;
-    setSort(value);
     const orderedComments = comments.sort((a, b) => {
-      if (sort === SortBy.NEWEST)
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-      return a.likes - b.likes;
+      if (value === SortBy.MOST_LIKED && a.likes !== b.likes)
+        return b.likes - a.likes;
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
     });
+    setSort(value);
     setComments(orderedComments);
   }
 
@@ -95,78 +124,66 @@ export default function CommentDataProvider({
   }
 
   function refetch() {
-    async function fetch() {
-      const res = await CoreApi.getComments(momentId, 0, SortBy.MOST_LIKED);
-      if (!res.success) throw new Error(res.message);
-      setComments(res.data?.items || []);
-      setHasNextPage(res.data?.hasNextPage || false);
-    }
-
-    toast.promise(fetch(), {
-      loading: "Loading comments...",
-      error: "Failed to load comments",
-    });
+    setSize(INITIAL_PAGE);
   }
 
-  useEffect(() => {
-    async function fetch() {
-      const res = await CoreApi.getComments(momentId, 0, SortBy.MOST_LIKED);
-      if (res.success) setComments(res.data?.items || []);
-      else setError(true);
-      setLoaded(true);
-    }
-    fetch();
-  }, [momentId]);
-
-  let content = <CommentSkeletons />;
-  if (loaded) {
+  let content: React.ReactNode = <CommentSkeletons className="pb-12" />;
+  if (!isLoading) {
     if (error)
       content = (
         <InformationWrapper>
-          <ErrorContent onRefresh={refetch} />
-        </InformationWrapper>
-      );
-    else if (comments.length === 0)
-      content = (
-        <InformationWrapper>
-          <NoContent
-            icon={
-              <Message
-                variant="square"
-                text
-                className="size-12 text-muted-foreground"
-              />
-            }
-            title="No comments"
-            description="Be the first to comment on this moment."
+          <ErrorContent
+            title="Failed to load comments"
+            description="Please try again later."
+            onRefresh={refetch}
           />
         </InformationWrapper>
+      );
+    else if (!comments) content = null;
+    else if (comments.length === 0)
+      content = (
+        <>
+          {children}
+          <InformationWrapper>
+            <NoContent
+              icon={
+                <Message
+                  variant="square"
+                  text
+                  className="size-12 text-muted-foreground"
+                />
+              }
+              title="No comments"
+              description="Be the first to comment on this moment."
+            />
+          </InformationWrapper>
+        </>
       );
     else content = <>{children}</>;
   }
 
   return (
-    <CommentDataContext.Provider
+    <CommentContext.Provider
       value={{
         comments,
         setComments,
-        handleComment,
+        addComment,
         sort,
-        sortBy: handleSort,
-        loading,
+        sortBy,
+        loading: isValidating,
         isExpanded,
         toggleExpansion,
-        fetchMore,
+        loadNextPage,
         hasNextPage,
       }}
     >
       {content}
-    </CommentDataContext.Provider>
+    </CommentContext.Provider>
   );
 }
 
 function InformationWrapper({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return <div className="pt-12 px-6 pb-6">{children}</div>;
+  return <div className="pt-12 px-6 pb-12">{children}</div>;
 }

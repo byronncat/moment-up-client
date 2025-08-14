@@ -7,4 +7,7 @@ export {
 } from "./Auth";
 export { default as MomentStorageProvider, useMoment } from "./MomentStorage";
 export { default as StoryStorageProvider, useStory } from "./StoryStorage";
-export { default as CommentDataProvider, useComment } from "./CommentStorage";
+export {
+  default as CommentStorageProvider,
+  useComment,
+} from "./CommentStorage";

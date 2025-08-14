@@ -1,21 +1,25 @@
 "use client";
 
-import type { API, MomentInfo } from "api";
-
 import { useRouter, useSearchParams } from "next/navigation";
 import { use, useLayoutEffect, useRef } from "react";
-import { useMoment, CommentDataProvider } from "@/components/providers";
+import { useMoment, CommentStorageProvider } from "@/components/providers";
+import { CoreApi } from "@/services";
+import { FIRST } from "@/constants/clientConfig";
 import { ROUTE } from "@/constants/route";
 
+import { cn } from "@/libraries/utils";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { CommentZone, MomentHeader } from "@/components/moment";
 import { MomentButtonGroup } from "@/components/moment";
 import TextContent from "./TextContent";
 import MediaCarousel from "./MediaCarousel";
 import CommentInput from "./CommentInput";
 import ScrollArea from "./ScrollArea";
+import { MagnifyingGlass } from "@/components/icons";
 
 type MomentDetailsProps = Readonly<{
-  initialRes: API<MomentInfo | null>;
+  initialRes: ReturnType<typeof CoreApi.getMoment>;
 }>;
 
 export default function MomentDetails({ initialRes }: MomentDetailsProps) {
@@ -39,11 +43,24 @@ export default function MomentDetails({ initialRes }: MomentDetailsProps) {
   const initialIndex = imgIndex ? parseInt(imgIndex) : 0;
 
   useLayoutEffect(() => {
-    setCurrentIndex(0);
+    setCurrentIndex(FIRST);
     if (moment) setMoments([moment]);
   }, [moment, setMoments, setCurrentIndex]);
 
-  if (!moment) return null;
+  if (!moment)
+    return (
+      <div className={cn("pt-40", "flex flex-col items-center gap-8")}>
+        <p className="text-center text-muted-foreground">
+          Hmm...this page doesn&apos;t exist. Try searching for something else.
+        </p>
+        <Link href={ROUTE.SEARCH()}>
+          <Button size="default" className="font-bold">
+            <MagnifyingGlass className="size-4" />
+            Search
+          </Button>
+        </Link>
+      </div>
+    );
   return (
     <ScrollArea>
       <MomentHeader
@@ -75,10 +92,10 @@ export default function MomentDetails({ initialRes }: MomentDetailsProps) {
           },
         }}
       />
-      <CommentDataProvider momentId={moment.id}>
+      <CommentStorageProvider momentId={moment.id}>
         <CommentInput ref={commentInputRef} />
         <CommentZone />
-      </CommentDataProvider>
+      </CommentStorageProvider>
     </ScrollArea>
   );
 }

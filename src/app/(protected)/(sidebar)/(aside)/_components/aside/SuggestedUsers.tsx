@@ -107,6 +107,7 @@ function SuggestedUserItem({
             />
           </Link>
         </UserHoverCard>
+
         <div className="flex flex-col">
           <UserHoverCard user={user} onFollow={handleFollow}>
             <Link href={ROUTE.PROFILE(user.username)}>
@@ -122,14 +123,20 @@ function SuggestedUserItem({
               </div>
             </Link>
           </UserHoverCard>
-          <span className="text-xs text-muted-foreground">
+          <span
+            className={cn(
+              "text-xs text-muted-foreground",
+              "truncate max-w-[200px]"
+            )}
+          >
             {user.followedBy
               ? `Followed by ${user.followedBy.displayItems[FIRST].displayName}`
               : `Popular user`}
           </span>
         </div>
       </div>
-      <FollowText isFollowing={isFollowing} onFollow={handleFollow} />
+
+      <FollowButton isFollowing={isFollowing} onFollow={handleFollow} />
     </div>
   );
 }
@@ -139,7 +146,7 @@ type FollowTextProps = Readonly<{
   onFollow: (event: React.MouseEvent) => void;
 }>;
 
-function FollowText({ isFollowing, onFollow }: FollowTextProps) {
+export function FollowButton({ isFollowing, onFollow }: FollowTextProps) {
   const hoverRef = useRef<HTMLButtonElement>(null);
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
   return (

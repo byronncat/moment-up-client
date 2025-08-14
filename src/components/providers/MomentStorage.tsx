@@ -269,8 +269,6 @@ export const useMomentStore = () => {
   };
 };
 
-// @deprecated
-
 type MomentContextType = {
   moments: MomentInfo[] | undefined;
   getCurrentMoment: () => MomentInfo | undefined;

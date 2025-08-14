@@ -3,13 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Circle } from "@/components/icons";
 import { RotateCw } from "@/components/icons";
 
+type ErrorContentProps = Readonly<{
+  onRefresh: () => void;
+  title?: string;
+  description?: string;
+  className?: string;
+}>;
+
 export default function ErrorContent({
   onRefresh,
+  title = "Something went wrong!",
+  description = "Please try again later.",
   className,
-}: Readonly<{
-  onRefresh: () => void;
-  className?: string;
-}>) {
+}: ErrorContentProps) {
   return (
     <div
       className={cn(
@@ -22,9 +28,9 @@ export default function ErrorContent({
         variant="exclamation"
         className="size-12 fill-red-500 dark:fill-red-400"
       />
-      <p className={cn("text-lg font-medium", "mt-4")}>Something went wrong!</p>
+      <p className={cn("text-lg font-medium", "mt-4")}>{title}</p>
       <p className={cn("text-sm text-muted-foreground", "mt-1")}>
-        Please try again later.
+        {description}
       </p>
       <Button
         variant="outline"

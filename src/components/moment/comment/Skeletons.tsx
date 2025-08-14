@@ -1,8 +1,11 @@
+import { cn } from "@/libraries/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function CommentSkeletons() {
+export default function CommentSkeletons({
+  className,
+}: Readonly<{ className?: string }>) {
   return (
-    <div className="px-4 py-3">
+    <div className={cn("px-4 py-3", className)}>
       <div className="mb-5">
         <Skeleton className="h-4 w-20 rounded" />
       </div>

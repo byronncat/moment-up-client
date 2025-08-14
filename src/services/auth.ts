@@ -4,7 +4,7 @@ import type { Token } from "@/components/providers/Auth";
 
 import zodSchema from "@/libraries/zodSchema";
 import { ApiUrl } from "./api.constant";
-import { FIRST } from "@/constants/clientConfig";
+import { parseErrorMessage } from "./helper";
 
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>,
@@ -35,9 +35,7 @@ export async function login(
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: Array.isArray(error.message)
-          ? error.message[FIRST]
-          : error.message,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
@@ -73,9 +71,7 @@ export async function switchAccount(
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: Array.isArray(error.message)
-          ? error.message[FIRST]
-          : error.message,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
@@ -105,9 +101,7 @@ export async function signup(
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: Array.isArray(error.message)
-          ? error.message[FIRST]
-          : error.message,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
@@ -134,7 +128,7 @@ export async function logout(token: Token): API {
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message as string,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
@@ -198,7 +192,7 @@ export async function getUser(accessToken: string): API<{ user: AccountInfo }> {
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message as string,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
@@ -228,9 +222,7 @@ export async function sendOtpEmail(
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: Array.isArray(error.message)
-          ? error.message[FIRST]
-          : error.message,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
@@ -260,9 +252,7 @@ export async function recoverPassword(
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: Array.isArray(error.message)
-          ? error.message[FIRST]
-          : error.message,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });

@@ -5,4 +5,4 @@ export { default as MomentHeader } from "./moment-card/Header";
 export { default as MomentButtonGroup } from "./moment-card/ButtonGroup";
 export { default as MomentList } from "./List";
 export { default as MomentGrid } from "./Grid";
-export * from "./comment";
+export { default as CommentZone } from "./comment";

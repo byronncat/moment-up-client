@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "@/components/providers";
-// import { useComment } from "@/components/moment/comment";
+import { useAuth, useComment } from "@/components/providers";
 import { isEmpty } from "lodash";
 
 import { cn } from "@/libraries/utils";
@@ -15,22 +14,15 @@ type CommentInputProps = Readonly<{
 
 export default function CommentInput({ ref, className }: CommentInputProps) {
   const { user } = useAuth();
-  // const { handleComment } = useComment();
-  const [comment, setComment] = useState("");
+  const { addComment } = useComment();
+  const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleSendComment() {
-    if (!comment || !user) return;
+    if (!text || !user) return;
     setIsLoading(true);
-    // const success = await handleComment({
-    //   id: crypto.randomUUID(),
-    //   content: comment,
-    //   createdAt: "2025-07-11T09:20:12.345Z",
-    //   likes: 0,
-    //   isLiked: false,
-    //   user,
-    // });
-    if (false) setComment("");
+    const success = await addComment(text);
+    if (success) setText("");
     setIsLoading(false);
   }
 
@@ -41,8 +33,8 @@ export default function CommentInput({ ref, className }: CommentInputProps) {
           ref={ref as React.RefObject<HTMLTextAreaElement>}
           id="comment-input"
           placeholder="Add a comment..."
-          value={comment}
-          onChange={(event) => setComment(event.target.value)}
+          value={text}
+          onChange={(event) => setText(event.target.value)}
           className={cn(
             "rounded-none bg-transparent resize-none",
             "border-x-0 border-t-0 border-border",
@@ -61,7 +53,7 @@ export default function CommentInput({ ref, className }: CommentInputProps) {
             "transition-opacity duration-150"
           )}
           onClick={handleSendComment}
-          disabled={isEmpty(comment) || isLoading}
+          disabled={isEmpty(text) || isLoading}
         >
           {isLoading ? (
             <Loader className="size-5 animate-spin" />
@@ -69,7 +61,7 @@ export default function CommentInput({ ref, className }: CommentInputProps) {
             <PaperPlane
               className={cn(
                 "size-5 translate-y-[1px] translate-x-[-1px]",
-                isEmpty(comment) && "opacity-50"
+                isEmpty(text) && "opacity-50"
               )}
             />
           )}

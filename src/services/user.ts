@@ -1,6 +1,7 @@
 import type { API, ErrorResponse, ProfileInfo } from "api";
 import type { Token } from "@/components/providers/Auth";
 import { ApiUrl } from "./api.constant";
+import { parseErrorMessage } from "./helper";
 
 interface FollowDto {
   targetId: string;
@@ -34,7 +35,7 @@ export async function follow(data: FollowDto, token: Token): API {
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message as string,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
@@ -63,7 +64,7 @@ export async function getProfile(username: string): API<{
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message as string,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });

@@ -35,7 +35,7 @@ export const ApiUrl = {
       (page ? `?page=${page}` : "") +
       (filter ? `&filter=${filter}` : "") +
       (limit ? `&limit=${limit}` : ""),
-    get: (momentId: string) => `${SERVER_HOST_URL}/v1/moments/${momentId}`,
+    getById: (momentId: string) => `${SERVER_HOST_URL}/v1/moments/${momentId}`,
     like: (momentId: string) =>
       `${SERVER_HOST_URL}/v1/moments/${momentId}/like`,
     unlike: (momentId: string) =>
@@ -53,6 +53,21 @@ export const ApiUrl = {
     getByUsername: (username: string) =>
       `${SERVER_HOST_URL}/v1/stories/user/${username}`,
     delete: (id: string) => `${SERVER_HOST_URL}/v1/stories/${id}`,
+  },
+
+  comment: {
+    get: (momentId: string, page?: number, limit?: number) =>
+      `${SERVER_HOST_URL}/v1/comments/moment/${momentId}` +
+      (page ? `?page=${page}` : "") +
+      (limit ? `&limit=${limit}` : ""),
+    add: (momentId: string) =>
+      `${SERVER_HOST_URL}/v1/comments/moment/${momentId}`,
+    like: (commentId: string) =>
+      `${SERVER_HOST_URL}/v1/comments/${commentId}/like`,
+    unlike: (commentId: string) =>
+      `${SERVER_HOST_URL}/v1/comments/${commentId}/unlike`,
+    delete: (commentId: string) =>
+      `${SERVER_HOST_URL}/v1/comments/${commentId}`,
   },
 
   // === Suggestion ===

@@ -4,6 +4,7 @@ import type { Token } from "@/components/providers/Auth";
 
 import { ApiUrl } from "./api.constant";
 import { ReportType } from "@/constants/serverConfig";
+import { parseErrorMessage } from "./helper";
 
 interface ReportTopicDto {
   topicId: string;
@@ -35,7 +36,7 @@ export async function reportTopic(data: ReportTopicDto, token: Token): API {
     .catch((error: ErrorResponse) => {
       return {
         success: false,
-        message: error.message as string,
+        message: parseErrorMessage(error),
         statusCode: error.statusCode,
       };
     });
