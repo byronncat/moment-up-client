@@ -7,9 +7,6 @@ import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
 
 const apiRes = {
-  getMoment: "success" as "error" | "empty" | "success",
-  getComments: "success" as "error" | "success" | "empty",
-  comment: "success" as "error" | "success",
   report: "success" as "error" | "success",
   toggleCommentLike: "success" as "error" | "success",
 };
@@ -180,12 +177,16 @@ export async function getMoment(momentId: string): API<MomentInfo | null> {
     });
 }
 
+interface CommentDto {
+  content: string;
+  momentId: string;
+}
+
 export async function addComment(
-  momentId: string,
-  text: string,
+  data: CommentDto,
   token: Token
 ): API<CommentInfo | null> {
-  return await fetch(ApiUrl.comment.add(momentId), {
+  return await fetch(ApiUrl.comment.add, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -193,9 +194,7 @@ export async function addComment(
       Authorization: `Bearer ${token.accessToken}`,
     },
     credentials: "include",
-    body: JSON.stringify({
-      content: text,
-    }),
+    body: JSON.stringify(data),
   })
     .then(async (response) => {
       if (!response.ok) throw await response.json();
@@ -203,6 +202,33 @@ export async function addComment(
         success: true,
         message: "Comment added successfully",
         data: (await response.json()).comment,
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+export async function deleteComment(commentId: string, token: Token): API {
+  return await fetch(ApiUrl.comment.delete(commentId), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Comment deleted successfully",
         statusCode: response.status,
       };
     })
@@ -233,20 +259,35 @@ export async function report(momentId: string) {
   };
 }
 
-export async function toggleCommentLike(commentId: string): API {
-  console.log("Comment like feature is not implemented yet", commentId);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  if (apiRes.toggleCommentLike === "error") {
-    return {
-      success: false,
-      message: "error",
-      statusCode: 500,
-    };
-  }
-
-  return {
-    success: true,
-    message: "ok",
-    statusCode: 200,
-  };
+export async function likeComment(
+  commentId: string,
+  isLiked: boolean,
+  token: Token
+): API {
+  return await fetch(ApiUrl.comment[isLiked ? "like" : "unlike"](commentId), {
+    method: isLiked ? "POST" : "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: isLiked
+          ? "Comment liked successfully"
+          : "Comment unliked successfully",
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
 }

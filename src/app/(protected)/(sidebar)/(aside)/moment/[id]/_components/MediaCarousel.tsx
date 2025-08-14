@@ -79,7 +79,7 @@ export default function MediaCarousel({
             ) : (
               <div
                 className={cn(
-                  "relative h-[50vh] md:h-screen w-full",
+                  "relative w-full aspect-square",
                   "cursor-pointer"
                 )}
               >

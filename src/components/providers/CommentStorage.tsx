@@ -21,6 +21,8 @@ type CommentContextType = {
   hasNextPage: boolean;
   setComments: (comments: CommentInfo[]) => void;
   addComment: (text: string) => Promise<boolean>;
+  deleteComment: (commentId: string) => Promise<void>;
+  likeComment: (commentId: string, isLiked: boolean) => Promise<void>;
   sortBy: (value: SortBy) => void;
   isExpanded: (commentId: CommentInfo["id"]) => boolean;
   toggleExpansion: (commentId: CommentInfo["id"]) => void;
@@ -90,15 +92,61 @@ export default function CommentStorageProvider({
     if (hasNextPage && !isValidating) await setSize(size + 1);
   }
 
-  async function addComment(text: string) {
-    const { success, message, data } = await CoreApi.addComment(
+  async function addComment(content: string) {
+    const commentDto = {
+      content,
       momentId,
-      text,
+    };
+    const { success, message, data } = await CoreApi.addComment(
+      commentDto,
       token
     );
     if (success && data) setComments((prev) => [data, ...(prev || [])]);
     else toast.error(message || "Failed to comment! Please try again later.");
     return success;
+  }
+
+  async function deleteComment(commentId: string) {
+    toast.promise(CoreApi.deleteComment(commentId, token), {
+      loading: "Deleting comment...",
+      success: ({ success, message }) => {
+        if (success) {
+          setComments(
+            (prev) => prev?.filter((comment) => comment.id !== commentId) || []
+          );
+          return message;
+        }
+
+        throw message || "Failed to delete comment! Please try again later.";
+      },
+      error: (error: string) => error,
+    });
+  }
+
+  async function likeComment(commentId: string, isLiked: boolean) {
+    const { success, message } = await CoreApi.likeComment(
+      commentId,
+      isLiked,
+      token
+    );
+
+    if (success)
+      setComments(
+        (prev) =>
+          prev?.map((comment) =>
+            comment.id === commentId
+              ? {
+                  ...comment,
+                  likes: comment.isLiked
+                    ? comment.likes - 1
+                    : comment.likes + 1,
+                  isLiked: !comment.isLiked,
+                }
+              : comment
+          ) || []
+      );
+    else
+      toast.error(message || "Failed to like comment! Please try again later.");
   }
 
   function sortBy(value: SortBy) {
@@ -168,6 +216,8 @@ export default function CommentStorageProvider({
         comments,
         setComments,
         addComment,
+        deleteComment,
+        likeComment,
         sort,
         sortBy,
         loading: isValidating,

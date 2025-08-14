@@ -60,8 +60,7 @@ export const ApiUrl = {
       `${SERVER_HOST_URL}/v1/comments/moment/${momentId}` +
       (page ? `?page=${page}` : "") +
       (limit ? `&limit=${limit}` : ""),
-    add: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/comments/moment/${momentId}`,
+    add: `${SERVER_HOST_URL}/v1/comments`,
     like: (commentId: string) =>
       `${SERVER_HOST_URL}/v1/comments/${commentId}/like`,
     unlike: (commentId: string) =>
