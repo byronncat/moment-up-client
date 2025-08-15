@@ -4,6 +4,7 @@ import type { MomentInfo } from "api";
 import type { Actions } from "../../providers/MomentStorage";
 
 import { useState } from "react";
+import { useAuth } from "@/components/providers";
 import dayjs from "dayjs";
 import Format from "@/utilities/format";
 
@@ -34,6 +35,7 @@ export default function Header({
   truncateClassName,
 }: HeaderProps) {
   const { id: momentId, user, post } = data;
+  const { user: currentUser } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
@@ -85,13 +87,15 @@ export default function Header({
         </div>
       </div>
 
-      <MoreMenu
-        isOpen={isDropdownOpen}
-        setOpen={setIsDropdownOpen}
-        user={user}
-        momentId={momentId}
-        actions={actions}
-      />
+      {currentUser && (
+        <MoreMenu
+          isOpen={isDropdownOpen}
+          setOpen={setIsDropdownOpen}
+          user={user}
+          momentId={momentId}
+          actions={actions}
+        />
+      )}
 
       {sideElement && <div className="flex gap-2">{sideElement}</div>}
     </div>

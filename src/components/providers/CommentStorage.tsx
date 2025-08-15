@@ -7,12 +7,16 @@ import useSWRInfinite from "swr/infinite";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { ApiUrl, CoreApi } from "@/services";
 import { toast } from "sonner";
+import { ROUTE } from "@/constants/route";
 import { SortBy } from "@/constants/clientConfig";
 import { INITIAL_PAGE } from "@/constants/serverConfig";
 
+import Link from "next/link";
 import { ErrorContent, NoContent } from "@/components/common";
 import CommentSkeletons from "../moment/comment/Skeletons";
 import { Message } from "@/components/icons";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Circle } from "@/components/icons";
 
 type CommentContextType = {
   comments: CommentInfo[] | undefined;
@@ -44,7 +48,7 @@ export default function CommentStorageProvider({
   children,
 }: CommentStorageProviderProps) {
   const swrFetcherWithRefresh = useRefreshSWR();
-  const { token } = useAuth();
+  const { user, token } = useAuth();
 
   const getKey = (
     pageIndex: number,
@@ -52,6 +56,7 @@ export default function CommentStorageProvider({
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
+    if (!user) return null;
     const url = ApiUrl.comment.get(momentId, pageIndex + 1, COMMENTS_PER_PAGE);
     return [url, token.accessToken];
   };
@@ -175,6 +180,21 @@ export default function CommentStorageProvider({
     setSize(INITIAL_PAGE);
   }
 
+  if (!user)
+    return (
+      <Link href={ROUTE.LOGIN} className="block px-3 pt-3">
+        <Alert>
+          <Circle
+            variant="info"
+            type="solid"
+            className="size-4 fill-muted-foreground"
+          />
+          <AlertTitle className="font-semibold">
+            Login to view comments
+          </AlertTitle>
+        </Alert>
+      </Link>
+    );
   let content: React.ReactNode = <CommentSkeletons className="pb-12" />;
   if (!isLoading) {
     if (error)
