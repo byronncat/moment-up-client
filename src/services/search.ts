@@ -3,11 +3,11 @@ import type { API, SearchItem, ErrorResponse } from "api";
 import type { Token } from "@/components/providers/Auth";
 
 import zodSchema from "@/libraries/zodSchema";
-import { ApiUrl, type SearchQueryParams } from "./api.constant";
+import { ApiUrl, type SearchTypeParams } from "./api.constant";
 import { parseErrorMessage } from "./helper";
 
 interface SearchData extends z.infer<typeof zodSchema.core.search> {
-  type: SearchQueryParams;
+  type: SearchTypeParams;
 }
 
 export async function search(

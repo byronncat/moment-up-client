@@ -1,32 +1,25 @@
 "use client";
 
-import type { SearchResult, SearchItem, ProfileSearchItem } from "api";
+import type { SearchResult } from "api";
 
-import {
-  // useRouter,
-  useSearchParams,
-} from "next/navigation";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import { SuggestApi } from "@/services";
-import {
-  SEARCH_DEBOUNCE_TIME,
-  SearchCategory,
-  // ROUTE,
-} from "@/constants/clientConfig";
+import { useRefreshApi } from "@/components/providers";
+import { SearchApi, SearchTypeParams } from "@/services";
+import { SEARCH_DEBOUNCE_TIME, SearchCategory } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
-import { ErrorContent, NavigationBar, type NavItem } from "@/components/common";
-import { PageHeader, SearchInput } from "../_components";
 import {
-  SearchHistory,
-  PopularAccounts,
-  SearchResults,
-  LoadingIndicator,
-} from "./_components";
+  NavigationBar,
+  VirtualScrollbar,
+  type NavItem,
+} from "@/components/common";
+import { PageHeader, SearchInput } from "../_components";
+import { SearchResults } from "./_components";
+import NoSearchState from "./_components/NoSearchState";
 
 export default function SearchPage() {
-  // const router = useRouter();
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
 
@@ -44,14 +37,45 @@ export default function SearchPage() {
     return query.trim().length === 0;
   }
 
-  // async function search(type: SEARCH_CATEGORY) {
-  //   if (isQueryEmpty()) return;
+  const [height, setHeight] = useState(0);
+  const [totalHeight, setTotalHeight] = useState(0);
+  const updateScrollbarRef = useRef<(scrollTop: number) => void>(() => {});
+  const containerRef = useRef<HTMLDivElement>(null);
+  const handleCustomScroll = useCallback((newScrollTop: number) => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = newScrollTop;
+    }
+  }, []);
 
-  //   setIsSearching(true);
-  //   const res = await SearchApi.detailSearch({ query }, type);
-  //   if (res.success) setResults(res.data ?? null);
-  //   setIsSearching(false);
-  // }
+  useEffect(() => {
+    const updateHeights = () => {
+      if (containerRef.current) {
+        const newHeight = containerRef.current.clientHeight;
+        const newTotalHeight = containerRef.current.scrollHeight;
+        setHeight(newHeight);
+        setTotalHeight(newTotalHeight);
+      }
+    };
+
+    updateHeights();
+
+    const handleResize = () => updateHeights();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [results, isSearching, query]); // Recalculate when content changes
+
+  const search = useRefreshApi(SearchApi.search);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async function handleSearch(type: SearchTypeParams) {
+    if (isQueryEmpty()) return;
+
+    setIsSearching(true);
+    const { success } = await search({ query, type });
+    // if (success) setResults((data as any) ?? null);
+    if (success) setResults(null);
+    setIsSearching(false);
+  }
 
   // useEffect(() => {
   //   if (!isSearching) {
@@ -98,20 +122,29 @@ export default function SearchPage() {
   ];
 
   return (
-    <div>
-      <PageHeader title="Search">
-        <div className="px-3 pb-3">
-          <SearchInput
-            id="side-search-input"
-            defaultValue={initialQuery}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setQuery(event.target.value)
-            }
-          />
-        </div>
-      </PageHeader>
+    <div className="size-full">
+      <div className="relative">
+        <PageHeader title="Search" className="absolute top-0 z-10 w-full">
+          <div className="px-3 pb-3">
+            <SearchInput
+              id="side-search-input"
+              defaultValue={initialQuery}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setQuery(event.target.value)
+              }
+            />
+          </div>
+        </PageHeader>
+      </div>
 
-      <div className="size-full">
+      <div
+        ref={containerRef}
+        className="pt-[128px] overflow-y-auto h-full scrollbar-hide relative"
+        onScroll={(e) => {
+          const scrollTop = e.currentTarget.scrollTop;
+          updateScrollbarRef.current?.(scrollTop);
+        }}
+      >
         {isQueryEmpty() ? (
           <NoSearchState />
         ) : (
@@ -136,59 +169,16 @@ export default function SearchPage() {
           </>
         )}
       </div>
-    </div>
-  );
-}
 
-function NoSearchState() {
-  const [searchHistory] = useState<SearchItem[] | null>(null);
-  const [isHistoryLoaded, setIsHistoryLoaded] = useState(false);
-  const [popularAccounts, setPopularAccounts] = useState<
-    ProfileSearchItem[] | null
-  >(null);
-  const [isPopularLoaded, setIsPopularLoaded] = useState(false);
-
-  async function fetchSearchHistory() {
-    // const res = await SearchApi.getSearchHistory();
-    // if (res.success) setSearchHistory(res.data ?? []);
-    setIsHistoryLoaded(true);
-  }
-
-  async function fetchPopularAccounts() {
-    const res = await SuggestApi.getPopularAccounts();
-    if (res.success) setPopularAccounts(res.data ?? []);
-    setIsPopularLoaded(true);
-  }
-
-  function handleRefresh() {
-    setIsHistoryLoaded(false);
-    setIsPopularLoaded(false);
-    fetchSearchHistory();
-    fetchPopularAccounts();
-  }
-
-  useEffect(() => {
-    fetchSearchHistory();
-    fetchPopularAccounts();
-  }, []);
-
-  if (!isHistoryLoaded || !isPopularLoaded) return <LoadingIndicator />;
-  if (!searchHistory && !popularAccounts)
-    return (
-      <div className="h-full pb-10">
-        <ErrorContent onRefresh={handleRefresh} />
-      </div>
-    );
-
-  return (
-    <div className="pb-10">
-      {searchHistory && <SearchHistory history={searchHistory} />}
-      {popularAccounts && (
-        <PopularAccounts
-          users={popularAccounts}
-          className={cn(searchHistory && "mt-6")}
-        />
-      )}
+      <VirtualScrollbar
+        height={height}
+        totalHeight={totalHeight}
+        onScroll={handleCustomScroll}
+        onScrollUpdate={(updateFn) => {
+          updateScrollbarRef.current = updateFn;
+        }}
+        className="[@media(max-width:calc(640px+48px+32px))]:hidden"
+      />
     </div>
   );
 }

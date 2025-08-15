@@ -1,5 +1,4 @@
-import { mockPopularAccounts } from "@/__mocks__";
-import type { API, ErrorResponse, ProfileSearchItem } from "api";
+import type { API, ErrorResponse } from "api";
 import type { Token } from "@/components/providers/Auth";
 
 import { ApiUrl } from "./api.constant";
@@ -40,29 +39,4 @@ export async function reportTopic(data: ReportTopicDto, token: Token): API {
         statusCode: error.statusCode,
       };
     });
-}
-
-export async function getPopularAccounts(): API<ProfileSearchItem[]> {
-  console.log("getPopularAccounts");
-  try {
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, 1000);
-    });
-
-    return {
-      success: true,
-      message: "ok",
-      data: mockPopularAccounts,
-      statusCode: 200,
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      success: false,
-      statusCode: 500,
-      message: "internal error",
-    };
-  }
 }

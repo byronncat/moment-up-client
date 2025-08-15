@@ -33,7 +33,7 @@ export default function SearchHistory({
               <Button
                 variant="ghost"
                 size="icon"
-                className="size-6 rounded-full"
+                className="size-7 rounded-full"
               >
                 <X className="size-4 fill-muted-foreground" />
               </Button>

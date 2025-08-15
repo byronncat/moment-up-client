@@ -33,7 +33,7 @@ export default function UserInfo({ data }: UserInformationProps) {
           ...(data.backgroundImage && {
             backgroundImage: `url(${data.backgroundImage})`,
             backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundPosition: "start",
           }),
         }}
       />

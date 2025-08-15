@@ -1,5 +1,3 @@
-import type { ProfileSearchItem } from "api";
-
 const avatar = [
   "https://pbs.twimg.com/media/GgHsZ5vakAAz5jI?format=jpg&name=large",
   "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
@@ -30,11 +28,6 @@ const avatar = [
   "https://pbs.twimg.com/media/GCsUDkvaQAASmNU?format=jpg&name=4096x4096",
   "https://pbs.twimg.com/media/GllqHMLa4AATGzZ?format=jpg&name=4096x4096",
   "https://pbs.twimg.com/media/GllqHMLa4AATGzZ?format=jpg&name=4096x4096",
-];
-
-const backgroundImg = [
-  "https://pbs.twimg.com/media/GjlpiyBaIAENj43?format=jpg&name=large",
-  "https://pbs.twimg.com/media/GRn1_2AaUAAT7JU?format=jpg&name=4096x4096",
 ];
 
 const video = [
@@ -356,46 +349,4 @@ export const mockQuickReplies: string[] = [
   "Can I learn more about your business?",
   "Can you tell me more about your ad?",
   "Is anyone available to chat?",
-];
-
-// Aside
-export const mockPopularAccounts: ProfileSearchItem[] = [
-  {
-    isFollowing: false,
-    email: "",
-    id: "057b50c5-4646-42bf-98ea-933c108f2671",
-    username: "wbale0",
-    displayName: "Werner Bale",
-    avatar: getRandomFile("057b50c5-4646-42bf-98ea-933c108f2671"),
-    bio: "Travel photographer | Adventure seeker | Coffee enthusiast",
-    backgroundImage: backgroundImg[0],
-  },
-  {
-    isFollowing: false,
-    email: "",
-    id: "ca0f9eb5-c789-4e50-9f8c-457ff3b9f964",
-    username: "tech_jason",
-    displayName: "Jason Chen",
-    avatar: getRandomFile("ca0f9eb5-c789-4e50-9f8c-457ff3b9f964"),
-  },
-  {
-    isFollowing: false,
-    email: "",
-    id: "90946704-51dc-4a73-9f56-99531bc3db7b",
-    username: "foodie_sophie",
-    displayName: "Sophie Rodriguez",
-    avatar: getRandomFile("90946704-51dc-4a73-9f56-99531bc3db7b"),
-    bio: "Food blogger | Recipe developer | Always hungry",
-    backgroundImage: backgroundImg[1],
-  },
-  {
-    isFollowing: false,
-    email: "",
-    id: "92a1e004-8ddf-46ab-8811-28a6e1bb7a60",
-    username: "fitness_marcus",
-    displayName: "Marcus Johnson",
-    avatar: getRandomFile("92a1e004-8ddf-46ab-8811-28a6e1bb7a60"),
-    bio: "Personal trainer | Nutrition coach | Wellness advocate",
-    backgroundImage: backgroundImg[1],
-  },
 ];

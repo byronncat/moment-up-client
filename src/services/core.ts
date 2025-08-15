@@ -8,7 +8,6 @@ import { parseErrorMessage } from "./helper";
 
 const apiRes = {
   report: "success" as "error" | "success",
-  toggleCommentLike: "success" as "error" | "success",
 };
 
 interface LikeDto {

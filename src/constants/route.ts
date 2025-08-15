@@ -16,8 +16,7 @@ export const ROUTE = {
     const queryString = params.toString();
     return `/search${queryString ? `?${queryString}` : ""}`;
   },
-  EXPLORE: (type?: ExploreType) =>
-    "/explore" + (type ? `/${type}` : ""),
+  EXPLORE: (type?: ExploreType) => "/explore" + (type ? `/${type}` : ""),
   STORY: (username?: string, storyId?: string) =>
     `/stories${username ? `/${username}` : ""}${storyId ? `/${storyId}` : ""}`,
   STORY_CREATE: "/stories/create",

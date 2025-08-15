@@ -1,5 +1,6 @@
 import type { NavItem } from "../types";
 import { ROUTE } from "@/constants/route";
+import { ExploreType } from "@/constants/serverConfig";
 import {
   Message,
   Compass,
@@ -41,7 +42,7 @@ export function getNavigationItems(
           className="size-5 laptop:size-4"
         />
       ),
-      matchPath: () => pathname.startsWith(ROUTE.EXPLORE("media")),
+      matchPath: () => pathname.startsWith(ROUTE.EXPLORE(ExploreType.MEDIA)),
     },
     {
       title: "Create",

@@ -41,8 +41,7 @@ declare module "api" {
     isFollowing?: boolean;
   }
 
-  interface UserCardDisplayInfo
-    extends Omit<UserProfileInfo, "backgroundImage"> {
+  interface UserCardDisplayInfo extends Omit<ProfileInfo, "backgroundImage"> {
     followedBy?: {
       count: number;
       displayItems: {
@@ -157,6 +156,11 @@ declare module "api" {
 
   type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;
 
+  type PopularProfileItem = Omit<
+    ProfileInfo,
+    "followers" | "following" | "hasStory" | "isFollowing"
+  >;
+
   // === Others ===
   type Hashtag = {
     id: string;
@@ -169,11 +173,6 @@ declare module "api" {
     url: string;
     aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
   };
-
-  type ProfileSearchItem = Omit<
-    UserProfileInfo,
-    "followers" | "following" | "hasStory"
-  >;
 
   type SearchResult = {
     posts?: MomentInfo[];

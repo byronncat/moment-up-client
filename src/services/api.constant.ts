@@ -74,6 +74,7 @@ export const ApiUrl = {
     users: `${SERVER_HOST_URL}/v1/suggestion/users`,
     trending: `${SERVER_HOST_URL}/v1/suggestion/trending`,
     report: `${SERVER_HOST_URL}/v1/suggestion/trending/report`,
+    popular: `${SERVER_HOST_URL}/v1/suggestion/popular`,
   },
 
   // === User ===
@@ -91,7 +92,7 @@ export const ApiUrl = {
   search: {
     search: (
       query: string,
-      type?: SearchQueryParams,
+      type?: SearchTypeParams,
       page?: number,
       limit?: number
     ) =>
@@ -116,7 +117,7 @@ export const ApiUrl = {
   },
 } as const;
 
-export type SearchQueryParams =
+export type SearchTypeParams =
   | "user"
   | "post"
   | "hashtag"
@@ -124,3 +125,5 @@ export type SearchQueryParams =
   | "user&hashtag"
   | "post&hashtag"
   | "user&post&hashtag";
+
+export type SearchOrderParams = "top" | "latest";

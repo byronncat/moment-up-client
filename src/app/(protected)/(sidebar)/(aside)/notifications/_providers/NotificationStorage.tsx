@@ -120,7 +120,9 @@ export default function NotificationStorageProvider({
     return (
       <Wrapper>
         <NoContent
-          icon={<Bell className="size-16 text-muted-foreground" />}
+          icon={
+            <Bell variant="solid" className="size-16 text-muted-foreground" />
+          }
           title="No notifications"
           description="When you have notifications, they'll show up here."
           className="pt-24"
