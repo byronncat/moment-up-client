@@ -13,13 +13,21 @@ export default function NavigateButtons({ onNavigate }: NavigateButtonsProps) {
   return isMobile ? (
     <>
       <button
-        className={cn("absolute left-0 top-0", "h-full w-1/2")}
+        className={cn(
+          "absolute left-0 top-0",
+          "h-full w-1/2",
+          "cursor-pointer"
+        )}
         onClick={() => onNavigate("prev")}
-      ></button>
+      />
       <button
-        className={cn("absolute right-0 top-0", "h-full w-1/2")}
+        className={cn(
+          "absolute right-0 top-0",
+          "h-full w-1/2",
+          "cursor-pointer"
+        )}
         onClick={() => onNavigate("next")}
-      ></button>
+      />
     </>
   ) : (
     <>

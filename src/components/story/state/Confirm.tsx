@@ -43,7 +43,7 @@ export default function ConfirmState({
           <div className="mt-4 text-lg font-bold">
             View as {user?.username}?
           </div>
-          <p className="mt-1 text-sm">
+          <p className={cn("mt-1 px-3", "text-sm text-center")}>
             {username} will be able to see that you are viewing their story.
           </p>
           <button

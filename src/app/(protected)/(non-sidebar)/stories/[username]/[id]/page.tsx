@@ -11,6 +11,7 @@ import { ApiUrl } from "@/services";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
+import Link from "next/link";
 import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import StoryView from "@/components/story/StoryView";
@@ -43,7 +44,8 @@ export default function StoryModal() {
 
   return (
     <Modal>
-      <div
+      <Link
+        href={ROUTE.HOME}
         className={cn(
           "text-primary",
           "font-bold text-2xl tracking-wide",
@@ -55,7 +57,7 @@ export default function StoryModal() {
         )}
       >
         MomentUp
-      </div>
+      </Link>
       <Button
         onClick={handleClose}
         size="icon"

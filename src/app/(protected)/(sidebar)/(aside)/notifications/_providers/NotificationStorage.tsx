@@ -24,7 +24,7 @@ type NotificationContextType = {
 const NotificationContext = createContext<NotificationContextType>({} as any);
 
 export const useNotification = () => useContext(NotificationContext);
-const NOTIFICATIONS_PER_PAGE = 6;
+const NOTIFICATIONS_PER_PAGE = 12;
 
 type NotificationStorageProviderProps = Readonly<{
   children: React.ReactNode;

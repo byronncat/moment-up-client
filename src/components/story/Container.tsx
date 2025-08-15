@@ -14,7 +14,7 @@ export default function Container({ children, className }: ContainerProps) {
         className
       )}
     >
-      <div className="aspect-[9/16] h-[calc(100vh-16px)] relative">
+      <div className="aspect-[9/16] w-full max-w-[calc((100vh-16px)*9/16)] relative">
         <div
           className={cn(
             "bg-card-dark text-card-foreground-dark",

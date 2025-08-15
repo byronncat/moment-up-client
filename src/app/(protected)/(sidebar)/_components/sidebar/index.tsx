@@ -4,8 +4,10 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/providers";
 import { useResponsiveSidebar } from "./hooks/useResponsiveSidebar";
 import { getNavigationItems } from "./config/navigationItems";
+import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
+import Link from "next/link";
 import {
   Sidebar as SidebarUI,
   SidebarTrigger,
@@ -26,18 +28,19 @@ export default function Sidebar() {
 
   if (!user)
     return (
-      <div
+      <Link
+        href={ROUTE.LOGIN}
         className={cn(
           "text-primary",
           "font-bold text-2xl tracking-wide",
-          "px-4 py-2",
+          "px-4 py-2 h-fit",
           "hidden xl:block",
           "select-none",
           sourceCodePro.className
         )}
       >
         MomentUp
-      </div>
+      </Link>
     );
   const items = getNavigationItems(pathname, user?.username);
   const [notificationItem, profileItem] = items.slice(-2);
