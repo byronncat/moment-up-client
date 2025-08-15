@@ -7,7 +7,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { ApiUrl } from "@/services";
-import { INITIAL_PAGE } from "@/constants/serverConfig";
+import { INITIAL_PAGE, NotificationType } from "@/constants/serverConfig";
 
 import { ErrorContent, NoContent } from "@/components/common";
 import { NotificationSkeleton } from "../_components";
@@ -36,9 +36,10 @@ const getNotificationType = (
   const segments = pathname.split("/");
   const typeSegment = segments[segments.length - 1];
 
-  if (typeSegment === "" || typeSegment === "notifications") return "all";
+  if (typeSegment === "" || typeSegment === "notifications")
+    return NotificationType.ALL;
   if (typeSegment === "request" || typeSegment === "social") return typeSegment;
-  return "all";
+  return NotificationType.ALL;
 };
 
 export default function NotificationStorageProvider({

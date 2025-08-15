@@ -116,7 +116,8 @@ function SuggestedUserItem({
                   "text-sm font-semibold",
                   "hover:opacity-80",
                   "transition-opacity duration-150 ease-in-out",
-                  "flex items-center gap-1.5"
+                  "flex items-center gap-1.5",
+                  "truncate max-w-[172px]"
                 )}
               >
                 {user.username}
@@ -126,7 +127,7 @@ function SuggestedUserItem({
           <span
             className={cn(
               "text-xs text-muted-foreground",
-              "truncate max-w-[200px]"
+              "truncate max-w-[172px]"
             )}
           >
             {user.followedBy
@@ -154,6 +155,7 @@ export function FollowButton({ isFollowing, onFollow }: FollowTextProps) {
       ref={hoverRef}
       onClick={onFollow}
       className={cn(
+        "w-[72px] text-left",
         "cursor-pointer",
         "text-xs font-semibold",
         isFollowing && isHover
