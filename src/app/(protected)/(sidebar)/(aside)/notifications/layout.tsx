@@ -1,34 +1,36 @@
 import { Metadata } from "@/constants/metadata";
-import { ROUTE } from "@/constants/route";
+export const metadata = Metadata.notifications;
 
 import Link from "next/link";
+import NotificationStorageProvider from "./_providers/NotificationStorage";
 import { PageHeader } from "../_components";
 import { NavigationBar, type NavItem } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Bell, Settings, User } from "@/components/icons";
+import { ROUTE } from "@/constants/route";
+import { NotificationType } from "@/constants/serverConfig";
 
 const tabs: NavItem[] = [
   {
-    id: "all",
+    id: NotificationType.ALL,
     label: "All",
     icon: <Bell className="size-4" />,
-    href: ROUTE.NOTIFICATION("all"),
+    href: ROUTE.NOTIFICATION(NotificationType.ALL),
   },
   {
-    id: "requests",
+    id: NotificationType.REQUEST,
     label: "Requests",
     icon: <User variant="plus" className="size-4" />,
-    href: ROUTE.NOTIFICATION("requests"),
+    href: ROUTE.NOTIFICATION(NotificationType.REQUEST),
   },
   {
-    id: "social",
+    id: NotificationType.SOCIAL,
     label: "Social",
     icon: <User multiple className="size-4" />,
-    href: ROUTE.NOTIFICATION("social"),
+    href: ROUTE.NOTIFICATION(NotificationType.SOCIAL),
   },
 ];
 
-export const metadata = Metadata.notifications;
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -49,7 +51,7 @@ export default function Layout({
           <NavigationBar items={tabs} />
         </PageHeader>
       </div>
-      {children}
+      <NotificationStorageProvider>{children}</NotificationStorageProvider>
     </div>
   );
 }

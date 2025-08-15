@@ -5,20 +5,21 @@ import { cn } from "@/libraries/utils";
 import { PageHeader } from "../_components";
 import { NavigationBar, type NavItem } from "@/components/common";
 import { Image, User } from "@/components/icons";
+import { ExploreType } from "@/constants/serverConfig";
 
 const tabs: NavItem[] = [
   {
-    id: "media",
+    id: ExploreType.MEDIA,
     // eslint-disable-next-line jsx-a11y/alt-text
     icon: <Image className="size-5" />,
     label: "Media",
-    href: ROUTE.EXPLORE("media"),
+    href: ROUTE.EXPLORE(ExploreType.MEDIA),
   },
   {
-    id: "moments",
+    id: ExploreType.POST,
     icon: <User multiple className="size-5" />,
     label: "Moments",
-    href: ROUTE.EXPLORE("moments"),
+    href: ROUTE.EXPLORE(ExploreType.POST),
   },
 ];
 

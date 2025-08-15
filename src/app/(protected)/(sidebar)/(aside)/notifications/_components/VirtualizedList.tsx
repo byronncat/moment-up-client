@@ -3,14 +3,15 @@
 import type { NotificationInfo } from "api";
 import { useRef, useEffect } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
+import { NotificationType } from "@/constants/serverConfig";
 
 import { cn } from "@/libraries/utils";
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
 import { VariableSizeList } from "react-window";
 import { VirtualScrollbar } from "@/components/common";
-import NotificationItem from "./NotificationItem";
-import { NotificationItemSkeleton } from "./NotificationSkeleton";
+import NotificationItem from "./Item";
+import { NotificationItemSkeleton } from "./Skeleton";
 
 // Container
 const PLACEHOLDER_ITEM_COUNT = 2;
@@ -71,15 +72,14 @@ export default function NotificationList({
   const getItemSize = (index: number) => {
     if (index === 0) return listOptions.topPadding ?? 0;
     if (index === itemCount - 1) return listOptions.bottomPadding ?? 0;
-    if (index === itemCount - 2 || index === itemCount - 3)
-      return LOADING_INDICATOR_HEIGHT;
+    if (!isItemLoaded(index)) return LOADING_INDICATOR_HEIGHT;
 
     const notification = items[index - 1];
     if (!notification) return 0;
 
     if (
-      notification.type === "social" &&
-      notification.information.type === "follow"
+      notification.type === NotificationType.SOCIAL &&
+      notification.information.type === NotificationType.FOLLOW
     ) {
       return FOLLOW_NOTIFICATION_HEIGHT + BORDER_SIZE;
     }

@@ -1,4 +1,5 @@
 import { SearchCategory } from "./clientConfig";
+import { ExploreType, NotificationType } from "./serverConfig";
 
 export const ROUTE = {
   LOGIN: "/login",
@@ -15,7 +16,7 @@ export const ROUTE = {
     const queryString = params.toString();
     return `/search${queryString ? `?${queryString}` : ""}`;
   },
-  EXPLORE: (type?: "media" | "moments") =>
+  EXPLORE: (type?: ExploreType) =>
     "/explore" + (type ? `/${type}` : ""),
   STORY: (username?: string, storyId?: string) =>
     `/stories${username ? `/${username}` : ""}${storyId ? `/${storyId}` : ""}`,
@@ -25,7 +26,7 @@ export const ROUTE = {
   MESSAGES: "/messages",
   MESSAGE: (contactId?: string) =>
     `/messages${contactId ? `/${contactId}` : ""}`,
-  NOTIFICATION: (type: "all" | "requests" | "social" = "all") =>
+  NOTIFICATION: (type: NotificationType = NotificationType.ALL) =>
     `/notifications${type === "all" ? "" : `/${type}`}`,
   SETTINGS: "/settings",
   ARCHIVE: (type: "bookmarks" | "likes" = "bookmarks") => `/archive/${type}`,

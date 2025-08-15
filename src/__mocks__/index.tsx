@@ -1,4 +1,4 @@
-import type { NotificationInfo, ProfileSearchItem } from "api";
+import type { ProfileSearchItem } from "api";
 
 const avatar = [
   "https://pbs.twimg.com/media/GgHsZ5vakAAz5jI?format=jpg&name=large",
@@ -356,71 +356,6 @@ export const mockQuickReplies: string[] = [
   "Can I learn more about your business?",
   "Can you tell me more about your ad?",
   "Is anyone available to chat?",
-];
-
-export const mockNotifications: NotificationInfo[] = [
-  {
-    id: "f3f60344-1d0f-42f8-96db-57d100854d7d",
-    type: "security",
-    userId: "f3f60344-1d0f-42f8-96db-57d100854d7d",
-    createdAt: "2025-07-11T09:20:12.345Z",
-  },
-  {
-    id: "d75906a9-9655-44d6-aa06-fa675ba13e3e",
-    type: "social",
-    createdAt: "2025-07-11T09:20:12.345Z",
-    user: {
-      email: "",
-      id: "d75906a9-9655-44d6-aa06-fa675ba13e3e",
-      username: "anonymous",
-      displayName: "Anonymous",
-      avatar: getRandomFile("d75906a9-9655-44d6-aa06-fa675ba13e3e"),
-      followers: 1000,
-      following: 1000,
-      hasFeed: true,
-    },
-    information: {
-      type: "post",
-      content: "Hello, how are you?",
-    },
-  },
-  {
-    id: "feff69a1-41df-48e8-b799-4be4e6f0e3c0",
-    type: "social",
-    user: {
-      email: "",
-      id: "feff69a1-41df-48e8-b799-4be4e6f0e3c0",
-      username: "anonymous",
-      displayName: "Anonymous",
-      avatar: getRandomFile("feff69a1-41df-48e8-b799-4be4e6f0e3c0"),
-      followers: 1000,
-      following: 1000,
-      hasFeed: true,
-    },
-    createdAt: "2025-07-11T09:20:12.345Z",
-    information: {
-      type: "mention",
-      content: "That's me. Then, how about **Byron Atwood**?",
-    },
-  },
-  {
-    id: "a4cdafc1-9da2-47ac-9bf7-e9f82db9eb80",
-    type: "social",
-    user: {
-      email: "",
-      id: "a4cdafc1-9da2-47ac-9bf7-e9f82db9eb80",
-      username: "anonymous",
-      displayName: "Anonymous",
-      avatar: getRandomFile("a4cdafc1-9da2-47ac-9bf7-e9f82db9eb80"),
-      followers: 1000,
-      following: 1000,
-      hasFeed: true,
-    },
-    createdAt: "2025-07-11T09:20:12.345Z",
-    information: {
-      type: "follow",
-    },
-  },
 ];
 
 // Aside

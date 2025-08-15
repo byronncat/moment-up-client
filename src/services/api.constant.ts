@@ -108,7 +108,11 @@ export const ApiUrl = {
 
   // === Notification ===
   notification: {
-    // Add notification-specific URLs here when they exist
+    get: (type: "all" | "request" | "social", page?: number, limit?: number) =>
+      `${SERVER_HOST_URL}/v1/notifications` +
+      (type ? `?type=${type}` : "") +
+      (page ? `&page=${page}` : "") +
+      (limit ? `&limit=${limit}` : ""),
   },
 } as const;
 
