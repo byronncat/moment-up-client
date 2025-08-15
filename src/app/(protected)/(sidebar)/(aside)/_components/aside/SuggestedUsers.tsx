@@ -155,7 +155,7 @@ export function FollowButton({ isFollowing, onFollow }: FollowTextProps) {
       ref={hoverRef}
       onClick={onFollow}
       className={cn(
-        "w-[72px] text-left",
+        "w-[64px] text-left",
         "cursor-pointer",
         "text-xs font-semibold",
         isFollowing && isHover

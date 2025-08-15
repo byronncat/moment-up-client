@@ -43,7 +43,8 @@ function Content({ user }: Readonly<{ user: AccountInfo }>) {
           href={ROUTE.PROFILE(user.username)}
           className={cn(
             "text-sm font-semibold",
-            "hover:opacity-80 transition-opacity duration-150 ease-in-out"
+            "hover:opacity-80 transition-opacity duration-150 ease-in-out",
+            "truncate max-w-[172px]"
           )}
         >
           {user.displayName}
@@ -52,7 +53,8 @@ function Content({ user }: Readonly<{ user: AccountInfo }>) {
           href={ROUTE.PROFILE(user.username)}
           className={cn(
             "text-sm text-muted-foreground",
-            "hover:opacity-80 transition-opacity duration-150 ease-in-out"
+            "hover:opacity-80 transition-opacity duration-150 ease-in-out",
+            "truncate max-w-[172px]"
           )}
         >
           @{user.username}
@@ -73,6 +75,7 @@ function SwitchButton() {
       <DialogTrigger asChild>
         <button
           className={cn(
+            "w-[64px] text-left",
             "text-xs font-semibold text-primary",
             "cursor-pointer hover:opacity-80",
             "transition-opacity duration-150 ease-in-out"

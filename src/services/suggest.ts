@@ -3,12 +3,12 @@ import type { API, ErrorResponse, ProfileSearchItem } from "api";
 import type { Token } from "@/components/providers/Auth";
 
 import { ApiUrl } from "./api.constant";
-import { ReportType } from "@/constants/serverConfig";
+import { TrendingReportType } from "@/constants/serverConfig";
 import { parseErrorMessage } from "./helper";
 
 interface ReportTopicDto {
   topicId: string;
-  type: ReportType;
+  type: TrendingReportType;
 }
 
 export async function reportTopic(data: ReportTopicDto, token: Token): API {

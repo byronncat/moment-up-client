@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { SuggestApi, ApiUrl } from "@/services";
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
-import { ReportType } from "@/constants/serverConfig";
+import { TrendingReportType } from "@/constants/serverConfig";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -33,32 +33,32 @@ const FEEDBACK_OPTIONS = [
   {
     label: "The associated content is not relevant",
     icon: <Circle variant="x" className="mr-2 size-4" />,
-    value: ReportType.NOT_RELEVANT,
+    value: TrendingReportType.NOT_RELEVANT,
   },
   {
     label: "This trend is spam",
     icon: <AlertCircle className="mr-2 size-4" />,
-    value: ReportType.SPAM,
+    value: TrendingReportType.SPAM,
   },
   {
     label: "This trend is abusive or harmful",
     icon: <AlertCircle className="mr-2 size-4" />,
-    value: ReportType.ABUSIVE,
+    value: TrendingReportType.ABUSIVE,
   },
   {
     label: "Not interested in this",
     icon: <Ban className="mr-2 size-4" />,
-    value: ReportType.NOT_INTERESTED,
+    value: TrendingReportType.NOT_INTERESTED,
   },
   {
     label: "This trend is a duplicate",
     icon: <Copy className="mr-2 size-4" />,
-    value: ReportType.DUPLICATE,
+    value: TrendingReportType.DUPLICATE,
   },
   {
     label: "This trend is harmful or spammy",
     icon: <AlertCircle className="mr-2 size-4" />,
-    value: ReportType.HARMFUL,
+    value: TrendingReportType.HARMFUL,
   },
 ];
 
@@ -114,7 +114,7 @@ function TrendingTopicItem({ topic }: Readonly<{ topic: Hashtag }>) {
 function ReportButton({ topicId }: Readonly<{ topicId: Hashtag["id"] }>) {
   const reportTopic = useRefreshApi(SuggestApi.reportTopic);
 
-  async function report(reportType: ReportType) {
+  async function report(reportType: TrendingReportType) {
     toast.promise(reportTopic({ topicId, type: reportType }), {
       loading: "Submitting report...",
       success: (res) => {
