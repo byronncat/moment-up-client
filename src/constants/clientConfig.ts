@@ -1,4 +1,5 @@
 export const FIRST = 0;
+export const VIDEO_SKIP_DURATION = 5;
 
 // === STORAGE ===
 export enum CookieName {

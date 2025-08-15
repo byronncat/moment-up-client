@@ -1,6 +1,7 @@
 "use client";
 
 import type { FileInfo } from "api";
+
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
@@ -13,8 +14,9 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { Pause, Play } from "@/components/icons";
-import { BLUR_DATA_URL } from "@/constants/clientConfig";
+import { SkipButtons } from "@/app/(protected)/(sidebar)/(aside)/moment/[id]/_components/MediaCarousel";
+import { Play } from "@/components/icons";
+import { BLUR_DATA_URL, VIDEO_SKIP_DURATION } from "@/constants/clientConfig";
 
 type MediaCarouselProps = Readonly<{
   files: FileInfo[];
@@ -30,6 +32,28 @@ export default function MediaCarousel({
   const [api, setApi] = useState<CarouselApi>();
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
+
+  function handleSkip(direction: "next" | "prev") {
+    const currentIndex = api?.selectedScrollSnap();
+    if (currentIndex === undefined) return;
+
+    const videoEl = videoRefs.current[currentIndex];
+    if (videoEl) {
+      videoEl.currentTime +=
+        VIDEO_SKIP_DURATION * (direction === "next" ? 1 : -1);
+    }
+  }
+
+  function handlePlay() {
+    const currentIndex = api?.selectedScrollSnap();
+    if (currentIndex === undefined) return;
+
+    const videoEl = videoRefs.current[currentIndex];
+    if (videoEl) {
+      if (videoEl.paused) videoEl.play();
+      else videoEl.pause();
+    }
+  }
 
   useEffect(() => {
     if (!api) return;
@@ -86,12 +110,7 @@ export default function MediaCarousel({
                     />
                   </div>
                 ) : (
-                  <div
-                    className={cn(
-                      "relative h-[50vh] md:h-screen w-full",
-                      "cursor-pointer"
-                    )}
-                  >
+                  <div className="relative h-[50vh] md:h-screen w-full">
                     <video
                       ref={(el) => {
                         videoRefs.current[index] = el;
@@ -106,15 +125,22 @@ export default function MediaCarousel({
                     <div
                       className={cn(
                         "absolute inset-0",
-                        "flex items-center justify-center",
+                        "flex items-center justify-center gap-8",
                         "pointer-events-none"
                       )}
                     >
-                      {isPlaying ? (
-                        <Pause className="size-12 fill-white/80" />
-                      ) : (
-                        <Play className="size-12 fill-white/80" />
-                      )}
+                      <SkipButtons handleSkip={handleSkip}>
+                        <button
+                          type="button"
+                          onClick={handlePlay}
+                          className={cn(
+                            "cursor-pointer pointer-events-auto",
+                            isPlaying && "opacity-0"
+                          )}
+                        >
+                          <Play className="size-10 fill-white/80" />
+                        </button>
+                      </SkipButtons>
                     </div>
                   </div>
                 )}

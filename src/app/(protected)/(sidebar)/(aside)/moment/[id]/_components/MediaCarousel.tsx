@@ -1,7 +1,6 @@
 import type { FileInfo } from "api";
 
 import { useRef, useState, useEffect } from "react";
-
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import {
@@ -12,8 +11,8 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { Pause, Play } from "@/components/icons";
-import { BLUR_DATA_URL } from "@/constants/clientConfig";
+import { Play, Chevron } from "@/components/icons";
+import { BLUR_DATA_URL, VIDEO_SKIP_DURATION } from "@/constants/clientConfig";
 
 type MediaCarouselProps = Readonly<{
   files: FileInfo[] | undefined;
@@ -29,6 +28,28 @@ export default function MediaCarousel({
   const [api, setApi] = useState<CarouselApi>();
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
+
+  function handleSkip(direction: "next" | "prev") {
+    const currentIndex = api?.selectedScrollSnap();
+    if (currentIndex === undefined) return;
+
+    const videoEl = videoRefs.current[currentIndex];
+    if (videoEl) {
+      videoEl.currentTime +=
+        VIDEO_SKIP_DURATION * (direction === "next" ? 1 : -1);
+    }
+  }
+
+  function handlePlay() {
+    const currentIndex = api?.selectedScrollSnap();
+    if (currentIndex === undefined) return;
+
+    const videoEl = videoRefs.current[currentIndex];
+    if (videoEl) {
+      if (videoEl.paused) videoEl.play();
+      else videoEl.pause();
+    }
+  }
 
   useEffect(() => {
     if (!api) return;
@@ -57,6 +78,7 @@ export default function MediaCarousel({
       opts={{
         startIndex: initialIndex,
         duration: 0,
+        watchDrag: false,
       }}
     >
       <CarouselContent>
@@ -77,12 +99,7 @@ export default function MediaCarousel({
                 />
               </div>
             ) : (
-              <div
-                className={cn(
-                  "relative w-full aspect-square",
-                  "cursor-pointer"
-                )}
-              >
+              <div className="relative w-full aspect-square">
                 <video
                   ref={(el) => {
                     videoRefs.current[index] = el;
@@ -97,15 +114,22 @@ export default function MediaCarousel({
                 <div
                   className={cn(
                     "absolute inset-0",
-                    "flex items-center justify-center",
+                    "flex items-center justify-center gap-8",
                     "pointer-events-none"
                   )}
                 >
-                  {isPlaying ? (
-                    <Pause className="size-12 fill-white/80" />
-                  ) : (
-                    <Play className="size-12 fill-white/80" />
-                  )}
+                  <SkipButtons handleSkip={handleSkip}>
+                    <button
+                      type="button"
+                      onClick={handlePlay}
+                      className={cn(
+                        "cursor-pointer pointer-events-auto",
+                        isPlaying && "opacity-0"
+                      )}
+                    >
+                      <Play className="size-10 fill-white/80" />
+                    </button>
+                  </SkipButtons>
                 </div>
               </div>
             )}
@@ -119,5 +143,40 @@ export default function MediaCarousel({
         </>
       )}
     </Carousel>
+  );
+}
+
+type SkipButtonsProps = Readonly<{
+  handleSkip: (direction: "next" | "prev") => void;
+  children: React.ReactNode;
+}>;
+
+export function SkipButtons({ handleSkip, children }: SkipButtonsProps) {
+  return (
+    <>
+      <button
+        className={cn(
+          "size-12 flex items-center justify-center",
+          "cursor-pointer pointer-events-auto",
+          "opacity-0 hover:opacity-100",
+          "transition-opacity duration-150 ease-in-out"
+        )}
+        onClick={() => handleSkip("prev")}
+      >
+        <Chevron direction="left" multiple className="size-8 text-white/70" />
+      </button>
+      {children}
+      <button
+        className={cn(
+          "size-12 flex items-center justify-center",
+          "cursor-pointer pointer-events-auto",
+          "opacity-0 hover:opacity-100",
+          "transition-opacity duration-150 ease-in-out"
+        )}
+        onClick={() => handleSkip("next")}
+      >
+        <Chevron direction="right" multiple className="size-8 text-white/70" />
+      </button>
+    </>
   );
 }
