@@ -30,6 +30,7 @@ type AuthContextType = {
   logged?: boolean;
   loaded: boolean;
   token: Token;
+
   refresh: () => Promise<string>;
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
@@ -230,13 +231,14 @@ export default function AuthProvider({
       value={{
         user,
         logged,
+        loaded,
         token: {
           csrfToken: token.current.csrfToken,
           accessToken: token.current.accessToken,
         },
+
         refresh,
         setLogged,
-        loaded,
         setLoaded,
         login,
         addAccount,

@@ -1,14 +1,29 @@
 import {
-  Monoton,
+  Merriweather,
   Montserrat,
-  Abel,
+  Roboto,
   Source_Code_Pro,
   Yesteryear,
+  Monoton,
+  Abel,
 } from "next/font/google";
+
+// Serif
+export const merriweather = Merriweather({
+  variable: "--font-merriweather",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 // Sans-serif, Modern
 export const montserrat = Montserrat({
   variable: "--font-montserrat",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const roboto = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
   display: "swap",
 });

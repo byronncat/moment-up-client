@@ -20,6 +20,7 @@ type StoryContextType = {
   otherStories: StoryNotificationInfo[];
   viewingStory: StoryInfo | null;
   allStories: StoryNotificationInfo[];
+
   setViewingStory: (story: StoryInfo) => void;
   setStories: (stories: StoryNotificationInfo[]) => void;
   deleteStory: (storyId: string) => Promise<void>;
@@ -35,6 +36,7 @@ const StoryDataContext = createContext<StoryContextType>({
   otherStories: [],
   viewingStory: null,
   allStories: [],
+
   setViewingStory: () => {},
   setStories: () => {},
   deleteStory: () => Promise.resolve(),
@@ -230,6 +232,7 @@ export default function StoryDataProvider({
         otherStories,
         viewingStory,
         allStories,
+
         setViewingStory,
         setStories,
         deleteStory,

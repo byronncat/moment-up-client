@@ -23,6 +23,7 @@ type CommentContextType = {
   loading: boolean;
   sort: SortBy;
   hasNextPage: boolean;
+
   setComments: (comments: CommentInfo[]) => void;
   addComment: (text: string) => Promise<boolean>;
   deleteComment: (commentId: string) => Promise<void>;
@@ -234,17 +235,18 @@ export default function CommentStorageProvider({
     <CommentContext.Provider
       value={{
         comments,
+        sort,
+        loading: isValidating,
+        hasNextPage,
+
         setComments,
         addComment,
         deleteComment,
         likeComment,
-        sort,
         sortBy,
-        loading: isValidating,
         isExpanded,
         toggleExpansion,
         loadNextPage,
-        hasNextPage,
       }}
     >
       {content}
