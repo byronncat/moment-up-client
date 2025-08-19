@@ -12,7 +12,7 @@ type MomentCardProps = Readonly<{
   data: MomentInfo;
   className?: string;
   actions: Actions;
-  onClick: () => void;
+  onClick?: () => void;
 }>;
 
 export default function MomentCard({

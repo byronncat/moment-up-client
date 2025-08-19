@@ -25,6 +25,7 @@ export enum SearchItemType {
   QUERY,
   HASHTAG,
   POST,
+  MEDIA,
 }
 
 export enum StoryBackground {

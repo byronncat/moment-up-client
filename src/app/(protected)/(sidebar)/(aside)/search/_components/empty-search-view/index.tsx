@@ -5,9 +5,8 @@ import useSWRImmutable from "swr/immutable";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
 
-import { cn } from "@/libraries/utils";
 import { ErrorContent } from "@/components/common";
-import LoadingIndicator from "./LoadingIndicator";
+import LoadingIndicator from "../LoadingIndicator";
 import SearchHistory from "./SearchHistory";
 import PopularAccounts from "./PopularAccounts";
 
@@ -64,14 +63,13 @@ export default function NoSearchState() {
     );
 
   return (
-    <div className="pb-10">
-      {searchHistory && <SearchHistory history={searchHistory} />}
-      {popularAccounts && (
-        <PopularAccounts
-          users={popularAccounts}
-          className={cn(searchHistory && "mt-6")}
-        />
-      )}
+    <div className="h-full overflow-y-auto scrollbar-hide">
+      <div className="pb-10 pt-[calc(129px+16px)]">
+        {searchHistory && (
+          <SearchHistory history={searchHistory} className="mb-6" />
+        )}
+        {popularAccounts && <PopularAccounts users={popularAccounts} />}
+      </div>
     </div>
   );
 }

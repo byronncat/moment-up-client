@@ -49,7 +49,6 @@ export enum BreakPoint {
 export const PAGE_RELOAD_TIME = 500;
 
 export const TextBackground = [
-  //
   {
     background:
       "linear-gradient(0deg,rgba(0, 82, 194, 1) 0%, rgba(36, 138, 250, 1) 100%)",

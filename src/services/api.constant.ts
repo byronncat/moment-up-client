@@ -93,11 +93,13 @@ export const ApiUrl = {
     search: (
       query: string,
       type?: SearchTypeParams,
+      order?: SearchSortParams,
       page?: number,
       limit?: number
     ) =>
       `${SERVER_HOST_URL}/v1/search?query=${encodeURIComponent(query)}` +
       (type ? `&type=${encodeURIComponent(type)}` : "") +
+      (order ? `&order=${encodeURIComponent(order)}` : "") +
       (page ? `&page=${page}` : "") +
       (limit ? `&limit=${limit}` : ""),
     getHistory: (limit?: number) =>
@@ -119,11 +121,11 @@ export const ApiUrl = {
 
 export type SearchTypeParams =
   | "user"
-  | "post"
   | "hashtag"
-  | "user&post"
+  | "post"
+  | "media"
   | "user&hashtag"
-  | "post&hashtag"
-  | "user&post&hashtag";
+  | "user&hashtag&post"
+  | "alll";
 
-export type SearchOrderParams = "top" | "latest";
+export type SearchSortParams = "most_popular" | "newest";

@@ -1,11 +1,12 @@
 import type { SearchItem } from "api";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { useRefreshApi } from "@/components/providers";
 import { toast } from "sonner";
 import { SearchApi } from "@/services";
 import { SEARCH_DEBOUNCE_TIME } from "@/constants/clientConfig";
+import { INITIAL_PAGE } from "@/constants/serverConfig";
 
 interface UseSearchState {
   items: SearchItem[] | null;
@@ -24,14 +25,13 @@ interface UseSearchActions {
 
 type UseSearchReturn = UseSearchState & UseSearchActions;
 
+const MAX_ITEMS = 5;
+
 export function useSearch(): UseSearchReturn {
   const [query, setQuery] = useDebounceValue("", SEARCH_DEBOUNCE_TIME);
   const [items, setItems] = useState<SearchItem[] | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const loading = useRef({
-    clear: false,
-  });
 
   const remove = useRefreshApi(SearchApi.removeHistoryItem);
   async function removeItem(itemId: SearchItem["id"]) {
@@ -43,7 +43,7 @@ export function useSearch(): UseSearchReturn {
 
     setItems(items.filter((item) => item.id !== itemId));
 
-    const { success } = await remove(itemId);
+    const { success, message } = await remove(itemId);
     if (!success) {
       setItems((currentItems) => {
         if (!currentItems) return [itemToDelete];
@@ -55,24 +55,20 @@ export function useSearch(): UseSearchReturn {
         return newItems;
       });
 
-      toast.error("Failed to remove search item");
+      toast.error(message || "Failed to remove search item");
     }
   }
 
   const clearItems = useRefreshApi(SearchApi.clearHistory);
   async function clearAllItems() {
-    if (loading.current.clear) return;
-    loading.current.clear = true;
     const previousItems = items;
     setItems([]);
 
-    const { success } = await clearItems();
+    const { success, message } = await clearItems();
     if (!success) {
       setItems(previousItems);
-      toast.error("Failed to clear search history");
+      toast.error(message || "Failed to clear search history");
     }
-
-    loading.current.clear = false;
   }
 
   function reset() {
@@ -80,39 +76,42 @@ export function useSearch(): UseSearchReturn {
     setIsSearching(false);
   }
 
-  const searchQuery = useRefreshApi(SearchApi.search);
+  const callSearchApi = useRefreshApi(SearchApi.search);
   const search = useCallback(
     async (query: string) => {
       if (!query.trim()) return;
       setIsLoading(true);
 
-      const { success, data } = await searchQuery({
+      const { success, data } = await callSearchApi({
         query,
         type: "user&hashtag",
+        order: "most_popular",
+        page: INITIAL_PAGE,
+        limit: MAX_ITEMS,
       });
-      setItems(data ?? []);
+      setItems(data?.items ?? []);
       if (!success) toast.error("Failed to perform search");
 
       setIsLoading(false);
     },
-    [searchQuery]
+    [callSearchApi]
   );
 
-  const getSearchHistory = useRefreshApi(SearchApi.getHistory);
-  const fetchSearchHistory = useCallback(async () => {
+  const callSearchHistoryApi = useRefreshApi(SearchApi.getHistory);
+  const getHistory = useCallback(async () => {
     setIsLoading(true);
 
-    const { success, data } = await getSearchHistory();
+    const { success, data } = await callSearchHistoryApi();
     setItems(data ?? []);
     if (!success) toast.error("Failed to load search history");
 
     setIsLoading(false);
-  }, [getSearchHistory]);
+  }, [callSearchHistoryApi]);
 
   useEffect(() => {
     if (query) search(query);
-    else if (isSearching) fetchSearchHistory();
-  }, [query, isSearching, fetchSearchHistory, search]);
+    else if (isSearching) getHistory();
+  }, [query, isSearching, getHistory, search]);
 
   return {
     isLoading,

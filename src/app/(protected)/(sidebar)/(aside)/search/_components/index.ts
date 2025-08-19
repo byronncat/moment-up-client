@@ -1,6 +1,3 @@
-export { default as PopularAccounts } from "./PopularAccounts";
-export { default as SearchHistory } from "./SearchHistory";
-export { default as SearchResults } from "./SearchResults";
+export { default as SearchResults } from "./search-results";
+export { default as EmptySearchView } from "./empty-search-view";
 export { default as LoadingIndicator } from "./LoadingIndicator";
-
-export { default as NoSearchState } from "./NoSearchState";

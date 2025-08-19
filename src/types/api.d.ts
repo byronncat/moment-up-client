@@ -154,7 +154,20 @@ declare module "api" {
     type: SearchItemType.HASHTAG;
   }
 
-  type SearchItem = UserSearchItem | QuerySearchItem | HashtagSearchItem;
+  interface PostSearchItem extends MomentInfo {
+    type: SearchItemType.POST;
+  }
+
+  interface MediaSearchItem extends MomentInfo {
+    type: SearchItemType.MEDIA;
+  }
+
+  type SearchItem =
+    | UserSearchItem
+    | QuerySearchItem
+    | HashtagSearchItem
+    | PostSearchItem
+    | MediaSearchItem;
 
   type PopularProfileItem = Omit<
     ProfileInfo,
@@ -172,11 +185,5 @@ declare module "api" {
     type: "image" | "video" | "audio";
     url: string;
     aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
-  };
-
-  type SearchResult = {
-    posts?: MomentInfo[];
-    users?: AccountInfo[];
-    hashtags?: Hashtag[];
   };
 }

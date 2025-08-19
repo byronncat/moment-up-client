@@ -1,27 +1,43 @@
 import type { z } from "zod";
-import type { API, SearchItem, ErrorResponse } from "api";
+import type { API, SearchItem, ErrorResponse, PaginationInfo } from "api";
 import type { Token } from "@/components/providers/Auth";
 
 import zodSchema from "@/libraries/zodSchema";
-import { ApiUrl, type SearchTypeParams } from "./api.constant";
+import {
+  ApiUrl,
+  type SearchSortParams,
+  type SearchTypeParams,
+} from "./api.constant";
 import { parseErrorMessage } from "./helper";
 
 interface SearchData extends z.infer<typeof zodSchema.core.search> {
   type: SearchTypeParams;
+  order?: SearchSortParams;
+  page?: number;
+  limit?: number;
 }
 
 export async function search(
   data: SearchData,
   token: Omit<Token, "csrfToken">
-): API<SearchItem[]> {
-  return await fetch(ApiUrl.search.search(data.query, data.type), {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token.accessToken}`,
-    },
-    credentials: "include",
-  })
+): API<PaginationInfo<SearchItem>> {
+  return await fetch(
+    ApiUrl.search.search(
+      data.query,
+      data.type,
+      data.order,
+      data.page,
+      data.limit
+    ),
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token.accessToken}`,
+      },
+      credentials: "include",
+    }
+  )
     .then(async (response) => {
       const data = await response.json();
       if (!response.ok) throw data;
@@ -29,7 +45,7 @@ export async function search(
         success: true,
         message: "Search performed successfully",
         statusCode: response.status,
-        data: data.items,
+        data,
       };
     })
     .catch((error: ErrorResponse) => {

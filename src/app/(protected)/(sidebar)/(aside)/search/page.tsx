@@ -1,92 +1,128 @@
 "use client";
 
-import type { SearchResult } from "api";
+import type { SearchItem } from "api";
 
 import { useSearchParams } from "next/navigation";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { useRefreshApi } from "@/components/providers";
-import { SearchApi, SearchTypeParams } from "@/services";
+import { SearchApi, SearchSortParams, SearchTypeParams } from "@/services";
 import { SEARCH_DEBOUNCE_TIME, SearchCategory } from "@/constants/clientConfig";
+import { ROUTE, SearchParamName } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
-import {
-  NavigationBar,
-  VirtualScrollbar,
-  type NavItem,
-} from "@/components/common";
+import { NavigationBar, type NavItem } from "@/components/common";
 import { PageHeader, SearchInput } from "../_components";
-import { SearchResults } from "./_components";
-import NoSearchState from "./_components/NoSearchState";
+import { EmptySearchView, SearchResults } from "./_components";
+
+type MapType = {
+  [key in SearchCategory]: {
+    type: SearchTypeParams;
+    order: SearchSortParams;
+  };
+};
+
+const TypeMap: MapType = {
+  [SearchCategory.TOP]: {
+    type: "user&hashtag&post",
+    order: "most_popular",
+  },
+  [SearchCategory.LATEST]: {
+    type: "user&hashtag&post",
+    order: "newest",
+  },
+  [SearchCategory.PEOPLE]: {
+    type: "user",
+    order: "most_popular",
+  },
+  [SearchCategory.HASHTAG]: {
+    type: "hashtag",
+    order: "most_popular",
+  },
+  [SearchCategory.POSTS]: {
+    type: "post",
+    order: "most_popular",
+  },
+  [SearchCategory.MEDIA]: {
+    type: "media",
+    order: "most_popular",
+  },
+};
+
+function getInitialCategory(param: string): SearchCategory {
+  const validCategories = Object.values(SearchCategory) as string[];
+  return param && validCategories.includes(param)
+    ? (param as SearchCategory)
+    : SearchCategory.TOP;
+}
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
-  const initialQuery = searchParams.get("q") || "";
+  const initialQuery = searchParams.get(SearchParamName.QUERY) || "";
+  const initialCategory = getInitialCategory(
+    searchParams.get(SearchParamName.CATEGORY) || ""
+  );
 
   const [query, setQuery] = useDebounceValue(
     initialQuery,
     SEARCH_DEBOUNCE_TIME
   );
-  const [results, setResults] = useState<SearchResult | null>(null);
+  const isQueryEmpty = initialQuery.trim().length === 0;
+
+  const [results, setResults] = useState<SearchItem[] | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [activeCategory, setCategory] = useState<SearchCategory>(
-    SearchCategory.TOP
+    initialCategory as any
   );
 
-  function isQueryEmpty() {
-    return query.trim().length === 0;
-  }
-
-  const [height, setHeight] = useState(0);
-  const [totalHeight, setTotalHeight] = useState(0);
-  const updateScrollbarRef = useRef<(scrollTop: number) => void>(() => {});
-  const containerRef = useRef<HTMLDivElement>(null);
-  const handleCustomScroll = useCallback((newScrollTop: number) => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = newScrollTop;
+  const reset = useCallback(() => {
+    const isSearchRoute = window.location.pathname.startsWith(ROUTE.SEARCH());
+    if (isSearchRoute) {
+      const currentPath = ROUTE.SEARCH();
+      window.history.replaceState({}, "", currentPath);
     }
+    setResults([]);
   }, []);
 
-  useEffect(() => {
-    const updateHeights = () => {
-      if (containerRef.current) {
-        const newHeight = containerRef.current.clientHeight;
-        const newTotalHeight = containerRef.current.scrollHeight;
-        setHeight(newHeight);
-        setTotalHeight(newTotalHeight);
-      }
-    };
-
-    updateHeights();
-
-    const handleResize = () => updateHeights();
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, [results, isSearching, query]); // Recalculate when content changes
-
+  const isSearchingRef = useRef(false);
   const search = useRefreshApi(SearchApi.search);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async function handleSearch(type: SearchTypeParams) {
-    if (isQueryEmpty()) return;
-
+  const handleSearch = useCallback(async () => {
+    if (query.trim().length === 0) {
+      reset();
+      return;
+    }
     setIsSearching(true);
-    const { success } = await search({ query, type });
-    // if (success) setResults((data as any) ?? null);
-    if (success) setResults(null);
-    setIsSearching(false);
-  }
 
-  // useEffect(() => {
-  //   if (!isSearching) {
-  //     const currentPath = ROUTE.SEARCH(
-  //       query,
-  //       isQueryEmpty() ? undefined : activeCategory
-  //     );
-  //     router.replace(currentPath);
-  //     search(activeCategory);
-  //   }
-  // }, [query, activeCategory,]);
+    const currentPath = ROUTE.SEARCH(
+      query,
+      query.trim().length === 0 ? undefined : activeCategory
+    );
+    window.history.replaceState({}, "", currentPath);
+
+    const { type, order } = TypeMap[activeCategory];
+    const { success, data } = await search({ query, type, order });
+    if (success && data) setResults(data.items ?? null);
+
+    setIsSearching(false);
+  }, [query, activeCategory, search, reset]);
+
+  const handleRetry = useCallback(() => {
+    if (isSearchingRef.current) return;
+    (async function _search() {
+      isSearchingRef.current = true;
+      await handleSearch();
+      isSearchingRef.current = false;
+    })();
+  }, [handleSearch]);
+
+  useEffect(() => {
+    if (isSearchingRef.current) return;
+    (async function _search() {
+      isSearchingRef.current = true;
+      await handleSearch();
+      isSearchingRef.current = false;
+    })();
+  }, [query, activeCategory, handleSearch]);
 
   const categories: NavItem[] = [
     {
@@ -125,7 +161,13 @@ export default function SearchPage() {
     <div className="size-full">
       <div className="relative">
         <PageHeader title="Search" className="absolute top-0 z-10 w-full">
-          <div className="px-3 pb-3">
+          <div
+            className={cn(
+              "px-3 pb-3",
+              "border-b",
+              isQueryEmpty ? "border-border" : "border-transparent"
+            )}
+          >
             <SearchInput
               id="side-search-input"
               defaultValue={initialQuery}
@@ -134,51 +176,24 @@ export default function SearchPage() {
               }
             />
           </div>
+          {!isQueryEmpty && (
+            <NavigationBar items={categories} initialValue={activeCategory} />
+          )}
         </PageHeader>
       </div>
 
-      <div
-        ref={containerRef}
-        className="pt-[128px] overflow-y-auto h-full scrollbar-hide relative"
-        onScroll={(e) => {
-          const scrollTop = e.currentTarget.scrollTop;
-          updateScrollbarRef.current?.(scrollTop);
-        }}
-      >
-        {isQueryEmpty() ? (
-          <NoSearchState />
+      <div className="h-full">
+        {isQueryEmpty ? (
+          <EmptySearchView />
         ) : (
-          <>
-            <div
-              className={cn(
-                "absolute top-[128px] z-10",
-                "bg-background w-full"
-              )}
-            >
-              <NavigationBar items={categories} />
-            </div>
-            <SearchResults
-              results={results}
-              type={activeCategory}
-              loading={isSearching}
-              onError={() => {
-                setResults(null);
-                setIsSearching(false);
-              }}
-            />
-          </>
+          <SearchResults
+            results={results}
+            type={activeCategory}
+            loading={isSearching}
+            onError={handleRetry}
+          />
         )}
       </div>
-
-      <VirtualScrollbar
-        height={height}
-        totalHeight={totalHeight}
-        onScroll={handleCustomScroll}
-        onScrollUpdate={(updateFn) => {
-          updateScrollbarRef.current = updateFn;
-        }}
-        className="[@media(max-width:calc(640px+48px+32px))]:hidden"
-      />
     </div>
   );
 }

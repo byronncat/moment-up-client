@@ -92,10 +92,10 @@ function UserCard({ user }: Readonly<{ user: PopularProfileItem }>) {
         className={cn(
           "flex items-center mt-1",
           "font-semibold",
-          "truncate max-w-32"
+          "max-w-32"
         )}
       >
-        {user.username}
+        <p className="w-full truncate">{user.username}</p>
       </div>
 
       <div className="grow px-2 mt-1">

@@ -18,14 +18,16 @@ export type NavItem = {
 type NavigationProps = Readonly<{
   items: NavItem[];
   className?: string;
+  initialValue?: NavItem["id"];
 }>;
 
 export default function HorizontalNavigationBar({
   items,
   className,
+  initialValue,
 }: NavigationProps) {
   const pathname = usePathname();
-  const [activeTab, setActiveTab] = useState(items[FIRST]?.id);
+  const [activeTab, setActiveTab] = useState(initialValue || items[FIRST]?.id);
 
   return (
     <div className={cn("w-full", "border-b border-border", className)}>

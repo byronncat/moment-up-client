@@ -11,8 +11,8 @@ export const ROUTE = {
     `/profile${username ? `/${username}` : ""}${type ? `/${type}` : ""}`,
   SEARCH: (query?: string, filter?: SearchCategory) => {
     const params = new URLSearchParams();
-    if (query) params.set("q", query);
-    if (filter) params.set("f", filter);
+    if (query) params.set(SearchParamName.QUERY, query);
+    if (filter) params.set(SearchParamName.CATEGORY, filter);
     const queryString = params.toString();
     return `/search${queryString ? `?${queryString}` : ""}`;
   },
@@ -43,3 +43,8 @@ export const LOGIN_ERRORS = {
   social_auth_failed: "Social authentication failed. Please try again.",
   default: "Authentication failed. Please try again.",
 };
+
+export enum SearchParamName {
+  QUERY = "query",
+  CATEGORY = "category",
+}

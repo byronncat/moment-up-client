@@ -1,17 +1,29 @@
-import type { SearchItem, UserSearchItem, HashtagSearchItem } from "api";
+import type {
+  SearchItem,
+  UserSearchItem,
+  HashtagSearchItem,
+  MomentInfo,
+} from "api";
 
 import { Format } from "@/utilities";
+import { SearchItemType } from "@/constants/serverConfig";
+
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
+import { MomentCard, MomentCell } from "@/components/moment";
 import { MagnifyingGlass } from "@/components/icons";
-import { SearchItemType } from "@/constants/serverConfig";
 
 type SearchItemProps = Readonly<{
   data: SearchItem;
   className?: string;
+  onClick?: () => void;
 }>;
 
-export default function SearchItem({ data, className }: SearchItemProps) {
+export default function SearchItem({
+  data,
+  className,
+  onClick,
+}: SearchItemProps) {
   const variant = data.type;
   const Variant = {
     [SearchItemType.USER]: () => (
@@ -70,10 +82,27 @@ export default function SearchItem({ data, className }: SearchItemProps) {
         </div>
       </>
     ),
+    [SearchItemType.POST]: () => (
+      <MomentCard
+        key={data.id}
+        data={data as MomentInfo}
+        actions={{} as any}
+        onClick={onClick}
+        className="size-full"
+      />
+    ),
+    [SearchItemType.MEDIA]: () => (
+      <MomentCell
+        key={data.id}
+        data={data as MomentInfo}
+        onClick={onClick}
+        className="size-full"
+      />
+    ),
   };
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
+    <div className={cn("flex items-center gap-3", className)} onClick={onClick}>
       {Variant[variant]()}
     </div>
   );

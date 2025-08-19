@@ -11,15 +11,20 @@ import { Heart, Message, Clone, Video } from "@/components/icons";
 type MomentCellProps = Readonly<{
   data: MomentInfo;
   onClick?: () => void;
+  className?: string;
 }>;
 
-export default function MomentCell({ data, onClick }: MomentCellProps) {
+export default function MomentCell({
+  data,
+  onClick,
+  className,
+}: MomentCellProps) {
   if (!data.post.files || data.post.files.length === 0) return null;
   const coverFile = data.post.files[FIRST];
 
   return (
     <div
-      className={cn("relative group", "shadow-lg overflow-hidden")}
+      className={cn("relative group", "shadow-lg overflow-hidden", className)}
       onClick={onClick}
       role="button"
     >

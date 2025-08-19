@@ -51,11 +51,23 @@ const momentActions = {
     }));
   },
 
-  setCurrentIndex: (index: number) => {
-    momentStore.setState((state) => ({
-      ...state,
-      currentIndex: index,
-    }));
+  setCurrentIndex: (index: number | string) => {
+    const state = momentStore.state;
+    const isId = typeof index === "string";
+    if (isId) {
+      const moment = state.moments?.find((moment) => moment.id === index);
+      if (moment) {
+        momentStore.setState((state) => ({
+          ...state,
+          currentIndex: state.moments?.indexOf(moment) ?? 0,
+        }));
+      }
+    } else {
+      momentStore.setState((state) => ({
+        ...state,
+        currentIndex: index,
+      }));
+    }
   },
 
   addMoments: (newMoments: MomentInfo[]) => {
@@ -272,7 +284,7 @@ export const useMomentStore = () => {
 type MomentContextType = {
   moments: MomentInfo[] | undefined;
   getCurrentMoment: () => MomentInfo | undefined;
-  setCurrentIndex: (index: number) => void;
+  setCurrentIndex: (index: number | string) => void;
   setMoments: (moments: MomentInfo[]) => void;
   addMoments: (moments: MomentInfo[]) => void;
   removeMoment: (momentId: string) => void;

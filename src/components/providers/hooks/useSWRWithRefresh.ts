@@ -6,7 +6,7 @@ export function useRefreshSWR() {
   const { refresh } = useAuth();
 
   const swrFetcherWithRefresh = useCallback(
-    async <T = void>(url: string, _token: string): Promise<T | undefined> => {
+    async <T = void>(url: string, _token: string): Promise<T> => {
       let response = await fetch(url, {
         method: "GET",
         headers: {

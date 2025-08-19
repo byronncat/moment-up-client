@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 import { useSearch } from "./hooks/useSearch";
 import { ROUTE } from "@/constants/route";
+import { SearchCategory } from "@/constants/clientConfig";
 import { SearchItemType } from "@/constants/serverConfig";
 
 import { cn } from "@/libraries/utils";
@@ -37,11 +38,20 @@ export default function SearchBar() {
 
   function handleClickItem(item: SearchItem) {
     reset();
-    if (item.type === SearchItemType.USER)
-      router.push(ROUTE.PROFILE(item.username));
-    else if (item.type === SearchItemType.HASHTAG)
-      router.push(ROUTE.SEARCH(`#${item.id}`));
-    else router.push(ROUTE.SEARCH(item.id));
+    switch (item.type) {
+      case SearchItemType.USER:
+        router.push(ROUTE.PROFILE(item.username));
+        break;
+      case SearchItemType.QUERY:
+        router.push(ROUTE.SEARCH(item.id, SearchCategory.TOP));
+        break;
+      case SearchItemType.HASHTAG:
+        router.push(ROUTE.SEARCH(item.id, SearchCategory.HASHTAG));
+        break;
+      default:
+        router.push(ROUTE.SEARCH(item.id, SearchCategory.TOP));
+        break;
+    }
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
