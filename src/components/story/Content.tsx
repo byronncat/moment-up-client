@@ -18,7 +18,7 @@ export default function Content({ content, setVideoRef }: ContentProps) {
           className={cn(
             "size-full p-5",
             "flex items-center justify-center",
-            "text-center font-bold text-2xl"
+            "text-center font-semibold text-2xl"
           )}
           style={TextBackground[content.background]}
         >
