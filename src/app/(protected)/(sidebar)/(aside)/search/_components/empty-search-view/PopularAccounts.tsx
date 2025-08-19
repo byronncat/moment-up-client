@@ -89,11 +89,7 @@ function UserCard({ user }: Readonly<{ user: PopularProfileItem }>) {
       <Avatar src={user.avatar} size="12" />
 
       <div
-        className={cn(
-          "flex items-center mt-1",
-          "font-semibold",
-          "max-w-32"
-        )}
+        className={cn("flex items-center mt-1", "font-semibold", "max-w-32")}
       >
         <p className="w-full truncate">{user.username}</p>
       </div>

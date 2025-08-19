@@ -1,14 +1,16 @@
 "use client";
 
-import type { SearchItem } from "api";
+import type { SearchItem, PaginationInfo } from "api";
 
 import { useSearchParams } from "next/navigation";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import { useRefreshApi } from "@/components/providers";
-import { SearchApi, SearchSortParams, SearchTypeParams } from "@/services";
+import useSWRInfinite from "swr/infinite";
+import { useRefreshSWR, useAuth } from "@/components/providers";
+import { ApiUrl, SearchSortParams, SearchTypeParams } from "@/services";
 import { SEARCH_DEBOUNCE_TIME, SearchCategory } from "@/constants/clientConfig";
 import { ROUTE, SearchParamName } from "@/constants/route";
+import { INITIAL_PAGE } from "@/constants/serverConfig";
 
 import { cn } from "@/libraries/utils";
 import { NavigationBar, type NavItem } from "@/components/common";
@@ -69,60 +71,64 @@ export default function SearchPage() {
   );
   const isQueryEmpty = initialQuery.trim().length === 0;
 
-  const [results, setResults] = useState<SearchItem[] | null>(null);
-  const [isSearching, setIsSearching] = useState(false);
   const [activeCategory, setCategory] = useState<SearchCategory>(
     initialCategory as any
   );
 
-  const reset = useCallback(() => {
-    const isSearchRoute = window.location.pathname.startsWith(ROUTE.SEARCH());
-    if (isSearchRoute) {
-      const currentPath = ROUTE.SEARCH();
-      window.history.replaceState({}, "", currentPath);
-    }
-    setResults([]);
-  }, []);
+  const swrFetcherWithRefresh = useRefreshSWR();
+  const { token } = useAuth();
 
-  const isSearchingRef = useRef(false);
-  const search = useRefreshApi(SearchApi.search);
-  const handleSearch = useCallback(async () => {
-    if (query.trim().length === 0) {
-      reset();
-      return;
-    }
-    setIsSearching(true);
+  const getKey = useCallback(
+    (
+      pageIndex: number,
+      previousPageData: PaginationInfo<SearchItem> | null
+    ) => {
+      if (query.trim().length === 0) return null;
+      if (previousPageData && !previousPageData.hasNextPage) return null;
+
+      const { type, order } = TypeMap[activeCategory];
+      const url = ApiUrl.search.search(query, type, order, pageIndex + 1);
+      return [url, token.accessToken];
+    },
+    [query, activeCategory, token.accessToken]
+  );
+
+  const { data, size, setSize, isLoading, isValidating, mutate, error } =
+    useSWRInfinite(
+      getKey,
+      ([url, accessToken]) =>
+        swrFetcherWithRefresh<PaginationInfo<SearchItem>>(url, accessToken),
+      {
+        initialSize: INITIAL_PAGE,
+        revalidateFirstPage: false,
+      }
+    );
+
+  const hasNextPage = data
+    ? (data[data.length - 1]?.hasNextPage ?? false)
+    : false;
+  const allResults = useMemo(() => {
+    return data ? data.flatMap((page) => page?.items || []) : null;
+  }, [data]);
+
+  const handleLoadNextPage = useCallback(async () => {
+    if (hasNextPage && !isValidating) await setSize(size + 1);
+  }, [hasNextPage, isValidating, setSize, size]);
+
+  const handleRetry = useCallback(() => {
+    mutate();
+  }, [mutate]);
+
+  useEffect(() => {
+    const isSearchRoute = window.location.pathname.includes(ROUTE.SEARCH());
+    if (!isSearchRoute) return;
 
     const currentPath = ROUTE.SEARCH(
       query,
       query.trim().length === 0 ? undefined : activeCategory
     );
     window.history.replaceState({}, "", currentPath);
-
-    const { type, order } = TypeMap[activeCategory];
-    const { success, data } = await search({ query, type, order });
-    if (success && data) setResults(data.items ?? null);
-
-    setIsSearching(false);
-  }, [query, activeCategory, search, reset]);
-
-  const handleRetry = useCallback(() => {
-    if (isSearchingRef.current) return;
-    (async function _search() {
-      isSearchingRef.current = true;
-      await handleSearch();
-      isSearchingRef.current = false;
-    })();
-  }, [handleSearch]);
-
-  useEffect(() => {
-    if (isSearchingRef.current) return;
-    (async function _search() {
-      isSearchingRef.current = true;
-      await handleSearch();
-      isSearchingRef.current = false;
-    })();
-  }, [query, activeCategory, handleSearch]);
+  }, [query, activeCategory]);
 
   const categories: NavItem[] = [
     {
@@ -187,9 +193,13 @@ export default function SearchPage() {
           <EmptySearchView />
         ) : (
           <SearchResults
-            results={results}
+            results={allResults}
             type={activeCategory}
-            loading={isSearching}
+            loading={isLoading}
+            error={error}
+            isValidating={isValidating}
+            hasNextPage={hasNextPage}
+            loadNextPage={handleLoadNextPage}
             onError={handleRetry}
           />
         )}

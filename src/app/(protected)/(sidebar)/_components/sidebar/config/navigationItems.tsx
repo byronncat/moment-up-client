@@ -6,10 +6,10 @@ import {
   Compass,
   SquarePlus,
   Bell,
-  MagnifyingGlass,
   User,
   House,
 } from "@/components/icons";
+import { Search } from "lucide-react";
 
 export function getNavigationItems(
   pathname: string,
@@ -30,7 +30,9 @@ export function getNavigationItems(
     {
       title: "Search",
       url: ROUTE.SEARCH(),
-      icon: () => <MagnifyingGlass className="size-5 laptop:size-4" />,
+      icon: (open) => (
+        <Search className="size-5 laptop:size-4" strokeWidth={open ? 4 : 2} />
+      ),
       matchPath: () => pathname.startsWith(ROUTE.SEARCH()),
     },
     {
