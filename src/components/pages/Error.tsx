@@ -1,7 +1,9 @@
+"use client";
+
 import { cn } from "@/libraries/utils";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ROUTE } from "@/constants/route";
+import { useRouter } from "next/navigation";
 
 const errorConfig = {
   "not-found": {
@@ -56,11 +58,25 @@ export default function ErrorPage({
   buttonRoute,
   showButton = true,
 }: ErrorPageProps) {
+  const router = useRouter();
   const config = errorConfig[type];
   const title = customTitle || config.title;
   const description = customDescription || config.description;
   const buttonLabel = buttonText || config.defaultButton;
   const route = buttonRoute || config.defaultRoute;
+
+  const handleNavigation = () => {
+    if (type === "internal" || type === "maintenance") {
+      window.location.href = route;
+      return;
+    }
+
+    try {
+      router.push(route);
+    } catch {
+      window.location.href = route;
+    }
+  };
 
   return (
     <div
@@ -76,11 +92,13 @@ export default function ErrorPage({
           className="mb-10"
         />
         {showButton && (
-          <Link href={route}>
-            <Button className="px-12 py-3" variant="outline">
-              {buttonLabel}
-            </Button>
-          </Link>
+          <Button
+            className="px-12 py-3"
+            variant="outline"
+            onClick={handleNavigation}
+          >
+            {buttonLabel}
+          </Button>
         )}
       </div>
     </div>
