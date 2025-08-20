@@ -12,7 +12,11 @@ import {
   CloseButton,
 } from "./_components";
 
-import { CreateDataProvider, CanvasProvider, useCreateData } from "./_provider";
+import {
+  CreateDataProvider,
+  CanvasProvider,
+  useCreateData,
+} from "./_providers";
 
 function StoryModalContent() {
   const router = useRouter();

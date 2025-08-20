@@ -4,7 +4,7 @@ import { Image as ImageIcon } from "@/components/icons";
 
 import { StoryBackground } from "@/constants/serverConfig";
 import { TextBackground } from "@/constants/clientConfig";
-import { useCreateData } from "../../_provider";
+import { useCreateData } from "../../_providers";
 
 export default function TypeSelector() {
   const { setType, handleUploadMedia } = useCreateData();

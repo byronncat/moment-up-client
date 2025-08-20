@@ -1,5 +1,5 @@
 import { useAuth } from "@/components/providers";
-import { useCreateData, useCanvas } from "../../_provider";
+import { useCreateData, useCanvas } from "../../_providers";
 import { useState } from "react";
 
 import { cn } from "@/libraries/utils";

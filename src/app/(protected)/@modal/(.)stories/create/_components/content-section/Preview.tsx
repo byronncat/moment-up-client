@@ -1,4 +1,4 @@
-import { useCreateData } from "../../_provider";
+import { useCreateData } from "../../_providers";
 import { cn } from "@/libraries/utils";
 import { Eye } from "@/components/icons";
 import { TextBackground } from "@/constants/clientConfig";

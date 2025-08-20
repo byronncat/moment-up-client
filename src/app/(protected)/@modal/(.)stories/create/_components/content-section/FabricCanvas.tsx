@@ -3,7 +3,7 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import * as fabric from "fabric";
 import { cn } from "@/libraries/utils";
-import { useCreateData, useCanvas } from "../../_provider";
+import { useCreateData, useCanvas } from "../../_providers";
 
 interface FabricCanvasProps {
   className?: string;

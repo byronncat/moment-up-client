@@ -1,4 +1,4 @@
-import { useCreateData } from "../../_provider";
+import { useCreateData } from "../../_providers";
 import TypeSelector from "./TypeSelector";
 import Preview from "./Preview";
 

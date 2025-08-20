@@ -48,7 +48,7 @@ export function getNavigationItems(
     },
     {
       title: "Create",
-      url: "#",
+      url: ROUTE.MOMENT_CREATE,
       icon: () => <SquarePlus className="size-5 laptop:size-4" />,
     },
     {

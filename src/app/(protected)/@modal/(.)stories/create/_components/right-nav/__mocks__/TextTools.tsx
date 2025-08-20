@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { cn } from "@/libraries/utils";
-import { useCreateData, fontFamilies } from "../../../_provider";
+import { useCreateData, fontFamilies } from "../../../_providers";
 
 interface TextToolsProps {
   canvasRef: React.MutableRefObject<any>;

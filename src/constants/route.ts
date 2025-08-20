@@ -22,6 +22,7 @@ export const ROUTE = {
   STORY_CREATE: "/stories/create",
   MOMENT: (momentId: string, imgIndex?: number) =>
     `/moment/${momentId}${imgIndex ? `?imgIndex=${imgIndex}` : ""}`,
+  MOMENT_CREATE: "/moment/create",
   MESSAGES: "/messages",
   MESSAGE: (contactId?: string) =>
     `/messages${contactId ? `/${contactId}` : ""}`,
