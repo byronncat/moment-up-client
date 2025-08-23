@@ -12,7 +12,7 @@ export default function MenuItem({
           "flex items-center justify-center",
           "size-8 rounded-full",
           "text-foreground/70 dark:text-foreground",
-          "bg-accent/10 dark:bg-accent/20"
+          "bg-accent/10 dark:bg-accent/10"
         )}
       >
         {icon}

@@ -39,7 +39,7 @@ export default function Header({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <div className={cn("px-4 pt-4 pb-3 space-y-0", "flex gap-2")}>
+    <div className={cn("px-4 pt-4 pb-3", "flex gap-2")}>
       <HoverableComponent
         userInfo={user}
         onFollow={() => actions.follow(momentId)}
@@ -73,18 +73,16 @@ export default function Header({
             </span>
           </Tooltip>
         </div>
-        <div className="w-fit">
-          <HoverableComponent
-            userInfo={user}
-            onFollow={() => actions.follow(momentId)}
+        <HoverableComponent
+          userInfo={user}
+          onFollow={() => actions.follow(momentId)}
+        >
+          <span
+            className={cn("text-sm text-muted-foreground", truncateClassName)}
           >
-            <span
-              className={cn("text-sm text-muted-foreground", truncateClassName)}
-            >
-              @{user.username}
-            </span>
-          </HoverableComponent>
-        </div>
+            @{user.username}
+          </span>
+        </HoverableComponent>
       </div>
 
       {currentUser && (

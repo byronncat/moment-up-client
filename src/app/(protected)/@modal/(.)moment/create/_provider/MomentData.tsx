@@ -1,5 +1,6 @@
 "use client";
 
+import type { UploadMediaFile } from "../types";
 import {
   createContext,
   useContext,
@@ -8,28 +9,42 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
+  useRef,
+  useMemo,
 } from "react";
 import { nanoid } from "nanoid";
-
-export type FileWithId = File & {
-  id: string;
-  previewUrl: string;
-};
+import { Privacy } from "@/constants/serverConfig";
 
 export const MAX_FILES_LIMIT = 12;
 
 type MomentDataContextType = {
-  files: FileWithId[];
-  setFiles: Dispatch<SetStateAction<FileWithId[]>>;
-  addFiles: (newFiles: File[]) => { added: number; rejected: number };
+  files: UploadMediaFile[];
+  text: string;
+  privacy: Privacy;
+  phase: "media" | "text" | "preview";
+  hasContent: boolean;
+  setFiles: Dispatch<SetStateAction<UploadMediaFile[]>>;
+  addFiles: (newFiles: File[]) => Promise<{ added: number; rejected: number }>;
   removeFile: (index: number) => void;
+  setText: Dispatch<SetStateAction<string>>;
+  setPrivacy: Dispatch<SetStateAction<Privacy>>;
+  setPhase: Dispatch<SetStateAction<"media" | "text" | "preview">>;
+  uploadMoment: () => Promise<boolean>;
 };
 
 const MomentDataContext = createContext<MomentDataContextType>({
   files: [],
+  text: "",
+  privacy: Privacy.PUBLIC,
+  phase: "text",
+  hasContent: false,
   setFiles: () => {},
-  addFiles: () => ({ added: 0, rejected: 0 }),
+  addFiles: () => Promise.resolve({ added: 0, rejected: 0 }),
   removeFile: () => {},
+  setText: () => {},
+  setPrivacy: () => {},
+  setPhase: () => {},
+  uploadMoment: () => Promise.resolve(false),
 });
 
 export const useMomentData = () => useContext(MomentDataContext);
@@ -41,39 +56,68 @@ type CreateDataProviderProps = Readonly<{
 export default function MomentDataProvider({
   children,
 }: CreateDataProviderProps) {
-  const [files, setFiles] = useState<FileWithId[]>([]);
+  const [files, setFiles] = useState<UploadMediaFile[]>([]);
+  const [text, setText] = useState("");
+  const [privacy, setPrivacy] = useState<Privacy>(Privacy.PUBLIC);
+  const [phase, setPhase] = useState<"media" | "text" | "preview">("text");
 
-  const addFiles = useCallback((newFiles: File[]) => {
-    let added = 0;
-    let rejected = 0;
+  const blobUrls = useRef<string[]>([]);
 
-    setFiles((prevFiles) => {
-      const currentCount = prevFiles.length;
+  const hasContent = useMemo(() => {
+    return text.length > 0 || files.length > 0;
+  }, [text, files]);
+
+  const uploadMoment = useCallback(async () => {
+    const formData = {
+      text,
+      privacy,
+      files,
+    };
+
+    console.log("Form data:", formData);
+    return true;
+  }, [text, files, privacy]);
+
+  const addFiles = useCallback(
+    async (newFiles: File[]) => {
+      let added = 0;
+      let rejected = 0;
+
+      const currentCount = files.length;
       const availableSlots = MAX_FILES_LIMIT - currentCount;
 
       if (availableSlots <= 0) {
-        rejected = newFiles.length;
-        return prevFiles;
+        return { added: 0, rejected: newFiles.length };
       }
 
       const filesToAdd = newFiles.slice(0, availableSlots);
       const rejectedFiles = newFiles.slice(availableSlots);
-
-      added = filesToAdd.length;
       rejected = rejectedFiles.length;
 
-      const filesWithId: FileWithId[] = filesToAdd.map((file) =>
-        Object.assign(file, {
-          id: nanoid(),
-          previewUrl: URL.createObjectURL(file),
+      const filesWithId: UploadMediaFile[] = await Promise.all(
+        filesToAdd.map(async (file) => {
+          const newFile = new File([file], file.name, {
+            type: file.type,
+            lastModified: file.lastModified,
+          }) as UploadMediaFile;
+
+          newFile.id = nanoid();
+          newFile.previewUrl = URL.createObjectURL(newFile);
+          newFile.aspectRatio = await calculateAspectRatio(file);
+          blobUrls.current.push(newFile.previewUrl);
+
+          return newFile;
         })
       );
 
-      return [...prevFiles, ...filesWithId];
-    });
+      added = filesWithId.length;
 
-    return { added, rejected };
-  }, []);
+      setFiles((prevFiles) => [...prevFiles, ...filesWithId]);
+
+      return { added, rejected };
+    },
+    [files.length]
+  );
 
   const removeFile = useCallback((index: number) => {
     setFiles((prevFiles) => {
@@ -85,23 +129,62 @@ export default function MomentDataProvider({
   }, []);
 
   useEffect(() => {
+    const currentUrls = blobUrls.current;
     return () => {
-      files.forEach((file) => {
-        if (file.previewUrl) URL.revokeObjectURL(file.previewUrl);
+      currentUrls.forEach((url) => {
+        if (url) URL.revokeObjectURL(url);
       });
     };
-  }, [files]);
+  }, []);
 
   return (
     <MomentDataContext.Provider
       value={{
         files,
+        text,
+        privacy,
+        phase,
+        hasContent,
         setFiles,
         addFiles,
         removeFile,
+        setText,
+        setPrivacy,
+        setPhase,
+        uploadMoment,
       }}
     >
       {children}
     </MomentDataContext.Provider>
   );
+}
+
+function calculateAspectRatio(
+  file: File
+): Promise<UploadMediaFile["aspectRatio"]> {
+  return new Promise((resolve) => {
+    if (file.type.startsWith("image/")) {
+      const img = new Image();
+      img.onload = () => {
+        const ratio = img.width / img.height;
+        if (ratio < 1) resolve("4:5");
+        else if (ratio === 1) resolve("1:1");
+        else resolve("9:16");
+      };
+      img.onerror = () => resolve("1:1");
+      img.src = URL.createObjectURL(file);
+    } else if (file.type.startsWith("video/")) {
+      const video = document.createElement("video");
+      video.onloadedmetadata = () => {
+        const ratio = video.videoWidth / video.videoHeight;
+        if (ratio < 1) resolve("4:5");
+        else if (ratio === 1) resolve("1:1");
+        else resolve("9:16");
+      };
+      video.onerror = () => resolve("1:1");
+      video.src = URL.createObjectURL(file);
+    } else {
+      resolve("1:1");
+    }
+  });
 }

@@ -6,6 +6,7 @@ export {
 } from "./ColorfulIconButton";
 export { default as ErrorContent } from "./ErrorContent";
 export { default as NavigationBar } from "./HorizontalNavigationBar";
+export { default as MenuItem } from "./MenuItem";
 export { default as Logo } from "./Logo";
 export { default as Modal } from "./Modal";
 export { default as ModeSelection } from "./ModeSelection";

@@ -9,16 +9,16 @@ export default function UploadMediaWindow() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        const selectedFiles = Array.from(e.target.files);
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files) {
+        const selectedFiles = Array.from(event.target.files);
         const validFiles = selectedFiles.filter(
           (file) =>
             file.type.startsWith("image/") || file.type.startsWith("video/")
         );
 
         const invalidFiles = selectedFiles.length - validFiles.length;
-        const result = addFiles(validFiles);
+        const result = await addFiles(validFiles);
 
         if (result.rejected > 0)
           toast.error(
@@ -30,7 +30,7 @@ export default function UploadMediaWindow() {
             `${invalidFiles} file${invalidFiles > 1 ? "s" : ""} skipped - only images and videos are supported`
           );
 
-        e.target.value = "";
+        event.target.value = "";
       }
     },
     [addFiles]

@@ -1,20 +1,19 @@
+import type { UploadMediaFile } from "../../types";
+
 import { useState, useCallback } from "react";
-import {
-  useMomentData,
-  type FileWithId,
-  MAX_FILES_LIMIT,
-} from "../../_provider/MomentData";
+import { useMomentData, MAX_FILES_LIMIT } from "../../_provider/MomentData";
 import { cn } from "@/libraries/utils";
 
 import Image from "next/image";
 import { X, Plus } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 
 type MediaViewProps = Readonly<{
   onBrowse: () => void;
 }>;
 
 export default function MediaView({ onBrowse }: MediaViewProps) {
-  const { files, setFiles } = useMomentData();
+  const { files, setFiles, setPhase } = useMomentData();
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
@@ -70,69 +69,88 @@ export default function MediaView({ onBrowse }: MediaViewProps) {
   }, []);
 
   return (
-    <div className={cn("w-[90vh] max-w-full bg-background", "p-8")}>
+    <div
+      className={cn(
+        "w-[90vh] max-w-full max-h-[90vh]",
+        "relative bg-background"
+      )}
+    >
       <div
         className={cn(
-          "grid grid-cols-2 md:grid-cols-3 gap-2",
-          "max-h-[80vh]",
-          "overflow-y-auto scrollbar-hide"
+          "overflow-y-auto scrollbar-hide size-full",
+          "h-full max-h-[90vh]"
         )}
       >
-        {files.map((file, index) => (
-          <MediaItem
-            key={file.id}
-            file={file}
-            index={index}
-            draggedIndex={draggedIndex}
-            dragOverIndex={dragOverIndex}
-            handleItemDragStart={handleItemDragStart}
-            handleItemDragOver={handleItemDragOver}
-            handleItemDragLeave={handleItemDragLeave}
-            handleItemDrop={handleItemDrop}
-            handleItemDragEnd={handleItemDragEnd}
-          />
-        ))}
+        <div
+          className={cn(
+            "size-full p-3 pb-14",
+            "grid grid-cols-2 md:grid-cols-3 gap-2"
+          )}
+        >
+          {files.map((file, index) => (
+            <MediaItem
+              key={file.id}
+              file={file}
+              index={index}
+              draggedIndex={draggedIndex}
+              dragOverIndex={dragOverIndex}
+              handleItemDragStart={handleItemDragStart}
+              handleItemDragOver={handleItemDragOver}
+              handleItemDragLeave={handleItemDragLeave}
+              handleItemDrop={handleItemDrop}
+              handleItemDragEnd={handleItemDragEnd}
+            />
+          ))}
 
-        {files.length < MAX_FILES_LIMIT && (
-          <div className="p-2 w-full aspect-square">
-            <button
-              type="button"
-              onClick={onBrowse}
-              className={cn(
-                "group size-full rounded-lg",
-                "border-2 border-dashed border-muted-foreground/40 hover:border-muted-foreground/50",
-                "transition-colors duration-150",
-                "cursor-pointer",
-                "flex flex-col items-center justify-center gap-2",
-                "bg-muted/30 hover:bg-muted/50"
-              )}
-            >
-              <Plus
+          {files.length < MAX_FILES_LIMIT && (
+            <div className="p-2 w-full aspect-square">
+              <button
+                type="button"
+                onClick={onBrowse}
                 className={cn(
-                  "size-8",
-                  "fill-muted-foreground/40 group-hover:fill-muted-foreground/50",
-                  "transition-colors duration-150"
-                )}
-              />
-              <span
-                className={cn(
-                  "text-xs",
-                  "text-muted-foreground/40 group-hover:text-muted-foreground/50",
-                  "transition-colors duration-150"
+                  "group size-full rounded-lg",
+                  "border-2 border-dashed border-muted-foreground/40 hover:border-muted-foreground/50",
+                  "transition-colors duration-150",
+                  "cursor-pointer",
+                  "flex flex-col items-center justify-center gap-2",
+                  "bg-muted/30 hover:bg-muted/50"
                 )}
               >
-                Add more
-              </span>
-            </button>
-          </div>
-        )}
+                <Plus
+                  className={cn(
+                    "size-8",
+                    "fill-muted-foreground/40 group-hover:fill-muted-foreground/50",
+                    "transition-colors duration-150"
+                  )}
+                />
+                <span
+                  className={cn(
+                    "text-xs",
+                    "text-muted-foreground/40 group-hover:text-muted-foreground/50",
+                    "transition-colors duration-150"
+                  )}
+                >
+                  Add more
+                </span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
+
+      <Button
+        type="button"
+        className="absolute bottom-4 right-3"
+        onClick={() => setPhase("preview")}
+      >
+        Preview
+      </Button>
     </div>
   );
 }
 
 type MediaItemProps = Readonly<{
-  file: FileWithId;
+  file: UploadMediaFile;
   index: number;
   draggedIndex: number | null;
   dragOverIndex: number | null;
@@ -143,8 +161,8 @@ type MediaItemProps = Readonly<{
   handleItemDragEnd: () => void;
 }>;
 
-const isImage = (file: FileWithId) => file.type.startsWith("image/");
-const isVideo = (file: FileWithId) => file.type.startsWith("video/");
+const isImage = (file: UploadMediaFile) => file.type.startsWith("image/");
+const isVideo = (file: UploadMediaFile) => file.type.startsWith("video/");
 
 function MediaItem({
   file,
@@ -161,7 +179,6 @@ function MediaItem({
 
   return (
     <div
-      key={file.id}
       draggable
       onDragStart={(event) => handleItemDragStart(event, index)}
       onDragOver={(event) => handleItemDragOver(event, index)}

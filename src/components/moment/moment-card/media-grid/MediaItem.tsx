@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Play } from "../../../icons";
 
-type ImageItemProps = Readonly<{
+type MediaItemProps = Readonly<{
   file: NonNullable<MomentInfo["post"]["files"]>[0];
   index: number;
   momentId: string;
@@ -19,7 +19,7 @@ export default function MediaItem({
   index,
   momentId,
   className,
-}: ImageItemProps) {
+}: MediaItemProps) {
   return (
     <Link href={ROUTE.MOMENT(momentId, index)} className={className}>
       <div className="relative size-full">

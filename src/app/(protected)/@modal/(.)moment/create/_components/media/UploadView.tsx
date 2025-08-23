@@ -23,18 +23,18 @@ export default function UploadView({ onBrowse }: UploadViewProps) {
   }, []);
 
   const handleDrop = useCallback(
-    (e: DragEvent<HTMLDivElement>) => {
-      e.preventDefault();
+    async (event: DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
       setIsDragOver(false);
 
-      const droppedFiles = Array.from(e.dataTransfer.files);
+      const droppedFiles = Array.from(event.dataTransfer.files);
       const validFiles = droppedFiles.filter(
         (file) =>
           file.type.startsWith("image/") || file.type.startsWith("video/")
       );
 
       const invalidFiles = droppedFiles.length - validFiles.length;
-      const result = addFiles(validFiles);
+      const result = await addFiles(validFiles);
 
       if (result.rejected > 0)
         toast.error(
@@ -59,33 +59,35 @@ export default function UploadView({ onBrowse }: UploadViewProps) {
         "group p-1",
         "aspect-square w-[90vh] max-w-full bg-background",
         "transition-colors duration-150 cursor-pointer",
-        "hover:bg-muted/30",
-        isDragOver && "bg-muted/30"
+        "hover:bg-muted",
+        isDragOver && "bg-muted"
       )}
     >
       <div
         className={cn(
-          "size-full border-2 border-dashed border-muted-foreground/40",
-          "group-hover:border-muted-foreground/50",
+          "size-full border-2 border-dashed rounded-b-2xl",
+          "border-muted-foreground/40 group-hover:border-muted-foreground/50",
           "flex flex-col justify-center items-center",
           "transition-colors duration-150"
         )}
       >
         <ImageIcon multiple className="size-20 mb-3 text-muted-foreground" />
-        <div
-          className={cn("text-sm text-muted-foreground text-center", "mb-2")}
-        >
-          <p>
-            {isDragOver ? "Drop files here" : "Drag and drop photos or videos"}
-          </p>
-
-          <p>or click to browse</p>
-
-          <p className="text-xs text-muted-foreground mt-2">
-            Majorly supports: JPG, PNG, MP4
-          </p>
-        </div>
+        <Description isDragOver={isDragOver} />
       </div>
+    </div>
+  );
+}
+
+function Description({ isDragOver }: Readonly<{ isDragOver: boolean }>) {
+  return (
+    <div className={cn("text-sm text-muted-foreground text-center", "mb-2")}>
+      <p>{isDragOver ? "Drop files here" : "Drag and drop photos or videos"}</p>
+
+      <p>or click to browse</p>
+
+      <p className="text-xs text-muted-foreground mt-2">
+        Majorly supports: JPG, PNG, MP4
+      </p>
     </div>
   );
 }

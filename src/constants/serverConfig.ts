@@ -2,6 +2,7 @@ export const SERVER_HOST_URL =
   process.env.NEXT_PUBLIC_SERVER_HOST || "http://localhost:4000";
 
 export const INITIAL_PAGE = 1;
+export const MAX_TEXT_CONTENT_LENGTH = 1000;
 
 export enum Audience {
   PUBLIC,
@@ -9,6 +10,13 @@ export enum Audience {
   FRIENDS,
   VERIFIED,
   ONLY_ME,
+}
+
+export enum Privacy {
+  PUBLIC,
+  FOLLOWERS,
+  FRIENDS,
+  PRIVATE,
 }
 
 export enum TrendingReportType {

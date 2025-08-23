@@ -54,7 +54,7 @@ export default function MomentDetails({ initialRes }: MomentDetailsProps) {
           Hmm...this page doesn&apos;t exist. Try searching for something else.
         </p>
         <Link href={ROUTE.SEARCH()}>
-          <Button size="default" className="font-bold">
+          <Button size="default">
             <MagnifyingGlass className="size-4" />
             Search
           </Button>

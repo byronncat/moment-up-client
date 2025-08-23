@@ -191,6 +191,14 @@
     display: none; /* Chrome, Safari and Opera */
   }
 
+  .scrollbar-track-hidden {
+    scrollbar-color: var(--color-muted-foreground) transparent;
+  }
+
+  .scrollbar-track-hidden::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   .glowing {
     /* --glowing-color: ... */
     color: white;
@@ -223,7 +231,7 @@
     --primary-foreground: 0 0% 98%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
-    --muted: 0 0% 90%;
+    --muted: 0 2% 85%;
     --muted-foreground: 240 3.8% 46.1%;
     --accent: 0 0% 20%;
     --accent-foreground: 240 5.9% 10%;

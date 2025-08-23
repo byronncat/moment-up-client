@@ -1,10 +1,10 @@
 import { SVGProps } from "react";
 
 type EyeProps = Pick<SVGProps<SVGSVGElement>, "className"> & {
-  isOpen: boolean;
+  isOpen?: boolean;
 };
 
-export default function Eye({ className, isOpen }: EyeProps) {
+export default function Eye({ className, isOpen = true }: EyeProps) {
   if (isOpen) {
     return (
       <svg
