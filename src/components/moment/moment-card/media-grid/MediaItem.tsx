@@ -29,7 +29,7 @@ export default function MediaItem({
             alt={`Moment ${index + 1}`}
             fill
             sizes="(max-width: 720px) 100vw, 600px"
-            className="object-cover select-none"
+            className="object-cover object-top select-none"
             loading="lazy"
             placeholder="blur"
             blurDataURL={BLUR_DATA_URL}

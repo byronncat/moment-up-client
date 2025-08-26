@@ -14,7 +14,7 @@ import ProfileZone from "./ProfileZone";
 import { NoContent, ErrorContent } from "@/components/common";
 import { MomentGrid as Grid } from "@/components/moment";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Image } from "@/components/icons";
+import { Image as ImageIcon } from "@/components/icons";
 import ProfileWrapper from "./Wrapper";
 
 export default function MomentGrid() {
@@ -89,8 +89,7 @@ export default function MomentGrid() {
     return (
       <ProfileWrapper data={profile}>
         <NoContent
-          // eslint-disable-next-line jsx-a11y/alt-text
-          icon={<Image className="size-16 text-muted-foreground" />}
+          icon={<ImageIcon className="size-16 text-muted-foreground" />}
           title="No media found"
           description="This user has not posted any media yet."
           className="pt-[80px]"

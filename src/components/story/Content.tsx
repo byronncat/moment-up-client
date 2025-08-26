@@ -25,16 +25,18 @@ export default function Content({ content, setVideoRef }: ContentProps) {
           {content.text}
         </div>
       ) : content.type === "image" ? (
-        <Image
-          src={content.url}
-          alt={`Story ${content.id}`}
-          fill
-          sizes="(max-width: 768px) 100vw, 800px"
-          quality={100}
-          className="object-cover"
-          placeholder="blur"
-          blurDataURL={BLUR_DATA_URL}
-        />
+        <div className="size-full bg-white">
+          <Image
+            src={content.url}
+            alt={`Story ${content.id}`}
+            fill
+            sizes="(max-width: 768px) 100vw, 800px"
+            quality={100}
+            className="object-cover"
+            placeholder="blur"
+            blurDataURL={BLUR_DATA_URL}
+          />
+        </div>
       ) : (
         <video
           className="size-full object-contain bg-black"

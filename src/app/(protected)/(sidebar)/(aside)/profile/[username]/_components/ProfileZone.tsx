@@ -5,7 +5,7 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import UserInfo, { UserInfoSkeleton } from "./UserInfo";
 import { NavigationBar, type NavItem } from "@/components/common";
-import { TableOfContents, Image, Tag } from "@/components/icons";
+import { TableOfContents, Image as ImageIcon, Tag } from "@/components/icons";
 
 type ProfileZoneProps = Readonly<{
   data: ProfileInfo;
@@ -24,7 +24,7 @@ export default function ProfileZone({ data, className }: ProfileZoneProps) {
     {
       id: "media",
       label: "Media",
-      icon: <Image aria-label="User's media" className="size-4" />,
+      icon: <ImageIcon className="size-4" />,
       href: user ? ROUTE.PROFILE(data.username, "media") : ROUTE.LOGIN,
     },
     {
@@ -56,7 +56,7 @@ export function ProfileZoneSkeleton() {
     {
       id: "media",
       label: "Media",
-      icon: <Image aria-label="User's media" className="size-4" />,
+      icon: <ImageIcon className="size-4" />,
     },
     {
       id: "tagged",

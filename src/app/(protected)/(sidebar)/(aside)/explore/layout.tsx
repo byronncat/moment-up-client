@@ -4,14 +4,13 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import { PageHeader } from "../_components";
 import { NavigationBar, type NavItem } from "@/components/common";
-import { Image, User } from "@/components/icons";
+import { Image as ImageIcon, User } from "@/components/icons";
 import { ExploreType } from "@/constants/serverConfig";
 
 const tabs: NavItem[] = [
   {
     id: ExploreType.MEDIA,
-    // eslint-disable-next-line jsx-a11y/alt-text
-    icon: <Image className="size-5" />,
+    icon: <ImageIcon className="size-5" />,
     label: "Media",
     href: ROUTE.EXPLORE(ExploreType.MEDIA),
   },

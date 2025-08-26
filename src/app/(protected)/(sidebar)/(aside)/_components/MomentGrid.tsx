@@ -16,7 +16,7 @@ import {
 
 import { ErrorContent, NoContent } from "@/components/common";
 import { MomentGrid as Grid } from "@/components/moment";
-import { Image } from "@/components/icons";
+import { Image as ImageIcon } from "@/components/icons";
 
 type MomentGridProps = Readonly<{
   apiUrl: (page: number) => string;
@@ -32,8 +32,7 @@ type MomentGridProps = Readonly<{
 export default function MomentGrid({
   apiUrl,
   noContentConfig = {
-    // eslint-disable-next-line jsx-a11y/alt-text
-    icon: <Image multiple className="size-16 text-muted-foreground" />,
+    icon: <ImageIcon multiple className="size-16 text-muted-foreground" />,
     title: "No media found",
     description: "Wait for someone to post a media.",
   },

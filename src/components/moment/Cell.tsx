@@ -24,7 +24,11 @@ export default function MomentCell({
 
   return (
     <div
-      className={cn("relative group", "shadow-lg overflow-hidden", className)}
+      className={cn(
+        "relative group select-none",
+        "shadow-lg overflow-hidden",
+        className
+      )}
       onClick={onClick}
       role="button"
     >
@@ -35,7 +39,7 @@ export default function MomentCell({
             alt={data.post.text || "Moment image"}
             fill
             sizes="240px"
-            className="size-full object-cover object-top select-none"
+            className="size-full object-cover object-top"
             loading="lazy"
             placeholder="blur"
             blurDataURL={BLUR_DATA_URL}

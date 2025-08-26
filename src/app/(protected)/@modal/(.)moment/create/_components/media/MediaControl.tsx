@@ -200,7 +200,7 @@ function MediaItem({
               src={file.previewUrl}
               alt={file.name}
               fill
-              className="object-cover"
+              className="object-cover object-top"
             />
           ) : isVideo(file) ? (
             <video
