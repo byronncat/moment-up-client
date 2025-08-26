@@ -4,7 +4,7 @@ import type { TextStyleUpdate } from "../_providers/Canvas";
 
 import { useEffect, useState } from "react";
 import * as fabric from "fabric";
-import { Font, TextColors } from "../_constants";
+import { Font, TextColors, FontSize } from "../_constants";
 
 import { cn } from "@/libraries/utils";
 import { Input } from "@/components/ui/input";
@@ -15,12 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-enum FontSize {
-  MIN = 12,
-  MAX = 72,
-  STEP = 2,
-}
 
 type TextEditPopupProps = {
   selectedObject: fabric.IText | null;
@@ -80,8 +74,13 @@ export default function TextEditPopup({
               "[&_svg]:!text-muted-foreground-dark"
             )}
           >
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-muted-foreground-dark">
+            <div className="flex items-baseline gap-2">
+              <span
+                className={cn(
+                  "w-5",
+                  "font-semibold text-muted-foreground-dark"
+                )}
+              >
                 Aa
               </span>
               <SelectValue />
@@ -104,25 +103,38 @@ export default function TextEditPopup({
           </SelectContent>
         </Select>
 
-        <Input
-          type="number"
-          value={selectedFontSize.toFixed(1)}
-          onChange={(event) => {
-            const newValue = parseFloat(event.target.value) || 0;
-            const clampedValue = Math.min(FontSize.MAX, Math.max(FontSize.MIN, newValue));
-            setSelectedFontSize(clampedValue);
-            onUpdateText({ fontSize: clampedValue });
-          }}
-          min={FontSize.MIN}
-          max={FontSize.MAX}
-          step={FontSize.STEP}
-          className={cn(
-            "text-xs text-foreground-dark mt-1",
-            "h-9 bg-muted-dark",
-            "border-border-dark",
-            "focus-visible:ring-accent-dark/50 focus-visible:border-accent-dark/50 focus-visible:ring-0.5"
-          )}
-        />
+        <div className="mt-1 w-full h-9 relative">
+          <Input
+            type="number"
+            value={selectedFontSize.toFixed(1)}
+            onChange={(event) => {
+              const newValue = parseFloat(event.target.value) || 0;
+              const clampedValue = Math.min(
+                FontSize.MAX,
+                Math.max(FontSize.MIN, newValue)
+              );
+              setSelectedFontSize(clampedValue);
+              onUpdateText({ fontSize: clampedValue });
+            }}
+            min={FontSize.MIN}
+            max={FontSize.MAX}
+            step={FontSize.STEP}
+            className={cn(
+              "pl-10 text-foreground-dark",
+              "size-full bg-muted-dark",
+              "border-border-dark",
+              "focus-visible:ring-accent-dark/50 focus-visible:border-accent-dark/50 focus-visible:ring-0.5"
+            )}
+          />
+          <span
+            className={cn(
+              "font-semibold text-muted-foreground-dark text-sm",
+              "absolute top-1/2 -translate-y-1/2 left-4"
+            )}
+          >
+            A+
+          </span>
+        </div>
 
         <div
           className={cn(

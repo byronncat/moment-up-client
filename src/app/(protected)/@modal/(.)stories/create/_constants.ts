@@ -56,6 +56,12 @@ export const Font = [
   },
 ];
 
+export enum FontSize {
+  MIN = 12,
+  MAX = 72,
+  STEP = 2,
+}
+
 export const TextColors = [
   "#1a1a1a",
   "#3f92b6",
