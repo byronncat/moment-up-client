@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { use, useLayoutEffect, useRef } from "react";
+import { use, useLayoutEffect, useRef, useState } from "react";
 import { useMoment, CommentStorageProvider } from "@/components/providers";
 import { CoreApi } from "@/services";
 import { FIRST } from "@/constants/clientConfig";
@@ -40,7 +40,7 @@ export default function MomentDetails({ initialRes }: MomentDetailsProps) {
   const moment = momentRes.data;
   const searchParams = useSearchParams();
   const imgIndex = searchParams.get("imgIndex");
-  const initialIndex = imgIndex ? parseInt(imgIndex) : 0;
+  const [initialIndex] = useState(imgIndex ? parseInt(imgIndex) : 0);
 
   useLayoutEffect(() => {
     setCurrentIndex(FIRST);
