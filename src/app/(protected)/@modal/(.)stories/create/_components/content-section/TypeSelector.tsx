@@ -7,19 +7,19 @@ import { TextBackground } from "@/constants/clientConfig";
 import { useCreateData } from "../../_providers";
 
 export default function TypeSelector() {
-  const { setType, handleUploadMedia } = useCreateData();
+  const { setType, uploadMedia } = useCreateData();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   function handleMediaClick() {
     fileInputRef.current?.click();
   }
 
-  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleMediaChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (file) {
-      handleUploadMedia(event);
       if (file.type.startsWith("image/")) setType("image");
       else if (file.type.startsWith("video/")) setType("video");
+      uploadMedia(file);
     }
   }
 
@@ -30,7 +30,7 @@ export default function TypeSelector() {
         type="file"
         accept="image/*,video/*"
         className="hidden"
-        onChange={handleFileChange}
+        onChange={handleMediaChange}
       />
       <SelectionCard
         background={StoryBackground.BLUE_GRADIENT}

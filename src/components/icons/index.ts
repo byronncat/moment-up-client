@@ -15,6 +15,7 @@ export { default as Copy } from "./Copy";
 export { default as Eye } from "./Eye";
 export { default as FaceSmile } from "./FaceSmile";
 export { default as Flag } from "./Flag";
+export { default as Folder } from "./Folder";
 export { default as Globe } from "./Globe";
 export { default as Heart } from "./Heart";
 export { default as House } from "./House";

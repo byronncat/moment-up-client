@@ -33,7 +33,7 @@ export default function ActionButtons({
             "flex-1 h-10",
             "text-sm text-card-foreground-dark font-semibold",
             "bg-accent-dark/[.12] rounded-lg",
-            "hover:bg-accent-dark/[.20] transition-colors",
+            "hover:bg-accent-dark/[.20] transition-colors ease-in-out",
             "cursor-pointer"
           )}
         >
@@ -48,7 +48,7 @@ export default function ActionButtons({
           "flex-1 h-10",
           "text-sm text-white font-semibold",
           "bg-primary-dark/90 rounded-lg",
-          "hover:bg-primary-dark transition-colors",
+          "hover:bg-primary-dark transition-colors ease-in-out",
           "cursor-pointer"
         )}
       >

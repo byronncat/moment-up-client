@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useCreateData, fontFamilies } from "../../_providers";
+import { useCreateData } from "../../_providers";
+import { Font } from "../../_constants";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
@@ -17,12 +18,14 @@ import {
 } from "@/components/ui/popover";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 
-export default function FontSelector() {
-  const { fontFamily, setFontFamily } = useCreateData();
+export default function FontSelector({
+  className,
+}: Readonly<{ className?: string }>) {
+  const { font, setFont } = useCreateData();
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="px-4 mt-3">
+    <div className={className}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -40,12 +43,12 @@ export default function FontSelector() {
           >
             <div className="flex items-baseline gap-2">
               <span
-                className="text-lg text-muted-foreground-dark"
-                style={{ fontFamily: fontFamily.value }}
+                className="w-7 text-lg text-muted-foreground-dark"
+                style={{ fontFamily: font.family }}
               >
                 Aa
               </span>
-              <span>{fontFamily.label}</span>
+              <span>{font.label}</span>
             </div>
             <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -63,18 +66,18 @@ export default function FontSelector() {
                 No font found.
               </CommandEmpty>
               <CommandGroup className="p-2">
-                {fontFamilies.map((font) => {
-                  const isSelected = fontFamily.value === font.value;
+                {Font.map((font) => {
+                  const isSelected = font.family === font.family;
 
                   return (
                     <CommandItem
-                      key={font.value}
-                      value={font.value}
+                      key={font.family}
+                      value={font.family}
                       onSelect={(currentValue) => {
-                        const selectedFont = fontFamilies.find(
-                          (f) => f.value === currentValue
+                        const selectedFont = Font.find(
+                          (f) => f.family === currentValue
                         );
-                        if (selectedFont) setFontFamily(selectedFont);
+                        if (selectedFont) setFont(selectedFont);
                         setOpen(false);
                       }}
                       className={cn(
@@ -93,7 +96,7 @@ export default function FontSelector() {
                       />
                       <div className="flex items-baseline gap-3 flex-1">
                         <span
-                          style={{ fontFamily: font.value }}
+                          style={{ fontFamily: font.family }}
                           className="text-xl"
                         >
                           Aa

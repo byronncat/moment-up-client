@@ -36,6 +36,13 @@ export enum SearchItemType {
   MEDIA,
 }
 
+export enum StoryFontFamily {
+  ROBOTO,
+  YESTERYEAR,
+  SOURCE_CODE_PRO,
+  MERRIWEATHER,
+}
+
 export enum StoryBackground {
   BLUE_GRADIENT,
   PINK_PURPLE_BLUE_GRADIENT,
