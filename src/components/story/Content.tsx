@@ -37,10 +37,10 @@ export default function Content({ content, setVideoRef }: ContentProps) {
         />
       ) : (
         <video
-          className="size-full object-cover"
+          className="size-full object-contain bg-black"
           autoPlay
-          ref={(element) => {
-            setVideoRef?.(element);
+          ref={(ref) => {
+            setVideoRef?.(ref);
           }}
         >
           <source src={content.url} type="video/mp4" />
