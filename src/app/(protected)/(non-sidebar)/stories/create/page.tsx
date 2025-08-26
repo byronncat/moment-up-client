@@ -5,29 +5,27 @@ import {
   CreateDataProvider,
   CanvasProvider,
   useCreateData,
-} from "./_providers";
+} from "@/app/(protected)/@modal/(.)stories/create/_providers";
 import { ROUTE } from "@/constants/route";
 
-import { Modal } from "@/components/common";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import {
   ContentSection,
   RightNav,
   DiscardDialog,
   CloseButton,
-} from "./_components";
+} from "@/app/(protected)/@modal/(.)stories/create/_components";
 
-function CreateStoryModal() {
+function CreateStoryPage() {
   const router = useRouter();
   const { hasContent } = useCreateData();
 
   function handleClose() {
-    if (window.history.length > 1) router.back();
-    else router.replace(ROUTE.HOME);
+    router.replace(ROUTE.HOME);
   }
 
   return (
-    <Modal className="flex">
+    <div className="size-full flex">
       <AlertDialog>
         <ContentSection />
         <RightNav />
@@ -38,7 +36,7 @@ function CreateStoryModal() {
         />
         <DiscardDialog onClose={handleClose} />
       </AlertDialog>
-    </Modal>
+    </div>
   );
 }
 
@@ -46,7 +44,7 @@ export default function StoryModal() {
   return (
     <CreateDataProvider>
       <CanvasProvider>
-        <CreateStoryModal />
+        <CreateStoryPage />
       </CanvasProvider>
     </CreateDataProvider>
   );
