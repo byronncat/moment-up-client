@@ -4,9 +4,11 @@ interface ClientCookieOptions {
   maxAge?: number;
 }
 
+const isHttps = process.env.NEXT_PUBLIC_HTTPS === "true";
+
 const DefaultOptions: ClientCookieOptions = {
-  secure: true,
-  sameSite: "None",
+  secure: isHttps,
+  sameSite: isHttps ? "None" : "Lax",
   maxAge: 7 * 24 * 60 * 60,
 };
 
