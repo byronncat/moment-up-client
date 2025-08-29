@@ -22,6 +22,7 @@ export const HEADER_HEIGHT = 32;
 export const SECTION_GAP = 24;
 export const TOP_SPACING_HEIGHT = 129 + 45;
 export const LOADING_INDICATOR_HEIGHT = 120;
+export const BORDER_SIZE = 1;
 
 // Moment
 export const POST_HEADER_HEIGHT = 76;

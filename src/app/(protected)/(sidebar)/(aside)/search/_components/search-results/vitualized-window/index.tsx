@@ -3,11 +3,10 @@
 import type { SearchItem as TSearchItem } from "api";
 
 import { useRouter } from "next/navigation";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useMoment } from "@/components/providers";
 import { debounce } from "lodash";
 
-import { VariableSizeList } from "react-window";
 import { NoContent } from "@/components/common";
 import { ErrorContent } from "@/components/common";
 import LoadingIndicator from "../../LoadingIndicator";
@@ -42,12 +41,6 @@ export default function VirtualizedSearchResults({
   onError,
 }: VirtualizedSearchResultsProps) {
   const [isResizing, setIsResizing] = useState(false);
-  const listRef = useRef<VariableSizeList>(null);
-  const updateScrollbarRef = useRef<(scrollTop: number) => void>(() => {});
-
-  function handleCustomScroll(newScrollTop: number) {
-    listRef.current?.scrollTo(newScrollTop);
-  }
 
   useEffect(() => {
     const handleResize = debounce(() => {
@@ -126,9 +119,6 @@ export default function VirtualizedSearchResults({
       results={results}
       type={type}
       onItemClick={handleClick}
-      listRef={listRef}
-      updateScrollbarRef={updateScrollbarRef}
-      handleCustomScroll={handleCustomScroll}
       hasNextPage={hasNextPage}
       isValidating={isValidating}
       loadNextPage={loadNextPage}

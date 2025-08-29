@@ -24,7 +24,7 @@ type NotificationContextType = {
 const NotificationContext = createContext<NotificationContextType>({} as any);
 
 export const useNotification = () => useContext(NotificationContext);
-const NOTIFICATIONS_PER_PAGE = 12;
+const NOTIFICATIONS_PER_PAGE = 24;
 
 type NotificationStorageProviderProps = Readonly<{
   children: React.ReactNode;
@@ -47,7 +47,6 @@ export default function NotificationStorageProvider({
 }: NotificationStorageProviderProps) {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
-
   const pathname = usePathname();
 
   const type = getNotificationType(pathname);
@@ -110,12 +109,13 @@ export default function NotificationStorageProvider({
         <NotificationSkeleton />
       </Wrapper>
     );
-  if (error || !notifications)
+  if (error)
     return (
       <Wrapper>
         <ErrorContent onRefresh={refetch} className="pt-24" />
       </Wrapper>
     );
+  if (!notifications) return null;
   if (notifications.length === 0)
     return (
       <Wrapper>

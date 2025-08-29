@@ -1,15 +1,11 @@
 "use client";
 
 import type { NotificationInfo } from "api";
-import { useRef, useEffect } from "react";
-import { useSidebar } from "@/components/ui/sidebar";
+import { useState } from "react";
 import { NotificationType } from "@/constants/serverConfig";
 
-import { cn } from "@/libraries/utils";
-import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
-import { VariableSizeList } from "react-window";
-import { VirtualScrollbar } from "@/components/common";
+import { List, type RowComponentProps, getScrollbarSize } from "react-window";
 import NotificationItem from "./Item";
 import { NotificationItemSkeleton } from "./Skeleton";
 
@@ -50,14 +46,13 @@ export default function NotificationList({
   listOptions = {},
   itemOptions,
 }: NotificationListProps) {
-  const listRef = useRef<VariableSizeList>(null);
-  const updateScrollbarRef = useRef<(scrollTop: number) => void>(() => {});
-  const { isMobile } = useSidebar();
+  const [scrollbarWidth] = useState(getScrollbarSize);
 
   const itemCount =
     items.length +
     PLACEHOLDER_ITEM_COUNT +
     (hasNextPage ? LOADING_INDICATOR_COUNT : 0);
+
   const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
 
   function isItemLoaded(index: number) {
@@ -65,136 +60,105 @@ export default function NotificationList({
     return index !== itemCount - 2 && index !== itemCount - 3;
   }
 
-  function handleCustomScroll(newScrollTop: number) {
-    listRef.current?.scrollTo(newScrollTop);
-  }
-
   const getItemSize = (index: number) => {
     if (index === 0) return listOptions.topPadding ?? 0;
     if (index === itemCount - 1) return listOptions.bottomPadding ?? 0;
     if (!isItemLoaded(index)) return LOADING_INDICATOR_HEIGHT;
 
-    const notification = items[index - 1];
-    if (!notification) return 0;
+    const dataIndex = index - 1;
+    const notification = items[dataIndex];
 
     if (
       notification.type === NotificationType.SOCIAL &&
       notification.information.type === NotificationType.FOLLOW
-    ) {
+    )
       return FOLLOW_NOTIFICATION_HEIGHT + BORDER_SIZE;
-    }
 
     return NOTIFICATION_HEIGHT + BORDER_SIZE;
   };
 
-  useEffect(() => {
-    if (items.length > 0) listRef.current?.resetAfterIndex(0);
-  }, [items, isMobile]);
-
   return (
     <>
-      <AutoSizer>
-        {({ height, width }) => {
-          const totalHeight = Array.from({ length: itemCount })
-            .map((_, i) => getItemSize(i))
-            .reduce((a, b) => a + b, 0);
-
-          return (
-            <InfiniteLoader
-              isItemLoaded={isItemLoaded}
-              itemCount={itemCount}
-              loadMoreItems={loadMoreItems}
-            >
-              {({ onItemsRendered, ref }) => (
-                <>
-                  <VariableSizeList
-                    ref={(list) => {
-                      ref(list);
-                      listRef.current = list;
-                    }}
-                    itemCount={itemCount}
-                    onItemsRendered={onItemsRendered}
-                    itemSize={(index) => getItemSize(index)}
-                    height={height}
-                    width={width}
-                    onScroll={({ scrollOffset }) =>
-                      updateScrollbarRef.current?.(scrollOffset)
-                    }
-                    itemData={{
-                      itemCount,
-                      topChildren: listOptions.topChildren,
-                      isItemLoaded,
-                      items,
-                      onClick: onItemClick,
-                      itemOptions,
-                    }}
-                    itemKey={(index) => {
-                      if (index === 0) return "top";
-                      if (index === itemCount - 1) return "bottom";
-                      if (index === itemCount - 2) return "loading-indicator-1";
-                      if (index === itemCount - 3) return "loading-indicator-2";
-                      return items[index - 1].id;
-                    }}
-                    className={cn("scrollbar-hide", listOptions.listClassName)}
-                  >
-                    {Item}
-                  </VariableSizeList>
-                  <VirtualScrollbar
-                    height={height}
-                    totalHeight={totalHeight}
-                    onScroll={handleCustomScroll}
-                    onScrollUpdate={(updateFn) => {
-                      updateScrollbarRef.current = updateFn;
-                    }}
-                    className="[@media(max-width:calc(640px+48px+32px))]:hidden"
-                  />
-                </>
-              )}
-            </InfiniteLoader>
-          );
-        }}
-      </AutoSizer>
+      <InfiniteLoader
+        itemCount={itemCount}
+        isItemLoaded={isItemLoaded}
+        loadMoreItems={loadMoreItems}
+      >
+        {({ onItemsRendered, ref }) => (
+          <>
+            <List
+              listRef={ref}
+              rowCount={itemCount}
+              rowHeight={(index) => getItemSize(index)}
+              rowComponent={Item}
+              rowProps={{
+                topChildren: listOptions.topChildren,
+                items,
+                itemCount,
+                itemOptions,
+                isItemLoaded,
+                onClick: onItemClick,
+              }}
+              onRowsRendered={({ startIndex, stopIndex }) =>
+                onItemsRendered({
+                  overscanStartIndex: startIndex,
+                  overscanStopIndex: stopIndex,
+                  visibleStartIndex: startIndex,
+                  visibleStopIndex: stopIndex,
+                })
+              }
+              className={listOptions.listClassName}
+              style={{ marginRight: -scrollbarWidth - BORDER_SIZE }}
+            />
+          </>
+        )}
+      </InfiniteLoader>
     </>
   );
 }
 
-type ItemProps = Readonly<{
-  index: number;
-  data: {
-    items: NotificationInfo[];
-    itemCount: number;
-    topChildren?: React.ReactNode;
-    isItemLoaded: (index: number) => boolean;
-    onClick: (index: number) => void;
-    itemOptions?: {
-      maxWidth?: number;
-      className?: string;
-    };
+type ItemRowProps = Readonly<{
+  topChildren?: React.ReactNode;
+  items: NotificationInfo[];
+  itemCount: number;
+  itemOptions?: {
+    maxWidth?: number;
+    className?: string;
   };
-  style: React.CSSProperties;
+  isItemLoaded: (index: number) => boolean;
+  onClick: (index: number) => void;
 }>;
 
-function Item({ index, data, style }: ItemProps) {
-  if (index === 0) return data.topChildren;
-  if (index === data.itemCount - 1) return <div style={style} />;
+type ItemProps = RowComponentProps<ItemRowProps>;
 
-  const { isItemLoaded, items, onClick } = data;
+function Item(props: ItemProps) {
+  const {
+    index,
+    style,
+    topChildren,
+    items,
+    itemCount,
+    itemOptions,
+    isItemLoaded,
+    onClick,
+  } = props;
+
+  if (index === 0) return topChildren;
+  if (index === itemCount - 1) return <div style={style} />;
 
   let content;
-  const dataIndex = index - 1;
   if (isItemLoaded(index)) {
+    const dataIndex = index - 1;
+    const item = items[dataIndex];
     content = (
       <NotificationItem
-        data={items[dataIndex]}
-        className={data.itemOptions?.className}
+        data={item}
+        className={itemOptions?.className}
         onClick={() => onClick(dataIndex)}
       />
     );
-  } else {
-    content = (
-      <NotificationItemSkeleton className={data.itemOptions?.className} />
-    );
-  }
+  } else
+    content = <NotificationItemSkeleton className={itemOptions?.className} />;
 
   return <div style={style}>{content}</div>;
 }

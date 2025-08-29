@@ -5,15 +5,11 @@ import type { Actions } from "@/components/providers/MomentStorage";
 
 import { useState, useRef, useEffect, memo } from "react";
 import { debounce } from "lodash";
-import memoize from "memoize-one";
-import { areEqual } from "react-window";
 import { PAGE_RELOAD_TIME, FIRST } from "@/constants/clientConfig";
 
 import { cn } from "@/libraries/utils";
-import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
-import { VariableSizeList } from "react-window";
-import { VirtualScrollbar } from "@/components/common";
+import { List, useListRef } from "react-window";
 import { MomentCard, MomentSkeleton } from "@/components/moment";
 
 // Container
@@ -28,31 +24,6 @@ const SINGLE_TEXT_HEIGHT = 28;
 const MULTI_TEXT_HEIGHT = 72;
 const BORDER_SIZE = 1;
 const ITEM_GAP = 16;
-
-// This helper function memoizes incoming props,
-// to avoid causing unnecessary re-renders of memoized Item components.
-const createItemData = memoize(
-  (
-    itemCount: number,
-    topChildren: React.ReactNode | undefined,
-    isItemLoaded: (index: number) => boolean,
-    items: MomentInfo[],
-    actions: Actions,
-    onClick: (index: number) => void,
-    itemOptions?: {
-      maxWidth?: number;
-      className?: string;
-    }
-  ) => ({
-    itemCount,
-    topChildren,
-    isItemLoaded,
-    items,
-    actions,
-    onClick,
-    itemOptions,
-  })
-);
 
 type MomentListProps = Readonly<{
   items: MomentInfo[];
@@ -85,7 +56,8 @@ export default function MomentList({
   itemOptions,
 }: MomentListProps) {
   const [isResizing, setIsResizing] = useState(false);
-  const listRef = useRef<VariableSizeList>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const listRef = useListRef(null);
   const updateScrollbarRef = useRef<(scrollTop: number) => void>(() => {});
 
   const itemCount =
@@ -96,10 +68,6 @@ export default function MomentList({
 
   function isItemLoaded(index: number) {
     return !hasNextPage || index !== itemCount - 2;
-  }
-
-  function handleCustomScroll(newScrollTop: number) {
-    listRef.current?.scrollTo(newScrollTop);
   }
 
   const getItemSize = (index: number, _width: number) => {
@@ -143,7 +111,7 @@ export default function MomentList({
   };
 
   useEffect(() => {
-    if (items.length > 0) listRef.current?.resetAfterIndex(0);
+    // Note: resetAfterIndex is not available in v2, List automatically handles dynamic sizing
   }, [items]);
 
   useEffect(() => {
@@ -165,126 +133,115 @@ export default function MomentList({
 
   if (isResizing) return null;
   return (
-    <>
-      <AutoSizer>
-        {({ height, width }) => {
-          const totalHeight =
-            Array.from({ length: itemCount })
-              .map((_, i) => getItemSize(i, width))
-              .reduce((a, b) => a + b, 0) - (listOptions.heightOffset ?? 0);
-
-          // Bundle additional data to list items using the "itemData" prop.
-          // Memoize this data to avoid bypassing shouldComponentUpdate().
-          const itemData = createItemData(
-            itemCount,
-            listOptions.topChildren,
-            isItemLoaded,
-            items,
-            actions,
-            onItemClick,
-            itemOptions
-          );
-
-          return (
-            <InfiniteLoader
-              isItemLoaded={isItemLoaded}
-              itemCount={itemCount}
-              loadMoreItems={loadMoreItems}
-            >
-              {({ onItemsRendered, ref }) => (
-                <>
-                  <VariableSizeList
-                    ref={(list) => {
-                      ref(list);
-                      listRef.current = list;
-                    }}
-                    itemCount={itemCount}
-                    onItemsRendered={onItemsRendered}
-                    itemSize={(index) => getItemSize(index, width)}
-                    height={height + (listOptions.heightOffset ?? 0)}
-                    width={width}
-                    onScroll={({ scrollOffset }) =>
-                      updateScrollbarRef.current?.(scrollOffset)
-                    }
-                    itemData={itemData}
-                    itemKey={(index) => {
-                      if (index === 0) return "top";
-                      if (index === itemCount - 1) return "bottom";
-                      if (hasNextPage && index === itemCount - 2)
-                        return "loading-indicator";
-                      return items[index - 1].id || `item-${index}`;
-                    }}
-                    className={cn("scrollbar-hide", listOptions.listClassName)}
-                    aria-label="Moments story"
-                    aria-busy={isNextPageLoading}
-                  >
-                    {Item}
-                  </VariableSizeList>
-                  <VirtualScrollbar
-                    height={height}
-                    totalHeight={totalHeight}
-                    onScroll={handleCustomScroll}
-                    onScrollUpdate={(updateFn) => {
-                      updateScrollbarRef.current = updateFn;
-                    }}
-                    className="[@media(max-width:calc(640px+48px+32px))]:hidden"
-                  />
-                </>
-              )}
-            </InfiniteLoader>
-          );
-        }}
-      </AutoSizer>
-    </>
+    <div className="size-full" ref={containerRef}>
+      <InfiniteLoader
+        isItemLoaded={isItemLoaded}
+        itemCount={itemCount}
+        loadMoreItems={loadMoreItems}
+      >
+        {({ onItemsRendered, ref }) => (
+          <>
+            <List
+              listRef={(list) => {
+                ref(list?.element);
+                listRef.current = list;
+              }}
+              rowCount={itemCount}
+              onRowsRendered={({ startIndex, stopIndex }) =>
+                onItemsRendered({
+                  overscanStartIndex: startIndex,
+                  overscanStopIndex: stopIndex,
+                  visibleStartIndex: startIndex,
+                  visibleStopIndex: stopIndex,
+                })
+              }
+              rowHeight={(index) =>
+                getItemSize(index, containerRef.current?.clientWidth ?? 0)
+              }
+              style={{
+                height: containerRef.current?.clientHeight ?? 0,
+                width: containerRef.current?.clientWidth ?? 0,
+              }}
+              onScroll={(event) =>
+                updateScrollbarRef.current?.(event.currentTarget.scrollTop)
+              }
+              rowProps={
+                {
+                  itemCount,
+                  topChildren: listOptions.topChildren,
+                  isItemLoaded,
+                  items,
+                  actions,
+                  onClick: onItemClick,
+                  itemOptions,
+                } as any
+              }
+              rowComponent={Item}
+              className={cn("scrollbar-hide", listOptions.listClassName)}
+              aria-label="Moments story"
+              aria-busy={isNextPageLoading}
+            />
+          </>
+        )}
+      </InfiniteLoader>
+    </div>
   );
 }
 
 type ItemProps = Readonly<{
   index: number;
-  data: {
-    items: MomentInfo[];
-    actions: Actions;
-    itemCount: number;
-    topChildren?: React.ReactNode;
-    isItemLoaded: (index: number) => boolean;
-    onClick: (index: number) => void;
-    itemOptions?: {
-      maxWidth?: number;
-      className?: string;
-    };
-  };
   style: React.CSSProperties;
+  items: MomentInfo[];
+  actions: Actions;
+  itemCount: number;
+  topChildren?: React.ReactNode;
+  isItemLoaded: (index: number) => boolean;
+  onClick: (index: number) => void;
+  itemOptions?: {
+    maxWidth?: number;
+    className?: string;
+  };
 }>;
 
 // If list items are expensive to render,
 // Consider using React.memo to avoid unnecessary re-renders.
-const Item = memo(({ index, data, style }: ItemProps) => {
-  if (index === 0) return data.topChildren;
-  if (index === data.itemCount - 1) return null;
+const Item = memo(
+  ({
+    index,
+    style,
+    items,
+    actions,
+    itemCount,
+    topChildren,
+    isItemLoaded,
+    onClick,
+    itemOptions,
+  }: ItemProps) => {
+    if (index === 0) return topChildren;
+    if (index === itemCount - 1) return null;
 
-  const { isItemLoaded, items, actions, onClick } = data;
+    let content;
+    const dataIndex = index - 1;
+    if (isItemLoaded(index))
+      content = (
+        <MomentCard
+          data={items[dataIndex]}
+          actions={actions}
+          onClick={() => onClick(dataIndex)}
+          className={itemOptions?.className}
+        />
+      );
+    else
+      content = (
+        <MomentSkeleton
+          haveText
+          media="none"
+          className={itemOptions?.className}
+        />
+      );
 
-  let content;
-  const dataIndex = index - 1;
-  if (isItemLoaded(index))
-    content = (
-      <MomentCard
-        data={items[dataIndex]}
-        actions={actions}
-        onClick={() => onClick(dataIndex)}
-        className={data.itemOptions?.className}
-      />
-    );
-  else
-    content = (
-      <MomentSkeleton
-        haveText
-        media="none"
-        className={data.itemOptions?.className}
-      />
-    );
-
-  return <div style={style}>{content}</div>;
-}, areEqual);
+    return <div style={style}>{content}</div>;
+  }
+);
 
 Item.displayName = "MemoizedItem";
