@@ -1,7 +1,7 @@
 import HomeProvider from "./_providers/Home";
 import { Stories, Moments } from "./_components";
 
-export default async function HomePage() {
+export default function HomePage() {
   return (
     <HomeProvider>
       <div className="relative">

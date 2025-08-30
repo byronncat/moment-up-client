@@ -74,7 +74,22 @@ export default function MomentDataProvider({
       files,
     };
 
-    console.log("Form data:", formData);
+    const cloudinaryName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const cloudinaryPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "";
+
+    const testFormData = new FormData();
+    testFormData.append("file", files[0]);
+    testFormData.append("upload_preset", cloudinaryPreset);
+
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudinaryName}/image/upload`;
+
+    const response = await fetch(cloudinaryUrl, {
+      method: "POST",
+      body: testFormData,
+    });
+
+    console.log("Response:", response, formData);
+
     return true;
   }, [text, files, privacy]);
 
