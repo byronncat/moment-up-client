@@ -36,7 +36,11 @@ export default function RightNav() {
       <div className={cn("h-screen w-full", "flex flex-col")}>
         <Header title="Stories" className="mt-7" />
         <div className="flex items-center gap-3 px-4 mt-5">
-          <Avatar src={user?.avatar} alt={user?.username} size="14" />
+          <Avatar
+            src={user?.avatar}
+            alt={user?.displayName || user?.username}
+            size="14"
+          />
           <span className="text-white text-lg font-semibold">
             {user?.username}
           </span>

@@ -28,8 +28,8 @@ declare module "api" {
     id: string;
     email: string;
     username: string;
-    displayName: string;
-    avatar?: string;
+    displayName: string | null;
+    avatar: string | null;
   }
 
   interface ProfileInfo extends AccountInfo {
@@ -47,7 +47,7 @@ declare module "api" {
       displayItems: {
         id: string;
         displayName: string;
-        avatar?: string;
+        avatar: AccountInfo["avatar"];
       }[];
     };
   }
@@ -90,7 +90,7 @@ declare module "api" {
     userId: string;
     username: string;
     displayName: string;
-    avatar?: string;
+    avatar: AccountInfo["avatar"];
     viewed: boolean;
     total: number;
     createdAt: string;

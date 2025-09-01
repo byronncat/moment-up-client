@@ -62,7 +62,11 @@ export default function RepostForm({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="px-6 pb-4 mt-4">
         <div className={cn("flex items-start gap-3", "mb-4")}>
-          <Avatar src={userData.avatar} alt={userData.displayName} size="14" />
+          <Avatar
+            src={userData.avatar}
+            alt={userData.displayName || userData.username}
+            size="14"
+          />
           <div className={cn("flex flex-col gap-2", "pt-0.5")}>
             <span className="font-semibold leading-tight">
               {userData.displayName}

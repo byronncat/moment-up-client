@@ -17,7 +17,7 @@ export default function MomentHeader({ className }: MomentHeaderProps) {
     <div className={cn("flex gap-2", className)}>
       <Avatar
         src={user?.avatar}
-        alt={`${user?.displayName}'s avatar`}
+        alt={user?.displayName || user?.username}
         size="12"
       />
 

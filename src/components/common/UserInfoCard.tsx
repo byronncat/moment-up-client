@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserCardDisplayInfo } from "api";
+import type { AccountInfo, UserCardDisplayInfo } from "api";
 
 import { useRef } from "react";
 import { useHover } from "usehooks-ts";
@@ -119,7 +119,7 @@ const MAX_FOLLOWED_BY_DISPLAY = 3;
 type FollowedByUser = {
   id: string;
   displayName: string;
-  avatar?: string;
+  avatar: AccountInfo["avatar"];
 };
 
 const getFollowedByMessage = (

@@ -30,7 +30,11 @@ export default function TextContent() {
       )}
     >
       <div className={cn("flex items-center gap-3", "px-2")}>
-        <Avatar src={user?.avatar} alt={user?.displayName} size="12" />
+        <Avatar
+          src={user?.avatar}
+          alt={user?.displayName || user?.username}
+          size="12"
+        />
         <div className="flex flex-col gap-1">
           <span className="font-semibold">{user?.displayName}</span>
           <PrivacySelector />
