@@ -11,18 +11,13 @@ type GlobalErrorProps = Readonly<{
 
 export default function GlobalError({ error }: GlobalErrorProps) {
   useEffect(() => {
-    console.error(error.message);
+    if (error.message) console.error(error.message);
   }, [error.message]);
 
   return (
     <html>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider>
           <ErrorPage type="internal" />
         </ThemeProvider>
       </body>

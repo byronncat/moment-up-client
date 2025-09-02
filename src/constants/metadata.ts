@@ -11,6 +11,8 @@ export type MetadataMap = {
   notifications: NextMetadata;
   moment: (username: string, content?: string) => NextMetadata;
   story: NextMetadata;
+
+  // === Error ===
   notFound: NextMetadata;
 };
 
@@ -64,6 +66,8 @@ export const Metadata: MetadataMap = {
     title: "Story",
     description: "Story page",
   },
+
+  // === Error ===
   notFound: {
     title: "Page Not Found",
     description: "Page not found",

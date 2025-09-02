@@ -7,10 +7,10 @@
     "dev:https": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "eslint",
     "format": "prettier --write .",
     "type-check": "tsc --noEmit",
-    "check": "pnpm run type-check && pnpm run lint && pnpm run format"
+    "check": "pnpm run type-check && pnpm run lint . && pnpm run format"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
