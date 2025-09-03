@@ -28,7 +28,6 @@ export default function CommentZone({ className }: CommentZoneProps) {
       </div>
       {!loading && hasNextPage && (
         <button
-          type="button"
           onClick={loadNextPage}
           className={cn(
             "mt-5",

@@ -18,12 +18,11 @@ export default function LoginPage() {
       <PageTitle title="Login" />
       <LoginForm />
       <Divider text="OR" className={cn("my-2", "text-xs")} />
-
       <div>
         <GoogleButton />
         <ActionableText
-          mutedText="Don't have an account?"
           path={ROUTE.SIGNUP}
+          mutedText="Don't have an account?"
           highlightedText="Sign up"
           className={cn("w-full mt-3", "text-center")}
         />

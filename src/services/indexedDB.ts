@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import type { AccountInfo } from "api";
 
 const DATABASE_NAME = "moment-up-db";

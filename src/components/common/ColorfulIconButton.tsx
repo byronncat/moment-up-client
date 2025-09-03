@@ -56,7 +56,6 @@ export default function ColorfulIconButton({
   return (
     <Tooltip content={tooltip} sideOffset={6}>
       <button
-        type="button"
         onClick={onClick}
         className={cn(
           "group flex items-center gap-1",

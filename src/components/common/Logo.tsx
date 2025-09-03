@@ -12,7 +12,7 @@ export default function Logo({ className }: Readonly<{ className?: string }>) {
       )}
     >
       <Image
-        src="/moment-up.svg"
+        src="/logo.svg"
         alt="MomentUp logo"
         className="rounded-md select-none"
         fill

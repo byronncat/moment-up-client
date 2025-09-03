@@ -28,7 +28,6 @@ export default function ActionButtons({
     <div className={cn("px-4 pb-6", "flex gap-2", className)}>
       <AlertDialogTrigger asChild>
         <button
-          type="button"
           className={cn(
             "flex-1 h-10",
             "text-sm text-card-foreground-dark font-semibold",
@@ -42,7 +41,6 @@ export default function ActionButtons({
       </AlertDialogTrigger>
 
       <button
-        type="button"
         onClick={handleShare}
         className={cn(
           "flex-1 h-10",

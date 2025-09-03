@@ -131,7 +131,6 @@ export default function MediaCarousel({
                     >
                       <SkipButtons handleSkip={handleSkip}>
                         <button
-                          type="button"
                           onClick={handlePlay}
                           className={cn(
                             "cursor-pointer pointer-events-auto",

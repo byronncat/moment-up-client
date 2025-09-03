@@ -93,7 +93,7 @@ export default function RepostForm({
         />
 
         <div className="flex justify-end w-full">
-          <Button className="w-[100px]" type="submit" disabled={isLoading}>
+          <Button className="w-[100px]" disabled={isLoading}>
             {isLoading ? (
               <Loader className="size-5 animate-spin text-primary-foreground" />
             ) : (

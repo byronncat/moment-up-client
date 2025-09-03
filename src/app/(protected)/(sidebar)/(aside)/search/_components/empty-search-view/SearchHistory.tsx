@@ -123,7 +123,6 @@ function Header({ onClear }: Readonly<{ onClear: () => void }>) {
     <div className={cn("flex justify-between items-center", "mb-2 px-4")}>
       <h2 className="font-semibold">Recent</h2>
       <button
-        type="button"
         onClick={onClear}
         className={cn(
           "text-primary hover:text-primary/80",

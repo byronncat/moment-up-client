@@ -1,24 +1,25 @@
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
+import { styles } from "@/constants/clientConfig";
 
 type ActionableTextProps = Readonly<{
-  mutedText?: string;
   path?: string;
+  mutedText?: string;
   highlightedText: string;
   onClick?: () => void;
   className?: string;
 }>;
 
 export default function ActionableText({
-  mutedText,
   path,
+  mutedText,
   highlightedText,
   onClick,
   className,
 }: ActionableTextProps) {
   return (
     <div className={cn("text-sm", className)}>
-      {mutedText && <span className="text-muted-foreground">{mutedText} </span>}
+      {mutedText ? <span className="text-muted-foreground">{mutedText} </span> : null}
       {path ? (
         <Link
           href={path}
@@ -26,7 +27,9 @@ export default function ActionableText({
             "cursor-pointer",
             "text-primary",
             "font-semibold",
-            "hover:opacity-60 transition-opacity duration-150 ease-in-out"
+            "hover:opacity-60 transition-opacity duration-150 ease-in-out",
+            styles.focusVisible,
+            "rounded-md"
           )}
         >
           {highlightedText}
@@ -38,7 +41,9 @@ export default function ActionableText({
             "cursor-pointer",
             "text-primary",
             "font-semibold",
-            "hover:opacity-60 transition-opacity duration-150 ease-in-out"
+            "hover:opacity-60 transition-opacity duration-150 ease-in-out",
+            styles.focusVisible,
+            "rounded-md"
           )}
           onClick={onClick}
         >

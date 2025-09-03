@@ -2,6 +2,7 @@ import * as React from "react";
 import clsx from "clsx";
 
 import { cn } from "@/libraries/utils";
+import { styles } from "@/constants/clientConfig";
 
 export type InputProps = React.ComponentProps<"input">;
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -17,7 +18,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "shadow-xs transition-colors",
             "placeholder:text-muted-foreground",
             "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
-            "focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring",
+            styles.focusVisible,
             "disabled:cursor-not-allowed disabled:opacity-50"
           ),
           className

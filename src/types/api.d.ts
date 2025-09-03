@@ -1,6 +1,8 @@
 declare module "api" {
-  import type { SearchItemType } from "@/constants/serverConfig";
-  import type { StoryBackground } from "@/constants/serverConfig";
+  import type {
+    SearchItemType,
+    StoryBackground,
+  } from "@/constants/serverConfig";
 
   type API<T = void> = Promise<{
     success: boolean;
@@ -44,23 +46,23 @@ declare module "api" {
   interface UserCardDisplayInfo extends Omit<ProfileInfo, "backgroundImage"> {
     followedBy?: {
       count: number;
-      displayItems: {
+      displayItems: Array<{
         id: string;
         displayName: string;
         avatar: AccountInfo["avatar"];
-      }[];
+      }>;
     };
   }
 
   // === Moment ===
   type PostInfo = {
     text?: string;
-    files?: {
+    files?: Array<{
       id: string;
       type: "image" | "video" | "audio";
       url: string;
       aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
-    }[];
+    }>;
     createdAt: string;
     likes: number;
     comments: number;
@@ -107,12 +109,12 @@ declare module "api" {
 
   type StoryInfo = {
     user: Omit<AccountInfo, "email">;
-    stories: {
+    stories: Array<{
       id: string;
       content: StoryContent;
       sound?: string;
       createdAt: string;
-    }[];
+    }>;
   };
 
   // === Notification ===

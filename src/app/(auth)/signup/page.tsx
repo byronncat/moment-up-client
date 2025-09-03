@@ -18,7 +18,6 @@ export default function SignUpPage() {
       <PageTitle title="Sign up" />
       <SignupForm />
       <Divider text="OR" className={cn("my-2", "text-xs")} />
-
       <div>
         <GoogleButton />
         <ActionableText

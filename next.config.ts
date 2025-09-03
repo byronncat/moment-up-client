@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const getAllowedOrigins = (): string[] => {
+const getAllowedOrigins = () => {
   if (process.env.NODE_ENV === "development") {
     const envOrigins = process.env.ALLOWED_DEV_ORIGINS;
     if (envOrigins) return envOrigins.split(",").map((origin) => origin.trim());
@@ -8,7 +8,7 @@ const getAllowedOrigins = (): string[] => {
   }
 
   return (
-    process.env.ALLOWED_ORIGINS?.split(",").map((origin) => origin.trim()) || []
+    process.env.ALLOWED_ORIGINS?.split(",").map((origin) => origin.trim()) ?? []
   );
 };
 

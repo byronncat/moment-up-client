@@ -289,7 +289,7 @@
     --destructive-foreground-dark: 0 0% 98%;
     --border-dark: 240 5% 20%;
     --input-dark: 220 7% 8%;
-    --ring-dark: 0 0% 48%;
+    --ring-dark: 0 0% 90%;
     --chart-1-dark: 220 70% 50%;
     --chart-2-dark: 160 60% 45%;
     --chart-3-dark: 30 80% 55%;
@@ -324,7 +324,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 5% 20%;
     --input: 220 7% 8%;
-    --ring: 0 0% 48%;
+    --ring: 0 0% 90%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;

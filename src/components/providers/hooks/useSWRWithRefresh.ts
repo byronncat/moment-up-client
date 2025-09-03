@@ -1,6 +1,6 @@
+import type { ErrorResponse } from "api";
 import { useCallback } from "react";
 import { useAuth } from "../Auth";
-import type { ErrorResponse } from "api";
 
 export function useRefreshSWR() {
   const { refresh } = useAuth();
@@ -34,7 +34,7 @@ export function useRefreshSWR() {
         throw error;
       }
 
-      return await response.json();
+      return response.json();
     },
     [refresh]
   );

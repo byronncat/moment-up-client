@@ -2,23 +2,21 @@ import { cn } from "@/libraries/utils";
 import Brand from "../common/Brand";
 import styles from "@/styles/loader.module.css";
 
-type LoadingPageProps = Readonly<{
-  message?: string;
-  showBrand?: boolean;
-}>;
-
 export default function LoadingPage({
   message = "LOADING...",
   showBrand = true,
-}: LoadingPageProps) {
+}: Readonly<{
+  message?: string;
+  showBrand?: boolean;
+}>) {
   return (
     <div
-      className={cn("flex items-center justify-center", "h-screen")}
+      className={cn("flex items-center justify-center", "h-svh")}
       role="status"
       aria-label="Loading content"
     >
       <Loader message={message} />
-      {showBrand && <BottomBrand className="absolute bottom-6" />}
+      {showBrand ? <BottomBrand className="absolute bottom-6" /> : null}
     </div>
   );
 }
@@ -27,7 +25,7 @@ function Loader({ message }: Readonly<{ message: string }>) {
   return (
     <div className="flex flex-col justify-center items-center">
       <BoxRotate />
-      <TextWave message={message} className="mt-12" />
+      <TextWave message={message} className="mt-8 sm:mt-12" />
     </div>
   );
 }
@@ -38,7 +36,7 @@ function BoxRotate() {
       <div
         className={cn(
           styles["configure-border-1"],
-          "size-24 p-0.5",
+          "size-20 sm:size-24 p-0.5",
           "absolute flex justify-center items-center"
         )}
       >
@@ -50,7 +48,7 @@ function BoxRotate() {
         className={cn(
           styles["configure-border-2"],
           "flex justify-center items-center",
-          "size-24 p-0.5"
+          "size-20 sm:size-24 p-0.5"
         )}
       >
         <span
@@ -80,12 +78,13 @@ function TextWave({
         styles.waviy,
         "text-primary",
         "px-4 py-1 rounded",
-        "font-bold text-2xl tracking-widest",
+        "font-bold text-xl sm:text-2xl tracking-widest",
         className
       )}
       aria-hidden="true"
     >
       {letters.map((letter, index) => (
+        // eslint-disable-next-line react/no-array-index-key
         <span key={index}>{letter}</span>
       ))}
     </div>

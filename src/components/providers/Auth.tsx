@@ -1,36 +1,23 @@
 "use client";
 
+// === Types ====
 import type { z } from "zod";
 import type { API, AccountInfo } from "api";
-
-import { useRouter } from "next/navigation";
-import {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useRef,
-  useMemo,
-} from "react";
-import { useAuthOperations, useRefreshApi } from "./hooks";
-import { AuthApi, indexedDBService } from "@/services";
-import ClientCookie from "@/helpers/client-cookie";
-import zodSchema from "@/libraries/zodSchema";
-import { ROUTE } from "@/constants/route";
-import { PAGE_RELOAD_TIME, CookieName } from "@/constants/clientConfig";
-import { LoadingPage } from "../pages";
+import type zodSchema from "@/libraries/zodSchema";
 
 export type Token = {
   csrfToken: string;
   accessToken: string;
 };
 
-type AuthContextType = {
+interface IState {
   user: AccountInfo | null;
   logged?: boolean;
   loaded: boolean;
   token: Token;
+}
 
+interface IAction {
   refresh: () => Promise<string>;
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
@@ -39,12 +26,20 @@ type AuthContextType = {
   signup: (values: z.infer<typeof zodSchema.auth.signup>) => API;
   logout: () => API;
   sendOtpEmail: (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => API;
-  recoverPassword: (
-    values: z.infer<typeof zodSchema.auth.recoverPassword>
-  ) => API;
+  recoverPassword: (values: z.infer<typeof zodSchema.auth.recoverPassword>) => API;
   switchAccount: (accountId: AccountInfo["id"]) => API;
-  reload: () => Promise<void>;
-};
+  reload: () => void;
+}
+
+// === Provider ====
+import { useRouter } from "next/navigation";
+import { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
+import { useAuthOperations, useRefreshApi } from "./hooks";
+import { AuthApi, indexedDBService } from "@/services";
+import ClientCookie from "@/helpers/client-cookie";
+import { CookieName, PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { ROUTE } from "@/constants/route";
+import { LoadingPage } from "../pages";
 
 const defaultResponse = {
   success: false,
@@ -52,7 +47,7 @@ const defaultResponse = {
   message: "Something went wrong!",
 };
 
-const AuthContext = createContext<AuthContextType>({
+const AuthContext = createContext<IState & IAction>({
   user: null,
   logged: false,
   loaded: false,
@@ -60,25 +55,24 @@ const AuthContext = createContext<AuthContextType>({
     csrfToken: "",
     accessToken: "",
   },
-  refresh: async () => "",
+
+  refresh: () => Promise.resolve(""),
   setLogged: () => {},
   setLoaded: () => {},
-  login: async () => defaultResponse,
-  addAccount: async () => defaultResponse,
-  signup: async () => defaultResponse,
-  logout: async () => defaultResponse,
-  sendOtpEmail: async () => defaultResponse,
-  recoverPassword: async () => defaultResponse,
-  switchAccount: async () => defaultResponse,
-  reload: async () => {},
+  login: () => Promise.resolve(defaultResponse),
+  addAccount: () => Promise.resolve(defaultResponse),
+  signup: () => Promise.resolve(defaultResponse),
+  logout: () => Promise.resolve(defaultResponse),
+  sendOtpEmail: () => Promise.resolve(defaultResponse),
+  recoverPassword: () => Promise.resolve(defaultResponse),
+  switchAccount: () => Promise.resolve(defaultResponse),
+  reload: () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
 export { useRefreshApi, useRefreshSWR } from "./hooks";
 
-export default function AuthProvider({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function AuthProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   const router = useRouter();
   const [logged, setLogged] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -105,10 +99,7 @@ export default function AuthProvider({
 
   const login = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
-      const { success, message, statusCode, data } = await AuthApi.login(
-        values,
-        token.current.csrfToken
-      );
+      const { success, message, statusCode, data } = await AuthApi.login(values, token.current.csrfToken);
       if (success && data) {
         await indexedDBService.storeAccount(data.user);
         setLogged(true);
@@ -125,10 +116,7 @@ export default function AuthProvider({
 
   const addAccount = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
-      const { success, message, statusCode, data } = await AuthApi.login(
-        values,
-        token.current.csrfToken
-      );
+      const { success, message, statusCode, data } = await AuthApi.login(values, token.current.csrfToken);
       if (success && data) {
         await indexedDBService.storeAccount(data.user);
         setLogged(true);
@@ -163,10 +151,7 @@ export default function AuthProvider({
 
   const signup = useCallback(
     async (values: z.infer<typeof zodSchema.auth.signup>) => {
-      const { success, message, statusCode } = await AuthApi.signup(
-        values,
-        token.current.csrfToken
-      );
+      const { success, message, statusCode } = await AuthApi.signup(values, token.current.csrfToken);
       if (success) {
         setLogged(true);
         token.current.accessToken = "";
@@ -190,6 +175,7 @@ export default function AuthProvider({
       setUser(null);
       token.current.accessToken = "";
       document.cookie = authCookie.remove();
+      
       router.push(ROUTE.LOGIN);
       setTimeout(() => {
         setLoaded(true);
@@ -199,27 +185,21 @@ export default function AuthProvider({
     return { success, message, statusCode };
   }, [router, authCookie, logoutApi, user]);
 
-  const sendOtpEmail = useCallback(
-    async (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => {
-      const res = await AuthApi.sendOtpEmail(values, token.current.csrfToken);
-      return res;
-    },
-    []
-  );
+  const sendOtpEmail = useCallback(async (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => {
+    const res = await AuthApi.sendOtpEmail(values, token.current.csrfToken);
+    return res;
+  }, []);
 
   const recoverPassword = useCallback(
     async (values: z.infer<typeof zodSchema.auth.recoverPassword>) => {
-      const res = await AuthApi.recoverPassword(
-        values,
-        token.current.csrfToken
-      );
+      const res = await AuthApi.recoverPassword(values, token.current.csrfToken);
       if (res.success) router.push(ROUTE.LOGIN);
       return res;
     },
     [router]
   );
 
-  const reload = useCallback(async () => {
+  const reload = useCallback(() => {
     setLoaded(false);
     setTimeout(() => {
       setLoaded(true);
@@ -246,8 +226,8 @@ export default function AuthProvider({
         logout,
         sendOtpEmail,
         recoverPassword,
-        reload,
         switchAccount,
+        reload,
       }}
     >
       {loaded ? children : <LoadingPage />}

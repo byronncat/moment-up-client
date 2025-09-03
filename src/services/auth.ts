@@ -1,8 +1,8 @@
 import type { z } from "zod";
 import type { API, AccountInfo, ErrorResponse } from "api";
 import type { Token } from "@/components/providers/Auth";
+import type zodSchema from "@/libraries/zodSchema";
 
-import zodSchema from "@/libraries/zodSchema";
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
 
@@ -13,7 +13,7 @@ export async function login(
   accessToken: string;
   user: AccountInfo;
 }> {
-  return await fetch(ApiUrl.auth.login, {
+  return fetch(ApiUrl.auth.login, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export async function switchAccount(
   accessToken: string;
   user: AccountInfo;
 }> {
-  return await fetch(ApiUrl.auth.switch, {
+  return fetch(ApiUrl.auth.switch, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export async function signup(
   data: z.infer<typeof zodSchema.auth.signup>,
   csrfToken: string
 ): API {
-  return await fetch(ApiUrl.auth.signup, {
+  return fetch(ApiUrl.auth.signup, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export async function signup(
 }
 
 export async function logout(token: Token): API {
-  return await fetch(ApiUrl.auth.logout, {
+  return fetch(ApiUrl.auth.logout, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -135,7 +135,7 @@ export async function logout(token: Token): API {
 }
 
 export async function csrf() {
-  return await fetch(ApiUrl.auth.csrf, {
+  return fetch(ApiUrl.auth.csrf, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -153,7 +153,7 @@ export async function csrf() {
 }
 
 export async function refresh() {
-  return await fetch(ApiUrl.auth.refresh, {
+  return fetch(ApiUrl.auth.refresh, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -171,7 +171,7 @@ export async function refresh() {
 }
 
 export async function getUser(accessToken: string): API<{ user: AccountInfo }> {
-  return await fetch(ApiUrl.auth.me, {
+  return fetch(ApiUrl.auth.me, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -202,7 +202,7 @@ export async function sendOtpEmail(
   data: z.infer<typeof zodSchema.auth.sendOtpEmail>,
   csrfToken: string
 ): API {
-  return await fetch(ApiUrl.auth.sendOtpEmail, {
+  return fetch(ApiUrl.auth.sendOtpEmail, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -232,7 +232,7 @@ export async function recoverPassword(
   data: z.infer<typeof zodSchema.auth.recoverPassword>,
   csrfToken: string
 ): API {
-  return await fetch(ApiUrl.auth.recoverPassword, {
+  return fetch(ApiUrl.auth.recoverPassword, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { LoadingPage } from "@/components/pages";
-import { ROUTE, LOGIN_ERRORS } from "@/constants/route";
+import { LOGIN_ERRORS, ROUTE } from "@/constants/route";
 import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { LoadingPage } from "@/components/pages";
 
-export default function AuthSuccessPage() {
+export default function FailedLogin() {
   const router = useRouter();
 
   useEffect(() => {

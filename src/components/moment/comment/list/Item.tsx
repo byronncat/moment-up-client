@@ -190,7 +190,6 @@ function MoreMenu({ isDialogOpen, setIsDialogOpen, onDelete }: MoreMenuProps) {
         </VisuallyHidden>
         <div className="flex flex-col">
           <button
-            type="button"
             onClick={handleDelete}
             className={cn(
               "py-3",
@@ -203,7 +202,6 @@ function MoreMenu({ isDialogOpen, setIsDialogOpen, onDelete }: MoreMenuProps) {
           </button>
           <Separator />
           <button
-            type="button"
             onClick={() => setIsDialogOpen(false)}
             className={cn(
               "py-3",

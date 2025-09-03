@@ -149,6 +149,12 @@ const eslintConfig = [
       ],
     },
   },
+  {
+    files: ["src/services/**/*.ts"],
+    rules: {
+      "require-await": "off",
+    },
+  }
 ];
 
 export default eslintConfig;

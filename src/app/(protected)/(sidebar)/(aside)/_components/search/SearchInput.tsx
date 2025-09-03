@@ -68,7 +68,6 @@ export default function SearchInput({
 function ClearButton({ onClear }: Readonly<{ onClear: () => void }>) {
   return (
     <button
-      type="button"
       onClick={onClear}
       className={cn(
         "absolute right-3 top-1/2 -translate-y-1/2 z-10",

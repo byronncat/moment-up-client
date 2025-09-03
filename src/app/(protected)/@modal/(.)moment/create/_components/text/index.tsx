@@ -46,7 +46,6 @@ export default function TextContent() {
       <ControlButtons className="mt-1.5" />
 
       <Button
-        type="button"
         className="absolute bottom-4 right-3"
         onClick={handlePreview}
       >

@@ -111,15 +111,9 @@ export default function LoginDialog({
             </div>
             <div className="flex justify-end gap-3">
               <DialogClose asChild>
-                <Button variant="outline" type="button">
-                  Cancel
-                </Button>
+                <Button variant="outline">Cancel</Button>
               </DialogClose>
-              <Button
-                type="submit"
-                className="w-24"
-                disabled={form.formState.isSubmitting}
-              >
+              <Button className="w-24" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? (
                   <Loader className="animate-spin text-primary-foreground size-5" />
                 ) : (

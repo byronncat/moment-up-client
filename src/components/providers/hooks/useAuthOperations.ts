@@ -1,23 +1,22 @@
 import type { AccountInfo } from "api";
 import type { Token } from "../Auth";
 
-interface TokenRef {
-  current: Token;
-}
-
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import { AuthApi } from "@/services";
 import ClientCookie from "@/helpers/client-cookie";
-import { PAGE_RELOAD_TIME, CookieName } from "@/constants/clientConfig";
+import { CookieName, PAGE_RELOAD_TIME } from "@/constants/clientConfig";
 import { ROUTE } from "@/constants/route";
 
-type AuthHookProps = {
+interface AuthHookProps {
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
   setUser: (user: AccountInfo | null) => void;
-  token: TokenRef;
-};
+
+  token: {
+    current: Token;
+  };
+}
 
 export function useAuthOperations({
   setLogged,

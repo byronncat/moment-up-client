@@ -1,10 +1,8 @@
-import type { NextRequest } from "next/server";
-
-import { NextResponse } from "next/server";
-import { PRIVATE_ROUTES, AUTH_ROUTES, ROUTE } from "@/constants/route";
+import { type NextRequest, NextResponse } from "next/server";
+import { AUTH_ROUTES, PRIVATE_ROUTES, ROUTE } from "@/constants/route";
 import { CookieName } from "@/constants/clientConfig";
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hasSession = request.cookies.has(CookieName.AUTH_GUARD);
 
@@ -14,7 +12,7 @@ export async function middleware(request: NextRequest) {
   if (
     !hasSession &&
     PRIVATE_ROUTES.some(
-      (route) => pathname === route || pathname.startsWith(route + "/")
+      (route) => pathname === route || pathname.startsWith(`${route}/`)
     )
   )
     return NextResponse.redirect(new URL(ROUTE.LOGIN, request.url));
@@ -31,6 +29,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public files (public assets)
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|avif)$).*)",
   ],
 };

@@ -81,7 +81,6 @@ type IconButtonProps = {
 function IconButton({ icon, textColor, count }: IconButtonProps) {
   return (
     <button
-      type="button"
       className={cn(
         "group flex items-center gap-1",
         "cursor-pointer",

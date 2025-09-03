@@ -76,7 +76,6 @@ function ItemButton({
     >
       <button
         onClick={() => onClickItem(item)}
-        type="button"
         aria-label={`Search for ${item.type === SearchItemType.USER ? `@${item.username}` : item.id}`}
       >
         <Item data={item} className="select-none cursor-pointer" />

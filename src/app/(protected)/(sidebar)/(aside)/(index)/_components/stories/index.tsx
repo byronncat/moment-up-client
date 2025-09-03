@@ -123,7 +123,6 @@ function StoryToggleButton({
         "hover:bg-accent/[.05] cursor-pointer",
         "disabled:hover:bg-transparent disabled:cursor-default"
       )}
-      type="button"
       aria-label={hideStories ? "Show stories" : "Hide stories"}
       aria-expanded={!hideStories}
     >
@@ -175,7 +174,6 @@ function NavigationButton({
         !disabled && "hover:bg-accent/[.05] cursor-pointer",
         className
       )}
-      type="button"
       aria-label={`Scroll ${direction}`} // Added accessibility
     >
       <Chevron direction={direction} {...chevronProps} />

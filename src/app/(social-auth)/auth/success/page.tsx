@@ -1,13 +1,13 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/components/providers/Auth";
-import { ROUTE, LOGIN_ERRORS } from "@/constants/route";
 import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { LOGIN_ERRORS, ROUTE } from "@/constants/route";
 import { LoadingPage } from "@/components/pages";
 
-export default function AuthSuccessPage() {
+export default function SuccessfulLogin() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { setLogged, setLoaded } = useAuth();
@@ -25,9 +25,7 @@ export default function AuthSuccessPage() {
       setTimeout(() => {
         setLoaded(true);
       }, PAGE_RELOAD_TIME);
-    } else {
-      router.replace(`${ROUTE.LOGIN}?error=${LOGIN_ERRORS.missing_token}`);
-    }
+    } else router.replace(`${ROUTE.LOGIN}?error=${LOGIN_ERRORS.missing_token}`);
   }, [searchParams, router, setLogged, setLoaded]);
 
   return <LoadingPage />;

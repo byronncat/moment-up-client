@@ -9,7 +9,7 @@ import { useAuth } from "@/components/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import zodSchema from "@/libraries/zodSchema";
 import { toast } from "sonner";
-import { ROUTE, LOGIN_ERRORS } from "@/constants/route";
+import { LOGIN_ERRORS, ROUTE } from "@/constants/route";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -41,7 +41,7 @@ export default function LoginForm() {
   const form = useForm<z.infer<typeof zodSchema.auth.login>>({
     resolver: zodResolver(zodSchema.auth.login),
     defaultValues: {
-      identity: emailParam || "ByronAT445@gmail.com",
+      identity: emailParam ?? "ByronAT445@gmail.com",
       password: "1",
     },
   });

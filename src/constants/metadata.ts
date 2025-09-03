@@ -1,10 +1,14 @@
 import type { Metadata as NextMetadata } from "next";
 
-export type MetadataMap = {
+export interface MetadataMap {
   root: NextMetadata;
+
+  // === Auth ===
   login: NextMetadata;
   signup: NextMetadata;
   forgotPassword: NextMetadata;
+
+  // === Public ===
   explore: NextMetadata;
   search: NextMetadata;
   profile: (username: string) => NextMetadata;
@@ -12,9 +16,12 @@ export type MetadataMap = {
   moment: (username: string, content?: string) => NextMetadata;
   story: NextMetadata;
 
+  // === Private ===
+  messages: NextMetadata;
+
   // === Error ===
   notFound: NextMetadata;
-};
+}
 
 export const Metadata: MetadataMap = {
   root: {
@@ -25,19 +32,21 @@ export const Metadata: MetadataMap = {
     description:
       "A platform for creating, sharing, and discovering engaging moments.",
   },
+
+  // === Auth ===
   login: {
     title: "Login",
-    description: "Login to your account",
+    description: "Sign in to your account and join the world.",
   },
   signup: {
     title: "Sign Up",
-    description:
-      "Create a new account - Username must be at least 2 characters with only letters, numbers, dots, underscores, and hyphens. Password must be at least 8 characters and include 3 of: uppercase, lowercase, numbers.",
+    description: "Create your account and start connecting today.",
   },
   forgotPassword: {
     title: "Recover",
-    description: "Recover your password",
+    description: "Find your account and reset your password.",
   },
+
   explore: {
     title: "Explore",
     description: "Explore page",
@@ -67,9 +76,15 @@ export const Metadata: MetadataMap = {
     description: "Story page",
   },
 
+  // === Private ===
+  messages: {
+    title: "Messages",
+    description: "View and communicate with your friends",
+  },
+
   // === Error ===
   notFound: {
     title: "Page Not Found",
-    description: "Page not found",
+    description: "Sorry, we couldn't find the page you're looking for.",
   },
 };

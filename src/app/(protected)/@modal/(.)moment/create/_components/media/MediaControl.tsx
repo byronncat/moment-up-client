@@ -105,7 +105,6 @@ export default function MediaView({ onBrowse }: MediaViewProps) {
           {files.length < MAX_FILES_LIMIT && (
             <div className="p-2 w-full aspect-square">
               <button
-                type="button"
                 onClick={onBrowse}
                 className={cn(
                   "group size-full rounded-lg",
@@ -139,7 +138,6 @@ export default function MediaView({ onBrowse }: MediaViewProps) {
       </div>
 
       <Button
-        type="button"
         className="absolute bottom-4 right-3"
         onClick={() => setPhase("preview")}
       >

@@ -1,6 +1,7 @@
+// === Types ====
 import type { ErrorResponse } from "api";
-import type { Token } from "../Auth";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AuthenticatedApiFunction<TArgs extends any[], TResult> = (
   ...args: [...TArgs, Token]
 ) => Promise<TResult>;
@@ -16,18 +17,21 @@ interface Dependencies {
   _refresh?: () => Promise<string>;
 }
 
+
+// === Hook ====
 import { useCallback } from "react";
-import { useAuth } from "../Auth";
+import { type Token, useAuth } from "../Auth";
 
 const UNAUTHORIZED_STATUS_CODE = 401;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useRefreshApi<TArgs extends any[], TResult extends ApiResult>(
   apiFunction: AuthenticatedApiFunction<TArgs, TResult>,
   dependencies?: Dependencies
 ) {
   const { token, refresh } = useAuth();
-  const currentToken = dependencies?._token || token;
-  const currentRefresh = dependencies?._refresh || refresh;
+  const currentToken = dependencies?._token ?? token;
+  const currentRefresh = dependencies?._refresh ?? refresh;
 
   const executeWithRefresh = useCallback(
     async (...args: TArgs): Promise<TResult> => {

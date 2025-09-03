@@ -1,12 +1,12 @@
 import { cn } from "@/libraries/utils";
-import { ModeSelection, Brand } from "@/components/common";
+import { Brand, ModeSelection } from "@/components/common";
 import { AsideBackground } from "./_components";
 
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className={cn("w-screen h-screen", "flex")}>
+    <div className={cn("w-screen h-svh", "flex")}>
       <AsideBackground
         className={cn("min-w-[460px] grow", "hidden lg:block")}
       />
@@ -20,7 +20,7 @@ export default function Layout({
             "absolute top-0 left-0 right-0"
           )}
         >
-          <Brand className="h-9 select-none" hyperlink={false} />
+          <Brand className="h-9 select-none" />
           <ModeSelection />
         </div>
         <div className={cn("h-full", "flex justify-center items-center")}>

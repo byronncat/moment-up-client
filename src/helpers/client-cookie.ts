@@ -9,7 +9,7 @@ const isHttps = process.env.NEXT_PUBLIC_HTTPS === "true";
 const DefaultOptions: ClientCookieOptions = {
   secure: isHttps,
   sameSite: isHttps ? "None" : "Lax",
-  maxAge: 7 * 24 * 60 * 60,
+  maxAge: 7 * 24 * 60 * 60, // 7 days
 };
 
 const ClientCookie = (
@@ -22,7 +22,7 @@ const ClientCookie = (
     : "";
 
   return {
-    set: (value: string = ""): string => {
+    set: (value = ""): string => {
       return `${cookieName}=${encodeURIComponent(value)}; path=/; max-age=${options.maxAge}${secure}${sameSite}`;
     },
 

@@ -1,8 +1,8 @@
 import { Metadata } from "@/constants/metadata";
 export const metadata = Metadata.root;
 
-import { AuthProvider, ThemeProvider } from "@/components/providers";
 import { SWRConfig } from "swr";
+import { AuthProvider, ThemeProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "@/styles/globals.css";

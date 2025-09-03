@@ -30,7 +30,6 @@ export default function ResendText({
       </span>
       <button
         disabled={isDisabled}
-        type="button"
         className={cn(
           "relative",
           "cursor-pointer",

@@ -15,17 +15,17 @@ export default function SubmitButton({
 }: SubmitButtonProps) {
   return (
     <Button
-      type="submit"
       disabled={loading}
       className={cn(
         "w-full",
         "text-white font-semibold",
         "flex justify-center items-center",
+        loading && "cursor-wait",
         className
       )}
     >
       <span className="relative">
-        {loading && (
+        {loading ? (
           <Loader
             className={cn(
               "[&&]:size-5",
@@ -33,7 +33,7 @@ export default function SubmitButton({
               "absolute right-[calc(100%+4px)]"
             )}
           />
-        )}
+        ) : null}
         {children}
       </span>
     </Button>

@@ -35,7 +35,6 @@ export default function AudioInfo({
           />
         </div>
         <button
-          type="button"
           onClick={handleRemoveAudio}
           className={cn(
             "p-1.5 -mr-2 flex-shrink-0",

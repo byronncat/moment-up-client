@@ -1,11 +1,14 @@
+// === Configuration ===
 export const FIRST = 0;
 export const VIDEO_SKIP_DURATION = 5;
+export const PAGE_RELOAD_TIME = 500;
 
-// === STORAGE ===
+// === Storage ===
 export enum CookieName {
   AUTH_GUARD = "_guard",
   SIDEBAR = "sidebar-state",
 }
+
 export enum LocalStorageKey {
   STORIES_DISPLAY = "hide-stories",
   THEME = "theme",
@@ -13,6 +16,8 @@ export enum LocalStorageKey {
 
 // === UI ===
 export const styles = {
+  focusVisible:
+    "focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring",
   destructiveDropdownMenuItem:
     "text-destructive focus:text-destructive focus:bg-destructive/10",
 };
@@ -45,8 +50,6 @@ export enum BreakPoint {
   MOBILE = 560,
   XL = 1280,
 }
-
-export const PAGE_RELOAD_TIME = 500;
 
 export const TextBackground = [
   // BLUE_GRADIENT

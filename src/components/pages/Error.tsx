@@ -10,14 +10,16 @@ const errorConfig = {
   "not-found": {
     code: 404,
     title: "Page Not Found",
-    description: "The page you are looking for might have been removed or is unavailable.",
+    description:
+      "The page you are looking for might have been removed or is unavailable.",
     defaultButton: "Go Home",
     defaultRoute: ROUTE.HOME,
   },
   internal: {
     code: 500,
     title: "Internal Server Error",
-    description: "Something went wrong! Please try again later or contact support.",
+    description:
+      "Something went wrong! Please try again later or contact support.",
     defaultButton: "Try Again",
     defaultRoute: ROUTE.HOME,
   },
@@ -31,7 +33,8 @@ const errorConfig = {
   maintenance: {
     code: 503,
     title: "Under Maintenance",
-    description: "We're currently performing maintenance. Please try again later.",
+    description:
+      "We're currently performing maintenance. Please try again later.",
     defaultButton: "Go Home",
     defaultRoute: ROUTE.HOME,
   },
@@ -77,13 +80,27 @@ export default function ErrorPage({
   };
 
   return (
-    <div className={cn("w-screen h-svh", "relative", "flex justify-center items-center")}>
+    <div
+      className={cn(
+        "w-screen h-svh",
+        "relative",
+        "flex justify-center items-center"
+      )}
+    >
       <Brand hyperlink className="absolute top-3 left-4" />
       <main className={cn("flex flex-col items-center", "px-12 text-center")}>
         <Indicator code={config.code} className="mb-4 sm:mb-7" />
-        <Description title={title} description={description} className="mb-6 sm:mb-8" />
+        <Description
+          title={title}
+          description={description}
+          className="mb-6 sm:mb-8"
+        />
         {showButton ? (
-          <Button className="px-8 md:px-12 py-3" variant="outline" onClick={handleNavigation}>
+          <Button
+            className="px-8 md:px-12 py-3"
+            variant="outline"
+            onClick={handleNavigation}
+          >
             {buttonLabel}
           </Button>
         ) : null}
@@ -102,7 +119,8 @@ function Indicator({ code, className }: IndicatorProps) {
     <div
       className={cn("w-full text-center", className)}
       style={{
-        background: "radial-gradient(50% 109137.91% at 50% 50%, rgba(176, 0, 32, 0.2) 0%, rgba(254, 244, 247, 0) 100%)",
+        background:
+          "radial-gradient(50% 109137.91% at 50% 50%, rgba(176, 0, 32, 0.2) 0%, rgba(254, 244, 247, 0) 100%)",
       }}
     >
       <span
@@ -128,10 +146,23 @@ type DescriptionProps = Readonly<{
 function Description({ title, description, className }: DescriptionProps) {
   return (
     <div className={className}>
-      <h1 id="error-title" className={cn("mb-2 sm:mb-5", "font-bold", "text-2xl sm:text-3xl md:text-4xl")}>
+      <h1
+        id="error-title"
+        className={cn(
+          "mb-2 sm:mb-5",
+          "font-bold",
+          "text-2xl sm:text-3xl md:text-4xl"
+        )}
+      >
         {title}
       </h1>
-      <p className={cn("text-muted-foreground", "text-sm sm:text-base md:text-lg")} id="error-description">
+      <p
+        className={cn(
+          "text-muted-foreground",
+          "text-sm sm:text-base md:text-lg"
+        )}
+        id="error-description"
+      >
         {description}
       </p>
     </div>

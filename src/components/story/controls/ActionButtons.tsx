@@ -61,7 +61,6 @@ export default function ActionButtons({
         dark
       >
         <button
-          type="button"
           onClick={onSoundToggle}
           disabled={isSoundOn === null}
           className={buttonStyles}
@@ -87,7 +86,6 @@ export default function ActionButtons({
         dark
       >
         <button
-          type="button"
           onClick={isPlaying ? onPause : onPlay}
           className={buttonStyles}
           aria-label={isPlaying ? "Pause" : "Play"}
@@ -122,7 +120,7 @@ function MoreMenu() {
         dark
       >
         <DropdownMenuTrigger asChild>
-          <button type="button" className={buttonStyles} aria-label="More">
+          <button className={buttonStyles} aria-label="More">
             <MoreHorizontal className="size-6" />
           </button>
         </DropdownMenuTrigger>
