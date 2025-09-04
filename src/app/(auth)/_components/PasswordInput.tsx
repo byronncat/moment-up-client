@@ -30,8 +30,7 @@ const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
                 "text-card-foreground",
                 "opacity-60 hover:opacity-90 hover:dark:opacity-100",
                 "transition-opacity duration-200 ease-in-out",
-                styles.focusVisible,
-                "focus-visible:opacity-100 rounded-r-md"
+                `${styles.focusVisible} focus-visible:opacity-100 rounded-r-md`
               )}
               onClick={() => setShowPassword((prev) => !prev)}
               aria-label={showPassword ? "Hide password" : "Show password"}
