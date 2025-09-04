@@ -9,7 +9,7 @@ import { useAuth } from "@/components/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import zodSchema from "@/libraries/zodSchema";
 import { toast } from "sonner";
-import { LOGIN_ERRORS, ROUTE } from "@/constants/route";
+import { ROUTE, SocialAuthError } from "@/constants/route";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -25,12 +25,18 @@ import styles from "../../_constants/styles";
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const emailParam = searchParams.get("email");
-  const errorParam = searchParams.get("error") as keyof typeof LOGIN_ERRORS;
+  const errorParam = searchParams.get("error") as keyof typeof SocialAuthError;
 
   useEffect(() => {
     if (errorParam) {
-      const errorMessage = LOGIN_ERRORS[errorParam] || LOGIN_ERRORS.default;
-      toast.error(errorMessage || "An error occurred during login");
+      if (errorParam === SocialAuthError.AccountBlocked.code)
+        toast.error(SocialAuthError.AccountBlocked.title, {
+          description: SocialAuthError.AccountBlocked.description,
+        });
+      else
+        toast.error(SocialAuthError.Default.title, {
+          description: SocialAuthError.Default.description,
+        });
 
       const url = new URL(window.location.href);
       url.searchParams.delete("error");

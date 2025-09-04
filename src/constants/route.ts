@@ -51,13 +51,17 @@ export const PRIVATE_ROUTES = [
 export const AUTH_ROUTES = [ROUTE.LOGIN, ROUTE.SIGNUP, ROUTE.FORGOT_PASSWORD];
 export const PUBLIC_ROUTES = [ROUTE.PROFILE(), ROUTE.MOMENT()];
 
-export const LOGIN_ERRORS = {
-  missing_token:
-    "Authentication token is missing. Please try logging in again.",
-  invalid_token: "Invalid authentication token. Please try logging in again.",
-  expired_token: "Authentication session expired. Please try logging in again.",
-  social_auth_failed: "Social authentication failed. Please try again.",
-  default: "Authentication failed. Please try again.",
+export const SocialAuthError = {
+  AccountBlocked: {
+    code: "AccountBlocked",
+    title: "Your account has been blocked",
+    description: "Please contact support for assistance.",
+  },
+  Default: {
+    code: "AuthenticationFailed",
+    title: "Authentication failed",
+    description: "Please try again.",
+  },
 };
 
 export enum SearchParamName {

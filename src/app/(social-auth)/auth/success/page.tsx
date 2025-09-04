@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/components/providers/Auth";
 import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
-import { LOGIN_ERRORS, ROUTE } from "@/constants/route";
+import { ROUTE, SocialAuthError } from "@/constants/route";
 import { LoadingPage } from "@/components/pages";
 
 export default function SuccessfulLogin() {
@@ -25,7 +25,8 @@ export default function SuccessfulLogin() {
       setTimeout(() => {
         setLoaded(true);
       }, PAGE_RELOAD_TIME);
-    } else router.replace(`${ROUTE.LOGIN}?error=${LOGIN_ERRORS.missing_token}`);
+    } else
+      router.replace(`${ROUTE.LOGIN}?error=${SocialAuthError.Default.code}`);
   }, [searchParams, router, setLogged, setLoaded]);
 
   return <LoadingPage />;
