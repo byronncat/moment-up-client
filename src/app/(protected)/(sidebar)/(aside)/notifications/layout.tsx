@@ -8,7 +8,7 @@ import { NavigationBar, type NavItem } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Bell, Settings, User } from "@/components/icons";
 import { ROUTE } from "@/constants/route";
-import { NotificationType } from "@/constants/serverConfig";
+import { NotificationType } from "@/constants/server";
 
 const tabs: NavItem[] = [
   {

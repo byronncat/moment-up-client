@@ -13,7 +13,13 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   {
-    ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"],
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   eslintConfigPrettier,
@@ -89,10 +95,7 @@ const eslintConfig = [
         { props: "never", children: "never" },
       ],
       "react/jsx-fragments": ["error", "syntax"],
-      "react/jsx-no-leaked-render": [
-        "error",
-        { validStrategies: ["ternary"] },
-      ],
+      "react/jsx-no-leaked-render": "error",
       "react/jsx-no-useless-fragment": "warn",
       "react/no-array-index-key": "warn",
       "react/no-unknown-property": ["error", { ignore: ["css"] }],
@@ -136,17 +139,6 @@ const eslintConfig = [
       "jsx-a11y/role-supports-aria-props": "error",
       "jsx-a11y/img-redundant-alt": "error",
       "jsx-a11y/no-access-key": "error",
-
-      // === Performance ===
-      "react/jsx-no-bind": [
-        "error",
-        {
-          ignoreRefs: true,
-          allowArrowFunctions: true,
-          allowFunctions: false,
-          allowBind: false,
-        },
-      ],
     },
   },
   {
@@ -154,7 +146,7 @@ const eslintConfig = [
     rules: {
       "require-await": "off",
     },
-  }
+  },
 ];
 
 export default eslintConfig;

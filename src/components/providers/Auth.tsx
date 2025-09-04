@@ -37,7 +37,7 @@ import { createContext, useCallback, useContext, useMemo, useRef, useState } fro
 import { useAuthOperations, useRefreshApi } from "./hooks";
 import { AuthApi, indexedDBService } from "@/services";
 import ClientCookie from "@/helpers/client-cookie";
-import { CookieName, PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { CookieName, PAGE_RELOAD_TIME } from "@/constants/client";
 import { ROUTE } from "@/constants/route";
 import { LoadingPage } from "../pages";
 

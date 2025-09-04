@@ -10,8 +10,8 @@ import { MomentCell } from "@/components/moment";
 import { SearchItem } from "../../../../_components";
 import LoadingIndicator from "../../LoadingIndicator";
 
-import { SearchCategory } from "@/constants/clientConfig";
-import { SearchItemType } from "@/constants/serverConfig";
+import { SearchCategory } from "@/constants/client.js";
+import { SearchItemType } from "@/constants/server.js";
 import { MEDIA_COLUMNS } from "./constant";
 
 const ItemStyles = cn(

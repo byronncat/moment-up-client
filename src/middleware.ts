@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { AUTH_ROUTES, PRIVATE_ROUTES, ROUTE } from "@/constants/route";
-import { CookieName } from "@/constants/clientConfig";
+import { CookieName } from "@/constants/client";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

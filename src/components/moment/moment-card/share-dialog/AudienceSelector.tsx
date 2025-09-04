@@ -1,4 +1,4 @@
-import { Audience } from "@/constants/serverConfig";
+import { Audience } from "@/constants/server";
 import { AUDIENCE_OPTIONS } from "./shareDialog.constant";
 
 import { cn } from "@/libraries/utils";

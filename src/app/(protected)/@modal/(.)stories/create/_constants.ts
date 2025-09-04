@@ -1,4 +1,4 @@
-import { StoryFontFamily } from "@/constants/serverConfig";
+import { StoryFontFamily } from "@/constants/server";
 import {
   merriweather,
   roboto,

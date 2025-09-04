@@ -47,6 +47,7 @@ export const Metadata: MetadataMap = {
     description: "Find your account and reset your password.",
   },
 
+  // === Public ===
   explore: {
     title: "Explore",
     description: "Explore page",

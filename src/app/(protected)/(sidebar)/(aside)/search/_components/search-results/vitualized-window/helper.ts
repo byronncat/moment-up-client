@@ -3,8 +3,8 @@
 import type { SearchItem, MomentInfo } from "api";
 import type { SectionData } from "./constant";
 
-import { SearchCategory } from "@/constants/clientConfig";
-import { SearchItemType } from "@/constants/serverConfig";
+import { SearchCategory } from "@/constants/client";
+import { SearchItemType } from "@/constants/server";
 import {
   POST_HEADER_HEIGHT,
   POST_FOOTER_HEIGHT,

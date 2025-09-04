@@ -2,7 +2,7 @@ declare module "api" {
   import type {
     SearchItemType,
     StoryBackground,
-  } from "@/constants/serverConfig";
+  } from "@/constants/server";
 
   type API<T = void> = Promise<{
     success: boolean;

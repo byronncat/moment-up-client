@@ -5,7 +5,7 @@ import type { Actions } from "@/components/providers/MomentStorage";
 
 import { useState, useRef, useEffect, memo } from "react";
 import { debounce } from "lodash";
-import { PAGE_RELOAD_TIME, FIRST } from "@/constants/clientConfig";
+import { PAGE_RELOAD_TIME, FIRST } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import InfiniteLoader from "react-window-infinite-loader";

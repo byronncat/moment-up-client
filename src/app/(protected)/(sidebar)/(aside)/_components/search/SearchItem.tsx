@@ -6,7 +6,7 @@ import type {
 } from "api";
 
 import { Format } from "@/utilities";
-import { SearchItemType } from "@/constants/serverConfig";
+import { SearchItemType } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";

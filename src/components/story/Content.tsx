@@ -3,7 +3,7 @@ import type { StoryInfo } from "api";
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { BLUR_DATA_URL, TextBackground } from "@/constants/clientConfig";
+import { BLUR_DATA_URL, TextBackground } from "@/constants/client";
 
 type ContentProps = Readonly<{
   content: StoryInfo["stories"][number]["content"];

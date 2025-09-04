@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
-import { Audience } from "@/constants/serverConfig";
+import { Audience } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import Avatar from "../../../common/Avatar";

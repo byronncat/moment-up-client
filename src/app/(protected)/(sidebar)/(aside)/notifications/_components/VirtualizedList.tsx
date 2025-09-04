@@ -2,7 +2,7 @@
 
 import type { NotificationInfo } from "api";
 import { useState } from "react";
-import { NotificationType } from "@/constants/serverConfig";
+import { NotificationType } from "@/constants/server";
 
 import InfiniteLoader from "react-window-infinite-loader";
 import { List, type RowComponentProps, getScrollbarSize } from "react-window";

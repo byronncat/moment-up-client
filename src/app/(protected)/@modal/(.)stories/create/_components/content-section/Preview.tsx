@@ -1,7 +1,7 @@
 import { useCreateData } from "../../_providers";
 import { cn } from "@/libraries/utils";
 import { Eye } from "@/components/icons";
-import { TextBackground } from "@/constants/clientConfig";
+import { TextBackground } from "@/constants/client";
 import FabricCanvas from "./FabricCanvas";
 import { useEffect, useRef } from "react";
 

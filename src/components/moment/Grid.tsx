@@ -3,7 +3,7 @@
 import type { MomentInfo } from "api";
 import { useEffect, useRef, useState } from "react";
 import { debounce } from "lodash";
-import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { PAGE_RELOAD_TIME } from "@/constants/client";
 
 import InfiniteLoader from "react-window-infinite-loader";
 import { List, type RowComponentProps } from "react-window";

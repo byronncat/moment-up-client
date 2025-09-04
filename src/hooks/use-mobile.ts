@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BreakPoint } from "@/constants/clientConfig";
+import { BreakPoint } from "@/constants/client";
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(

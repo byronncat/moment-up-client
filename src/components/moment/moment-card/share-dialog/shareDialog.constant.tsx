@@ -1,4 +1,4 @@
-import { Audience } from "@/constants/serverConfig";
+import { Audience } from "@/constants/server";
 import { Globe, User, Shield, Lock } from "@/components/icons";
 
 export type AudienceOption = {

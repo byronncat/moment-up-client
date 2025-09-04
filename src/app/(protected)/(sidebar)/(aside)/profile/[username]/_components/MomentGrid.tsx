@@ -7,7 +7,7 @@ import { useMomentStore } from "@/components/providers/MomentStorage";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { useProfile } from "../_providers/ProfileProvider";
 import { ApiUrl } from "@/services/api.constant";
-import { INITIAL_PAGE } from "@/constants/serverConfig";
+import { INITIAL_PAGE } from "@/constants/server";
 import { PROFILE_ZONE_HEIGHT } from "./spacing.constant";
 
 import ProfileZone from "./ProfileZone";

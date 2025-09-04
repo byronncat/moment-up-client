@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from "react";
 import { useLocalStorage } from "usehooks-ts";
-import { LocalStorageKey } from "@/constants/clientConfig";
+import { LocalStorageKey } from "@/constants/client";
 
 type HomeContextType = {
   hideStories: boolean;

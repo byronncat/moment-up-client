@@ -40,11 +40,11 @@ export default function ResendText({
         onClick={handleResend}
       >
         Resend
-        {isDisabled && (
+        {isDisabled ? (
           <span
             className={cn("inline-block", "absolute left-[calc(100%+4px)]")}
           >{`(${resendTime}s)`}</span>
-        )}
+        ) : null}
       </button>
     </div>
   );

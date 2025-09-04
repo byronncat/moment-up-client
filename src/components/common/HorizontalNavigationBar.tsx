@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { FIRST } from "@/constants/clientConfig";
+import { FIRST } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";

@@ -13,8 +13,8 @@ import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { SearchItem } from "../../../_components";
 import { X } from "@/components/icons";
-import { SearchCategory } from "@/constants/clientConfig";
-import { SearchItemType } from "@/constants/serverConfig";
+import { SearchCategory } from "@/constants/client";
+import { SearchItemType } from "@/constants/server";
 
 interface SearchHistoryProps {
   history: TSearchItem[];

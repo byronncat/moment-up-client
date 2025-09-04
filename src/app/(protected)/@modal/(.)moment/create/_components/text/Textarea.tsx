@@ -1,5 +1,5 @@
 import { useMomentData } from "../../_provider/MomentData";
-import { MAX_TEXT_CONTENT_LENGTH } from "@/constants/serverConfig";
+import { MAX_TEXT_CONTENT_LENGTH } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { Textarea as TextareaUI } from "@/components/ui/textarea";

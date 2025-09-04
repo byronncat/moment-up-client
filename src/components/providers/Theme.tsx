@@ -1,5 +1,5 @@
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { LocalStorageKey } from "@/constants/clientConfig";
+import { LocalStorageKey } from "@/constants/client";
 
 export default function ThemeProvider({
   children,

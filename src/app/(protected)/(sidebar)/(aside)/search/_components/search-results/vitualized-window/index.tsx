@@ -14,9 +14,9 @@ import Container from "../Container";
 import VirtualList from "./List";
 import { MagnifyingGlass } from "@/components/icons";
 
-import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
-import { SearchCategory } from "@/constants/clientConfig";
-import { SearchItemType } from "@/constants/serverConfig";
+import { PAGE_RELOAD_TIME } from "@/constants/client";
+import { SearchCategory } from "@/constants/client";
+import { SearchItemType } from "@/constants/server";
 import { ROUTE } from "@/constants/route";
 
 type VirtualizedSearchResultsProps = Readonly<{

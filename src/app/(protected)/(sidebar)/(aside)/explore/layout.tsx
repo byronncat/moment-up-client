@@ -5,7 +5,7 @@ import { cn } from "@/libraries/utils";
 import { PageHeader } from "../_components";
 import { NavigationBar, type NavItem } from "@/components/common";
 import { Image as ImageIcon, User } from "@/components/icons";
-import { ExploreType } from "@/constants/serverConfig";
+import { ExploreType } from "@/constants/server";
 
 const tabs: NavItem[] = [
   {

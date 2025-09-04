@@ -1,7 +1,7 @@
 import { useCreateData } from "../../_providers";
 import { cn } from "@/libraries/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { TextBackground } from "@/constants/clientConfig";
+import { TextBackground } from "@/constants/client";
 
 export default function BackgroundSelector({
   className,

@@ -2,7 +2,7 @@ import type { API, ErrorResponse } from "api";
 import type { Token } from "@/components/providers/Auth";
 
 import { ApiUrl } from "./api.constant";
-import { TrendingReportType } from "@/constants/serverConfig";
+import { TrendingReportType } from "@/constants/server";
 import { parseErrorMessage } from "./helper";
 
 interface ReportTopicDto {

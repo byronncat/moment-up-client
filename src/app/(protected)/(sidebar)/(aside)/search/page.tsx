@@ -8,9 +8,9 @@ import { useDebounceValue } from "usehooks-ts";
 import useSWRInfinite from "swr/infinite";
 import { useRefreshSWR, useAuth } from "@/components/providers";
 import { ApiUrl, SearchSortParams, SearchTypeParams } from "@/services";
-import { SEARCH_DEBOUNCE_TIME, SearchCategory } from "@/constants/clientConfig";
+import { SEARCH_DEBOUNCE_TIME, SearchCategory } from "@/constants/client";
 import { ROUTE, SearchParamName } from "@/constants/route";
-import { INITIAL_PAGE } from "@/constants/serverConfig";
+import { INITIAL_PAGE } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { NavigationBar, type NavItem } from "@/components/common";

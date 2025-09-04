@@ -5,7 +5,7 @@ import { cn } from "@/libraries/utils";
 import { Tooltip } from "@/components/common";
 import { Input, type InputProps } from "@/components/ui/input";
 import { Eye } from "@/components/icons";
-import { styles } from "@/constants/clientConfig";
+import { styles } from "@/constants/client";
 
 const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
   ({ className, ...props }, ref) => {

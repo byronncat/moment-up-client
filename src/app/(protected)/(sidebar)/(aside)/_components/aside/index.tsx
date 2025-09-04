@@ -7,7 +7,7 @@ import Footer from "./Footer";
 import NoAuth from "./NoAuth";
 
 import { cookies } from "next/headers";
-import { CookieName } from "@/constants/clientConfig";
+import { CookieName } from "@/constants/client";
 
 export default async function Aside({
   className,

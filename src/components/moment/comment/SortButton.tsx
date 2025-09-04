@@ -1,5 +1,5 @@
 import { useComment } from "@/components/providers";
-import { SortBy } from "@/constants/clientConfig";
+import { SortBy } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import {

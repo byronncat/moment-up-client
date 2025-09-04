@@ -3,7 +3,7 @@ import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import Logo from "./Logo";
 import { sourceCodePro } from "@/styles/fonts";
-import { styles } from "@/constants/clientConfig";
+import { styles } from "@/constants/client";
 
 type BrandProps = Readonly<{
   hyperlink?: boolean;

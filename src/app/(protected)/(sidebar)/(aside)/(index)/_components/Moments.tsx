@@ -11,7 +11,7 @@ import {
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { useHome } from "../_providers/Home";
 import { ApiUrl } from "@/services";
-import { INITIAL_PAGE } from "@/constants/serverConfig";
+import { INITIAL_PAGE } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { NoContent, ErrorContent } from "@/components/common";

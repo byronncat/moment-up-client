@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { use, useLayoutEffect, useRef, useState } from "react";
 import { useMoment, CommentStorageProvider } from "@/components/providers";
 import { CoreApi } from "@/services";
-import { FIRST } from "@/constants/clientConfig";
+import { FIRST } from "@/constants/client";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";

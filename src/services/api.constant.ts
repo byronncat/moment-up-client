@@ -1,4 +1,4 @@
-import { SERVER_HOST_URL } from "@/constants/serverConfig";
+import { SERVER_HOST_URL } from "@/constants/server";
 
 export const ApiUrl = {
   // === Auth ===

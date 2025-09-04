@@ -4,7 +4,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import clsx from "clsx";
 
 import { cn } from "@/libraries/utils";
-import { styles } from "@/constants/clientConfig";
+import { styles } from "@/constants/client";
 
 const buttonVariants = cva(
   clsx(

@@ -1,5 +1,5 @@
 import type { MomentInfo, CommentInfo } from "api";
-import { Audience } from "@/constants/serverConfig";
+import { Audience } from "@/constants/server";
 
 import type { Token } from "@/components/providers/Auth";
 import type { API, ErrorResponse } from "api";

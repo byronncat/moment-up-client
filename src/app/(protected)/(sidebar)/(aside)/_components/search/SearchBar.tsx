@@ -7,8 +7,8 @@ import { useRef } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 import { useSearch } from "./hooks/useSearch";
 import { ROUTE } from "@/constants/route";
-import { SearchCategory } from "@/constants/clientConfig";
-import { SearchItemType } from "@/constants/serverConfig";
+import { SearchCategory } from "@/constants/client";
+import { SearchItemType } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import SearchInput from "./SearchInput";

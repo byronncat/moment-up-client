@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
 import ClientCookie from "@/helpers/client-cookie";
-import { BreakPoint, CookieName } from "@/constants/clientConfig";
+import { BreakPoint, CookieName } from "@/constants/client";
 
 export function useResponsiveSidebar() {
   const { open, setOpen } = useSidebar();

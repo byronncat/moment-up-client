@@ -1,6 +1,6 @@
 import type { MomentInfo } from "api";
 import { ROUTE } from "@/constants/route";
-import { BLUR_DATA_URL } from "@/constants/clientConfig";
+import { BLUR_DATA_URL } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import Image from "next/image";

@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { cn } from "@/libraries/utils";
 import { Sidebar } from "./_components";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { CookieName } from "@/constants/clientConfig";
+import { CookieName } from "@/constants/client";
 
 type LayoutProps = Readonly<{
   children: React.ReactNode;

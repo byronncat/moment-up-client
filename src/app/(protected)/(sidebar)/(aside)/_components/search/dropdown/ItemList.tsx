@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { X } from "@/components/icons";
 import Item from "../SearchItem";
 import ClearButton from "./ClearButton";
-import { SearchItemType } from "@/constants/serverConfig";
+import { SearchItemType } from "@/constants/server";
 
 type ItemListProps = {
   query: string;

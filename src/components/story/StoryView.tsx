@@ -17,7 +17,7 @@ import {
   ProgressBar,
   UserInfo,
 } from "./controls";
-import { FIRST } from "@/constants/clientConfig";
+import { FIRST } from "@/constants/client";
 
 type StoryViewProps = Readonly<{
   loading: boolean;

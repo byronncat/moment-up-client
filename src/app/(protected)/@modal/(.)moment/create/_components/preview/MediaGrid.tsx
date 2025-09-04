@@ -8,7 +8,7 @@ import { CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { AspectRatioHelper } from "@/components/moment/moment-card/media-grid/aspectRatio.helper";
 import { Play } from "@/components/icons";
-import { BLUR_DATA_URL } from "@/constants/clientConfig";
+import { BLUR_DATA_URL } from "@/constants/client";
 
 const FIRST = 0;
 const SECOND = 1;

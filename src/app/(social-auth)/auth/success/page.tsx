@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/components/providers/Auth";
-import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { PAGE_RELOAD_TIME } from "@/constants/client";
 import { ROUTE, SocialAuthError } from "@/constants/route";
 import { LoadingPage } from "@/components/pages";
 

@@ -5,8 +5,8 @@
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { SERVER_HOST_URL } from "@/constants/serverConfig";
-import { styles } from "@/constants/clientConfig";
+import { SERVER_HOST_URL } from "@/constants/server";
+import { styles } from "@/constants/client";
 
 async function handleGoogleLogin() {
   "use server";

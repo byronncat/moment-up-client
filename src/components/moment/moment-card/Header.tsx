@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import { MoreHorizontal, User, Ban, Flag } from "@/components/icons";
-import { styles } from "@/constants/clientConfig";
+import { styles } from "@/constants/client";
 
 type HeaderProps = Readonly<{
   data: MomentInfo;

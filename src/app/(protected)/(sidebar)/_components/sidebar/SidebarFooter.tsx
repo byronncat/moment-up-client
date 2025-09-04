@@ -30,7 +30,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
-import { styles } from "@/constants/clientConfig";
+import { styles } from "@/constants/client";
 
 type SidebarFooterProps = Readonly<{
   open: boolean;

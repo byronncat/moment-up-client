@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import { AuthApi } from "@/services";
 import ClientCookie from "@/helpers/client-cookie";
-import { CookieName, PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { CookieName, PAGE_RELOAD_TIME } from "@/constants/client";
 import { ROUTE } from "@/constants/route";
 
 interface AuthHookProps {

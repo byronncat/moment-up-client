@@ -1,6 +1,6 @@
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { styles } from "@/constants/clientConfig";
+import { styles } from "@/constants/client";
 
 type ActionableTextProps = Readonly<{
   path?: string;

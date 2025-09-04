@@ -13,7 +13,7 @@ import {
   useMemo,
 } from "react";
 import { nanoid } from "nanoid";
-import { Privacy } from "@/constants/serverConfig";
+import { Privacy } from "@/constants/server";
 
 export const MAX_FILES_LIMIT = 12;
 

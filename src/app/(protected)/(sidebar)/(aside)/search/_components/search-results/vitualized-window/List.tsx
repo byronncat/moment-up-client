@@ -12,8 +12,8 @@ import InfiniteLoader from "react-window-infinite-loader";
 import { List, getScrollbarSize } from "react-window";
 import VirtualItem from "./Item";
 
-import { SearchCategory } from "@/constants/clientConfig";
-import { SearchItemType } from "@/constants/serverConfig";
+import { SearchCategory } from "@/constants/client";
+import { SearchItemType } from "@/constants/server";
 import {
   MEDIA_COLUMNS,
   FIRST_HEADER_TOP_PADDING,

@@ -12,7 +12,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { Play, Chevron } from "@/components/icons";
-import { BLUR_DATA_URL, VIDEO_SKIP_DURATION } from "@/constants/clientConfig";
+import { BLUR_DATA_URL, VIDEO_SKIP_DURATION } from "@/constants/client";
 
 type MediaCarouselProps = Readonly<{
   files: FileInfo[] | undefined;

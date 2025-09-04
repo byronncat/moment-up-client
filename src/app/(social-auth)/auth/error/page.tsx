@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { ROUTE } from "@/constants/route";
-import { PAGE_RELOAD_TIME } from "@/constants/clientConfig";
+import { PAGE_RELOAD_TIME } from "@/constants/client";
 import { LoadingPage } from "@/components/pages";
 
 export default function FailedLogin() {

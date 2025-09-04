@@ -1,5 +1,5 @@
-import type { SearchCategory } from "./clientConfig";
-import { type ExploreType, NotificationType } from "./serverConfig";
+import type { SearchCategory } from "./client";
+import { type ExploreType, NotificationType } from "./server";
 
 export const ROUTE = {
   // === Auth ===

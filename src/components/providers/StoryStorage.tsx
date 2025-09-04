@@ -13,7 +13,7 @@ import { useAuth } from "@/components/providers";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
 import { ROUTE } from "@/constants/route";
-import { FIRST } from "@/constants/clientConfig";
+import { FIRST } from "@/constants/client";
 
 type StoryContextType = {
   myStory: StoryNotificationInfo | null;

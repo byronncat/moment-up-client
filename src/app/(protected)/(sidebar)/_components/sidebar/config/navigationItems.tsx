@@ -1,6 +1,6 @@
 import type { NavItem } from "../types";
 import { ROUTE } from "@/constants/route";
-import { ExploreType } from "@/constants/serverConfig";
+import { ExploreType } from "@/constants/server";
 import {
   Message,
   Compass,

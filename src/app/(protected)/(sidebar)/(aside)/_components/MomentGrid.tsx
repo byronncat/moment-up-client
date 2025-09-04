@@ -6,7 +6,7 @@ import useSWRInfinite from "swr/infinite";
 import { useMomentStore } from "@/components/providers/MomentStorage";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { useSidebar } from "@/components/ui/sidebar";
-import { INITIAL_PAGE } from "@/constants/serverConfig";
+import { INITIAL_PAGE } from "@/constants/server";
 import {
   TOP_PADDING,
   BOTTOM_PADDING,

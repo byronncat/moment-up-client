@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { SuggestApi, ApiUrl } from "@/services";
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
-import { TrendingReportType } from "@/constants/serverConfig";
+import { TrendingReportType } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";

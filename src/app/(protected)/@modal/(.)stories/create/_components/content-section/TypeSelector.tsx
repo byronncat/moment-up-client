@@ -2,8 +2,8 @@ import { useRef } from "react";
 import { cn } from "@/libraries/utils";
 import { Image as ImageIcon } from "@/components/icons";
 
-import { StoryBackground } from "@/constants/serverConfig";
-import { TextBackground } from "@/constants/clientConfig";
+import { StoryBackground } from "@/constants/server";
+import { TextBackground } from "@/constants/client";
 import { useCreateData } from "../../_providers";
 
 export default function TypeSelector() {

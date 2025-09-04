@@ -7,7 +7,7 @@ import {
   useEffect,
   useCallback,
 } from "react";
-import { StoryBackground } from "@/constants/serverConfig";
+import { StoryBackground } from "@/constants/server";
 import { Font } from "../_constants";
 
 type StoryType = "text" | "image" | "video" | null;

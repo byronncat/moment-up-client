@@ -11,7 +11,7 @@ import { SWRFetcherWithToken } from "@/libraries/swr";
 import { toast } from "sonner";
 import { ApiUrl, UserApi } from "@/services";
 import { ROUTE } from "@/constants/route";
-import { FIRST } from "@/constants/clientConfig";
+import { FIRST } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";

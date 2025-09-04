@@ -7,7 +7,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { ApiUrl } from "@/services";
-import { INITIAL_PAGE, NotificationType } from "@/constants/serverConfig";
+import { INITIAL_PAGE, NotificationType } from "@/constants/server";
 
 import { ErrorContent, NoContent } from "@/components/common";
 import { NotificationSkeleton } from "../_components";

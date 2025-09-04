@@ -1,5 +1,5 @@
 import { useMomentData } from "../../_provider/MomentData";
-import { Privacy } from "@/constants/serverConfig";
+import { Privacy } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";

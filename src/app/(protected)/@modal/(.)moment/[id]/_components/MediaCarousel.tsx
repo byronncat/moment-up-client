@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/carousel";
 import { SkipButtons } from "@/app/(protected)/(sidebar)/(aside)/moment/[id]/_components/MediaCarousel";
 import { Play } from "@/components/icons";
-import { BLUR_DATA_URL, VIDEO_SKIP_DURATION } from "@/constants/clientConfig";
+import { BLUR_DATA_URL, VIDEO_SKIP_DURATION } from "@/constants/client";
 
 type MediaCarouselProps = Readonly<{
   files: FileInfo[];

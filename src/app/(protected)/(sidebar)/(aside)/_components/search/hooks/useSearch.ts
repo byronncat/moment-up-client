@@ -5,8 +5,8 @@ import { useDebounceValue } from "usehooks-ts";
 import { useRefreshApi } from "@/components/providers";
 import { toast } from "sonner";
 import { SearchApi } from "@/services";
-import { SEARCH_DEBOUNCE_TIME } from "@/constants/clientConfig";
-import { INITIAL_PAGE } from "@/constants/serverConfig";
+import { SEARCH_DEBOUNCE_TIME } from "@/constants/client";
+import { INITIAL_PAGE } from "@/constants/server";
 
 interface UseSearchState {
   items: SearchItem[] | null;

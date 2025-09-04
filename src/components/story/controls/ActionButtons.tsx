@@ -16,7 +16,7 @@ import {
   Bug,
   Flag,
 } from "@/components/icons";
-import { styles } from "@/constants/clientConfig";
+import { styles } from "@/constants/client";
 import { usePathname } from "next/navigation";
 import Tooltip from "@/components/common/Tooltip";
 

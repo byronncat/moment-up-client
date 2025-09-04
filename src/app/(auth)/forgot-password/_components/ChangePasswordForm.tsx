@@ -53,14 +53,14 @@ export default function ChangePasswordForm({
     else toast.error(message || "Failed to change password");
   }
 
-  async function handleResend() {
+  function handleResend() {
     toast.promise(sendOtpEmail({ identity: defaultValue }), {
       loading: "Sending recovery email...",
-      success: (res) => {
-        if (res.success) return "Recovery email sent!";
-        throw new Error(res.message);
+      success: ({ success, message }) => {
+        if (success) return "Recovery email sent!";
+        throw new Error(message);
       },
-      error: (err) => err.message,
+      error: ({ message }) => message,
     });
   }
 
