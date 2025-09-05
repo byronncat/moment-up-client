@@ -185,6 +185,11 @@
     font-family: var(--font-montserrat);
   }
 
+  a {
+    @apply outline-2 outline-offset-1 outline-transparent focus-visible:outline-accent/20;
+    @apply focus-visible:ring-1 focus-visible:ring-ring;
+  }
+
   /**
   * `display: table` ensures our content div will match the size of its children in both
   * horizontal and vertical axis so we can determine if scroll width/height changed and
@@ -198,6 +203,15 @@
 }
 
 @layer utilities {
+  .focus-indicator {
+    @apply outline-2 outline-offset-1 outline-transparent focus-visible:outline-accent/20;
+    @apply focus-visible:ring-1 focus-visible:ring-ring;
+  }
+
+  .destructive-item {
+    @apply text-destructive focus:text-destructive focus:bg-destructive/10;
+  }
+
   .scrollbar-hide {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -237,6 +251,9 @@
 
 @layer base {
   :root {
+    --radius: 0.5rem;
+
+    /* Light mode */
     --background: 216 24% 96%;
     --foreground: 240 5.9% 3.3%;
     --card: 0 0% 100%;
@@ -256,21 +273,23 @@
     --border: 240 5.9% 90%;
     --input: 0 0% 100%;
     --ring: 0 1% 34%;
+
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 210 9% 91%;
     --sidebar-accent-foreground: 0 0% 21%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-border: 240 5.9% 90%;
+    --sidebar-ring: 0 1% 34%;
 
+    /* Forced dark mode */
     --background-dark: 240 2% 11%;
     --foreground-dark: 214 13.7% 90%;
     --card-dark: 200 4% 15%;
@@ -290,22 +309,25 @@
     --border-dark: 240 5% 20%;
     --input-dark: 220 7% 8%;
     --ring-dark: 0 0% 90%;
+
     --chart-1-dark: 220 70% 50%;
     --chart-2-dark: 160 60% 45%;
     --chart-3-dark: 30 80% 55%;
     --chart-4-dark: 280 65% 60%;
     --chart-5-dark: 340 75% 55%;
+
     --sidebar-background-dark: 240 5.9% 10%;
     --sidebar-foreground-dark: 240 4.8% 95.9%;
     --sidebar-primary-dark: 224.3 76.3% 48%;
     --sidebar-primary-foreground-dark: 0 0% 100%;
     --sidebar-accent-dark: 240 1% 20%;
     --sidebar-accent-foreground-dark: 240 4.8% 95.9%;
-    --sidebar-border-dark: 240 3.7% 15.9%;
-    --sidebar-ring-dark: 217.2 91.2% 59.8%;
+    --sidebar-border-dark: 240 5% 20%;
+    --sidebar-ring-dark: 0 0% 90%;
   }
 
   .dark {
+    /* Dark mode */
     --background: 240 2% 11%;
     --foreground: 214 13.7% 90%;
     --card: 200 4% 15%;
@@ -325,19 +347,21 @@
     --border: 240 5% 20%;
     --input: 220 7% 8%;
     --ring: 0 0% 90%;
+
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 1% 20%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-border: 240 5% 20%;
+    --sidebar-ring: 0 0% 90%;
   }
 }
 

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { VariantProps, cva } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import { PanelLeft } from "@/components/icons";
 
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -356,7 +356,9 @@ const SidebarInput = React.forwardRef<
       ref={ref}
       data-sidebar="input"
       className={cn(
-        "h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+        "h-8 w-full",
+        "bg-background shadow-none",
+        "focus-visible:ring-2 focus-visible:ring-sidebar-ring",
         className
       )}
       {...props}
@@ -419,7 +421,8 @@ const SidebarContent = React.forwardRef<
       ref={ref}
       data-sidebar="content"
       className={cn(
-        "flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
+        "flex min-h-0 flex-1 flex-col gap-2",
+        "overflow-auto group-data-[collapsible=icon]:overflow-hidden",
         className
       )}
       {...props}
@@ -454,7 +457,12 @@ const SidebarGroupLabel = React.forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        "duration-200 flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-hidden ring-sidebar-ring transition-[margin,opa] ease-linear focus-visible:ring-2",
+        "flex h-8 shrink-0 items-center",
+        "rounded-md px-2",
+        "text-xs font-medium text-sidebar-foreground/70",
+        "outline-hidden ring-sidebar-ring",
+        "transition-[margin,opa] duration-200 ease-linear",
+        "focus-visible:ring-2",
         // "[&>svg]:size-4",
         "[&>svg]:shrink-0",
         "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
@@ -477,7 +485,14 @@ const SidebarGroupAction = React.forwardRef<
       ref={ref}
       data-sidebar="group-action"
       className={cn(
-        "absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-hidden ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2",
+        "absolute right-3 top-3.5",
+        "flex items-center justify-center",
+        "aspect-square w-5 rounded-md p-0",
+        "text-sidebar-foreground",
+        "outline-hidden ring-sidebar-ring",
+        "transition-transform",
+        "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        "focus-visible:ring-2",
         // "[&>svg]:size-4",
         "[&>svg]:shrink-0",
         "after:absolute after:-inset-2 laptop:after:hidden",
@@ -535,10 +550,11 @@ const sidebarMenuButtonVariants = cva(
     "flex w-full items-center gap-2",
     "overflow-hidden rounded-md",
     "text-left text-sm",
-    "outline-hidden ring-sidebar-ring",
     "transition-[width,height,padding]",
     "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-    "focus-visible:ring-2",
+    // "outline-hidden ring-sidebar-ring",
+    // "focus-visible:ring-2",
+    "focus-indicator",
     "active:bg-sidebar-accent active:text-sidebar-accent-foreground",
     "disabled:pointer-events-none disabled:opacity-50",
     "group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50",
@@ -697,12 +713,12 @@ const SidebarMenuSkeleton = React.forwardRef<
       className={cn("rounded-md h-8 flex gap-2 px-2 items-center", className)}
       {...props}
     >
-      {showIcon && (
+      {showIcon ? (
         <Skeleton
           className="size-4 rounded-md"
           data-sidebar="menu-skeleton-icon"
         />
-      )}
+      ) : null}
       <Skeleton
         className="h-4 flex-1 max-w-(--skeleton-width)"
         data-sidebar="menu-skeleton-text"

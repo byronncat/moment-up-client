@@ -3,7 +3,6 @@ import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import Logo from "./Logo";
 import { sourceCodePro } from "@/styles/fonts";
-import { styles } from "@/constants/client";
 
 type BrandProps = Readonly<{
   hyperlink?: boolean;
@@ -22,7 +21,7 @@ export default function Brand({
         href={ROUTE.HOME}
         className={cn(
           "cursor-pointer",
-          `${styles.focusVisible} rounded-md`,
+          "focus-indicator rounded-md",
           className
         )}
       >

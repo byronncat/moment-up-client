@@ -7,7 +7,6 @@ import { ActionableText, PageTitle } from "../_components";
 import { ChangePasswordForm, SendOtpForm } from "./_components";
 import styles from "../_constants/styles";
 import { ROUTE } from "@/constants/route";
-import { styles as globalStyles } from "@/constants/client";
 
 export default function VerifyRecoveryPage() {
   const [user, setUser] = useState<string>("");
@@ -24,7 +23,7 @@ export default function VerifyRecoveryPage() {
               "mt-5 float-right",
               "text-muted-foreground text-sm",
               "hover:text-primary hover:underline",
-              `${globalStyles.focusVisible} rounded-md`,
+              "focus-indicator rounded-md"
             )}
           >
             Back to Login

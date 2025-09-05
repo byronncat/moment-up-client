@@ -5,12 +5,13 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { ModeSelection, Tooltip } from "@/components/common";
-import { Settings, Menu, Palette, LogOut, Archive } from "@/components/icons";
+import { Archive, LogOut, Menu, Palette, Settings } from "@/components/icons";
 import {
   SidebarFooter as SidebarFooterUI,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   AlertDialog,
@@ -30,13 +31,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
-import { styles } from "@/constants/client";
 
-type SidebarFooterProps = Readonly<{
-  open: boolean;
-}>;
-
-export default function SidebarFooter({ open }: SidebarFooterProps) {
+export default function SidebarFooter() {
+  const { open } = useSidebar();
   const { logout } = useAuth();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
@@ -49,141 +46,12 @@ export default function SidebarFooter({ open }: SidebarFooterProps) {
     <>
       <SidebarFooterUI className="mb-6">
         <SidebarMenu>
-          {open ? (
-            <>
-              <SidebarMenuItem>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <SidebarMenuButton className="cursor-pointer px-2">
-                      <span className="flex items-center justify-center w-5">
-                        <Menu className="size-4" />
-                      </span>
-                      <span>More</span>
-                    </SidebarMenuButton>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="start"
-                    side="top"
-                    className="w-56"
-                  >
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem asChild className="cursor-pointer">
-                        <Link href={ROUTE.ARCHIVE("bookmarks")}>
-                          <div className="flex items-center gap-2">
-                            <Archive className="size-4" />
-                            <span>Archive</span>
-                          </div>
-                        </Link>
-                      </DropdownMenuItem>
-                      <ModeSelection
-                        asChild
-                        showTooltip={false}
-                        side="right"
-                        sideOffset={8}
-                      >
-                        <DropdownMenuItem asChild className="cursor-pointer">
-                          <div className="flex items-center gap-2">
-                            <Palette className="size-4" />
-                            <span>Appearance</span>
-                          </div>
-                        </DropdownMenuItem>
-                      </ModeSelection>
-                      <DropdownMenuItem asChild className="cursor-pointer">
-                        <Link href={ROUTE.SETTINGS}>
-                          <div className="flex items-center gap-2">
-                            <Settings className="size-4" />
-                            <span>Settings</span>
-                          </div>
-                        </Link>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className={cn(
-                        "cursor-pointer",
-                        styles.destructiveDropdownMenuItem
-                      )}
-                      onClick={() => setShowLogoutDialog(true)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <LogOut className="size-4" />
-                        <span>Logout</span>
-                      </div>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </SidebarMenuItem>
-            </>
-          ) : (
-            <>
-              <SidebarMenuItem>
-                <DropdownMenu>
-                  <Tooltip content="More" side="right" sideOffset={6}>
-                    <DropdownMenuTrigger asChild>
-                      <SidebarMenuButton className="cursor-pointer">
-                        <span className="flex items-center justify-center px-2">
-                          <Menu className="size-4" />
-                        </span>
-                        <span>More</span>
-                      </SidebarMenuButton>
-                    </DropdownMenuTrigger>
-                  </Tooltip>
-                  <DropdownMenuContent
-                    align="start"
-                    side="top"
-                    className="w-56"
-                  >
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem asChild className="cursor-pointer">
-                        <Link href={ROUTE.ARCHIVE("bookmarks")}>
-                          <div className="flex items-center gap-2">
-                            <Archive className="size-4" />
-                            <span>Archive</span>
-                          </div>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <ModeSelection
-                          asChild
-                          showTooltip={false}
-                          side="right"
-                          sideOffset={8}
-                        >
-                          <DropdownMenuItem asChild className="cursor-pointer">
-                            <div className="flex items-center gap-2">
-                              <Palette className="size-4" />
-                              <span>Appearance</span>
-                            </div>
-                          </DropdownMenuItem>
-                        </ModeSelection>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild className="cursor-pointer">
-                        <Link href={ROUTE.SETTINGS}>
-                          <div className="flex items-center gap-2">
-                            <Settings className="size-4" />
-                            <span>Settings</span>
-                          </div>
-                        </Link>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className={cn(
-                        "cursor-pointer",
-                        styles.destructiveDropdownMenuItem
-                      )}
-                      onClick={() => setShowLogoutDialog(true)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <LogOut className="size-4" />
-                        <span>Logout</span>
-                      </div>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </SidebarMenuItem>
-            </>
-          )}
+          <SidebarMenuItem>
+            <SidebarTrigger
+              isOpen={open}
+              onLogout={() => setShowLogoutDialog(true)}
+            />
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooterUI>
 
@@ -202,5 +70,88 @@ export default function SidebarFooter({ open }: SidebarFooterProps) {
         </AlertDialogContent>
       </AlertDialog>
     </>
+  );
+}
+
+type FooterProps = Readonly<{
+  isOpen: boolean;
+  onLogout: () => void;
+}>;
+
+function SidebarTrigger({ isOpen, onLogout }: FooterProps) {
+  const trigger = (
+    <DropdownMenuTrigger asChild>
+      <SidebarMenuButton className={cn("cursor-pointer", isOpen && "px-2")}>
+        <span
+          className={cn(
+            "flex items-center justify-center",
+            isOpen ? "w-5" : "px-2"
+          )}
+        >
+          <Menu className="size-4" />
+        </span>
+        <span>More</span>
+      </SidebarMenuButton>
+    </DropdownMenuTrigger>
+  );
+
+  return (
+    <DropdownMenu>
+      {isOpen ? (
+        trigger
+      ) : (
+        <Tooltip content="More" side="right" sideOffset={6}>
+          {trigger}
+        </Tooltip>
+      )}
+      <MoreDropdownContent isOpen={isOpen} onLogout={onLogout} />
+    </DropdownMenu>
+  );
+}
+
+function MoreDropdownContent({ isOpen, onLogout }: FooterProps) {
+  return (
+    <DropdownMenuContent
+      align="end"
+      side={isOpen ? "top" : "right"}
+      className="w-56"
+    >
+      <DropdownMenuGroup>
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href={ROUTE.ARCHIVE("bookmarks")}>
+            <div className="flex items-center gap-2">
+              <Archive className="size-4" />
+              <span>Archive</span>
+            </div>
+          </Link>
+        </DropdownMenuItem>
+        <ModeSelection asChild showTooltip={false} side="right" sideOffset={8}>
+          <DropdownMenuItem asChild className="cursor-pointer">
+            <div className="flex items-center gap-2">
+              <Palette className="size-4" />
+              <span>Appearance</span>
+            </div>
+          </DropdownMenuItem>
+        </ModeSelection>
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href={ROUTE.SETTINGS}>
+            <div className="flex items-center gap-2">
+              <Settings className="size-4" />
+              <span>Settings</span>
+            </div>
+          </Link>
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        className={cn("cursor-pointer", "destructive-item")}
+        onClick={onLogout}
+      >
+        <div className="flex items-center gap-2">
+          <LogOut className="size-4" />
+          <span>Logout</span>
+        </div>
+      </DropdownMenuItem>
+    </DropdownMenuContent>
   );
 }

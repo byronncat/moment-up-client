@@ -1,4 +1,4 @@
-import type { SearchItem as TSearchItem, MomentInfo } from "api";
+import type { MomentInfo, SearchItem as TSearchItem } from "api";
 import type { SectionData } from "./constant.ts";
 import type { RowComponentProps } from "react-window";
 
@@ -10,8 +10,8 @@ import { MomentCell } from "@/components/moment";
 import { SearchItem } from "../../../../_components";
 import LoadingIndicator from "../../LoadingIndicator";
 
-import { SearchCategory } from "@/constants/client.js";
-import { SearchItemType } from "@/constants/server.js";
+import type { SearchCategory } from "@/constants/client";
+import { SearchItemType } from "@/constants/server";
 import { MEDIA_COLUMNS } from "./constant";
 
 const ItemStyles = cn(
@@ -99,7 +99,7 @@ const Item = memo(
 
     if (!section.item) return null;
 
-    const item = section.item;
+    const { item } = section;
 
     if (item.type === SearchItemType.POST) {
       return (

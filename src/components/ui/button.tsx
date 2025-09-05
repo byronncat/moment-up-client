@@ -4,7 +4,6 @@ import { type VariantProps, cva } from "class-variance-authority";
 import clsx from "clsx";
 
 import { cn } from "@/libraries/utils";
-import { styles } from "@/constants/client";
 
 const buttonVariants = cva(
   clsx(
@@ -13,7 +12,7 @@ const buttonVariants = cva(
     "whitespace-nowrap rounded-md",
     "text-sm font-medium",
     "transition-colors duration-200 ease-in-out",
-    styles.focusVisible,
+    "focus-indicator",
     "disabled:pointer-events-none disabled:opacity-50",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0"
     // "[&_svg]:size-4",

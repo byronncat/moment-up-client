@@ -2,12 +2,12 @@ import type { NavItem } from "../types";
 import { ROUTE } from "@/constants/route";
 import { ExploreType } from "@/constants/server";
 import {
-  Message,
-  Compass,
-  SquarePlus,
   Bell,
-  User,
+  Compass,
   House,
+  Message,
+  SquarePlus,
+  User,
 } from "@/components/icons";
 import { Search } from "lucide-react";
 

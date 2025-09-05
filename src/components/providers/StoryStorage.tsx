@@ -1,6 +1,27 @@
 "use client";
 
+// === Type ====
 import type { StoryInfo, StoryNotificationInfo } from "api";
+
+interface StoryState {
+  myStory: StoryNotificationInfo | null;
+  otherStories: StoryNotificationInfo[];
+  viewingStory: StoryInfo | null;
+  allStories: StoryNotificationInfo[];
+}
+
+interface StoryAction {
+  setViewingStory: (story: StoryInfo) => void;
+  setStories: (stories: StoryNotificationInfo[]) => void;
+  deleteStory: (storyId: string) => Promise<void>;
+  nextUserStory: (direction?: "next" | "prev") => {
+    username: string;
+    id: string;
+  } | null;
+  muteStory: (username: string) => void;
+}
+
+// === Provider ====
 import { usePathname, useRouter } from "next/navigation";
 import {
   createContext,
@@ -13,25 +34,8 @@ import { useAuth } from "@/components/providers";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
 import { ROUTE } from "@/constants/route";
-import { FIRST } from "@/constants/client";
 
-type StoryContextType = {
-  myStory: StoryNotificationInfo | null;
-  otherStories: StoryNotificationInfo[];
-  viewingStory: StoryInfo | null;
-  allStories: StoryNotificationInfo[];
-
-  setViewingStory: (story: StoryInfo) => void;
-  setStories: (stories: StoryNotificationInfo[]) => void;
-  deleteStory: (storyId: string) => Promise<void>;
-  nextUserStory: (direction?: "next" | "prev") => {
-    username: string;
-    id: string;
-  } | null;
-  muteStory: (username: string) => void;
-};
-
-const StoryDataContext = createContext<StoryContextType>({
+const StoryDataContext = createContext<StoryState & StoryAction>({
   myStory: null,
   otherStories: [],
   viewingStory: null,
@@ -103,16 +107,15 @@ export default function StoryDataProvider({
       if (isMyStory) {
         if (direction === "next")
           return {
-            username: otherStories[FIRST].username,
-            id: otherStories[FIRST].id,
+            username: otherStories[0].username,
+            id: otherStories[0].id,
           };
-        else {
-          const LAST = otherStories.length - 1;
-          return {
-            username: otherStories[LAST].username,
-            id: otherStories[LAST].id,
-          };
-        }
+
+        const LAST = otherStories.length - 1;
+        return {
+          username: otherStories[LAST].username,
+          id: otherStories[LAST].id,
+        };
       }
 
       let nextIndex: number;
@@ -122,23 +125,20 @@ export default function StoryDataProvider({
             username: myStory?.username,
             id: myStory?.id,
           };
-        else
-          nextIndex =
-            currentStoryIndex < otherStories.length - 1
-              ? currentStoryIndex + 1
-              : 0;
-      } else {
-        if (myStory && currentStoryIndex === 0)
-          return {
-            username: myStory?.username,
-            id: myStory?.id,
-          };
-        else
-          nextIndex =
-            currentStoryIndex > 0
-              ? currentStoryIndex - 1
-              : otherStories.length - 1;
-      }
+        nextIndex =
+          currentStoryIndex < otherStories.length - 1
+            ? currentStoryIndex + 1
+            : 0;
+      } else if (myStory && currentStoryIndex === 0)
+        return {
+          username: myStory?.username,
+          id: myStory?.id,
+        };
+      else
+        nextIndex =
+          currentStoryIndex > 0
+            ? currentStoryIndex - 1
+            : otherStories.length - 1;
 
       const nextStory = otherStories[nextIndex];
       if (nextStory) {
@@ -178,7 +178,7 @@ export default function StoryDataProvider({
           setMyStory(null);
           if (otherStories.length > 0)
             changeUrl(
-              ROUTE.STORY(otherStories[FIRST].username, otherStories[FIRST].id),
+              ROUTE.STORY(otherStories[0].username, otherStories[0].id),
               "navigateFully"
             );
           else setTimeout(() => router.back(), 0);

@@ -6,7 +6,6 @@ import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { SERVER_HOST_URL } from "@/constants/server";
-import { styles } from "@/constants/client";
 
 async function handleGoogleLogin() {
   "use server";
@@ -28,7 +27,7 @@ export default async function GoogleButton() {
           "bg-white text-black/[.8]",
           "dark:hover:bg-white/[.7] hover:bg-black/[.08]",
           "transition-colors duration-200 ease-in-out",
-          styles.focusVisible
+          "focus-indicator"
         )}
       >
         <Image src={GoogleUrl} alt="Google icon" width={20} height={20} />

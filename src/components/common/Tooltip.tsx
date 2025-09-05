@@ -2,9 +2,9 @@
 
 import { cn } from "@/libraries/utils";
 import {
-  Tooltip as TooltipUI,
   TooltipContent,
   TooltipTrigger,
+  Tooltip as TooltipUI,
 } from "@/components/ui/tooltip";
 
 const tooltipStyles = (forceDark: boolean) => ({

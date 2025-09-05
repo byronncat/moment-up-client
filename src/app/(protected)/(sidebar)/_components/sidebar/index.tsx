@@ -9,8 +9,8 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import {
-  Sidebar as SidebarUI,
   SidebarTrigger,
+  Sidebar as SidebarUI,
   useSidebar,
 } from "@/components/ui/sidebar";
 import MobileHeader from "./MobileHeader";
@@ -33,7 +33,7 @@ export default function Sidebar() {
         className={cn(
           "text-primary",
           "font-bold text-2xl tracking-wide",
-          "px-4 py-2 h-fit",
+          "px-4 py-3 h-fit",
           "hidden xl:block",
           "select-none",
           sourceCodePro.className
@@ -48,12 +48,12 @@ export default function Sidebar() {
   return (
     <>
       <SidebarUI collapsible="icon">
-        <SidebarHeader open={open} />
-        <SidebarBody items={items} open={open} />
-        <SidebarFooter open={open} />
+        <SidebarHeader />
+        <SidebarBody items={items} />
+        <SidebarFooter />
       </SidebarUI>
 
-      {isAboveXl && (
+      {isAboveXl ? (
         <div
           className={cn(
             "fixed top-5 left-14 z-10",
@@ -63,11 +63,11 @@ export default function Sidebar() {
               : "opacity-100 translate-x-0"
           )}
         >
-          <SidebarTrigger className="text-foreground" />
+          <SidebarTrigger className="text-foreground" tabIndex={open ? -1 : 0} />
         </div>
-      )}
+      ) : null}
 
-      {isMobile && (
+      {isMobile ? (
         <>
           <MobileHeader
             notificationItem={notificationItem}
@@ -75,7 +75,7 @@ export default function Sidebar() {
           />
           <MobileNav items={items.slice(0, 5)} />
         </>
-      )}
+      ) : null}
     </>
   );
 }

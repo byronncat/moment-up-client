@@ -9,41 +9,43 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { sourceCodePro } from "@/styles/fonts";
 
-type SidebarHeaderProps = Readonly<{
-  open: boolean;
-}>;
-
-export default function SidebarHeader({ open }: SidebarHeaderProps) {
+export default function SidebarHeader() {
+  const { open } = useSidebar();
   return (
-    <SidebarHeaderUI className="pt-5">
-      <div className="flex justify-between items-center">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              className="hover:bg-transparent active:bg-transparent"
-            >
+    <SidebarHeaderUI
+      className={cn(
+        "pt-5",
+        open && "px-4",
+        "flex flex-row justify-between items-center"
+      )}
+    >
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            className="hover:bg-transparent active:bg-transparent"
+            asChild
+          >
+            <Link href={ROUTE.HOME}>
               {!open && <Logo />}
-              <Link href={ROUTE.HOME}>
-                <div
-                  className={cn(
-                    "text-primary",
-                    "font-bold text-2xl tracking-wide",
-                    !open && "hidden",
-                    sourceCodePro.className
-                  )}
-                >
-                  MomentUp
-                </div>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-        {open && <SidebarTrigger className="text-foreground mr-3" />}
-      </div>
+              <div
+                className={cn(
+                  "text-primary",
+                  "font-bold text-2xl tracking-wide",
+                  !open && "hidden",
+                  sourceCodePro.className
+                )}
+              >
+                MomentUp
+              </div>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+      {open ? <SidebarTrigger className="text-foreground" /> : null}
     </SidebarHeaderUI>
   );
 }

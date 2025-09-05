@@ -10,14 +10,15 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 type SidebarBodyProps = Readonly<{
   items: NavItem[];
-  open: boolean;
 }>;
 
-export default function SidebarBody({ items, open }: SidebarBodyProps) {
+export default function SidebarBody({ items }: SidebarBodyProps) {
+  const { open } = useSidebar();
   return (
     <SidebarContent>
       <SidebarGroup>

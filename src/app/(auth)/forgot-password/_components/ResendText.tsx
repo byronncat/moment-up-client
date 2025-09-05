@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/libraries/utils";
-import { styles } from "@/constants/client";
 
 const RESEND_TIME = 60; // seconds
 export default function ResendText({
@@ -37,7 +36,7 @@ export default function ResendText({
           "text-primary font-semibold",
           "hover:opacity-60 transition-opacity duration-150 ease-in-out",
           "disabled:opacity-50 disabled:cursor-default",
-          `${styles.focusVisible} rounded-md`,
+          "focus-indicator rounded-md"
         )}
         onClick={handleResend}
       >

@@ -3,8 +3,7 @@
 import type { MomentInfo } from "api";
 
 import { createContext, useCallback, useContext, useMemo } from "react";
-import { useStore } from "@tanstack/react-store";
-import { Store } from "@tanstack/react-store";
+import { Store, useStore } from "@tanstack/react-store";
 import { toast } from "sonner";
 import { CoreApi, UserApi } from "@/services";
 import { Link } from "@/components/icons";
@@ -18,9 +17,9 @@ type MomentState = {
     block: boolean;
     report: boolean;
   };
-  undoBuffer: {
-    blockedMoments: { index: number; moment: MomentInfo }[];
-  }[];
+  undoBuffer: Array<{
+    blockedMoments: Array<{ index: number; moment: MomentInfo }>;
+  }>;
 };
 
 export type Actions = {
@@ -52,10 +51,10 @@ const momentActions = {
   },
 
   setCurrentIndex: (index: number | string) => {
-    const state = momentStore.state;
+    const { moments } = momentStore.state;
     const isId = typeof index === "string";
     if (isId) {
-      const moment = state.moments?.find((moment) => moment.id === index);
+      const moment = moments?.find((moment) => moment.id === index);
       if (moment) {
         momentStore.setState((state) => ({
           ...state,
@@ -150,9 +149,9 @@ const momentActions = {
   ) => {
     if (!options?.remove) return;
 
-    const state = momentStore.state;
+    const { undoBuffer, moments } = momentStore.state;
     if (options?.undo) {
-      const lastState = state.undoBuffer[state.undoBuffer.length - 1];
+      const lastState = undoBuffer[undoBuffer.length - 1];
       if (lastState) {
         momentStore.setState((currentState) => {
           const newMoments = [...(currentState.moments ?? [])];
@@ -166,10 +165,10 @@ const momentActions = {
           };
         });
       }
-    } else if (state.moments) {
-      const blockedMoments: { index: number; moment: MomentInfo }[] = [];
-      for (let index = state.moments.length - 1; index >= 0; index--) {
-        const moment = state.moments[index];
+    } else if (moments) {
+      const blockedMoments: Array<{ index: number; moment: MomentInfo }> = [];
+      for (let index = moments.length - 1; index >= 0; index--) {
+        const moment = moments[index];
         if (moment.user.id === userId) blockedMoments.push({ index, moment });
       }
 
@@ -199,22 +198,26 @@ const momentActions = {
   },
 
   report: async (momentId: string) => {
-    const state = momentStore.state;
-    if (state.actionLoading.report) return;
+    const { actionLoading } = momentStore.state;
+    if (actionLoading.report) return;
 
     momentActions.setActionLoading("report", true);
-    toast.promise(CoreApi.report(momentId), {
-      loading: "Reporting...",
-      success: () => "Reported",
-      error: () => "Something went wrong!",
-    });
-    momentActions.setActionLoading("report", false);
+    
+    try {
+      await toast.promise(CoreApi.report(momentId), {
+        loading: "Reporting...",
+        success: () => "Reported",
+        error: () => "Something went wrong!",
+      });
+    } finally {
+      momentActions.setActionLoading("report", false);
+    }
   },
 
   share: (momentId: MomentInfo["id"]) => {
     const url = window.location.href;
     const { origin } = new URL(url);
-    navigator.clipboard.writeText(origin + "/moment/" + momentId);
+    navigator.clipboard.writeText(`${origin}/moment/${momentId}`);
     toast(
       <div className="flex items-center gap-2">
         <Link size={16} />
@@ -224,13 +227,12 @@ const momentActions = {
   },
 
   block: async (momentId: string, options?: { remove?: boolean }) => {
-    const state = momentStore.state;
-    if (state.actionLoading.block) return;
+    const { actionLoading, moments } = momentStore.state;
+    if (actionLoading.block) return;
 
     momentActions.setActionLoading("block", true);
 
-    const userId = state.moments?.find((moment) => moment.id === momentId)?.user
-      .id;
+    const userId = moments?.find((moment) => moment.id === momentId)?.user.id;
     if (!userId) return;
 
     momentActions.toggleBlockState(userId, { remove: options?.remove });

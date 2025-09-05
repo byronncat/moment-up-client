@@ -18,8 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { MoreHorizontal, User, Ban, Flag } from "@/components/icons";
-import { styles } from "@/constants/client";
+import { Ban, Flag, MoreHorizontal, User } from "@/components/icons";
 
 type HeaderProps = Readonly<{
   data: MomentInfo;
@@ -85,7 +84,7 @@ export default function Header({
         </HoverableComponent>
       </div>
 
-      {currentUser && (
+      {currentUser ? (
         <MoreMenu
           isOpen={isDropdownOpen}
           setOpen={setIsDropdownOpen}
@@ -93,9 +92,9 @@ export default function Header({
           momentId={momentId}
           actions={actions}
         />
-      )}
+      ) : null}
 
-      {sideElement && <div className="flex gap-2">{sideElement}</div>}
+      {sideElement ? <div className="flex gap-2">{sideElement}</div> : null}
     </div>
   );
 }
@@ -150,14 +149,14 @@ function MoreMenu({ isOpen, setOpen, user, momentId, actions }: MoreMenuProps) {
         )}
         <DropdownMenuItem
           onClick={() => handleAction(() => actions.block(momentId))}
-          className={cn("cursor-pointer", styles.destructiveDropdownMenuItem)}
+          className={cn("cursor-pointer", "destructive-item")}
         >
           <Ban className="size-4 shrink-0" />
           <span className="truncate">Block @{user.username}</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => handleAction(() => actions.report(momentId))}
-          className={cn("cursor-pointer", styles.destructiveDropdownMenuItem)}
+          className={cn("cursor-pointer", "destructive-item")}
         >
           <Flag className="size-4 shrink-0" />
           <span className="truncate">Report post</span>

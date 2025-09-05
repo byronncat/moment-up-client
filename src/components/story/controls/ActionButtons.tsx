@@ -7,16 +7,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Pause,
-  Play,
-  Volume,
-  MoreHorizontal,
-  Link,
-  Trash,
   Bug,
   Flag,
+  Link,
+  MoreHorizontal,
+  Pause,
+  Play,
+  Trash,
+  Volume,
 } from "@/components/icons";
-import { styles } from "@/constants/client";
 import { usePathname } from "next/navigation";
 import Tooltip from "@/components/common/Tooltip";
 
@@ -162,7 +161,7 @@ function MyMenuContent({ storyId }: MyMenuContentProps) {
       </DropdownMenuItem>
       <DropdownMenuItem
         onClick={handleDelete}
-        className={cn(menuItemStyles, styles.destructiveDropdownMenuItem)}
+        className={cn(menuItemStyles, "destructive-item")}
       >
         <Trash className="size-4" />
         <span>Delete story</span>
@@ -207,7 +206,7 @@ function OtherMenuContent({ ownBy }: Readonly<{ ownBy: string }>) {
       </DropdownMenuItem>
       <DropdownMenuItem
         onClick={handleReport}
-        className={cn(menuItemStyles, styles.destructiveDropdownMenuItem)}
+        className={cn(menuItemStyles, "destructive-item")}
         disabled
       >
         <Flag className="size-4" />
