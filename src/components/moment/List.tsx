@@ -3,9 +3,9 @@
 import type { MomentInfo } from "api";
 import type { Actions } from "@/components/providers/MomentStorage";
 
-import { useState, useRef, useEffect, memo } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { debounce } from "lodash";
-import { PAGE_RELOAD_TIME, FIRST } from "@/constants/client";
+import { PAGE_RELOAD_TIME } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import InfiniteLoader from "react-window-infinite-loader";
@@ -85,7 +85,7 @@ export default function MomentList({
     let height = HEADER_HEIGHT + FOOTER_HEIGHT + ITEM_GAP + 2 * BORDER_SIZE;
     if (moment.post.files?.length) {
       if (moment.post.files.length === 1) {
-        const file = moment.post.files[FIRST];
+        const file = moment.post.files[0];
         switch (file.aspectRatio) {
           case "1:1":
             height += width; // Square
@@ -140,48 +140,46 @@ export default function MomentList({
         loadMoreItems={loadMoreItems}
       >
         {({ onItemsRendered, ref }) => (
-          <>
-            <List
-              listRef={(list) => {
-                ref(list?.element);
-                listRef.current = list;
-              }}
-              rowCount={itemCount}
-              onRowsRendered={({ startIndex, stopIndex }) =>
-                onItemsRendered({
-                  overscanStartIndex: startIndex,
-                  overscanStopIndex: stopIndex,
-                  visibleStartIndex: startIndex,
-                  visibleStopIndex: stopIndex,
-                })
-              }
-              rowHeight={(index) =>
-                getItemSize(index, containerRef.current?.clientWidth ?? 0)
-              }
-              style={{
-                height: containerRef.current?.clientHeight ?? 0,
-                width: containerRef.current?.clientWidth ?? 0,
-              }}
-              onScroll={(event) =>
-                updateScrollbarRef.current?.(event.currentTarget.scrollTop)
-              }
-              rowProps={
-                {
-                  itemCount,
-                  topChildren: listOptions.topChildren,
-                  isItemLoaded,
-                  items,
-                  actions,
-                  onClick: onItemClick,
-                  itemOptions,
-                } as any
-              }
-              rowComponent={Item}
-              className={cn("scrollbar-hide", listOptions.listClassName)}
-              aria-label="Moments story"
-              aria-busy={isNextPageLoading}
-            />
-          </>
+          <List
+            listRef={(list) => {
+              ref(list?.element);
+              listRef.current = list;
+            }}
+            rowCount={itemCount}
+            onRowsRendered={({ startIndex, stopIndex }) =>
+              onItemsRendered({
+                overscanStartIndex: startIndex,
+                overscanStopIndex: stopIndex,
+                visibleStartIndex: startIndex,
+                visibleStopIndex: stopIndex,
+              })
+            }
+            rowHeight={(index) =>
+              getItemSize(index, containerRef.current?.clientWidth ?? 0)
+            }
+            style={{
+              height: containerRef.current?.clientHeight ?? 0,
+              width: containerRef.current?.clientWidth ?? 0,
+            }}
+            onScroll={(event) =>
+              updateScrollbarRef.current?.(event.currentTarget.scrollTop)
+            }
+            rowProps={
+              {
+                itemCount,
+                topChildren: listOptions.topChildren,
+                isItemLoaded,
+                items,
+                actions,
+                onClick: onItemClick,
+                itemOptions,
+              } as any
+            }
+            rowComponent={Item}
+            className={cn("scrollbar-hide", listOptions.listClassName)}
+            aria-label="Moments story"
+            aria-busy={isNextPageLoading}
+          />
         )}
       </InfiniteLoader>
     </div>

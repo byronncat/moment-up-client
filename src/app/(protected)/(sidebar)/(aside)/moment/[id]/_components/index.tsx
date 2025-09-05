@@ -1,17 +1,20 @@
 "use client";
 
+import type { CoreApi } from "@/services";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { use, useLayoutEffect, useRef, useState } from "react";
-import { useMoment, CommentStorageProvider } from "@/components/providers";
-import { CoreApi } from "@/services";
-import { FIRST } from "@/constants/client";
+import { CommentStorageProvider, useMoment } from "@/components/providers";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { CommentZone, MomentHeader } from "@/components/moment";
-import { MomentButtonGroup } from "@/components/moment";
+import {
+  CommentZone,
+  MomentButtonGroup,
+  MomentHeader,
+} from "@/components/moment";
 import TextContent from "./TextContent";
 import MediaCarousel from "./MediaCarousel";
 import CommentInput from "./CommentInput";
@@ -43,7 +46,7 @@ export default function MomentDetails({ initialRes }: MomentDetailsProps) {
   const [initialIndex] = useState(imgIndex ? parseInt(imgIndex) : 0);
 
   useLayoutEffect(() => {
-    setCurrentIndex(FIRST);
+    setCurrentIndex(0);
     if (moment) setMoments([moment]);
   }, [moment, setMoments, setCurrentIndex]);
 

@@ -1,6 +1,5 @@
-import { ErrorResponse } from "api";
-import { FIRST } from "@/constants/client";
+import type { ErrorResponse } from "api";
 
 export function parseErrorMessage(error: ErrorResponse) {
-  return Array.isArray(error.message) ? error.message[FIRST] : error.message;
+  return Array.isArray(error.message) ? error.message[0] : error.message;
 }

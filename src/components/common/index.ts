@@ -9,7 +9,6 @@ export { default as NavigationBar } from "./HorizontalNavigationBar";
 export { default as MenuItem } from "./MenuItem";
 export { default as Logo } from "./Logo";
 export { default as Modal } from "./Modal";
-export { default as ModeSelection } from "./ModeSelection";
 export { default as NoContent } from "./NoContent";
 export { default as Tooltip } from "./Tooltip";
 export { default as UserInfoCard } from "./UserInfoCard";

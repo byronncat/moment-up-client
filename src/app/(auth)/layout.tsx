@@ -1,6 +1,6 @@
 import { cn } from "@/libraries/utils";
-import { Brand, ModeSelection } from "@/components/common";
-import { AsideBackground } from "./_components";
+import { Brand } from "@/components/common";
+import { AsideBackground, ThemeSelection } from "./_components";
 
 export default function Layout({
   children,
@@ -21,7 +21,7 @@ export default function Layout({
           )}
         >
           <Brand className="h-9 select-none" />
-          <ModeSelection />
+          <ThemeSelection />
         </div>
         <div className={cn("h-full", "flex justify-center items-center")}>
           {children}

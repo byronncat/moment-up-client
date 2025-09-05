@@ -2,7 +2,6 @@
 
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { FIRST } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -27,7 +26,7 @@ export default function HorizontalNavigationBar({
   initialValue,
 }: NavigationProps) {
   const pathname = usePathname();
-  const [activeTab, setActiveTab] = useState(initialValue || items[FIRST]?.id);
+  const [activeTab, setActiveTab] = useState(initialValue ?? items[0]?.id);
 
   return (
     <div className={cn("w-full", "border-b border-border", className)}>
@@ -86,11 +85,11 @@ function Item({ data, active }: ItemProps) {
           {data.label}
         </span>
       </div>
-      {active && (
+      {active ? (
         <span
           className={cn("absolute bottom-0 left-0", "w-full h-0.5 bg-primary")}
         />
-      )}
+      ) : null}
     </div>
   );
 }

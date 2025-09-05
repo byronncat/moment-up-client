@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useStory } from "@/components/providers";
 import { useContentProgress, useSound } from "./hooks";
 
@@ -10,14 +10,13 @@ import { ROUTE } from "@/constants/route";
 
 import Container from "./Container";
 import Content from "./Content";
-import { ConfirmState, LoadingState, ErrorState } from "./state";
+import { ConfirmState, ErrorState, LoadingState } from "./state";
 import {
   ActionButtons,
   NavigateButtons,
   ProgressBar,
   UserInfo,
 } from "./controls";
-import { FIRST } from "@/constants/client";
 
 type StoryViewProps = Readonly<{
   loading: boolean;
@@ -43,10 +42,10 @@ export default function StoryView({
   }, [pathname]);
 
   const currentStory = useMemo(() => {
-    const totalStories = viewingStory?.stories.length ?? FIRST;
+    const totalStories = viewingStory?.stories.length ?? 0;
 
     if (currentStoryIndex >= totalStories) {
-      const index = totalStories - 1 > FIRST ? totalStories - 1 : FIRST;
+      const index = totalStories - 1 > 0 ? totalStories - 1 : 0;
       setCurrentStoryIndex(index);
       return viewingStory?.stories.at(index);
     }

@@ -1,6 +1,7 @@
 import type { NavItem } from "./types";
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
+import { MOBILE_NAV_HEIGHT } from "@/constants/client";
 
 type MobileHeaderProps = Readonly<{
   notificationItem: NavItem;
@@ -17,15 +18,19 @@ export default function MobileHeader({
   return (
     <div
       className={cn(
+        "px-4",
         "fixed top-0 left-0 right-0 z-20",
         "bg-background border-b border-border",
-        "flex items-center justify-between",
-        "p-2 px-4 h-14"
+        "flex items-center justify-between"
       )}
+      style={{ height: MOBILE_NAV_HEIGHT }}
     >
       <Link
         href="/"
-        className={cn("text-primary font-semibold text-lg", "focus-indicator rounded-md")}
+        className={cn(
+          "text-primary font-semibold text-lg",
+          "focus-indicator rounded-md"
+        )}
       >
         MomentUp
       </Link>

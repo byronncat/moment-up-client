@@ -1,5 +1,5 @@
 import HomeProvider from "./_providers/Home";
-import { Stories, Moments } from "./_components";
+import { Moments, Stories } from "./_components";
 
 export default function HomePage() {
   return (

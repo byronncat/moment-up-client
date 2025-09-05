@@ -3,7 +3,7 @@
 import type { UserCardDisplayInfo } from "api";
 
 import { useRouter } from "next/navigation";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { useHover } from "usehooks-ts";
 import { useAuth, useRefreshApi } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
@@ -11,7 +11,6 @@ import { SWRFetcherWithToken } from "@/libraries/swr";
 import { toast } from "sonner";
 import { ApiUrl, UserApi } from "@/services";
 import { ROUTE } from "@/constants/route";
-import { FIRST } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -56,7 +55,6 @@ function SuggestedUserItem({
   const [user, setUser] = useState(_user);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const isFollowing = user.isFollowing || false;
 
   const follow = useRefreshApi(UserApi.follow);
   async function handleFollow(event: React.MouseEvent) {
@@ -64,13 +62,13 @@ function SuggestedUserItem({
     event.stopPropagation();
     if (isLoading) return;
     setIsLoading(true);
-    setUser((prev) => ({ ...prev, isFollowing: !isFollowing }));
+    setUser((prev) => ({ ...prev, isFollowing: !user.isFollowing }));
     const { success, message } = await follow({
       targetId: user.id,
-      shouldFollow: !isFollowing,
+      shouldFollow: !user.isFollowing,
     });
     if (!success) {
-      setUser((prev) => ({ ...prev, isFollowing }));
+      setUser((prev) => ({ ...prev, isFollowing: user.isFollowing }));
       toast.error(message || "Failed to follow/unfollow user");
     }
     setIsLoading(false);
@@ -131,13 +129,13 @@ function SuggestedUserItem({
             )}
           >
             {user.followedBy
-              ? `Followed by ${user.followedBy.displayItems[FIRST].displayName}`
+              ? `Followed by ${user.followedBy.displayItems[0].displayName}`
               : `Popular user`}
           </span>
         </div>
       </div>
 
-      <FollowButton isFollowing={isFollowing} onFollow={handleFollow} />
+      <FollowButton isFollowing={!!user.isFollowing} onFollow={handleFollow} />
     </div>
   );
 }

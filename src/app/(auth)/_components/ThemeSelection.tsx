@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { useIsClient } from "usehooks-ts";
 
 import { cn } from "@/libraries/utils";
-import Tooltip from "./Tooltip";
+import { Tooltip } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LaptopMinimal, Moon, Sun } from "@/components/icons";
 
-type ModeSelectionProps = Readonly<{
+type ThemeSelectionProps = Readonly<{
   children?: React.ReactNode;
   side?: "top" | "bottom" | "left" | "right";
   sideOffset?: number;
@@ -23,14 +23,14 @@ type ModeSelectionProps = Readonly<{
   className?: string;
 }>;
 
-export default function ModeSelection({
+export default function ThemeSelection({
   children,
   side = "bottom",
   sideOffset = 4,
   asChild,
   showTooltip = true,
   className,
-}: ModeSelectionProps) {
+}: ThemeSelectionProps) {
   const { theme, setTheme } = useTheme();
   const isClient = useIsClient();
 
@@ -68,10 +68,7 @@ export default function ModeSelection({
             <Button
               variant="ghost"
               size="icon"
-              className={cn(
-                "size-9 rounded-full relative",
-                className
-              )}
+              className={cn("size-9 rounded-full relative", className)}
               aria-label="Toggle theme"
             >
               <Sun

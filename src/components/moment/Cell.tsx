@@ -1,12 +1,12 @@
 import type { MomentInfo } from "api";
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
-import { BLUR_DATA_URL, FIRST } from "@/constants/client";
+import { BLUR_DATA_URL } from "@/constants/client";
 
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/libraries/utils";
-import { Heart, Message, Clone, Video } from "@/components/icons";
+import { Clone, Heart, Message, Video } from "@/components/icons";
 
 type MomentCellProps = Readonly<{
   data: MomentInfo;
@@ -20,7 +20,7 @@ export default function MomentCell({
   className,
 }: MomentCellProps) {
   if (!data.post.files || data.post.files.length === 0) return null;
-  const coverFile = data.post.files[FIRST];
+  const coverFile = data.post.files[0];
 
   return (
     <div
@@ -36,7 +36,7 @@ export default function MomentCell({
         {coverFile.type === "image" ? (
           <Image
             src={coverFile.url}
-            alt={data.post.text || "Moment image"}
+            alt={data.post.text ?? "Moment image"}
             fill
             sizes="240px"
             className="size-full object-cover object-top"

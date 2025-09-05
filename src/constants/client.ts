@@ -1,7 +1,8 @@
 // === Configuration ===
-export const FIRST = 0;
 export const VIDEO_SKIP_DURATION = 5;
 export const PAGE_RELOAD_TIME = 500;
+
+export const MOBILE_NAV_HEIGHT = "52px";
 
 export enum SortBy {
   NEWEST = "newest",

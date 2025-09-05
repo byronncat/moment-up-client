@@ -101,7 +101,7 @@
   }
 
   /* for px-based sizing */
-  --breakpoint-laptop: 560px;
+  --breakpoint-laptop: 601px;
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
