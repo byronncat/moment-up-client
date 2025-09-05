@@ -1,11 +1,12 @@
 import { useAuth } from "@/components/providers";
 import { useState } from "react";
 import { ROUTE } from "@/constants/route";
+import { useTheme } from "next-themes";
+import { useIsClient } from "usehooks-ts";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { ModeSelection, Tooltip } from "@/components/common";
-import { Archive, LogOut, Menu, Palette, Settings } from "@/components/icons";
+import { Tooltip } from "@/components/common";
 import {
   SidebarFooter as SidebarFooterUI,
   SidebarMenu,
@@ -26,11 +27,24 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
+import {
+  Archive,
+  LaptopMinimal,
+  LogOut,
+  Menu,
+  Moon,
+  Palette,
+  Settings,
+  Sun,
+} from "@/components/icons";
 
 export default function SidebarFooter() {
   const { open } = useSidebar();
@@ -125,14 +139,15 @@ function MoreDropdownContent({ isOpen, onLogout }: FooterProps) {
             </div>
           </Link>
         </DropdownMenuItem>
-        <ModeSelection asChild showTooltip={false} side="right" sideOffset={8}>
-          <DropdownMenuItem asChild className="cursor-pointer">
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger className="cursor-pointer">
             <div className="flex items-center gap-2">
               <Palette className="size-4" />
               <span>Appearance</span>
             </div>
-          </DropdownMenuItem>
-        </ModeSelection>
+          </DropdownMenuSubTrigger>
+          <ThemeSubmenu />
+        </DropdownMenuSub>
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link href={ROUTE.SETTINGS}>
             <div className="flex items-center gap-2">
@@ -153,5 +168,54 @@ function MoreDropdownContent({ isOpen, onLogout }: FooterProps) {
         </div>
       </DropdownMenuItem>
     </DropdownMenuContent>
+  );
+}
+
+function ThemeSubmenu() {
+  const { theme, setTheme } = useTheme();
+  const isClient = useIsClient();
+
+  if (!isClient) return null;
+
+  const themeOptions = [
+    {
+      label: "Light",
+      icon: <Sun type="regular" className="size-4" />,
+      selected: theme === "light",
+      onClick: () => setTheme("light"),
+    },
+    {
+      label: "Dark",
+      icon: <Moon type="regular" className="size-4" />,
+      selected: theme === "dark",
+      onClick: () => setTheme("dark"),
+    },
+    {
+      label: "System",
+      icon: <LaptopMinimal className="size-4" />,
+      selected: theme === "system",
+      onClick: () => setTheme("system"),
+    },
+  ];
+
+  return (
+    <DropdownMenuSubContent sideOffset={6}>
+      {themeOptions.map((option) => (
+        <DropdownMenuItem
+          key={option.label}
+          disabled={option.selected}
+          onClick={option.onClick}
+          className={cn(
+            "cursor-pointer",
+            option.selected && "animate-pulse bg-accent/[.1]"
+          )}
+        >
+          <div className="flex items-center gap-2">
+            {option.icon}
+            <span>{option.label}</span>
+          </div>
+        </DropdownMenuItem>
+      ))}
+    </DropdownMenuSubContent>
   );
 }

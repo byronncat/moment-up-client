@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { cn } from "@/libraries/utils";
-import { Sidebar } from "./_components";
+import Sidebar from "./_components/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { CookieName } from "@/constants/client";
 
