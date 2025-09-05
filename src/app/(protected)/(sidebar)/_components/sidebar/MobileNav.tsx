@@ -25,7 +25,7 @@ export default function MobileNav({ items }: MobileNavProps) {
             href={item.url}
             className={cn(
               "flex items-center justify-center size-10",
-              "hover:bg-accent/[.1] rounded-md",
+              "hover:bg-accent/[.1] focus-indicator rounded-md",
               "transition-colors duration-150 ease-in-out",
               isActive && "pointer-events-none"
             )}

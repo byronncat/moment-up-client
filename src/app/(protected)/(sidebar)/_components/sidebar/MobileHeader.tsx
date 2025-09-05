@@ -25,7 +25,7 @@ export default function MobileHeader({
     >
       <Link
         href="/"
-        className={cn("text-primary font-semibold text-lg", "rounded-md")}
+        className={cn("text-primary font-semibold text-lg", "focus-indicator rounded-md")}
       >
         MomentUp
       </Link>
@@ -35,7 +35,7 @@ export default function MobileHeader({
           className={cn(
             "flex items-center justify-center",
             "p-2",
-            "hover:bg-accent/[.1] rounded-md",
+            "hover:bg-accent/[.1] focus-indicator rounded-md",
             "transition-colors duration-150 ease-in-out"
           )}
         >
@@ -48,7 +48,7 @@ export default function MobileHeader({
           className={cn(
             "flex items-center justify-center",
             "p-2 ml-2",
-            "hover:bg-accent/[.1] rounded-md",
+            "hover:bg-accent/[.1] focus-indicator rounded-md",
             "transition-colors duration-150 ease-in-out"
           )}
         >
