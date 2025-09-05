@@ -23,7 +23,10 @@ export default function MobileHeader({
         "p-2 px-4 h-14"
       )}
     >
-      <Link href="/" className="text-primary font-semibold text-lg">
+      <Link
+        href="/"
+        className={cn("text-primary font-semibold text-lg", "rounded-md")}
+      >
         MomentUp
       </Link>
       <div className="flex items-center">
