@@ -6,13 +6,19 @@ import { AuthProvider, ThemeProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "@/styles/globals.css";
+import { cn } from "@/libraries/utils";
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased bg-background overflow-hidden">
+      <body
+        className={cn(
+          "antialiased bg-background",
+          "overflow-y-auto laptop:overflow-y-hidden"
+        )}
+      >
         <ThemeProvider>
           <SWRConfig
             value={{

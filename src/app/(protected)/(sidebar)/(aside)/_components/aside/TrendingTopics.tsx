@@ -1,12 +1,12 @@
 "use client";
 
-import type { Hashtag } from "api";
+import type { HashtagDto } from "api";
 
 import { useRefreshApi } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcher } from "@/libraries/swr";
 import { toast } from "sonner";
-import { SuggestApi, ApiUrl } from "@/services";
+import { ApiUrl, SuggestApi } from "@/services";
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 import { TrendingReportType } from "@/constants/server";
@@ -20,13 +20,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import SectionHeader, { HeaderSkeleton } from "./SectionHeader";
+import SectionHeader from "./SectionHeader";
 import {
-  MoreHorizontal,
-  Circle,
   AlertCircle,
   Ban,
+  Circle,
   Copy,
+  MoreHorizontal,
 } from "@/components/icons";
 
 const FEEDBACK_OPTIONS = [
@@ -65,7 +65,7 @@ const FEEDBACK_OPTIONS = [
 export default function TrendingTopics() {
   const { data, isLoading, error } = useSWRImmutable(
     ApiUrl.suggestion.trending,
-    SWRFetcher<{ topics: Hashtag[] }>
+    SWRFetcher<{ topics: HashtagDto[] }>
   );
 
   if (isLoading) return <TrendingTopicsSkeleton />;
@@ -73,53 +73,60 @@ export default function TrendingTopics() {
   return (
     <div className="w-full">
       <SectionHeader className="mb-4">Trending topics</SectionHeader>
-      <div>
+      <div className="w-[calc(100%-4px)] mx-auto">
         {data.topics.map((topic) => (
-          <TrendingTopicItem key={topic.id} topic={topic} />
+          <TopicItem key={topic.name} topic={topic} />
         ))}
       </div>
     </div>
   );
 }
 
-function TrendingTopicItem({ topic }: Readonly<{ topic: Hashtag }>) {
+function TopicItem({ topic }: Readonly<{ topic: HashtagDto }>) {
   return (
-    <div
+    <Link
+      href={ROUTE.SEARCH(`#${topic.name}`)}
       className={cn(
+        "w-full",
+        "group/topic-item",
         "w-full p-2 rounded-md",
+        "flex items-center justify-between gap-4",
         "hover:bg-accent/[.05] cursor-pointer",
-        "transition-colors duration-150 ease-in-out"
+        "transition-colors duration-150 ease-in-out",
+        "focus-indicator"
       )}
     >
-      <Link
-        href={ROUTE.SEARCH(`#${topic.id}`)}
-        className="flex items-center justify-between"
-      >
-        <div className="flex flex-col gap-1">
-          <div className={cn("block font-semibold text-sm", "hover:underline")}>
-            #{topic.id}
-          </div>
-          <span className="text-xs text-muted-foreground">
-            {Format.number(topic.count)} posts
-          </span>
-        </div>
-        <div onClick={(event) => event.stopPropagation()}>
-          <ReportButton topicId={topic.id} />
-        </div>
-      </Link>
-    </div>
+      <div className={cn("flex flex-col gap-1", "grow min-w-0 w-full")}>
+        <span
+          className={cn(
+            "inline-block font-semibold text-sm",
+            "group-hover/topic-item:underline",
+            "truncate"
+          )}
+        >
+          #{topic.name}
+        </span>
+        <span className="text-xs text-muted-foreground">
+          {Format.number(topic.count)} posts
+        </span>
+      </div>
+      <ReportButton topic={topic.name} className="flex-shrink-0" />
+    </Link>
   );
 }
 
-function ReportButton({ topicId }: Readonly<{ topicId: Hashtag["id"] }>) {
+function ReportButton({
+  topic,
+  className,
+}: Readonly<{ topic: HashtagDto["name"]; className?: string }>) {
   const reportTopic = useRefreshApi(SuggestApi.reportTopic);
 
-  async function report(reportType: TrendingReportType) {
-    toast.promise(reportTopic({ topicId, type: reportType }), {
+  function report(reportType: TrendingReportType) {
+    toast.promise(reportTopic({ topic, type: reportType }), {
       loading: "Submitting report...",
       success: (res) => {
         if (res.success) return "Report submitted";
-        else throw new Error(res.message);
+        throw new Error(res.message);
       },
       error: "Failed to submit report",
     });
@@ -129,17 +136,19 @@ function ReportButton({ topicId }: Readonly<{ topicId: Hashtag["id"] }>) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
+          onClick={(event) => event.stopPropagation()}
           className={cn(
             "rounded-full p-1 cursor-pointer",
-            "hover:bg-primary/10 group",
-            "transition-colors duration-150 ease-in-out"
+            "hover:bg-primary/10 group/report-button",
+            "transition-colors duration-150 ease-in-out",
+            "focus-indicator",
+            className
           )}
-          onClick={(event) => event.stopPropagation()}
         >
           <MoreHorizontal
             className={cn(
               "size-4 text-muted-foreground",
-              "group-hover:text-primary",
+              "group-hover/report-button:text-primary",
               "transition-colors duration-150 ease-in-out"
             )}
           />
@@ -149,7 +158,10 @@ function ReportButton({ topicId }: Readonly<{ topicId: Hashtag["id"] }>) {
         {FEEDBACK_OPTIONS.map((option) => (
           <DropdownMenuItem
             key={option.value}
-            onClick={() => report(option.value)}
+            onClick={(event) => {
+              event.stopPropagation();
+              report(option.value);
+            }}
             className="cursor-pointer"
           >
             {option.icon}
@@ -164,18 +176,19 @@ function ReportButton({ topicId }: Readonly<{ topicId: Hashtag["id"] }>) {
 function TrendingTopicsSkeleton() {
   return (
     <div>
-      <HeaderSkeleton className="mb-5" />
+      <SectionHeader className="mb-5">Trending topics</SectionHeader>
       <div className="space-y-1">
         {Array.from({ length: 5 }).map((_, index) => (
           <div
-            className={cn("flex items-center justify-between", "p-2")}
+            // eslint-disable-next-line react/no-array-index-key
             key={index}
+            className={cn("flex items-center justify-between", "p-2")}
           >
             <div className="flex flex-col gap-1">
               <Skeleton className="h-4 w-24" />
               <Skeleton className="h-4 w-16" />
             </div>
-            <Skeleton className="size-4 mr-1" />
+            <Skeleton className="h-3 w-5 mr-1" />
           </div>
         ))}
       </div>

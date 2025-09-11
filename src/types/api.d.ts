@@ -26,15 +26,14 @@ declare module "api" {
   }
 
   // === User ===
-  interface AccountInfo {
+  interface AccountDto {
     id: string;
-    email: string;
     username: string;
     displayName: string | null;
     avatar: string | null;
   }
 
-  interface ProfileInfo extends AccountInfo {
+  interface ProfileInfo extends AccountDto {
     bio?: string;
     backgroundImage?: string;
     followers: number;
@@ -43,13 +42,13 @@ declare module "api" {
     isFollowing?: boolean;
   }
 
-  interface UserCardDisplayInfo extends Omit<ProfileInfo, "backgroundImage"> {
+  interface UserSummaryDto extends Omit<ProfileInfo, "backgroundImage"> {
     followedBy?: {
       count: number;
       displayItems: Array<{
         id: string;
         displayName: string;
-        avatar: AccountInfo["avatar"];
+        avatar: AccountDto["avatar"];
       }>;
     };
   }
@@ -73,13 +72,13 @@ declare module "api" {
 
   type MomentInfo = {
     id: string;
-    user: UserCardDisplayInfo;
+    user: UserSummaryDto;
     post: PostInfo;
   };
 
   type CommentInfo = {
     id: string;
-    user: UserCardDisplayInfo;
+    user: UserSummaryDto;
     content: string;
     likes: number;
     isLiked: boolean;
@@ -92,7 +91,7 @@ declare module "api" {
     userId: string;
     username: string;
     displayName: string;
-    avatar: AccountInfo["avatar"];
+    avatar: AccountDto["avatar"];
     viewed: boolean;
     total: number;
     createdAt: string;
@@ -108,7 +107,7 @@ declare module "api" {
       };
 
   type StoryInfo = {
-    user: Omit<AccountInfo, "email">;
+    user: Omit<AccountDto, "email">;
     stories: Array<{
       id: string;
       content: StoryContent;
@@ -128,7 +127,7 @@ declare module "api" {
   type CommunityNotification = {
     id: string;
     type: "social";
-    user: UserCardDisplayInfo;
+    user: UserSummaryDto;
     createdAt: string;
     information:
       | {
@@ -143,7 +142,7 @@ declare module "api" {
   type NotificationInfo = SecurityNotification | CommunityNotification;
 
   // === Search ===
-  interface UserSearchItem extends AccountInfo {
+  interface UserSearchItem extends AccountDto {
     type: SearchItemType.USER;
   }
 
@@ -152,7 +151,7 @@ declare module "api" {
     id: string;
   }
 
-  interface HashtagSearchItem extends Hashtag {
+  interface HashtagSearchItem extends HashtagDto {
     type: SearchItemType.HASHTAG;
   }
 
@@ -177,8 +176,8 @@ declare module "api" {
   >;
 
   // === Others ===
-  type Hashtag = {
-    id: string;
+  type HashtagDto = {
+    name: string;
     count: number;
   };
 

@@ -1,7 +1,7 @@
-import type { AccountInfo } from "api";
+import type { AccountDto } from "api";
 
 import { cn } from "@/libraries/utils";
-import { Avatar as AvatarUI, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { AvatarFallback, AvatarImage, Avatar as AvatarUI } from "../ui/avatar";
 import { User } from "../icons";
 
 const sizeConfig = {
@@ -16,7 +16,7 @@ const sizeConfig = {
 type AvatarSize = keyof typeof sizeConfig;
 
 type AvatarProps = Readonly<{
-  src: AccountInfo["avatar"] | undefined;
+  src: AccountDto["avatar"] | undefined;
   size: AvatarSize;
   alt?: string;
   ring?: boolean;
@@ -57,7 +57,7 @@ export default function Avatar({
   const CircleImage = ({ className }: Readonly<{ className?: string }>) => (
     <AvatarUI className={cn(sizeStyles.avatar, className)}>
       <AvatarImage
-        src={src || undefined}
+        src={src ?? undefined}
         alt={alt}
         className="object-cover object-top select-none"
       />
@@ -70,13 +70,12 @@ export default function Avatar({
     </AvatarUI>
   );
 
-  if (ring) {
+  if (ring)
     return (
       <Ring className={className}>
         <CircleImage />
       </Ring>
     );
-  }
 
   return <CircleImage className={className} />;
 }

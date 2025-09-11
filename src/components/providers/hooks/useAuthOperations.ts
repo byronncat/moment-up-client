@@ -1,4 +1,4 @@
-import type { AccountInfo } from "api";
+import type { AccountDto } from "api";
 import type { Token } from "../Auth";
 
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ import { ROUTE } from "@/constants/route";
 interface AuthHookProps {
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
-  setUser: (user: AccountInfo | null) => void;
+  setUser: (user: AccountDto | null) => void;
 
   token: {
     current: Token;

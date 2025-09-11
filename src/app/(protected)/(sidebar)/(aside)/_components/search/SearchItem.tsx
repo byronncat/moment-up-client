@@ -1,8 +1,8 @@
 import type {
-  SearchItem,
-  UserSearchItem,
   HashtagSearchItem,
   MomentInfo,
+  SearchItem,
+  UserSearchItem,
 } from "api";
 
 import { Format } from "@/utilities";

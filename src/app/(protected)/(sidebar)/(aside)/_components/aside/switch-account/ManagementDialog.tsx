@@ -1,4 +1,4 @@
-import type { AccountInfo } from "api";
+import type { AccountDto } from "api";
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/providers";
@@ -10,9 +10,9 @@ import { Avatar } from "@/components/common";
 import {
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -25,7 +25,7 @@ export default function ManagementDialog({
   open: boolean;
   onClose: () => void;
 }>) {
-  const [accounts, setAccounts] = useState<AccountInfo[] | null>(null);
+  const [accounts, setAccounts] = useState<AccountDto[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
 
@@ -55,14 +55,17 @@ export default function ManagementDialog({
             Select an account to switch to or add a new account.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col">
-          {loading ? (
-            <SkeletonAccount />
-          ) : (
-            accounts?.map((account) => (
-              <AccountItem key={account.id} account={account} />
-            ))
-          )}
+        <div className="flex flex-col w-[calc(448px-2px)]">
+          <div className="flex flex-col">
+            {loading ? (
+              <SkeletonAccount />
+            ) : (
+              accounts?.map((account) => (
+                <AccountItem key={account.id} account={account} />
+              ))
+            )}
+          </div>
+
           <div
             className={cn("self-end mt-6 pr-4", "flex justify-center gap-3")}
           >
@@ -83,11 +86,11 @@ export default function ManagementDialog({
   );
 }
 
-function AccountItem({ account }: Readonly<{ account: AccountInfo }>) {
+function AccountItem({ account }: Readonly<{ account: AccountDto }>) {
   const { user, switchAccount, reload } = useAuth();
   const isMe = user?.id === account.id;
 
-  async function handleSwitch(accountId: AccountInfo["id"]) {
+  async function handleSwitch(accountId: AccountDto["id"]) {
     const { success, message } = await switchAccount(accountId);
     if (success) reload();
     else toast.error(message || "Failed to switch account");
@@ -96,37 +99,46 @@ function AccountItem({ account }: Readonly<{ account: AccountInfo }>) {
   return (
     <div
       key={account.id}
-      onClick={() => handleSwitch(account.id)}
+      onClick={(event) => {
+        if (isMe) {
+          event.preventDefault();
+          return;
+        }
+        handleSwitch(account.id);
+      }}
       role="button"
       tabIndex={!isMe ? 0 : -1}
       aria-disabled={isMe}
       className={cn(
         "px-6 py-3",
-        "flex items-center gap-2",
-        !isMe && "cursor-pointer",
+        "flex items-center gap-2 max-w-full",
+        isMe ? "cursor-default" : "cursor-pointer",
         "hover:bg-accent/[.07] transition-colors duration-150 ease-in-out",
-        "focus:bg-accent/[.07] focus:outline-none focus:ring-2 focus:ring-primary/20"
+        "focus-indicator"
       )}
     >
       <Avatar
         src={account.avatar}
-        alt={`${account.displayName}'s profile picture`}
+        alt={`${account.displayName ?? account.username}'s profile picture`}
         size="12"
       />
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2">
-          <span className="font-semibold">{account.displayName}</span>
-          {isMe && (
+      <div className={cn("flex flex-col", "min-w-0")}>
+        <div className="flex items-center gap-2 min-w-0">
+          <span className={cn("font-semibold", "truncate")}>
+            {account.displayName ?? account.username}
+          </span>
+          {isMe ? (
             <span
               className={cn(
-                "inline-block size-2 rounded-full",
+                "inline-block shrink-0",
+                "size-2 rounded-full",
                 "bg-green-600 dark:bg-green-400"
               )}
               aria-label="Current account"
             />
-          )}
+          ) : null}
         </div>
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-muted-foreground truncate">
           @{account.username}
         </span>
       </div>

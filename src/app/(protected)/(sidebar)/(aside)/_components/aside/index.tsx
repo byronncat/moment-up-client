@@ -4,7 +4,7 @@ import SwitchAccount from "./switch-account";
 import TrendingTopics from "./TrendingTopics";
 import SuggestedUsers from "./SuggestedUsers";
 import Footer from "./Footer";
-import NoAuth from "./NoAuth";
+import AuthOptions from "./AuthOptions";
 
 import { cookies } from "next/headers";
 import { CookieName } from "@/constants/client";
@@ -35,7 +35,7 @@ export default async function Aside({
         </>
       ) : (
         <>
-          <NoAuth />
+          <AuthOptions />
           <Footer />
         </>
       )}

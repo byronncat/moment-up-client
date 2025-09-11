@@ -3,7 +3,7 @@
 import type {
   NotificationInfo,
   CommunityNotification,
-  UserCardDisplayInfo,
+  UserSummaryDto,
 } from "api";
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
@@ -67,7 +67,7 @@ function SecurityContent() {
 }
 
 type CommunityContentProps = {
-  user: UserCardDisplayInfo;
+  user: UserSummaryDto;
   information: CommunityNotification["information"];
 };
 

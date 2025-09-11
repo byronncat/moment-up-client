@@ -1,4 +1,4 @@
-import type { UserCardDisplayInfo } from "api";
+import type { UserSummaryDto } from "api";
 
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -20,7 +20,7 @@ interface RepostFormData {
 
 type RepostFormProps = Readonly<{
   momentId: string;
-  userData: UserCardDisplayInfo;
+  userData: UserSummaryDto;
   onClose: () => void;
 }>;
 

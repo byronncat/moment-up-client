@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserCardDisplayInfo } from "api";
+import type { UserSummaryDto } from "api";
 
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -15,13 +15,14 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Avatar, UserInfoCard } from "@/components/common";
+import { Button } from "@/components/ui/button";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Skeleton } from "@/components/ui/skeleton";
-import SectionHeader, { HeaderSkeleton } from "./SectionHeader";
+import SectionHeader from "./SectionHeader";
 
 export default function SuggestedUsers() {
   const { token } = useAuth();
@@ -29,7 +30,7 @@ export default function SuggestedUsers() {
     [ApiUrl.suggestion.users, token.accessToken],
     ([url, token]) =>
       SWRFetcherWithToken<{
-        users: UserCardDisplayInfo[];
+        users: UserSummaryDto[];
       }>(url, token)
   );
 
@@ -38,7 +39,7 @@ export default function SuggestedUsers() {
   return (
     <div className="w-full">
       <SectionHeader className="mb-4">Suggested for you</SectionHeader>
-      <div>
+      <div className="w-[calc(100%-4px)] mx-auto">
         {data.users.map((user) => (
           <SuggestedUserItem key={user.id} _user={user} />
         ))}
@@ -50,7 +51,7 @@ export default function SuggestedUsers() {
 function SuggestedUserItem({
   _user,
 }: Readonly<{
-  _user: UserCardDisplayInfo;
+  _user: UserSummaryDto;
 }>) {
   const [user, setUser] = useState(_user);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,6 +62,7 @@ function SuggestedUserItem({
     event.preventDefault();
     event.stopPropagation();
     if (isLoading) return;
+
     setIsLoading(true);
     setUser((prev) => ({ ...prev, isFollowing: !user.isFollowing }));
     const { success, message } = await follow({
@@ -89,53 +91,51 @@ function SuggestedUserItem({
       )}
       onClick={handleClick}
     >
-      <div
-        className="flex items-center gap-2"
-        onClick={(event) => event.preventDefault()}
+      <UserHoverCard
+        user={user}
+        onFollow={handleFollow}
+        className="focus-indicator rounded-full"
       >
+        <Link
+          href={ROUTE.PROFILE(user.username)}
+          className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
+        >
+          <Avatar
+            src={user.avatar}
+            alt={`${user.displayName ?? user.username}'s avatar`}
+            size="10"
+          />
+        </Link>
+      </UserHoverCard>
+
+      <div className={cn("flex flex-col", "min-w-0 w-full ml-2 mr-3")}>
         <UserHoverCard user={user} onFollow={handleFollow}>
           <Link
             href={ROUTE.PROFILE(user.username)}
-            className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
+            className={cn(
+              "text-sm font-semibold",
+              "truncate",
+              "hover:opacity-80",
+              "transition-opacity duration-150 ease-in-out",
+              "focus-indicator rounded-sm"
+            )}
           >
-            <Avatar
-              src={user.avatar}
-              alt={`${user.displayName}'s avatar`}
-              size="10"
-            />
+            {user.username}
           </Link>
         </UserHoverCard>
 
-        <div className="flex flex-col">
-          <UserHoverCard user={user} onFollow={handleFollow}>
-            <Link href={ROUTE.PROFILE(user.username)}>
-              <div
-                className={cn(
-                  "text-sm font-semibold",
-                  "hover:opacity-80",
-                  "transition-opacity duration-150 ease-in-out",
-                  "flex items-center gap-1.5",
-                  "truncate max-w-[172px]"
-                )}
-              >
-                {user.username}
-              </div>
-            </Link>
-          </UserHoverCard>
-          <span
-            className={cn(
-              "text-xs text-muted-foreground",
-              "truncate max-w-[172px]"
-            )}
-          >
-            {user.followedBy
-              ? `Followed by ${user.followedBy.displayItems[0].displayName}`
-              : `Popular user`}
-          </span>
-        </div>
+        <span className={cn("text-xs text-muted-foreground", "truncate")}>
+          {user.followedBy
+            ? `Followed by ${user.followedBy.displayItems[0].displayName}`
+            : `Popular user`}
+        </span>
       </div>
 
-      <FollowButton isFollowing={!!user.isFollowing} onFollow={handleFollow} />
+      <FollowButton
+        isFollowing={!!user.isFollowing}
+        onFollow={handleFollow}
+        className="flex-shrink-0"
+      />
     </div>
   );
 }
@@ -143,46 +143,49 @@ function SuggestedUserItem({
 type FollowTextProps = Readonly<{
   isFollowing: boolean;
   onFollow: (event: React.MouseEvent) => void;
+  className?: string;
 }>;
 
-export function FollowButton({ isFollowing, onFollow }: FollowTextProps) {
+export function FollowButton({
+  isFollowing,
+  onFollow,
+  className,
+}: FollowTextProps) {
   const hoverRef = useRef<HTMLButtonElement>(null);
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
+
   return (
-    <button
+    <Button
       ref={hoverRef}
+      size="sm"
+      variant={isFollowing && isHover ? "destructive" : "outline"}
       onClick={onFollow}
-      className={cn(
-        "w-[64px] text-left",
-        "cursor-pointer",
-        "text-xs font-semibold",
-        isFollowing && isHover
-          ? "text-red-500 dark:text-red-400"
-          : "text-primary"
-      )}
+      className={cn("w-[88px] cursor-pointer", className)}
     >
       {isFollowing ? (isHover ? "Unfollow" : "Following") : "Follow"}
-    </button>
+    </Button>
   );
 }
 
-interface UserHoverCardProps {
-  user: UserCardDisplayInfo;
-  onFollow: (event: React.MouseEvent) => Promise<void>;
+type UserHoverCardProps = Readonly<{
   children?: React.ReactNode;
-}
+  user: UserSummaryDto;
+  onFollow: (event: React.MouseEvent) => Promise<void>;
+  className?: string;
+}>;
 
 export function UserHoverCard({
+  children,
   user,
   onFollow,
-  children,
+  className,
 }: UserHoverCardProps) {
   return (
     <HoverCard>
-      <HoverCardTrigger asChild>
-        <div className="cursor-pointer">{children}</div>
+      <HoverCardTrigger asChild className={cn("cursor-pointer", className)}>
+        {children}
       </HoverCardTrigger>
-      <HoverCardContent className="w-[288px]">
+      <HoverCardContent className="w-[300px]" side="top">
         <UserInfoCard user={user} onFollow={onFollow} />
       </HoverCardContent>
     </HoverCard>
@@ -192,11 +195,12 @@ export function UserHoverCard({
 function SuggestedUsersSkeleton() {
   return (
     <div>
-      <HeaderSkeleton className="mb-5" />
+      <SectionHeader className="mb-4">Suggested for you</SectionHeader>
       <div>
         {Array.from({ length: 5 }).map((_, index) => (
           <div
             className={cn("flex items-center justify-between", "p-2")}
+            // eslint-disable-next-line react/no-array-index-key
             key={index}
           >
             <div className="flex items-center gap-2">

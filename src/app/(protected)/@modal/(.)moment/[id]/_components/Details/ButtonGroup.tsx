@@ -1,4 +1,4 @@
-import type { PostInfo, UserCardDisplayInfo } from "api";
+import type { PostInfo, UserSummaryDto } from "api";
 import type { Actions } from "@/components/providers/MomentStorage";
 import { useState } from "react";
 
@@ -15,7 +15,7 @@ type ButtonsProps = Readonly<{
 
 type FirstGroupProps = ButtonsProps &
   Readonly<{
-    userData: UserCardDisplayInfo;
+    userData: UserSummaryDto;
     onCommentClick?: () => void;
     actions: Pick<Actions, "like" | "bookmark" | "share">;
   }>;

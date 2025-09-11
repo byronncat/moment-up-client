@@ -15,7 +15,7 @@ export async function follow(data: FollowDto, token: Token): API {
   const method = data.shouldFollow ? "POST" : "DELETE";
   const successMessage = data.shouldFollow ? "Followed" : "Unfollowed";
 
-  return await fetch(endpoint, {
+  return fetch(endpoint, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export async function follow(data: FollowDto, token: Token): API {
 export async function getProfile(username: string): API<{
   profile: ProfileInfo;
 }> {
-  return await fetch(ApiUrl.user.getProfile(username), {
+  return fetch(ApiUrl.user.getProfile(username), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -70,9 +70,7 @@ export async function getProfile(username: string): API<{
     });
 }
 
-export async function toggleBlock(userId: string): API {
-  console.log("toggleBlock", userId);
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+export async function toggleBlock(_userId: string): API {
   return {
     success: true,
     message: "Block updated successfully",

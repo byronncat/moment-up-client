@@ -29,7 +29,7 @@ export default function ActionableText({
             "text-primary",
             "font-semibold",
             "hover:opacity-60 transition-opacity duration-150 ease-in-out",
-            "focus-indicator rounded-md"
+            "focus-indicator rounded-sm"
           )}
         >
           {highlightedText}
@@ -42,7 +42,7 @@ export default function ActionableText({
             "text-primary",
             "font-semibold",
             "hover:opacity-60 transition-opacity duration-150 ease-in-out",
-            "focus-indicator rounded-md"
+            "focus-indicator rounded-sm"
           )}
           onClick={onClick}
         >

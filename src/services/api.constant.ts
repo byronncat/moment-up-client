@@ -12,6 +12,7 @@ export const ApiUrl = {
     me: `${SERVER_HOST_URL}/v1/auth/me`,
     sendOtpEmail: `${SERVER_HOST_URL}/v1/auth/send-otp-email`,
     recoverPassword: `${SERVER_HOST_URL}/v1/auth/recover-password`,
+    addGoogleAccount: `${SERVER_HOST_URL}/v1/auth/google/add-account`,
   },
 
   // === Core ===
@@ -72,7 +73,7 @@ export const ApiUrl = {
   // === Suggestion ===
   suggestion: {
     users: `${SERVER_HOST_URL}/v1/suggestion/users`,
-    trending: `${SERVER_HOST_URL}/v1/suggestion/trending`,
+    trending: `${SERVER_HOST_URL}/v1/suggestion/trending?limit=2`,
     report: `${SERVER_HOST_URL}/v1/suggestion/trending/report`,
     popular: `${SERVER_HOST_URL}/v1/suggestion/popular`,
   },

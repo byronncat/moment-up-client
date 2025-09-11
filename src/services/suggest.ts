@@ -1,17 +1,17 @@
 import type { API, ErrorResponse } from "api";
 import type { Token } from "@/components/providers/Auth";
+import type { TrendingReportType } from "@/constants/server";
 
 import { ApiUrl } from "./api.constant";
-import { TrendingReportType } from "@/constants/server";
 import { parseErrorMessage } from "./helper";
 
 interface ReportTopicDto {
-  topicId: string;
+  topic: string;
   type: TrendingReportType;
 }
 
 export async function reportTopic(data: ReportTopicDto, token: Token): API {
-  return await fetch(ApiUrl.suggestion.report, {
+  return fetch(ApiUrl.suggestion.report, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export async function reportTopic(data: ReportTopicDto, token: Token): API {
     },
     credentials: "include",
     body: JSON.stringify({
-      topicId: data.topicId,
+      topic: data.topic,
       type: data.type,
     }),
   })

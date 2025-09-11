@@ -23,7 +23,7 @@ export default function VerifyRecoveryPage() {
               "mt-5 float-right",
               "text-muted-foreground text-sm",
               "hover:text-primary hover:underline",
-              "focus-indicator rounded-md"
+              "focus-indicator rounded-sm"
             )}
           >
             Back to Login

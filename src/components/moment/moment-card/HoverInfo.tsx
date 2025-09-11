@@ -1,4 +1,4 @@
-import type { UserCardDisplayInfo } from "api";
+import type { UserSummaryDto } from "api";
 
 import { cn } from "@/libraries/utils";
 import { ROUTE } from "@/constants/route";
@@ -12,7 +12,7 @@ import {
 } from "../../ui/hover-card";
 
 type HoverableComponentProps = Readonly<{
-  userInfo: UserCardDisplayInfo;
+  userInfo: UserSummaryDto;
   onFollow: (event: React.MouseEvent) => Promise<void>;
   children: React.ReactNode;
 }>;

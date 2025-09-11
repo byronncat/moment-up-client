@@ -2,7 +2,7 @@
 
 // === Type ====
 import type { z } from "zod";
-import type { API, AccountInfo } from "api";
+import type { API, AccountDto } from "api";
 import type zodSchema from "@/libraries/zodSchema";
 
 export type Token = {
@@ -11,7 +11,7 @@ export type Token = {
 };
 
 interface AuthState {
-  user: AccountInfo | null;
+  user: AccountDto | null;
   logged?: boolean;
   loaded: boolean;
   token: Token;
@@ -23,13 +23,14 @@ interface AuthAction {
   setLoaded: (loaded: boolean) => void;
   login: (values: z.infer<typeof zodSchema.auth.login>) => API;
   addAccount: (values: z.infer<typeof zodSchema.auth.login>) => API;
+  addGoogleAccount: (token: string) => API;
   signup: (values: z.infer<typeof zodSchema.auth.signup>) => API;
   logout: () => API;
   sendOtpEmail: (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => API;
   recoverPassword: (
     values: z.infer<typeof zodSchema.auth.recoverPassword>
   ) => API;
-  switchAccount: (accountId: AccountInfo["id"]) => API;
+  switchAccount: (accountId: AccountDto["id"]) => API;
   reload: () => void;
 }
 
@@ -70,6 +71,7 @@ const AuthContext = createContext<AuthState & AuthAction>({
   setLoaded: () => {},
   login: () => Promise.resolve(defaultResponse),
   addAccount: () => Promise.resolve(defaultResponse),
+  addGoogleAccount: () => Promise.resolve(defaultResponse),
   signup: () => Promise.resolve(defaultResponse),
   logout: () => Promise.resolve(defaultResponse),
   sendOtpEmail: () => Promise.resolve(defaultResponse),
@@ -87,7 +89,7 @@ export default function AuthProvider({
   const router = useRouter();
   const [logged, setLogged] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [user, setUser] = useState<AccountInfo | null>(null);
+  const [user, setUser] = useState<AccountDto | null>(null);
 
   const authCookie = useMemo(() => ClientCookie(CookieName.AUTH_GUARD), []);
   const token = useRef({
@@ -147,12 +149,37 @@ export default function AuthProvider({
     [router]
   );
 
+  const addGoogleAccountApi = useRefreshApi(AuthApi.addGoogleAccount, {
+    _token: token.current,
+    _refresh: refresh,
+  });
+  const addGoogleAccount = useCallback(async () => {
+    const { success, message, data, statusCode } = await addGoogleAccountApi();
+
+    if (success && data) {
+      await indexedDBService.storeAccount(data.user);
+      setLogged(true);
+      setUser(data.user);
+      return {
+        success: true,
+        message,
+        statusCode,
+      };
+    }
+
+    return {
+      success: false,
+      message,
+      statusCode,
+    };
+  }, [addGoogleAccountApi]);
+
   const switchApi = useRefreshApi(AuthApi.switchAccount, {
     _token: token.current,
     _refresh: refresh,
   });
   const switchAccount = useCallback(
-    async (accountId: AccountInfo["id"]) => {
+    async (accountId: AccountDto["id"]) => {
       const { success, message, statusCode, data } = await switchApi(accountId);
       if (success && data) {
         setLogged(true);
@@ -248,6 +275,7 @@ export default function AuthProvider({
         setLoaded,
         login,
         addAccount,
+        addGoogleAccount,
         signup,
         logout,
         sendOtpEmail,

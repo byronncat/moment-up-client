@@ -1,34 +1,36 @@
 import Link from "next/link";
 import { cn } from "@/libraries/utils";
 
-// TODO: Add pages
 const FooterLinks = [
-  { text: "About", href: "#" },
-  { text: "Help", href: "#" },
-  { text: "Privacy", href: "#" },
-  { text: "Terms", href: "#" },
-  { text: "Locations", href: "#" },
+  { text: "About", href: "https://github.com/byronncat/moment-up-client" },
+  { text: "Help", href: "https://github.com/byronncat/moment-up-client" },
+  { text: "Privacy", href: "https://github.com/byronncat/moment-up-client" },
+  { text: "Terms", href: "https://github.com/byronncat/moment-up-client" },
+  { text: "Locations", href: "https://github.com/byronncat/moment-up-client" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="w-full px-2">
-      <nav className={cn("flex flex-wrap gap-x-1 gap-y-2", "mb-2")}>
+    <div className="w-full px-2">
+      <nav className={cn("flex flex-wrap gap-x-1 gap-y-2", "mb-1")}>
         {FooterLinks.map((link, index) => (
-          <span key={link.text} className="flex items-center">
+          <div key={link.text} className="flex items-center">
             <Link
               href={link.href}
-              className="text-xs text-muted-foreground hover:underline"
+              className={cn(
+                "text-xs text-muted-foreground hover:underline",
+                "focus-indicator rounded-sm"
+              )}
             >
               {link.text}
             </Link>
             {index < FooterLinks.length - 1 && (
               <span className="text-xs text-muted-foreground mx-1">•</span>
             )}
-          </span>
+          </div>
         ))}
       </nav>
-      <p className="text-xs text-muted-foreground">© 2025 Byron</p>
-    </footer>
+      <span className="text-xs text-muted-foreground">© 2025 Byron</span>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import type { AccountInfo } from "api";
+import type { AccountDto } from "api";
 
 const DATABASE_NAME = "moment-up-db";
 const DATABASE_VERSION = 1;
@@ -40,7 +40,7 @@ class IndexedDBService {
       const store = transaction.objectStore(ACCOUNTS_STORE);
       const request = store.getAll();
 
-      return new Promise<AccountInfo[] | null>((resolve) => {
+      return new Promise<AccountDto[] | null>((resolve) => {
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => resolve(null);
       });
@@ -49,7 +49,7 @@ class IndexedDBService {
     }
   }
 
-  async storeAccount(account: AccountInfo) {
+  async storeAccount(account: AccountDto) {
     try {
       if (!this.db) await this.init();
 

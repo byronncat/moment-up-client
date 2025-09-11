@@ -1,6 +1,6 @@
 "use client";
 
-import type { AccountInfo } from "api";
+import type { AccountDto } from "api";
 
 import { useState } from "react";
 import { useAuth } from "@/components/providers";
@@ -10,6 +10,7 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Avatar } from "@/components/common";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import ManagementDialog from "./ManagementDialog";
 
@@ -18,43 +19,46 @@ export default function SwitchAccount() {
   if (!user || _.isEmpty(user)) return null;
 
   return (
-    <div className="w-full px-2">
-      <div className="flex items-center justify-between">
-        <Content user={user} />
-        <SwitchButton />
-      </div>
+    <div className={cn("w-full px-2", "flex items-center justify-between")}>
+      <Content user={user} className="min-w-0 mr-3" />
+      <SwitchButton />
     </div>
   );
 }
 
-function Content({ user }: Readonly<{ user: AccountInfo }>) {
+function Content({
+  user,
+  className,
+}: Readonly<{ user: AccountDto; className?: string }>) {
   return (
-    <div className="flex items-center gap-2">
-      <Link href={ROUTE.PROFILE(user.username)}>
+    <div className={cn("flex items-center gap-2", className)}>
+      <Link href={ROUTE.PROFILE(user.username)} className="focus-indicator rounded-full">
         <Avatar
           src={user.avatar}
-          alt={`${user.displayName}'s avatar`}
+          alt={`${user.displayName ?? user.username}'s avatar`}
           size="10"
           className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
         />
       </Link>
-      <div className="flex flex-col">
+      <div className="flex flex-col min-w-0">
         <Link
           href={ROUTE.PROFILE(user.username)}
           className={cn(
             "text-sm font-semibold",
             "hover:opacity-80 transition-opacity duration-150 ease-in-out",
-            "truncate max-w-[172px]"
+            "truncate min-w-0",
+            "focus-indicator rounded-sm"
           )}
         >
-          {user.displayName}
+          {user.displayName ?? user.username}
         </Link>
         <Link
           href={ROUTE.PROFILE(user.username)}
           className={cn(
             "text-sm text-muted-foreground",
             "hover:opacity-80 transition-opacity duration-150 ease-in-out",
-            "truncate max-w-[172px]"
+            "truncate min-w-0",
+            "focus-indicator rounded-sm"
           )}
         >
           @{user.username}
@@ -73,16 +77,9 @@ function SwitchButton() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button
-          className={cn(
-            "w-[64px] text-left",
-            "text-xs font-semibold text-primary",
-            "cursor-pointer hover:opacity-80",
-            "transition-opacity duration-150 ease-in-out"
-          )}
-        >
+        <Button size="sm" variant="outline" className="text-xs cursor-pointer">
           Switch
-        </button>
+        </Button>
       </DialogTrigger>
       <ManagementDialog open={open} onClose={handleClose} />
     </Dialog>

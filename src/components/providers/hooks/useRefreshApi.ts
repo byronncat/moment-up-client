@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // === Types ====
 import type { ErrorResponse } from "api";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AuthenticatedApiFunction<TArgs extends any[], TResult> = (
   ...args: [...TArgs, Token]
 ) => Promise<TResult>;
@@ -17,14 +18,12 @@ interface Dependencies {
   _refresh?: () => Promise<string>;
 }
 
-
 // === Hook ====
 import { useCallback } from "react";
 import { type Token, useAuth } from "../Auth";
 
 const UNAUTHORIZED_STATUS_CODE = 401;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useRefreshApi<TArgs extends any[], TResult extends ApiResult>(
   apiFunction: AuthenticatedApiFunction<TArgs, TResult>,
   dependencies?: Dependencies

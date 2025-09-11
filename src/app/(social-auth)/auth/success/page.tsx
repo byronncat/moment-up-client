@@ -10,24 +10,42 @@ import { LoadingPage } from "@/components/pages";
 export default function SuccessfulLogin() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { setLogged, setLoaded } = useAuth();
+  const { setLogged, setLoaded, addGoogleAccount } = useAuth();
   const hasProcessed = useRef(false);
 
   useEffect(() => {
     if (hasProcessed.current) return;
     hasProcessed.current = true;
     const token = searchParams.get("token");
+    const isSwitchAccount =
+      sessionStorage.getItem("google_switch_account") === "true";
 
     if (token) {
-      setLogged(true);
-      router.push(ROUTE.HOME);
+      if (isSwitchAccount) {
+        sessionStorage.removeItem("google_switch_account");
+        addGoogleAccount(token).then(({ success }) => {
+          if (success) {
+            router.push(ROUTE.HOME);
+            setTimeout(() => {
+              setLoaded(true);
+            }, PAGE_RELOAD_TIME);
+          } else
+            router.replace(
+              `${ROUTE.LOGIN}?error=${SocialAuthError.Default.code}`
+            );
+        });
+      } else {
+        setLogged(true);
+        router.push(ROUTE.HOME);
 
-      setTimeout(() => {
-        setLoaded(true);
-      }, PAGE_RELOAD_TIME);
-    } else
+        setTimeout(() => {
+          setLoaded(true);
+        }, PAGE_RELOAD_TIME);
+      }
+    } else {
       router.replace(`${ROUTE.LOGIN}?error=${SocialAuthError.Default.code}`);
-  }, [searchParams, router, setLogged, setLoaded]);
+    }
+  }, [searchParams, router, setLogged, setLoaded, addGoogleAccount]);
 
   return <LoadingPage />;
 }

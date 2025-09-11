@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { API, AccountInfo, ErrorResponse } from "api";
+import type { API, AccountDto, ErrorResponse } from "api";
 import type { Token } from "@/components/providers/Auth";
 import type zodSchema from "@/libraries/zodSchema";
 
@@ -11,7 +11,7 @@ export async function login(
   csrfToken: string
 ): API<{
   accessToken: string;
-  user: AccountInfo;
+  user: AccountDto;
 }> {
   return fetch(ApiUrl.auth.login, {
     method: "POST",
@@ -42,11 +42,11 @@ export async function login(
 }
 
 export async function switchAccount(
-  accountId: AccountInfo["id"],
+  accountId: AccountDto["id"],
   token: Token
 ): API<{
   accessToken: string;
-  user: AccountInfo;
+  user: AccountDto;
 }> {
   return fetch(ApiUrl.auth.switch, {
     method: "POST",
@@ -170,7 +170,7 @@ export async function refresh() {
     });
 }
 
-export async function getUser(accessToken: string): API<{ user: AccountInfo }> {
+export async function getUser(accessToken: string): API<{ user: AccountDto }> {
   return fetch(ApiUrl.auth.me, {
     method: "GET",
     headers: {
@@ -247,6 +247,35 @@ export async function recoverPassword(
         success: true,
         message: "Password changed successfully",
         statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+export async function addGoogleAccount(token: Token): API<{ user: AccountDto }> {
+  return fetch(ApiUrl.auth.addGoogleAccount, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw data;
+      return {
+        success: true,
+        message: "Google account added successfully",
+        statusCode: response.status,
+        data,
       };
     })
     .catch((error: ErrorResponse) => {

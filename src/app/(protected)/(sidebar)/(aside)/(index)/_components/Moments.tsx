@@ -5,8 +5,8 @@ import type { MomentInfo, PaginationInfo } from "api";
 import { useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import {
-  useMomentStore,
   useMoment,
+  useMomentStore,
 } from "@/components/providers/MomentStorage";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { useHome } from "../_providers/Home";
@@ -15,7 +15,7 @@ import { INITIAL_PAGE } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { NoContent, ErrorContent } from "@/components/common";
-import { MomentList, MomentSkeleton } from "@/components/moment";
+import { MomentCard, MomentList, MomentSkeleton } from "@/components/moment";
 import { Camera } from "@/components/icons";
 
 const TOP_PADDING = 160;
@@ -90,35 +90,50 @@ export default function Moments() {
     );
 
   return (
-    <MomentList
-      items={moments}
-      hasNextPage={hasNextPage}
-      isNextPageLoading={isValidating}
-      loadNextPage={handleLoadNextPage}
-      onItemClick={handleClick}
-      actions={{
-        like,
-        bookmark,
-        follow,
-        ...momentActions,
-      }}
-      listOptions={{
-        topPadding: TOP_PADDING,
-        bottomPadding: BOTTOM_PADDING,
-        heightOffset: 121,
-        listClassName: cn(
-          // "transform transition-transform duration-200",
-          hideStories && "-translate-y-[121px]" // 121px = 161px (story panel height) - 24px (hide button height) - 16px (gap)
-        ),
-      }}
-    />
+    <div>
+      {moments.map((moment, index) => (
+        <MomentCard
+          key={moment.id}
+          data={moment}
+          actions={{
+            like,
+            bookmark,
+            follow,
+            ...momentActions,
+          }}
+          onClick={() => handleClick(index)}
+        />
+      ))}
+    </div>
+    // <MomentList
+    //   items={moments}
+    //   hasNextPage={hasNextPage}
+    //   isNextPageLoading={isValidating}
+    //   loadNextPage={handleLoadNextPage}
+    //   onItemClick={handleClick}
+    //   actions={{
+    //     like,
+    //     bookmark,
+    //     follow,
+    //     ...momentActions,
+    //   }}
+    //   listOptions={{
+    //     topPadding: TOP_PADDING,
+    //     bottomPadding: BOTTOM_PADDING,
+    //     heightOffset: 121,
+    //     listClassName: cn(
+    //       // "transform transition-transform duration-200",
+    //       hideStories && "-translate-y-[121px]" // 121px = 161px (story panel height) - 24px (hide button height) - 16px (gap)
+    //     ),
+    //   }}
+    // />
   );
 }
 
 function MomentSkeletons({ className }: Readonly<{ className: string }>) {
   return (
     <div className={cn("flex flex-col gap-4", className)}>
-      <MomentSkeleton haveText={true} media="horizontal" />
+      <MomentSkeleton haveText media="horizontal" />
       <MomentSkeleton haveText={false} media="square" />
     </div>
   );

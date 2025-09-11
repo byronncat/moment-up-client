@@ -1,4 +1,4 @@
-import type { UserCardDisplayInfo } from "api";
+import type { UserSummaryDto } from "api";
 
 import { cn } from "@/libraries/utils";
 import {
@@ -12,7 +12,7 @@ import RepostForm from "./RepostForm";
 
 type ShareDialogProps = Readonly<{
   momentId: string;
-  userData: UserCardDisplayInfo;
+  userData: UserSummaryDto;
   open: boolean;
   onClose: () => void;
 }>;

@@ -1,9 +1,10 @@
 "use client";
 
-import type { AccountInfo, UserCardDisplayInfo } from "api";
+import type { AccountDto, UserSummaryDto } from "api";
 
 import { useRef } from "react";
 import { useHover } from "usehooks-ts";
+import { useAuth } from "../providers";
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 
@@ -18,11 +19,10 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { User, Settings } from "@/components/icons";
-import { useAuth } from "../providers";
+import { Settings, User } from "@/components/icons";
 
 type UserInfoCardProps = Readonly<{
-  user: UserCardDisplayInfo;
+  user: UserSummaryDto;
   onFollow?: (event: React.MouseEvent) => Promise<void>;
 }>;
 
@@ -39,11 +39,12 @@ export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
         >
           <Avatar
             src={user.avatar}
-            alt={`${user.displayName}'s avatar`}
+            alt={`${user.displayName ?? user.username}'s avatar`}
             size="14"
           />
         </Link>
-        <div>
+
+        <div className="min-w-0">
           <Link
             href={ROUTE.PROFILE(user.username)}
             className={cn(
@@ -51,16 +52,11 @@ export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
               "transition-opacity duration-150 ease-in-out"
             )}
           >
-            <CardTitle
-              className={cn(
-                "mb-0",
-                "text-base/tight",
-                "flex items-center gap-1.5"
-              )}
-            >
-              <span className="truncate max-w-[144px]">{user.displayName}</span>
+            <CardTitle className="mb-0 text-base/tight truncate">
+              {user.displayName ?? user.username}
             </CardTitle>
           </Link>
+
           <Link
             href={ROUTE.PROFILE(user.username)}
             className={cn(
@@ -68,21 +64,25 @@ export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
               "transition-opacity duration-150 ease-in-out"
             )}
           >
-            <CardDescription
-              className={cn("leading-5", "truncate max-w-[144px]")}
-            >
+            <CardDescription className="leading-5 truncate">
               @{user.username}
             </CardDescription>
           </Link>
         </div>
       </CardHeader>
+
       <CardContent className="p-0 mt-4">
         <p className="text-sm wrap-break-word">{user.bio}</p>
-        <FollowSection following={user.following} followers={user.followers} />
-        {!isCurrentUser && user.followedBy && (
+        <FollowSection
+          following={user.following}
+          followers={user.followers}
+          className="mt-3"
+        />
+        {!isCurrentUser && user.followedBy ? (
           <FollowedBy users={user.followedBy} />
-        )}
+        ) : null}
       </CardContent>
+
       <CardFooter className="p-0 mt-4">
         {isCurrentUser ? (
           <EditProfileButton />
@@ -95,13 +95,18 @@ export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
 }
 
 type FollowSectionProps = Readonly<{
-  following: UserCardDisplayInfo["following"];
-  followers: UserCardDisplayInfo["followers"];
+  following: UserSummaryDto["following"];
+  followers: UserSummaryDto["followers"];
+  className?: string;
 }>;
 
-function FollowSection({ following, followers }: FollowSectionProps) {
+function FollowSection({
+  following,
+  followers,
+  className,
+}: FollowSectionProps) {
   return (
-    <div className={cn("flex gap-3", "text-sm", "mt-3")}>
+    <div className={cn("flex gap-3", "text-sm", className)}>
       <div className="flex items-center gap-1">
         <span className="font-semibold">{Format.number(following)}</span>
         <span className="text-muted-foreground">following</span>
@@ -119,7 +124,7 @@ const MAX_FOLLOWED_BY_DISPLAY = 3;
 type FollowedByUser = {
   id: string;
   displayName: string;
-  avatar: AccountInfo["avatar"];
+  avatar: AccountDto["avatar"];
 };
 
 const getFollowedByMessage = (
@@ -150,7 +155,7 @@ const getMaxWidthClass = (itemCount: number) => {
 function FollowedBy({
   users,
 }: Readonly<{
-  users: UserCardDisplayInfo["followedBy"];
+  users: UserSummaryDto["followedBy"];
 }>) {
   if (!users) return null;
 
@@ -220,8 +225,8 @@ function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {
 }
 
 function EditProfileButton() {
-  const handleClick = async () => {
-    console.log("Edit Profile");
+  const handleClick = () => {
+    // TODO: Implement edit profile
   };
 
   return (

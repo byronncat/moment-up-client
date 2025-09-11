@@ -1,9 +1,10 @@
+/* eslint-disable require-await */
 import type { ErrorResponse } from "api";
 
 export async function SWRFetcher<T = void>(
   url: string
 ): Promise<T | undefined> {
-  return await fetch(url, {
+  return fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -15,7 +16,7 @@ export async function SWRFetcher<T = void>(
       if (!response.ok) throw data;
       return data;
     })
-    .catch(async (error: ErrorResponse) => {
+    .catch((error: ErrorResponse) => {
       throw new Error(error.message as string);
     });
 }
@@ -24,7 +25,7 @@ export async function SWRFetcherWithToken<T = void>(
   url: string,
   token: string
 ): Promise<T | undefined> {
-  return await fetch(url, {
+  return fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +38,7 @@ export async function SWRFetcherWithToken<T = void>(
       if (!response.ok) throw data;
       return data;
     })
-    .catch(async (error: ErrorResponse) => {
+    .catch((error: ErrorResponse) => {
       throw new Error(error.message as string);
     });
 }

@@ -29,7 +29,7 @@ export default function MobileHeader({
         href="/"
         className={cn(
           "text-primary font-semibold text-lg",
-          "focus-indicator rounded-md"
+          "focus-indicator rounded-sm"
         )}
       >
         MomentUp
@@ -40,7 +40,7 @@ export default function MobileHeader({
           className={cn(
             "flex items-center justify-center",
             "p-2",
-            "hover:bg-accent/[.1] focus-indicator rounded-md",
+            "hover:bg-accent/[.1] focus-indicator rounded-sm",
             "transition-colors duration-150 ease-in-out"
           )}
         >
@@ -53,7 +53,7 @@ export default function MobileHeader({
           className={cn(
             "flex items-center justify-center",
             "p-2 ml-2",
-            "hover:bg-accent/[.1] focus-indicator rounded-md",
+            "hover:bg-accent/[.1] focus-indicator rounded-sm",
             "transition-colors duration-150 ease-in-out"
           )}
         >
