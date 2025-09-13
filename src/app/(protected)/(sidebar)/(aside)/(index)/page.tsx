@@ -1,17 +1,10 @@
-import HomeProvider from "./_providers/Home";
-import { Moments, Stories } from "./_components";
+import { VirtualizedFeed } from "./_components";
+import { HomeFeedProvider } from "./_providers/HomeFeed";
 
 export default function HomePage() {
   return (
-    <HomeProvider>
-      <div className="relative">
-        <Stories />
-      </div>
-      <div className="size-full">
-        <div className="max-w-[600px] size-full mx-auto">
-          <Moments />
-        </div>
-      </div>
-    </HomeProvider>
+    <HomeFeedProvider>
+      <VirtualizedFeed />
+    </HomeFeedProvider>
   );
 }

@@ -1,8 +1,7 @@
-import type { MomentInfo, CommentInfo } from "api";
-import { Audience } from "@/constants/server";
+import type { API, CommentInfo, ErrorResponse, MomentInfo } from "api";
+import type { Audience } from "@/constants/server";
 
 import type { Token } from "@/components/providers/Auth";
-import type { API, ErrorResponse } from "api";
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
 
@@ -22,12 +21,12 @@ interface BookmarkDto {
 
 export async function like(data: LikeDto, token: Token): API {
   const endpoint = data.shouldLike
-    ? ApiUrl.moment.like(data.momentId)
-    : ApiUrl.moment.unlike(data.momentId);
+    ? ApiUrl.post.like(data.momentId)
+    : ApiUrl.post.unlike(data.momentId);
   const method = data.shouldLike ? "POST" : "DELETE";
   const successMessage = data.shouldLike ? "Liked" : "Unliked";
 
-  return await fetch(endpoint, {
+  return fetch(endpoint, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -55,12 +54,12 @@ export async function like(data: LikeDto, token: Token): API {
 
 export async function bookmark(data: BookmarkDto, token: Token): API {
   const endpoint = data.shouldBookmark
-    ? ApiUrl.moment.bookmark(data.momentId)
-    : ApiUrl.moment.unbookmark(data.momentId);
+    ? ApiUrl.post.bookmark(data.momentId)
+    : ApiUrl.post.unbookmark(data.momentId);
   const method = data.shouldBookmark ? "POST" : "DELETE";
   const successMessage = data.shouldBookmark ? "Bookmarked" : "Unbookmarked";
 
-  return await fetch(endpoint, {
+  return fetch(endpoint, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -94,7 +93,7 @@ export async function repost(
   },
   token: Token
 ): API {
-  return await fetch(ApiUrl.moment.repost(data.momentId), {
+  return fetch(ApiUrl.post.repost(data.momentId), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -125,7 +124,7 @@ export async function repost(
 }
 
 export async function deleteStory(storyId: string, token: Token): API {
-  return await fetch(ApiUrl.story.delete(storyId), {
+  return fetch(ApiUrl.story.delete(storyId), {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -152,7 +151,7 @@ export async function deleteStory(storyId: string, token: Token): API {
 }
 
 export async function getMoment(momentId: string): API<MomentInfo | null> {
-  return await fetch(ApiUrl.moment.getById(momentId), {
+  return fetch(ApiUrl.post.getById(momentId), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -185,7 +184,7 @@ export async function addComment(
   data: CommentDto,
   token: Token
 ): API<CommentInfo | null> {
-  return await fetch(ApiUrl.comment.add, {
+  return fetch(ApiUrl.comment.add, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -214,7 +213,7 @@ export async function addComment(
 }
 
 export async function deleteComment(commentId: string, token: Token): API {
-  return await fetch(ApiUrl.comment.delete(commentId), {
+  return fetch(ApiUrl.comment.delete(commentId), {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -240,9 +239,7 @@ export async function deleteComment(commentId: string, token: Token): API {
     });
 }
 
-export async function report(momentId: string) {
-  console.log("Report feature is not implemented yet", momentId);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+export async function report(_momentId: string) {
   if (apiRes.report === "error") {
     return {
       success: false,
@@ -263,7 +260,7 @@ export async function likeComment(
   isLiked: boolean,
   token: Token
 ): API {
-  return await fetch(ApiUrl.comment[isLiked ? "like" : "unlike"](commentId), {
+  return fetch(ApiUrl.comment[isLiked ? "like" : "unlike"](commentId), {
     method: isLiked ? "POST" : "DELETE",
     headers: {
       "Content-Type": "application/json",

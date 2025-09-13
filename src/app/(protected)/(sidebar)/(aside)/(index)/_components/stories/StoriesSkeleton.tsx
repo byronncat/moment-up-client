@@ -2,26 +2,19 @@ import { cn } from "@/libraries/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateStoryButton from "./CreateStoryButton";
 
-export default function StorySkeletons() {
+export default function StorySkeletons({
+  className,
+}: Readonly<{ className?: string }>) {
   return (
-    <div
-      className={cn(
-        "h-[144px]",
-        "flex flex-col",
-        "absolute top-0 left-0 right-0 z-10"
-      )}
-    >
-      <div className="flex grow">
-        <div className={cn("w-8", "border-r border-border")} />
-        <div className={cn("flex gap-3", "pt-4 pb-2 grow")}>
-          <CreateStoryButton />
-          <StorySkeleton />
-          <StorySkeleton />
-          <StorySkeleton />
-        </div>
-        <div className={cn("w-8", "border-l border-border")} />
+    <div className={cn("flex border-b border-border", className)}>
+      <div className={cn("w-8", "border-r border-border")} />
+      <div className={cn("flex gap-3", "pt-4 pb-2 grow")}>
+        <CreateStoryButton />
+        <StorySkeleton />
+        <StorySkeleton />
+        <StorySkeleton />
       </div>
-      <div className={cn("h-6", "border-y border-border")} />
+      <div className={cn("w-8", "border-l border-border")} />
     </div>
   );
 }

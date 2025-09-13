@@ -1,2 +1,2 @@
 export { default as Stories } from "./stories";
-export { default as Moments } from "./Moments";
+export { default as VirtualizedFeed } from "./VirtualizedFeed";

@@ -16,7 +16,11 @@ export default function StoryItem({
     <div className={className}>
       <Link
         href={ROUTE.STORY(data.username, data.id)}
-        className={cn("group", "cursor-pointer", "flex flex-col items-center")}
+        className={cn(
+          "group",
+          "cursor-pointer focus-indicator rounded-sm",
+          "flex flex-col items-center"
+        )}
         aria-label={`View story from ${data.displayName}${!data.viewed ? " (unread)" : ""}`}
         aria-describedby={`story-${data.id}-status`}
       >

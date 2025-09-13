@@ -17,7 +17,7 @@ export async function SWRFetcher<T = void>(
       return data;
     })
     .catch((error: ErrorResponse) => {
-      throw new Error(error.message as string);
+      throw error;
     });
 }
 
@@ -39,6 +39,6 @@ export async function SWRFetcherWithToken<T = void>(
       return data;
     })
     .catch((error: ErrorResponse) => {
-      throw new Error(error.message as string);
+      throw error;
     });
 }

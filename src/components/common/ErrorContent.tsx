@@ -1,46 +1,49 @@
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
-import { Circle } from "@/components/icons";
-import { RotateCw } from "@/components/icons";
+import { Circle, RotateCw } from "@/components/icons";
 
 type ErrorContentProps = Readonly<{
-  onRefresh: () => void;
+  icon?: React.ReactNode;
+  hiddenIcon?: boolean;
   title?: string;
   description?: string;
+  onRefresh?: () => void;
   className?: string;
 }>;
 
 export default function ErrorContent({
-  onRefresh,
+  icon,
+  hiddenIcon = false,
   title = "Something went wrong!",
   description = "Please try again later.",
+  onRefresh,
   className,
 }: ErrorContentProps) {
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center",
-        "h-full",
-        className
-      )}
-    >
-      <Circle
-        variant="exclamation"
-        className="size-12 fill-red-500 dark:fill-red-400"
-      />
-      <p className={cn("text-lg font-medium", "mt-4")}>{title}</p>
-      <p className={cn("text-sm text-muted-foreground", "mt-1")}>
+    <div className={cn("flex flex-col items-center", "h-full px-5", className)}>
+      {hiddenIcon
+        ? null
+        : (icon ?? (
+            <Circle
+              variant="exclamation"
+              className="size-12 fill-red-500 dark:fill-red-400"
+            />
+          ))}
+      <p className={cn("text-lg font-medium", "mt-3")}>{title}</p>
+      <p className={cn("text-sm text-muted-foreground", "mt-0.5")}>
         {description}
       </p>
-      <Button
-        variant="outline"
-        size="sm"
-        className={cn("mt-4")}
-        onClick={onRefresh}
-      >
-        <RotateCw className="size-4" />
-        Refresh
-      </Button>
+      {onRefresh ? (
+        <Button
+          variant="outline"
+          size="sm"
+          className={cn("mt-4")}
+          onClick={onRefresh}
+        >
+          <RotateCw className="size-4" />
+          Refresh
+        </Button>
+      ) : null}
     </div>
   );
 }

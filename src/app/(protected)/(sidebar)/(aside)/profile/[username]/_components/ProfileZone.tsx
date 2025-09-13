@@ -1,17 +1,19 @@
-import type { ProfileInfo } from "api";
+import type { ProfileDto } from "api";
+
 import { useAuth } from "@/components/providers/Auth";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import UserInfo, { UserInfoSkeleton } from "./UserInfo";
-import { NavigationBar, type NavItem } from "@/components/common";
-import { TableOfContents, Image as ImageIcon, Tag } from "@/components/icons";
+import { type NavItem, NavigationBar } from "@/components/common";
+import { Image as ImageIcon, TableOfContents, Tag } from "@/components/icons";
 
 type ProfileZoneProps = Readonly<{
-  data: ProfileInfo;
+  data: ProfileDto;
   className?: string;
 }>;
 
+export const PROFILE_ZONE_HEIGHT = 418;
 export default function ProfileZone({ data, className }: ProfileZoneProps) {
   const { user } = useAuth();
   const tabs: NavItem[] = [
@@ -38,10 +40,12 @@ export default function ProfileZone({ data, className }: ProfileZoneProps) {
   return (
     <div className={className}>
       <UserInfo data={data} />
-      <NavigationBar
-        items={tabs}
-        className={cn("w-full", "border-y border-border")}
-      />
+      {data.isProtected ? null : (
+        <NavigationBar
+          items={tabs}
+          className={cn("w-full", "border-y border-border")}
+        />
+      )}
     </div>
   );
 }

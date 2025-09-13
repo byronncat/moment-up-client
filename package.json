@@ -33,6 +33,7 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@radix-ui/react-visually-hidden": "^1.2.3",
     "@tanstack/react-store": "^0.7.4",
+    "@tanstack/react-virtual": "^3.13.12",
     "@types/fabric": "^5.3.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

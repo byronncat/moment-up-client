@@ -9,7 +9,7 @@ export default function MomentPage() {
   return (
     <div className="max-w-[600px] size-full mx-auto">
       <MomentList
-        apiUrl={(page: number) => ApiUrl.moment.explore("post", page)}
+        apiUrl={(page: number) => ApiUrl.post.explore("post", page)}
         loadingSkeleton={<ExploreSkeleton />}
         className="size-full"
       />

@@ -16,12 +16,7 @@ export default async function Layout({ children }: LayoutProps) {
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <div
-        className={cn(
-          "w-screen h-screen",
-          "relative",
-          "laptop:!py-0",
-          "laptop:overflow-y-auto"
-        )}
+        className={cn("w-screen min-h-screen", "relative", "laptop:!py-0")}
         style={{
           paddingTop: MOBILE_NAV_HEIGHT,
           paddingBottom: MOBILE_NAV_HEIGHT,
@@ -29,7 +24,7 @@ export default async function Layout({ children }: LayoutProps) {
       >
         <div className="min-h-full flex">
           <Sidebar />
-          <div className="size-full grow">{children}</div>
+          <div className="flex-1">{children}</div>
         </div>
       </div>
     </SidebarProvider>

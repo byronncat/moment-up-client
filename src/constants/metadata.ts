@@ -48,6 +48,13 @@ export const Metadata: MetadataMap = {
   },
 
   // === Public ===
+  profile: (username: string) => {
+    return {
+      title: `@${username}`,
+      description: `See posts, stories and profile details from @${username} on MomentUp.`,
+    };
+  },
+
   explore: {
     title: "Explore",
     description: "Explore page",
@@ -55,12 +62,6 @@ export const Metadata: MetadataMap = {
   search: {
     title: "Search",
     description: "Search page",
-  },
-  profile: (username: string) => {
-    return {
-      title: `@${username}`,
-      description: `Profile page of ${username}`,
-    };
   },
   notifications: {
     title: "Notifications",

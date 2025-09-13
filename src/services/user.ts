@@ -1,4 +1,4 @@
-import type { API, ErrorResponse, ProfileInfo } from "api";
+import type { API, ErrorResponse, ProfileDto } from "api";
 import type { Token } from "@/components/providers/Auth";
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
@@ -42,7 +42,7 @@ export async function follow(data: FollowDto, token: Token): API {
 }
 
 export async function getProfile(username: string): API<{
-  profile: ProfileInfo;
+  profile: ProfileDto;
 }> {
   return fetch(ApiUrl.user.getProfile(username), {
     method: "GET",

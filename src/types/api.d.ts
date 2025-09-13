@@ -33,16 +33,17 @@ declare module "api" {
     avatar: string | null;
   }
 
-  interface ProfileInfo extends AccountDto {
+  interface ProfileDto extends AccountDto {
     bio?: string;
     backgroundImage?: string;
     followers: number;
     following: number;
-    hasStory: boolean;
     isFollowing?: boolean;
+    isProtected: boolean;
+    hasStory: boolean;
   }
 
-  interface UserSummaryDto extends Omit<ProfileInfo, "backgroundImage"> {
+  interface UserSummaryDto extends Omit<ProfileDto, "backgroundImage" | "isProtected"> {
     followedBy?: {
       count: number;
       displayItems: Array<{
@@ -171,7 +172,7 @@ declare module "api" {
     | MediaSearchItem;
 
   type PopularProfileItem = Omit<
-    ProfileInfo,
+    ProfileDto,
     "followers" | "following" | "hasStory" | "isFollowing"
   >;
 

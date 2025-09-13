@@ -11,7 +11,7 @@ export default function MediaPage() {
   return (
     <MomentGrid
       apiUrl={(page: number) =>
-        ApiUrl.moment.explore("media", page, EXPLORER_LIMIT)
+        ApiUrl.post.explore("media", page, EXPLORER_LIMIT)
       }
       loadingSkeleton={<ExploreSkeleton />}
       className="size-full"

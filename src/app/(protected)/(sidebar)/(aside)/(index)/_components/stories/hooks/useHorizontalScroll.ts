@@ -1,9 +1,10 @@
 import type { Direction } from "../types";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const ROUNDING_ERROR = 1;
 
 export function useHorizontalScroll(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any | undefined,
   scrollContainerRef: React.RefObject<HTMLDivElement | null>,
   itemsPerView: number,

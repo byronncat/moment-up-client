@@ -3,6 +3,7 @@ export const VIDEO_SKIP_DURATION = 5;
 export const PAGE_RELOAD_TIME = 500;
 
 export const MOBILE_NAV_HEIGHT = "52px";
+export const POST_CARD_LIST_GAP = 16;
 
 export enum SortBy {
   NEWEST = "newest",

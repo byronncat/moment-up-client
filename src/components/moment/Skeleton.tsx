@@ -1,5 +1,5 @@
 import { cn } from "@/libraries/utils";
-import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 
 type MomentSkeletonProps = Readonly<{
@@ -46,7 +46,7 @@ export default function MomentSkeleton({
       </CardHeader>
 
       <CardContent className="p-0">
-        {haveText && (
+        {haveText ? (
           <div className="px-4 pb-2">
             {aspectRatio === "none" ? (
               <div className="pb-7">
@@ -57,7 +57,7 @@ export default function MomentSkeleton({
               <Skeleton className="w-4/5 h-4 mb-1" />
             )}
           </div>
-        )}
+        ) : null}
 
         {aspectRatio !== "none" && (
           <Skeleton className={cn("w-full rounded-none", aspectRatio)} />

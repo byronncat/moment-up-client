@@ -29,32 +29,30 @@ export default function HorizontalNavigationBar({
   const [activeTab, setActiveTab] = useState(initialValue ?? items[0]?.id);
 
   return (
-    <div className={cn("w-full", "border-b border-border", className)}>
-      <div className="flex">
-        {items.map((item) => {
-          if (item.href) {
-            const activeTab = items.find((item) => pathname === item.href)?.id;
-            return (
-              <Link href={item.href} key={item.id} className="flex-1">
-                <Item data={item} active={activeTab === item.id} />
-              </Link>
-            );
-          }
-
+    <div className={cn("w-full flex", "border-b border-border", className)}>
+      {items.map((item) => {
+        if (item.href) {
+          const activeTab = items.find((item) => pathname === item.href)?.id;
           return (
-            <button
-              key={item.id}
-              onClick={() => {
-                item.onSelect?.();
-                setActiveTab(item.id);
-              }}
-              className="flex-1 cursor-pointer"
-            >
+            <Link href={item.href} key={item.id} className="flex-1 focus-indicator">
               <Item data={item} active={activeTab === item.id} />
-            </button>
+            </Link>
           );
-        })}
-      </div>
+        }
+
+        return (
+          <button
+            key={item.id}
+            onClick={() => {
+              item.onSelect?.();
+              setActiveTab(item.id);
+            }}
+            className="flex-1 cursor-pointer focus-indicator"
+          >
+            <Item data={item} active={activeTab === item.id} />
+          </button>
+        );
+      })}
     </div>
   );
 }

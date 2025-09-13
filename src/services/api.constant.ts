@@ -16,37 +16,45 @@ export const ApiUrl = {
   },
 
   // === Core ===
-  moment: {
-    home: (page?: number, limit?: number) =>
-      `${SERVER_HOST_URL}/v1/moments/home` +
-      (page ? `?page=${page}` : "") +
-      (limit ? `&limit=${limit}` : ""),
-    explore: (type?: "media" | "post", page?: number, limit?: number) =>
-      `${SERVER_HOST_URL}/v1/moments/explore` +
-      (type ? `?type=${type}` : "") +
-      (page ? `&page=${page}` : "") +
-      (limit ? `&limit=${limit}` : ""),
+  post: {
+    home: (page?: number, limit?: number) => {
+      const params = new URLSearchParams();
+      if (page !== undefined) params.append('page', page.toString());
+      if (limit !== undefined) params.append('limit', limit.toString());
+      const queryString = params.toString();
+      return `${SERVER_HOST_URL}/v1/posts/home${queryString ? `?${queryString}` : ''}`;
+    },
+    explore: (type?: "media" | "post", page?: number, limit?: number) => {
+      const params = new URLSearchParams();
+      if (type) params.append('type', type);
+      if (page !== undefined) params.append('page', page.toString());
+      if (limit !== undefined) params.append('limit', limit.toString());
+      const queryString = params.toString();
+      return `${SERVER_HOST_URL}/v1/posts/explore${queryString ? `?${queryString}` : ''}`;
+    },
     user: (
       userId: string,
       filter?: "media" | "tagged" | "reposts" | "liked",
       page?: number,
       limit?: number
-    ) =>
-      `${SERVER_HOST_URL}/v1/moments/user/${userId}` +
-      (page ? `?page=${page}` : "") +
-      (filter ? `&filter=${filter}` : "") +
-      (limit ? `&limit=${limit}` : ""),
-    getById: (momentId: string) => `${SERVER_HOST_URL}/v1/moments/${momentId}`,
-    like: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/moments/${momentId}/like`,
+    ) => {
+      const params = new URLSearchParams();
+      if (page !== undefined) params.append('page', page.toString());
+      if (filter) params.append('filter', filter);
+      if (limit !== undefined) params.append('limit', limit.toString());
+      const queryString = params.toString();
+      return `${SERVER_HOST_URL}/v1/posts/user/${userId}${queryString ? `?${queryString}` : ''}`;
+    },
+    getById: (momentId: string) => `${SERVER_HOST_URL}/v1/posts/${momentId}`,
+    like: (momentId: string) => `${SERVER_HOST_URL}/v1/posts/${momentId}/like`,
     unlike: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/moments/${momentId}/unlike`,
+      `${SERVER_HOST_URL}/v1/posts/${momentId}/unlike`,
     bookmark: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/moments/${momentId}/bookmark`,
+      `${SERVER_HOST_URL}/v1/posts/${momentId}/bookmark`,
     unbookmark: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/moments/${momentId}/unbookmark`,
+      `${SERVER_HOST_URL}/v1/posts/${momentId}/unbookmark`,
     repost: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/moments/${momentId}/repost`,
+      `${SERVER_HOST_URL}/v1/posts/${momentId}/repost`,
   },
 
   story: {
@@ -57,10 +65,13 @@ export const ApiUrl = {
   },
 
   comment: {
-    get: (momentId: string, page?: number, limit?: number) =>
-      `${SERVER_HOST_URL}/v1/comments/moment/${momentId}` +
-      (page ? `?page=${page}` : "") +
-      (limit ? `&limit=${limit}` : ""),
+    get: (momentId: string, page?: number, limit?: number) => {
+      const params = new URLSearchParams();
+      if (page !== undefined) params.append('page', page.toString());
+      if (limit !== undefined) params.append('limit', limit.toString());
+      const queryString = params.toString();
+      return `${SERVER_HOST_URL}/v1/comments/moment/${momentId}${queryString ? `?${queryString}` : ''}`;
+    },
     add: `${SERVER_HOST_URL}/v1/comments`,
     like: (commentId: string) =>
       `${SERVER_HOST_URL}/v1/comments/${commentId}/like`,
@@ -97,14 +108,21 @@ export const ApiUrl = {
       order?: SearchSortParams,
       page?: number,
       limit?: number
-    ) =>
-      `${SERVER_HOST_URL}/v1/search?query=${encodeURIComponent(query)}` +
-      (type ? `&type=${encodeURIComponent(type)}` : "") +
-      (order ? `&order=${encodeURIComponent(order)}` : "") +
-      (page ? `&page=${page}` : "") +
-      (limit ? `&limit=${limit}` : ""),
-    getHistory: (limit?: number) =>
-      `${SERVER_HOST_URL}/v1/search/history` + (limit ? `?limit=${limit}` : ""),
+    ) => {
+      const params = new URLSearchParams();
+      params.append('query', query);
+      if (type) params.append('type', type);
+      if (order) params.append('order', order);
+      if (page !== undefined) params.append('page', page.toString());
+      if (limit !== undefined) params.append('limit', limit.toString());
+      return `${SERVER_HOST_URL}/v1/search?${params.toString()}`;
+    },
+    getHistory: (limit?: number) => {
+      const params = new URLSearchParams();
+      if (limit !== undefined) params.append('limit', limit.toString());
+      const queryString = params.toString();
+      return `${SERVER_HOST_URL}/v1/search/history${queryString ? `?${queryString}` : ''}`;
+    },
     clearHistory: `${SERVER_HOST_URL}/v1/search/history/clear`,
     removeHistoryItem: (itemId: string) =>
       `${SERVER_HOST_URL}/v1/search/history/${itemId}`,
@@ -112,11 +130,14 @@ export const ApiUrl = {
 
   // === Notification ===
   notification: {
-    get: (type: "all" | "request" | "social", page?: number, limit?: number) =>
-      `${SERVER_HOST_URL}/v1/notifications` +
-      (type ? `?type=${type}` : "") +
-      (page ? `&page=${page}` : "") +
-      (limit ? `&limit=${limit}` : ""),
+    get: (type: "all" | "request" | "social", page?: number, limit?: number) => {
+      const params = new URLSearchParams();
+      if (type) params.append('type', type);
+      if (page !== undefined) params.append('page', page.toString());
+      if (limit !== undefined) params.append('limit', limit.toString());
+      const queryString = params.toString();
+      return `${SERVER_HOST_URL}/v1/notifications${queryString ? `?${queryString}` : ''}`;
+    },
   },
 } as const;
 
