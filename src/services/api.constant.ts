@@ -97,6 +97,9 @@ export const ApiUrl = {
     block: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/block`,
     unblock: (userId: string) =>
       `${SERVER_HOST_URL}/v1/users/${userId}/unblock`,
+    mute: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/mute`,
+    unmute: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/unmute`,
+    report: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/report`,
     getProfile: (username: string) => `${SERVER_HOST_URL}/v1/users/${username}`,
   },
 

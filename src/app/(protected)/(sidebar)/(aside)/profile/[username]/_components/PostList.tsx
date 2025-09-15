@@ -145,7 +145,7 @@ export default function MomentList({ filter }: MomentListProps) {
             }}
           >
             {isProfileRow && profile ? (
-              <ProfileZone data={profile} />
+              <ProfileZone />
             ) : isLoading ? (
               <>
                 <MomentSkeleton

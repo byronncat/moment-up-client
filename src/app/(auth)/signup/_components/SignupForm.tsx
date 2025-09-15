@@ -15,10 +15,10 @@ import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormMessage,
-  FormDescription,
 } from "@/components/ui/form";
 import styles from "../../_constants/styles";
 
@@ -97,12 +97,12 @@ export default function SignupForm() {
                       {...field}
                     />
                   </FormControl>
-                  {showDetails && (
+                  {showDetails ? (
                     <FormDescription className="text-xs">
                       Only letters, numbers, dots, underscores, and hyphens are
                       allowed and must be at least 2 characters.
                     </FormDescription>
-                  )}
+                  ) : null}
                   <FormMessage />
                 </FormItem>
               )}
@@ -120,13 +120,13 @@ export default function SignupForm() {
                       {...field}
                     />
                   </FormControl>
-                  {showDetails && (
+                  {showDetails ? (
                     <FormDescription className="text-xs">
                       Password must be at least 8 characters and include at
                       least three of: uppercase letter (A-Z), lowercase letter
                       (a-z), number (0-9)
                     </FormDescription>
-                  )}
+                  ) : null}
                   <FormMessage />
                 </FormItem>
               )}

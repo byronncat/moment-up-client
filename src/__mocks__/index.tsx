@@ -65,11 +65,11 @@ export type Contact = {
   time: string;
   isActive?: boolean;
   type: "user" | "group";
-  members?: {
+  members?: Array<{
     id: string;
     name: string;
     avatar: string;
-  }[];
+  }>;
 };
 
 export type UserStatus = {

@@ -1,4 +1,4 @@
-import { Volume2, VolumeX, VolumeOff } from "lucide-react";
+import { Volume2, VolumeOff, VolumeX } from "lucide-react";
 
 type VolumeProps = Readonly<{
   variant?: "regular" | "x" | "off";

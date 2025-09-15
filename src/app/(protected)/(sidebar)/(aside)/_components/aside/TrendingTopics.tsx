@@ -120,7 +120,6 @@ function ReportButton({
   className,
 }: Readonly<{ topic: HashtagDto["name"]; className?: string }>) {
   const reportTopic = useRefreshApi(SuggestApi.reportTopic);
-
   function report(reportType: TrendingReportType) {
     toast.promise(reportTopic({ topic, type: reportType }), {
       loading: "Submitting report...",

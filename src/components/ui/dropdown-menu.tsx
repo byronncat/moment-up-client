@@ -6,7 +6,10 @@ import { Check, Chevron, Circle } from "@/components/icons";
 
 import { cn } from "@/libraries/utils";
 
-const DropdownMenu = DropdownMenuPrimitive.Root;
+// Disable modal to prevent scrollbar from disappearing
+const DropdownMenu = (
+  props: React.ComponentProps<typeof DropdownMenuPrimitive.Root>
+) => <DropdownMenuPrimitive.Root modal={false} {...props} />;
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
 

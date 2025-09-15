@@ -1,8 +1,5 @@
 declare module "api" {
-  import type {
-    SearchItemType,
-    StoryBackground,
-  } from "@/constants/server";
+  import type { SearchItemType, StoryBackground } from "@/constants/server";
 
   type API<T = void> = Promise<{
     success: boolean;
@@ -34,24 +31,26 @@ declare module "api" {
   }
 
   interface ProfileDto extends AccountDto {
-    bio?: string;
-    backgroundImage?: string;
+    bio: string | null;
+    backgroundImage: string | null;
     followers: number;
     following: number;
-    isFollowing?: boolean;
+    isFollowing: boolean | null;
+    isMuted: boolean | null;
     isProtected: boolean;
     hasStory: boolean;
   }
 
-  interface UserSummaryDto extends Omit<ProfileDto, "backgroundImage" | "isProtected"> {
-    followedBy?: {
+  interface UserSummaryDto
+    extends Omit<ProfileDto, "backgroundImage" | "isProtected"> {
+    followedBy: {
       count: number;
       displayItems: Array<{
         id: string;
         displayName: string;
         avatar: AccountDto["avatar"];
       }>;
-    };
+    } | null;
   }
 
   // === Moment ===

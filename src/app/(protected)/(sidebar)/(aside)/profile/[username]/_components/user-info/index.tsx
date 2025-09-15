@@ -1,0 +1,154 @@
+"use client";
+
+import { useAuth } from "@/components/providers";
+import { useProfile } from "../../_providers/ProfileProvider";
+import Format from "@/utilities/format";
+import { ROUTE } from "@/constants/route";
+
+import { cn } from "@/libraries/utils";
+import Link from "next/link";
+import { Avatar } from "@/components/common";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import MoreButton from "./MoreButton";
+import FollowButton from "./FollowButton";
+import { Lock, Settings } from "@/components/icons";
+
+export default function UserInfo() {
+  const { user } = useAuth();
+  const { profile, isProtected } = useProfile();
+  const isSelf = user?.id === profile.id;
+
+  return (
+    <div className={cn("w-full relative", "flex flex-col items-center")}>
+      <div
+        className={cn("w-full h-40", "-mb-15 bg-muted")}
+        style={{
+          ...(profile.backgroundImage && {
+            backgroundImage: `url(${profile.backgroundImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "start",
+          }),
+        }}
+      />
+
+      <Avatar
+        src={profile.avatar}
+        alt={`${profile.displayName ?? profile.username}'s profile`}
+        size="26"
+        ring
+        showRing={profile.hasStory}
+      />
+
+      <div
+        className={cn(
+          "mt-3 mb-6",
+          "flex flex-col items-center",
+          "w-full px-3 text-center "
+        )}
+      >
+        <div className={cn("font-semibold text-xl", "flex items-center gap-1")}>
+          {profile.displayName ?? profile.username}
+          {isProtected ? (
+            <Lock className="size-4 mt-0.5 text-muted-foreground" />
+          ) : null}
+        </div>
+        <span className={cn("text-muted-foreground text-sm", "mb-3")}>
+          @{profile.username}
+        </span>
+        {profile.bio ? (
+          <div
+            className={cn(
+              "max-w-4/5 w-fit min-h-[48px]",
+              "flex flex-col items-center justify-center gap-1.5",
+              "text-muted-foreground text-sm text-left"
+            )}
+          >
+            <p>{profile.bio}</p>
+          </div>
+        ) : (
+          isSelf && (
+            <div
+              className={cn(
+                "w-4/5 h-[48px]",
+                "flex items-center justify-center"
+              )}
+            >
+              <p className="text-muted-foreground/60 text-center text-sm italic">
+                Write something here...
+              </p>
+            </div>
+          )
+        )}
+      </div>
+
+      <div className={cn("grid grid-cols-2 gap-10", "text-sm", "mb-6")}>
+        <div className="flex flex-col items-center">
+          <span className="font-bold">{Format.number(profile.following)}</span>
+          <span>Following</span>
+        </div>
+        <div className="flex flex-col items-center">
+          <span className="font-bold">{Format.number(profile.followers)}</span>
+          <span>Followers</span>
+        </div>
+      </div>
+
+      {isProtected ? (
+        <div className={cn("flex flex-col", "mt-8 mx-12 max-w-[360px]")}>
+          <span className="text-xl font-bold">This account is protected</span>
+          <span className={cn("mt-1", "text-muted-foreground text-sm")}>
+            Only approved followers can see @{profile.username}&apos;s posts. To
+            request access, click Follow.
+          </span>
+        </div>
+      ) : null}
+
+      <div className="flex gap-2 absolute top-42 right-2">
+        {isSelf ? (
+          <Link href={ROUTE.SETTINGS}>
+            <Button
+              className={cn("text-sm", "px-4 py-2")}
+              size="icon"
+              variant="outline"
+            >
+              <Settings className="size-4" />
+            </Button>
+          </Link>
+        ) : (
+          <>
+            <MoreButton />
+            <FollowButton />
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function UserInfoSkeleton() {
+  return (
+    <div
+      className={cn("h-[420px] w-full relative", "flex flex-col items-center")}
+    >
+      <Skeleton className={cn("w-full h-40 -mb-15", "rounded-none")} />
+      <Skeleton className="size-28 rounded-full" />
+
+      <div className={cn("mt-4 mb-10", "flex flex-col items-center")}>
+        <Skeleton className="h-5 w-32" />
+        <Skeleton className="h-4 w-24 mt-2" />
+        <Skeleton className="h-4 w-48 mt-7" />
+      </div>
+
+      <div className={cn("grid grid-cols-2 gap-12", "text-sm", "mb-6")}>
+        <div className="flex flex-col items-center gap-1.5">
+          <Skeleton className="h-4 w-8" />
+          <Skeleton className="h-4 w-16" />
+        </div>
+        <div className="flex flex-col items-center gap-1.5">
+          <Skeleton className="h-4 w-8" />
+          <Skeleton className="h-4 w-16" />
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -70,10 +70,105 @@ export async function getProfile(username: string): API<{
     });
 }
 
-export async function toggleBlock(_userId: string): API {
-  return {
-    success: true,
-    message: "Block updated successfully",
-    statusCode: 200,
-  };
+interface BlockDto {
+  targetId: string;
+  shouldBlock: boolean;
+}
+
+export async function block(data: BlockDto, token: Token): API {
+  const endpoint = data.shouldBlock
+    ? ApiUrl.user.block(data.targetId)
+    : ApiUrl.user.unblock(data.targetId);
+  const method = data.shouldBlock ? "POST" : "DELETE";
+  const successMessage = data.shouldBlock ? "User blocked" : "User unblocked";
+
+  return fetch(endpoint, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: successMessage,
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+interface MuteDto {
+  targetId: string;
+  shouldMute: boolean;
+}
+
+export async function mute(data: MuteDto, token: Token): API {
+  const endpoint = data.shouldMute
+    ? ApiUrl.user.mute(data.targetId)
+    : ApiUrl.user.unmute(data.targetId);
+  const method = data.shouldMute ? "POST" : "DELETE";
+  const successMessage = data.shouldMute ? "User muted" : "User unmuted";
+
+  return fetch(endpoint, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: successMessage,
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+export async function reportUser(userId: string, token: Token): API {
+  return fetch(ApiUrl.user.report(userId), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "User reported successfully",
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
 }

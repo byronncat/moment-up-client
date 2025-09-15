@@ -5,10 +5,12 @@ import type { ProfileDto } from "api";
 
 type ProfileContextType = {
   username: string;
-  profile: ProfileDto | undefined;
-  isFollowing: boolean;
+  profile: ProfileDto;
+  isProtected: boolean;
   follow: () => Promise<void>;
-  mutate: () => void;
+  mute: () => Promise<void>;
+  block: () => Promise<void>;
+  report: () => Promise<void>;
 };
 
 // === Provider ===
@@ -25,10 +27,25 @@ import { ProfileZone, ProfileZoneSkeleton } from "../_components";
 
 const ProfileContext = createContext<ProfileContextType>({
   username: "",
-  profile: undefined,
-  isFollowing: false,
+  profile: {
+    id: "",
+    username: "",
+    displayName: null,
+    avatar: null,
+    backgroundImage: null,
+    bio: null,
+    followers: 0,
+    following: 0,
+    isFollowing: null,
+    isMuted: null,
+    isProtected: false,
+    hasStory: false,
+  },
+  isProtected: false,
   follow: async () => {},
-  mutate: () => {},
+  mute: async () => {},
+  block: async () => {},
+  report: async () => {},
 });
 
 export const useProfile = () => useContext(ProfileContext);
@@ -42,56 +59,102 @@ export default function ProfileProvider({
   username,
   children,
 }: ProfileProviderProps) {
-  const { token } = useAuth();
-  const {
-    data: profileData,
-    error,
-    isLoading,
-    mutate,
-  } = useSWRImmutable(
+  const { user, token } = useAuth();
+  const { data, error, isLoading, mutate } = useSWRImmutable(
     [ApiUrl.user.getProfile(username), token.accessToken],
     ([url, token]) => SWRFetcherWithToken<{ profile: ProfileDto }>(url, token)
   );
 
-  const [profile, setProfile] = useState<ProfileDto | undefined>(
-    profileData?.profile
-  );
+  const [profile, setProfile] = useState<ProfileDto | undefined>();
+  const [isProtected, setIsProtected] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (profileData?.profile) setProfile(profileData.profile);
-  }, [profileData?.profile]);
-
-  const isFollowing = profile?.isFollowing ?? false;
-
-  const follow = useRefreshApi(UserApi.follow);
-  async function handleFollow() {
+  const followApi = useRefreshApi(UserApi.follow);
+  async function follow() {
     if (!profile) return;
 
     const _prev = profile;
-    setProfile((prev) =>
-      prev
-        ? {
-            ...prev,
-            followers: prev.followers + (isFollowing ? -1 : 1),
-            isFollowing: !isFollowing,
-          }
-        : prev
-    );
-
-    const { success, message } = await follow({
-      targetId: profile.id,
-      shouldFollow: !isFollowing,
+    setProfile({
+      ..._prev,
+      followers: _prev.followers + (profile.isFollowing ? -1 : 1),
+      isFollowing: !profile.isFollowing,
     });
 
-    if (success)
-      setProfile((prev) =>
-        prev ? { ...prev, isProtected: !prev.isProtected } : prev
-      );
+    const { success, message } = await followApi({
+      targetId: profile.id,
+      shouldFollow: !profile.isFollowing,
+    });
+
+    if (success) setIsProtected(!isProtected);
     else {
       setProfile(_prev);
       toast.error(message || "Failed to follow/unfollow");
     }
   }
+
+  const muteApi = useRefreshApi(UserApi.mute);
+  async function mute() {
+    if (!profile) return;
+
+    const _prev = profile;
+    setProfile({
+      ..._prev,
+      isMuted: !profile.isMuted,
+    });
+
+    const { success, message } = await muteApi({
+      targetId: profile.id,
+      shouldMute: !profile.isMuted,
+    });
+
+    if (!success) {
+      setProfile(_prev);
+      toast.error(message || "Failed to mute user");
+    }
+  }
+
+  const blockApi = useRefreshApi(UserApi.block);
+  async function block() {
+    if (!profile) return;
+
+    const _prev = profile;
+    setProfile({
+      ..._prev,
+      followers: _prev.isFollowing ? _prev.followers - 1 : _prev.followers,
+      isFollowing: false,
+    });
+
+    const { success, message } = await blockApi({
+      targetId: profile.id,
+      shouldBlock: true,
+    });
+
+    if (success) setIsProtected(profile.isProtected);
+    else {
+      setProfile(_prev);
+      toast.error(message || "Failed to block user");
+    }
+  }
+
+  const reportApi = useRefreshApi(UserApi.reportUser);
+  async function report() {
+    if (!profile) return;
+
+    const { success, message } = await reportApi(profile.id);
+
+    if (success) toast.success(message || "User reported successfully");
+    else toast.error(message || "Failed to report user");
+  }
+
+  useEffect(() => {
+    if (data?.profile) {
+      setProfile(data.profile);
+      setIsProtected(
+        data.profile.isFollowing || data.profile.username === user?.username
+          ? false
+          : data.profile.isProtected
+      );
+    }
+  }, [data, user]);
 
   if (isLoading) return <ProfileZoneSkeleton />;
   if (error?.statusCode === 404)
@@ -120,12 +183,14 @@ export default function ProfileProvider({
       value={{
         username,
         profile,
-        isFollowing,
-        follow: handleFollow,
-        mutate,
+        isProtected,
+        follow,
+        mute,
+        block,
+        report,
       }}
     >
-      {profile.isProtected ? <ProfileZone data={profile} /> : children}
+      {isProtected ? <ProfileZone /> : children}
     </ProfileContext.Provider>
   );
 }

@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Image as ImageIcon } from "@/components/icons";
 
 const COLUMN_COUNT = 3;
+const GAP = 4;
 
 export default function MomentGrid() {
   const swrFetcherWithRefresh = useRefreshSWR();
@@ -66,6 +67,7 @@ export default function MomentGrid() {
   const virtualizer = useWindowVirtualizer({
     count: itemCount,
     overscan: 3,
+    gap: GAP,
     estimateSize: () => 150, // Approximate row height for grid
     measureElement: (element) => element.getBoundingClientRect().height,
   });
@@ -160,7 +162,7 @@ export default function MomentGrid() {
           >
             {isProfileRow ? (
               <div className="pb-1">
-                <ProfileZone data={profile!} />
+                <ProfileZone />
               </div>
             ) : (
               <div className="flex justify-around gap-1 px-1">
