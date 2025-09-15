@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import LoginDialog from "./LoginDialog";
+import { X } from "@/components/icons";
 
 export default function ManagementDialog({
   open,
@@ -28,6 +29,12 @@ export default function ManagementDialog({
   const [accounts, setAccounts] = useState<AccountDto[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
+
+  function handleAccountRemoved(accountId: string) {
+    setAccounts((prev) =>
+      prev ? prev.filter((account) => account.id !== accountId) : prev
+    );
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -61,7 +68,11 @@ export default function ManagementDialog({
               <SkeletonAccount />
             ) : (
               accounts?.map((account) => (
-                <AccountItem key={account.id} account={account} />
+                <AccountItem
+                  key={account.id}
+                  account={account}
+                  onAccountRemoved={handleAccountRemoved}
+                />
               ))
             )}
           </div>
@@ -86,9 +97,15 @@ export default function ManagementDialog({
   );
 }
 
-function AccountItem({ account }: Readonly<{ account: AccountDto }>) {
+function AccountItem({
+  account,
+  onAccountRemoved,
+}: Readonly<{
+  account: AccountDto;
+  onAccountRemoved: (accountId: string) => void;
+}>) {
   const { user, switchAccount, reload } = useAuth();
-  const isMe = user?.id === account.id;
+  const isSelf = user?.id === account.id;
 
   async function handleSwitch(accountId: AccountDto["id"]) {
     const { success, message } = await switchAccount(accountId);
@@ -96,23 +113,35 @@ function AccountItem({ account }: Readonly<{ account: AccountDto }>) {
     else toast.error(message || "Failed to switch account");
   }
 
+  async function handleRemove(
+    event: React.MouseEvent,
+    accountId: AccountDto["id"]
+  ) {
+    event.stopPropagation();
+
+    const success = await indexedDBService.removeAccount(accountId);
+    if (success) onAccountRemoved(accountId);
+    else toast.error("Failed to remove account");
+  }
+
   return (
     <div
       key={account.id}
       onClick={(event) => {
-        if (isMe) {
+        if (isSelf) {
           event.preventDefault();
           return;
         }
         handleSwitch(account.id);
       }}
       role="button"
-      tabIndex={!isMe ? 0 : -1}
-      aria-disabled={isMe}
+      tabIndex={!isSelf ? 0 : -1}
+      aria-disabled={isSelf}
       className={cn(
+        "relative",
         "px-6 py-3",
         "flex items-center gap-2 max-w-full",
-        isMe ? "cursor-default" : "cursor-pointer",
+        isSelf ? "cursor-default" : "cursor-pointer",
         "hover:bg-accent/[.07] transition-colors duration-150 ease-in-out",
         "focus-indicator"
       )}
@@ -127,7 +156,7 @@ function AccountItem({ account }: Readonly<{ account: AccountDto }>) {
           <span className={cn("font-semibold", "truncate")}>
             {account.displayName ?? account.username}
           </span>
-          {isMe ? (
+          {isSelf ? (
             <span
               className={cn(
                 "inline-block shrink-0",
@@ -142,6 +171,21 @@ function AccountItem({ account }: Readonly<{ account: AccountDto }>) {
           @{account.username}
         </span>
       </div>
+      {isSelf ? null : (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={(event) => handleRemove(event, account.id)}
+          className={cn(
+            "rounded-full size-8",
+            "absolute right-3 top-1/2 -translate-y-1/2",
+            "text-muted-foreground hover:text-foreground"
+          )}
+          aria-label={`Remove ${account.displayName ?? account.username} account`}
+        >
+          <X className="size-4 " />
+        </Button>
+      )}
     </div>
   );
 }
