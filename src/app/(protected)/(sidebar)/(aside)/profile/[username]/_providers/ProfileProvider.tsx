@@ -84,8 +84,9 @@ export default function ProfileProvider({
       shouldFollow: !profile.isFollowing,
     });
 
-    if (success) setIsProtected(!isProtected);
-    else {
+    if (success) {
+      if (profile.isProtected) setIsProtected(!isProtected);
+    } else {
       setProfile(_prev);
       toast.error(message || "Failed to follow/unfollow");
     }
