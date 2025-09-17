@@ -1,4 +1,5 @@
 import {
+  CloudinaryProvider,
   MomentStorageProvider,
   StoryStorageProvider,
 } from "@/components/providers";
@@ -10,11 +11,13 @@ type LayoutProps = Readonly<{
 
 export default function Layout({ children, modal }: LayoutProps) {
   return (
-    <MomentStorageProvider>
-      <StoryStorageProvider>
-        {children}
-        {modal}
-      </StoryStorageProvider>
-    </MomentStorageProvider>
+    <CloudinaryProvider>
+      <MomentStorageProvider>
+        <StoryStorageProvider>
+          {children}
+          {modal}
+        </StoryStorageProvider>
+      </MomentStorageProvider>
+    </CloudinaryProvider>
   );
 }

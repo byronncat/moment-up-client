@@ -350,3 +350,19 @@ export const mockQuickReplies: string[] = [
   "Can you tell me more about your ad?",
   "Is anyone available to chat?",
 ];
+
+import { getCldImageUrl } from "next-cloudinary";
+
+export function __parseImageUrl(
+  data: string | null,
+  width: number,
+  height: number
+) {
+  if (!data) return null;
+  if (data.startsWith("http") || data.startsWith("blob:")) return data;
+  return getCldImageUrl({
+    width,
+    height,
+    src: data,
+  });
+}
