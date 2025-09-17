@@ -10,7 +10,7 @@ import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { Avatar, Tooltip } from "@/components/common";
+import { Avatar, NumberTooltip, Tooltip } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import MoreButton from "./MoreButton";
@@ -133,11 +133,19 @@ export default function UserInfo() {
 
       <div className={cn("grid grid-cols-2 gap-10", "text-sm", "mb-6")}>
         <div className="flex flex-col items-center">
-          <span className="font-bold">{Format.number(profile.following)}</span>
+          <NumberTooltip number={profile.following} sideOffset={4}>
+            <span className="font-bold">
+              {Format.number(profile.following)}
+            </span>
+          </NumberTooltip>
           <span>Following</span>
         </div>
         <div className="flex flex-col items-center">
-          <span className="font-bold">{Format.number(profile.followers)}</span>
+          <NumberTooltip number={profile.followers} sideOffset={4}>
+            <span className="font-bold">
+              {Format.number(profile.followers)}
+            </span>
+          </NumberTooltip>
           <span>Followers</span>
         </div>
       </div>

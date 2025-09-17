@@ -63,3 +63,18 @@ export default function Tooltip({
     </TooltipUI>
   );
 }
+
+export function NumberTooltip({
+  number,
+  children,
+  ...props
+}: Readonly<
+  { number: number; children: React.ReactNode } & Omit<TooltipProps, "content">
+>) {
+  if (number < 1000) return children;
+  return (
+    <Tooltip {...props} content={number.toString()}>
+      {children}
+    </Tooltip>
+  );
+}

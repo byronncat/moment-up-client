@@ -9,6 +9,7 @@ import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
+import { NumberTooltip } from "./Tooltip";
 import Link from "next/link";
 import Avatar from "./Avatar";
 import { Button } from "../ui/button";
@@ -108,18 +109,20 @@ function FollowSection({
   return (
     <div className={cn("flex gap-3", "text-sm", className)}>
       <div className="flex items-center gap-1">
-        <span className="font-semibold">{Format.number(following)}</span>
+        <NumberTooltip number={following} sideOffset={4}>
+          <span className="font-semibold">{Format.number(following)}</span>
+        </NumberTooltip>
         <span className="text-muted-foreground">following</span>
       </div>
       <div className="flex items-center gap-1">
-        <span className="font-semibold">{Format.number(followers)}</span>
+        <NumberTooltip number={followers} sideOffset={4}>
+          <span className="font-semibold">{Format.number(followers)}</span>
+        </NumberTooltip>
         <span className="text-muted-foreground">followers</span>
       </div>
     </div>
   );
 }
-
-const MAX_FOLLOWED_BY_DISPLAY = 3;
 
 type FollowedByUser = {
   id: string;
@@ -129,14 +132,14 @@ type FollowedByUser = {
 
 const getFollowedByMessage = (
   displayItems: FollowedByUser[],
-  totalCount: number
+  count: number
 ) => {
   const names = displayItems
     .map((user: FollowedByUser) => user.displayName)
     .join(", ");
-  const additionalCount = totalCount - MAX_FOLLOWED_BY_DISPLAY;
+  const additionalCount = count;
   const additionalText =
-    additionalCount > 0 ? ` and ${additionalCount} others you follow` : "";
+    additionalCount > 0 ? ` and ${Format.number(additionalCount)} others you follow` : "";
 
   return `Followed by ${names}${additionalText}`;
 };
@@ -192,7 +195,7 @@ function FollowedBy({
 }
 
 type FollowButtonProps = Readonly<{
-  isFollowing?: boolean;
+  isFollowing?: UserSummaryDto["isFollowing"];
   onFollow?: (event: React.MouseEvent) => Promise<void>;
 }>;
 

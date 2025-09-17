@@ -13,6 +13,7 @@ import { TrendingReportType } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
+import { NumberTooltip } from "@/components/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   DropdownMenu,
@@ -106,9 +107,11 @@ function TopicItem({ topic }: Readonly<{ topic: HashtagDto }>) {
         >
           #{topic.name}
         </span>
-        <span className="text-xs text-muted-foreground">
-          {Format.number(topic.count)} posts
-        </span>
+        <NumberTooltip number={topic.count} align="start" side="bottom" sideOffset={4}>
+          <span className="text-xs text-muted-foreground w-fit">
+            {Format.number(topic.count)} posts
+          </span>
+        </NumberTooltip>
       </div>
       <ReportButton topic={topic.name} className="flex-shrink-0" />
     </Link>

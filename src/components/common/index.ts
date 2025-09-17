@@ -10,7 +10,7 @@ export { default as MenuItem } from "./MenuItem";
 export { default as Logo } from "./Logo";
 export { default as Modal } from "./Modal";
 export { default as NoContent } from "./NoContent";
-export { default as Tooltip } from "./Tooltip";
+export { default as Tooltip, NumberTooltip } from "./Tooltip";
 export { default as UserInfoCard } from "./UserInfoCard";
 export { default as VirtualScrollbar } from "./VirtualScrollbar";
 
