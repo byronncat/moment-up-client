@@ -84,7 +84,7 @@ export const ApiUrl = {
   // === Suggestion ===
   suggestion: {
     users: `${SERVER_HOST_URL}/v1/suggestion/users`,
-    trending: `${SERVER_HOST_URL}/v1/suggestion/trending?limit=2`,
+    trending: `${SERVER_HOST_URL}/v1/suggestion/trending?limit=5`,
     report: `${SERVER_HOST_URL}/v1/suggestion/trending/report`,
     popular: `${SERVER_HOST_URL}/v1/suggestion/popular`,
   },
@@ -101,6 +101,7 @@ export const ApiUrl = {
     unmute: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/unmute`,
     report: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/report`,
     getProfile: (username: string) => `${SERVER_HOST_URL}/v1/users/${username}`,
+    updateProfile: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}`,
   },
 
   // === Search ===

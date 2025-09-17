@@ -172,3 +172,40 @@ export async function reportUser(userId: string, token: Token): API {
       };
     });
 }
+
+export interface UpdateProfileDto {
+  avatar?: string | null;
+  displayName?: string | null;
+  bio?: string | null;
+  backgroundImage?: string | null;
+}
+
+export async function updateProfile(userId: string, data: UpdateProfileDto, token: Token): API {
+  return fetch(ApiUrl.user.updateProfile(userId), {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  })
+    .then(async (response) => {
+      const responseData = await response.json();
+      if (!response.ok) throw responseData;
+      return {
+        success: true,
+        message: "Profile updated successfully",
+        statusCode: response.status,
+        data: responseData,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
