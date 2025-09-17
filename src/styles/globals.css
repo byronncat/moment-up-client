@@ -201,6 +201,8 @@
   .focus-indicator {
     @apply outline-2 outline-offset-1 outline-transparent focus-visible:outline-accent/20;
     @apply focus-visible:ring-1 focus-visible:ring-ring;
+
+    @apply focus-within:outline-accent/20 focus-within:ring-1 focus-within:ring-ring;
   }
 
   .destructive-item {

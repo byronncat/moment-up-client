@@ -53,7 +53,7 @@ export default function UserInfo() {
                   <Edit className="size-4" />
                 </Button>
               </Tooltip>
-              <Link href={ROUTE.SETTINGS}>
+              <Link href={ROUTE.SETTINGS} tabIndex={-1}>
                 <Tooltip content="Settings" sideOffset={4}>
                   <Button
                     className={cn("text-sm", "px-4 py-2")}
@@ -121,7 +121,7 @@ export default function UserInfo() {
                 onClick={() => setIsEditModalOpen(true)}
                 className={cn(
                   "text-muted-foreground/60 text-center text-sm italic",
-                  "cursor-pointer"
+                  "focus-indicator rounded-sm cursor-pointer",
                 )}
               >
                 Write something here...

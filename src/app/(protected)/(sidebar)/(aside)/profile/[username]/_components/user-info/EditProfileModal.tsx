@@ -194,15 +194,29 @@ export default function EditProfileModal({
         )}
       >
         <ScrollArea className="h-full" thumbClassName="z-30">
-          <DialogHeader className="absolute top-0 left-0 z-20 w-full backdrop-blur-lg">
-            <DialogTitle className="px-6 py-4">Edit Profile</DialogTitle>
+          <DialogHeader
+            className={cn(
+              "absolute top-0 left-0 z-20",
+              "w-full backdrop-blur-lg"
+            )}
+          >
+            <DialogTitle className="px-6 py-4 text-md">
+              Edit Profile
+            </DialogTitle>
             <DialogDescription className="sr-only">
               Update your profile info and photo.
             </DialogDescription>
+            <Button
+              variant="ghost"
+              onClick={handleCancel}
+              className={cn("absolute top-3 right-2", "size-8 rounded-full")}
+            >
+              <X className="size-4" />
+            </Button>
           </DialogHeader>
 
           <div className="h-dvh sm:max-h-[640px] flex flex-col">
-            <div className="pt-[49px]">
+            <div className="pt-[56px]">
               <div>
                 <div
                   className={cn("relative", "-mb-12", "w-full aspect-[3/1]")}
@@ -225,7 +239,8 @@ export default function EditProfileModal({
                           "size-9 rounded-full",
                           "flex items-center justify-center",
                           "bg-black/40 hover:bg-black/70",
-                          "transition-colors ease-in-out cursor-pointer"
+                          "transition-colors ease-in-out",
+                          "focus-indicator cursor-pointer"
                         )}
                       >
                         <ImageIcon
@@ -240,7 +255,8 @@ export default function EditProfileModal({
                             "size-9 rounded-full",
                             "flex items-center justify-center",
                             "bg-black/40 hover:bg-black/70",
-                            "transition-colors ease-in-out cursor-pointer"
+                            "transition-colors ease-in-out",
+                            "focus-indicator cursor-pointer"
                           )}
                         >
                           <X className="size-5 text-white" />
@@ -271,14 +287,17 @@ export default function EditProfileModal({
                     size="22"
                   />
                   <div
+                    role="button"
+                    tabIndex={0}
                     onClick={() => avatarInputRef.current?.click()}
                     className={cn(
                       "absolute inset-0 flex items-center justify-center",
                       "transition-opacity duration-200 cursor-pointer",
-                      "bg-black/30 rounded-full opacity-0 group-hover:opacity-100"
+                      "bg-black/30 rounded-full opacity-0 group-hover:opacity-100",
+                      "focus-within:opacity-100 focus-indicator"
                     )}
                   >
-                    <ImageIcon variant="plus" className="size-6 text-white" />
+                    <ImageIcon variant="plus" className="size-6 text-white/90" />
                   </div>
                 </div>
 
@@ -298,7 +317,7 @@ export default function EditProfileModal({
                   "bg-input rounded-md",
                   "border border-border",
                   "shadow-xs transition-colors",
-                  "focus-within:ring-1 focus-within:ring-ring"
+                  "focus-indicator"
                 )}
               >
                 <div
@@ -337,7 +356,7 @@ export default function EditProfileModal({
                   "bg-input rounded-md",
                   "border border-border",
                   "shadow-xs transition-colors",
-                  "focus-within:ring-1 focus-within:ring-ring"
+                  "focus-indicator"
                 )}
               >
                 <div
