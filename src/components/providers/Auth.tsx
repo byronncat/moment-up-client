@@ -19,6 +19,7 @@ interface AuthState {
 
 interface AuthAction {
   refresh: () => Promise<string>;
+  setUser: (user: AccountDto | null) => void;
   setLogged: (logged: boolean) => void;
   setLoaded: (loaded: boolean) => void;
   login: (values: z.infer<typeof zodSchema.auth.login>) => API;
@@ -67,6 +68,7 @@ const AuthContext = createContext<AuthState & AuthAction>({
   },
 
   refresh: () => Promise.resolve(""),
+  setUser: () => {},
   setLogged: () => {},
   setLoaded: () => {},
   login: () => Promise.resolve(defaultResponse),
@@ -271,6 +273,7 @@ export default function AuthProvider({
         },
 
         refresh,
+        setUser,
         setLogged,
         setLoaded,
         login,

@@ -1,12 +1,12 @@
 import {
-  ChevronUp,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  ChevronsUp,
+  ChevronUp,
   ChevronsDown,
   ChevronsLeft,
   ChevronsRight,
+  ChevronsUp,
 } from "lucide-react";
 
 type ChevronProps = Readonly<{

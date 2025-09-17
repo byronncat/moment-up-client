@@ -2,6 +2,7 @@
 
 // === Type ===
 import type { ProfileDto } from "api";
+import type { UpdateProfileDto } from "@/services/user";
 
 type ProfileContextType = {
   username: string;
@@ -11,11 +12,12 @@ type ProfileContextType = {
   mute: () => Promise<void>;
   block: () => Promise<void>;
   report: () => Promise<void>;
+  updateProfile: (data: UpdateProfileDto) => Promise<void>;
 };
 
 // === Provider ===
 import { createContext, useContext, useEffect, useState } from "react";
-import { useAuth, useRefreshApi } from "@/components/providers/Auth";
+import { useAuth, useRefreshApi } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { toast } from "sonner";
@@ -46,6 +48,7 @@ const ProfileContext = createContext<ProfileContextType>({
   mute: async () => {},
   block: async () => {},
   report: async () => {},
+  updateProfile: async () => {},
 });
 
 export const useProfile = () => useContext(ProfileContext);
@@ -59,7 +62,7 @@ export default function ProfileProvider({
   username,
   children,
 }: ProfileProviderProps) {
-  const { user, token } = useAuth();
+  const { user, token, setUser } = useAuth();
   const { data, error, isLoading, mutate } = useSWRImmutable(
     [ApiUrl.user.getProfile(username), token.accessToken],
     ([url, token]) => SWRFetcherWithToken<{ profile: ProfileDto }>(url, token)
@@ -146,15 +149,35 @@ export default function ProfileProvider({
     else toast.error(message || "Failed to report user");
   }
 
+  const updateProfileApi = useRefreshApi(UserApi.updateProfile);
+  async function updateProfile(data: UpdateProfileDto) {
+    if (!profile || !user) return;
+    const { success } = await updateProfileApi(profile.id, data);
+
+    if (success) {
+      setProfile({
+        ...profile,
+        ...data,
+      });
+      setUser({
+        ...user,
+        displayName: data.displayName ?? null,
+        avatar: data.avatar ?? null,
+      });
+    }
+  }
+
   useEffect(() => {
-    if (data?.profile) {
-      setProfile(data.profile);
+    if (data?.profile) setProfile(data.profile);
+  }, [data]);
+
+  useEffect(() => {
+    if (data?.profile)
       setIsProtected(
         data.profile.isFollowing || data.profile.username === user?.username
           ? false
           : data.profile.isProtected
       );
-    }
   }, [data, user]);
 
   if (isLoading) return <ProfileZoneSkeleton />;
@@ -189,6 +212,7 @@ export default function ProfileProvider({
         mute,
         block,
         report,
+        updateProfile,
       }}
     >
       {isProtected ? <ProfileZone /> : children}

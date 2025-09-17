@@ -10,10 +10,12 @@ const sizeConfig = {
   "12": { ring: "size-14", avatar: "size-12", userFallback: "size-6" },
   "14": { ring: "size-16", avatar: "size-14", userFallback: "size-8" },
   "20": { ring: "size-22", avatar: "size-20", userFallback: "size-10" },
+  "22": { ring: "size-24", avatar: "size-22", userFallback: "size-11" },
+  "24": { ring: "size-26", avatar: "size-24", userFallback: "size-12" },
   "26": { ring: "size-28", avatar: "size-26", userFallback: "size-14" },
 } as const;
 
-type AvatarSize = keyof typeof sizeConfig;
+export type AvatarSize = keyof typeof sizeConfig;
 
 type AvatarProps = Readonly<{
   src: AccountDto["avatar"] | undefined;

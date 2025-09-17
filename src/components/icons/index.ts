@@ -12,6 +12,7 @@ export { default as Circle } from "./Circle";
 export { default as Clone } from "./Clone";
 export { default as Compass } from "./Compass";
 export { default as Copy } from "./Copy";
+export { default as Edit } from "./Edit";
 export { default as Eye } from "./Eye";
 export { default as FaceSmile } from "./FaceSmile";
 export { default as Flag } from "./Flag";

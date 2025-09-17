@@ -1,5 +1,8 @@
 "use client";
 
+import { __parseImageUrl } from "@/__mocks__";
+
+import { useState } from "react";
 import { useAuth } from "@/components/providers";
 import { useProfile } from "../../_providers/ProfileProvider";
 import Format from "@/utilities/format";
@@ -7,37 +10,77 @@ import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { Avatar } from "@/components/common";
+import { Avatar, Tooltip } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import MoreButton from "./MoreButton";
 import FollowButton from "./FollowButton";
-import { Lock, Settings } from "@/components/icons";
+import EditProfileModal from "./EditProfileModal";
+import { Edit, Lock, Settings } from "@/components/icons";
 
 export default function UserInfo() {
   const { user } = useAuth();
   const { profile, isProtected } = useProfile();
   const isSelf = user?.id === profile.id;
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
     <div className={cn("w-full relative", "flex flex-col items-center")}>
-      <div
-        className={cn("w-full h-40", "-mb-15 bg-muted")}
-        style={{
-          ...(profile.backgroundImage && {
-            backgroundImage: `url(${profile.backgroundImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "start",
-          }),
-        }}
-      />
+      <div className={cn("relative", "-mb-15", "w-full aspect-[3/1]")}>
+        <div
+          className={cn("size-full", "bg-muted")}
+          style={{
+            ...(profile.backgroundImage && {
+              backgroundImage: `url(${__parseImageUrl(profile.backgroundImage, 640, 640 / 3)})`,
+              backgroundSize: "cover",
+              backgroundPosition: "start",
+            }),
+          }}
+        />
+
+        <div
+          className={cn("flex gap-2", "absolute top-[calc(100%+8px)] right-2")}
+        >
+          {isSelf ? (
+            <>
+              <Tooltip content="Edit Profile" sideOffset={4}>
+                <Button
+                  onClick={() => setIsEditModalOpen(true)}
+                  className={cn("text-sm", "px-4 py-2")}
+                  size="icon"
+                  variant="outline"
+                >
+                  <Edit className="size-4" />
+                </Button>
+              </Tooltip>
+              <Link href={ROUTE.SETTINGS}>
+                <Tooltip content="Settings" sideOffset={4}>
+                  <Button
+                    className={cn("text-sm", "px-4 py-2")}
+                    size="icon"
+                    variant="outline"
+                  >
+                    <Settings className="size-4" />
+                  </Button>
+                </Tooltip>
+              </Link>
+            </>
+          ) : (
+            <>
+              <MoreButton />
+              <FollowButton />
+            </>
+          )}
+        </div>
+      </div>
 
       <Avatar
-        src={profile.avatar}
+        src={__parseImageUrl(profile.avatar, 120, 120)}
         alt={`${profile.displayName ?? profile.username}'s profile`}
         size="26"
         ring
         showRing={profile.hasStory}
+        className="z-10"
       />
 
       <div
@@ -74,9 +117,15 @@ export default function UserInfo() {
                 "flex items-center justify-center"
               )}
             >
-              <p className="text-muted-foreground/60 text-center text-sm italic">
+              <button
+                onClick={() => setIsEditModalOpen(true)}
+                className={cn(
+                  "text-muted-foreground/60 text-center text-sm italic",
+                  "cursor-pointer"
+                )}
+              >
                 Write something here...
-              </p>
+              </button>
             </div>
           )
         )}
@@ -103,24 +152,10 @@ export default function UserInfo() {
         </div>
       ) : null}
 
-      <div className="flex gap-2 absolute top-42 right-2">
-        {isSelf ? (
-          <Link href={ROUTE.SETTINGS}>
-            <Button
-              className={cn("text-sm", "px-4 py-2")}
-              size="icon"
-              variant="outline"
-            >
-              <Settings className="size-4" />
-            </Button>
-          </Link>
-        ) : (
-          <>
-            <MoreButton />
-            <FollowButton />
-          </>
-        )}
-      </div>
+      <EditProfileModal
+        open={isEditModalOpen}
+        onOpenChange={setIsEditModalOpen}
+      />
     </div>
   );
 }

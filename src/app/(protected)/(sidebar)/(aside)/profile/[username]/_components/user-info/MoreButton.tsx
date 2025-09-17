@@ -4,8 +4,8 @@ import { toast } from "sonner";
 import { useAuth } from "@/components/providers";
 import { useProfile } from "../../_providers/ProfileProvider";
 
+import { Tooltip } from "@/components/common";
 import { Button } from "@/components/ui/button";
-import { Ban, Flag, Link, MoreHorizontal, Volume } from "@/components/icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Ban, Flag, Link, MoreHorizontal, Volume } from "@/components/icons";
 
 export default function MoreButton() {
   const { user } = useAuth();
@@ -59,11 +60,13 @@ export default function MoreButton() {
   if (!user) return null;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <MoreHorizontal className="size-4" />
-        </Button>
-      </DropdownMenuTrigger>
+      <Tooltip content="More" sideOffset={4}>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon">
+            <MoreHorizontal className="size-4" />
+          </Button>
+        </DropdownMenuTrigger>
+      </Tooltip>
       <DropdownMenuContent align="end" className="w-[240px]">
         <DropdownMenuItem
           onClick={handleCopyProfileLink}

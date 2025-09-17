@@ -1,4 +1,4 @@
-import { Circle as LucideCircle, CircleX } from "lucide-react";
+import { CircleX, Circle as LucideCircle } from "lucide-react";
 
 type CircleVariant =
   | "regular"

@@ -7,7 +7,7 @@ import UserInfo, { UserInfoSkeleton } from "./user-info";
 import { type NavItem, NavigationBar } from "@/components/common";
 import { Image as ImageIcon, TableOfContents, Tag } from "@/components/icons";
 
-export const PROFILE_ZONE_HEIGHT = 418;
+export const PROFILE_ZONE_HEIGHT = 472;
 export default function ProfileZone({
   className,
 }: Readonly<{

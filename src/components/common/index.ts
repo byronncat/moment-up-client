@@ -1,4 +1,4 @@
-export { default as Avatar } from "./Avatar";
+export { default as Avatar, type AvatarSize } from "./Avatar";
 export { default as Brand } from "./Brand";
 export {
   default as ColorfulIconButton,
