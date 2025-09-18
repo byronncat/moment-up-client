@@ -25,6 +25,7 @@ export default function SidebarBody({ items }: SidebarBodyProps) {
         <SidebarGroupContent>
           <SidebarMenu>
             {items.map((item) => {
+              const haveMatchPath = item.matchPath !== undefined;
               const isActive = item.matchPath?.() ?? false;
 
               return (
@@ -39,7 +40,15 @@ export default function SidebarBody({ items }: SidebarBodyProps) {
                           : "text-foreground dark:text-foreground/[.9]"
                       )}
                     >
-                      <Link href={item.url}>
+                      <Link
+                        href={item.url}
+                        onClick={() => {
+                          if (!haveMatchPath) {
+                            if (document.activeElement instanceof HTMLElement)
+                              document.activeElement.blur();
+                          }
+                        }}
+                      >
                         <span className="flex items-center justify-center w-5">
                           {item.icon(isActive)}
                         </span>
@@ -56,7 +65,15 @@ export default function SidebarBody({ items }: SidebarBodyProps) {
                             : "text-foreground dark:text-foreground/[.9]"
                         )}
                       >
-                        <Link href={item.url}>
+                        <Link
+                          href={item.url}
+                          onClick={() => {
+                            if (!haveMatchPath) {
+                              if (document.activeElement instanceof HTMLElement)
+                                document.activeElement.blur();
+                            }
+                          }}
+                        >
                           <span
                             className={cn(
                               "flex items-center justify-center",

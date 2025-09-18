@@ -1,27 +1,27 @@
 import { useRef } from "react";
 import { useTextClamp } from "@/hooks";
+import { usePostData } from "../../_provider/PostData";
 import { parseText } from "@/helpers/parser";
-import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
-import Link from "next/link";
 
-type TextProps = Readonly<{
-  text?: string;
-  hasFiles: boolean;
-  momentId: string;
+type TextContentProps = Readonly<{
+  className?: string;
 }>;
 
-export default function Text({ text, hasFiles, momentId }: TextProps) {
+export default function TextContent({ className }: TextContentProps) {
+  const { files, text } = usePostData();
   const textRef = useRef<HTMLParagraphElement>(null);
+
   const isTextClamped = useTextClamp(textRef);
+  const hasFiles = !!files.length;
 
   if (!text) return null;
   return (
     <div
       className={cn(
-        "flex pl-4 pr-5 pb-2",
-        "text-sm",
+        "flex text-sm",
+        className,
         hasFiles
           ? "flex-row items-center"
           : "flex-col items-start gap-1 h-[72px]"
@@ -36,17 +36,15 @@ export default function Text({ text, hasFiles, momentId }: TextProps) {
       >
         {parseText(text)}
       </div>
-      <Link
-        href={ROUTE.POST(momentId)}
+      <span
         className={cn(
           "font-semibold text-sm text-muted-foreground",
-          "cursor-pointer hover:underline",
           "shrink-0 pl-1",
           isTextClamped ? "block" : "hidden"
         )}
       >
         Show details
-      </Link>
+      </span>
     </div>
   );
 }

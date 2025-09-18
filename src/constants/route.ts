@@ -10,8 +10,8 @@ export const ROUTE = {
   // === Public ===
   PROFILE: (username?: string, type?: "media" | "tagged") =>
     `/profile${username ? `/${username}` : ""}${type ? `/${type}` : ""}`,
-  MOMENT: (momentId?: string, imgIndex?: number) =>
-    `/moment${momentId ? `/${momentId}` : ""}${imgIndex ? `?imgIndex=${imgIndex}` : ""}`,
+  POST: (postId?: string, imgIndex?: number) =>
+    `/post${postId ? `/${postId}` : ""}${imgIndex ? `?imgIndex=${imgIndex}` : ""}`,
 
   // === Private ===
   HOME: "/",
@@ -23,7 +23,7 @@ export const ROUTE = {
     const queryString = params.toString();
     return `/search${queryString ? `?${queryString}` : ""}`;
   },
-  MOMENT_CREATE: "/moment/create",
+  POST_CREATE: "/post/create",
   STORY: (username?: string, storyId?: string) =>
     `/stories${username ? `/${username}` : ""}${storyId ? `/${storyId}` : ""}`,
   STORY_CREATE: "/stories/create",
@@ -41,7 +41,7 @@ export const PRIVATE_ROUTES = [
   ROUTE.EXPLORE(),
   ROUTE.STORY(),
   ROUTE.SEARCH(),
-  ROUTE.MOMENT_CREATE,
+  ROUTE.POST_CREATE,
   ROUTE.STORY_CREATE,
   ROUTE.MESSAGE(),
   ROUTE.NOTIFICATION(),
@@ -49,7 +49,7 @@ export const PRIVATE_ROUTES = [
   ROUTE.ARCHIVE(),
 ];
 export const AUTH_ROUTES = [ROUTE.LOGIN, ROUTE.SIGNUP, ROUTE.FORGOT_PASSWORD];
-export const PUBLIC_ROUTES = [ROUTE.PROFILE(), ROUTE.MOMENT()];
+export const PUBLIC_ROUTES = [ROUTE.PROFILE(), ROUTE.POST()];
 
 export const SocialAuthError = {
   AccountBlocked: {

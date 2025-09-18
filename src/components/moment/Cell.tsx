@@ -109,7 +109,7 @@ type HoverOverlayProps = Readonly<{
 function HoverOverlay({ id, isLiked, likes, comments }: HoverOverlayProps) {
   return (
     <Link
-      href={ROUTE.MOMENT(id)}
+      href={ROUTE.POST(id)}
       className={cn(
         "absolute inset-0 bg-black/50",
         "hidden group-hover:flex",

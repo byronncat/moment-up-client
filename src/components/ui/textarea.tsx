@@ -11,9 +11,10 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
         "flex field-sizing-content",
         "bg-input rounded-md border border-input",
         "min-h-16 w-full px-3 py-2",
-        "shadow-xs outline-none transition-[color,box-shadow]",
+        "shadow-xs transition-[color,box-shadow]",
         "placeholder:text-muted-foreground",
-        "focus-visible:ring-ring focus-visible:ring-[1px]",
+        // "outline-none focus-visible:ring-ring focus-visible:ring-[1px]",
+        "focus-indicator",
         "disabled:cursor-not-allowed disabled:opacity-50",
         "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
         className

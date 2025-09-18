@@ -70,7 +70,7 @@ export default function ButtonGroup({
       onClick: () =>
         actions.comment
           ? actions.comment()
-          : router.push(ROUTE.MOMENT(momentId)),
+          : router.push(ROUTE.POST(momentId)),
     },
     {
       icon: (

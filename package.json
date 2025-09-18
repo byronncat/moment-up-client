@@ -43,6 +43,7 @@
     "embla-carousel-fade": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "fabric": "^6.7.1",
+    "focus-trap-react": "^11.0.4",
     "input-otp": "^1.4.2",
     "lodash": "^4.17.21",
     "lucide-react": "^0.544.0",

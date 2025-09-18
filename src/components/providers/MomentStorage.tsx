@@ -237,7 +237,7 @@ const momentActions = {
 
     momentActions.toggleBlockState(userId, { remove: options?.remove });
     toast.loading("Waiting...");
-    const { success, message } = await UserApi.toggleBlock(userId);
+    const { success, message } = await UserApi.block(userId);
     toast.dismiss();
 
     if (success) {
@@ -246,7 +246,7 @@ const momentActions = {
           label: "Undo",
           onClick: async () => {
             toast.loading("Unblocking...");
-            const { success, message } = await UserApi.toggleBlock(userId);
+            const { success, message } = await UserApi.block(userId);
             if (success) {
               momentActions.toggleBlockState(userId, {
                 undo: true,

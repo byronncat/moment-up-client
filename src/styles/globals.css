@@ -205,6 +205,13 @@
     @apply focus-within:outline-accent/20 focus-within:ring-1 focus-within:ring-ring;
   }
 
+  .focus-indicator-dark {
+    @apply outline-2 outline-offset-1 outline-transparent focus-visible:outline-accent-dark/20;
+    @apply focus-visible:ring-1 focus-visible:ring-ring-dark;
+
+    @apply focus-within:outline-accent-dark/20 focus-within:ring-1 focus-within:ring-ring-dark;
+  }
+
   .destructive-item {
     @apply text-destructive focus:text-destructive focus:bg-destructive/10;
   }

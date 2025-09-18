@@ -1,11 +1,13 @@
 "use client";
 
 import { __parseImageUrl } from "@/__mocks__";
+import type { UpdateProfileDto } from "@/services/user";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useProfile } from "../../_providers/ProfileProvider";
 import { useCloudinary } from "@/components/providers";
 import { toast } from "sonner";
+import { MAX_BIO_LENGTH, MAX_NAME_LENGTH } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import {
@@ -20,7 +22,6 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar } from "@/components/common";
 import { Image as ImageIcon, Loader, X } from "@/components/icons";
-import type { UpdateProfileDto } from "@/services/user";
 
 const FILE_SIZE_LIMIT = {
   "10M": 10 * 1024 * 1024,
@@ -197,7 +198,8 @@ export default function EditProfileModal({
           <DialogHeader
             className={cn(
               "absolute top-0 left-0 z-20",
-              "w-full backdrop-blur-lg"
+              "w-full backdrop-blur-lg",
+              "h-12 border-b border-border"
             )}
           >
             <DialogTitle className="px-6 py-4">Edit Profile</DialogTitle>
@@ -207,7 +209,11 @@ export default function EditProfileModal({
             <Button
               variant="ghost"
               onClick={handleCancel}
-              className={cn("absolute top-2 right-2", "size-8 rounded-full")}
+              className={cn(
+                "absolute top-2 right-3",
+                "size-8 rounded-full",
+                "text-muted-foreground hover:text-foreground focus-visible:text-foreground"
+              )}
             >
               <X className="size-4" />
             </Button>
@@ -333,7 +339,9 @@ export default function EditProfileModal({
                   >
                     Name
                   </label>
-                  <div>{displayName.length}/50</div>
+                  <div>
+                    {displayName.length}/{MAX_NAME_LENGTH}
+                  </div>
                 </div>
 
                 <input
@@ -341,7 +349,7 @@ export default function EditProfileModal({
                   value={displayName}
                   onChange={(event) => setDisplayName(event.target.value)}
                   placeholder="Enter display name"
-                  maxLength={50}
+                  maxLength={MAX_NAME_LENGTH}
                   className={cn(
                     "w-full py-1 mt-1",
                     "text-sm",
@@ -372,14 +380,16 @@ export default function EditProfileModal({
                   >
                     Bio
                   </label>
-                  <div>{bio.length}/160</div>
+                  <div>
+                    {bio.length}/{MAX_BIO_LENGTH}
+                  </div>
                 </div>
                 <textarea
                   id="bio"
                   value={bio}
                   onChange={(event) => setBio(event.target.value)}
                   placeholder="Write something about yourself..."
-                  maxLength={160}
+                  maxLength={MAX_BIO_LENGTH}
                   rows={3}
                   className={cn(
                     "w-full py-1 mt-1",

@@ -2,7 +2,10 @@ export const SERVER_HOST_URL =
   process.env.NEXT_PUBLIC_SERVER_HOST ?? "http://localhost:4000";
 
 export const INITIAL_PAGE = 1;
-export const MAX_TEXT_CONTENT_LENGTH = 1000;
+
+export const MAX_NAME_LENGTH = 50;
+export const MAX_BIO_LENGTH = 160;
+export const MAX_TEXT_CONTENT_LENGTH = 2000;
 
 export enum Audience {
   PUBLIC,

@@ -1,13 +1,15 @@
 import { cn } from "@/libraries/utils";
 
-export default function MenuItem({
-  icon,
-  label,
-  description,
-}: Readonly<{ icon: React.ReactNode; label: string; description?: string }>) {
+type MenuItemProps = Readonly<{
+  icon: React.ReactNode;
+  label: string;
+  description?: string;
+}>;
+
+export default function MenuItem({ icon, label, description }: MenuItemProps) {
   return (
     <div className="flex items-center gap-2">
-      <div
+      <span
         className={cn(
           "flex items-center justify-center",
           "size-8 rounded-full",
@@ -16,14 +18,14 @@ export default function MenuItem({
         )}
       >
         {icon}
-      </div>
-      <div className="flex-1">
-        <div className="font-medium text-sm">{label}</div>
-        {description && (
-          <div className="text-xs dark:text-muted-foreground">
+      </span>
+      <div className="flex flex-col flex-1">
+        <span className="font-medium text-sm">{label}</span>
+        {description ? (
+          <span className="text-xs dark:text-muted-foreground">
             {description}
-          </div>
-        )}
+          </span>
+        ) : null}
       </div>
     </div>
   );
