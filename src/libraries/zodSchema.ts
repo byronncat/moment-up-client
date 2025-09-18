@@ -25,6 +25,9 @@ const signup = z.object({
     .min(2, {
       error: "Username must be at least 2 characters",
     })
+    .max(50, {
+      error: "Username must be less than 50 characters",
+    })
     .regex(/^[a-zA-Z0-9._-]+$/, {
       error:
         "Only letters, numbers, dots, underscores, and hyphens are allowed",

@@ -200,23 +200,21 @@ export default function EditProfileModal({
               "w-full backdrop-blur-lg"
             )}
           >
-            <DialogTitle className="px-6 py-4 text-md">
-              Edit Profile
-            </DialogTitle>
+            <DialogTitle className="px-6 py-4">Edit Profile</DialogTitle>
             <DialogDescription className="sr-only">
               Update your profile info and photo.
             </DialogDescription>
             <Button
               variant="ghost"
               onClick={handleCancel}
-              className={cn("absolute top-3 right-2", "size-8 rounded-full")}
+              className={cn("absolute top-2 right-2", "size-8 rounded-full")}
             >
               <X className="size-4" />
             </Button>
           </DialogHeader>
 
           <div className="h-dvh sm:max-h-[640px] flex flex-col">
-            <div className="pt-[56px]">
+            <div className="pt-[48px]">
               <div>
                 <div
                   className={cn("relative", "-mb-12", "w-full aspect-[3/1]")}
@@ -297,7 +295,10 @@ export default function EditProfileModal({
                       "focus-within:opacity-100 focus-indicator"
                     )}
                   >
-                    <ImageIcon variant="plus" className="size-6 text-white/90" />
+                    <ImageIcon
+                      variant="plus"
+                      className="size-6 text-white/90"
+                    />
                   </div>
                 </div>
 

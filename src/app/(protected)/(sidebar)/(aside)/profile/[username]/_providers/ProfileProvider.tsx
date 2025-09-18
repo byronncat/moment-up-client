@@ -152,7 +152,7 @@ export default function ProfileProvider({
   const updateProfileApi = useRefreshApi(UserApi.updateProfile);
   async function updateProfile(data: UpdateProfileDto) {
     if (!profile || !user) return;
-    const { success } = await updateProfileApi(profile.id, data);
+    const { success, message } = await updateProfileApi(profile.id, data);
 
     if (success) {
       setProfile({
@@ -164,7 +164,7 @@ export default function ProfileProvider({
         displayName: data.displayName ?? null,
         avatar: data.avatar ?? null,
       });
-    }
+    } else toast.error(message || "Failed to update profile");
   }
 
   useEffect(() => {
@@ -199,8 +199,8 @@ export default function ProfileProvider({
         />
       </div>
     );
-  if (error || !profile)
-    return <ErrorContent onRefresh={mutate} className="pt-[80px]" />;
+  if (error) return <ErrorContent onRefresh={mutate} className="pt-[80px]" />;
+  if (!profile) return null;
 
   return (
     <ProfileContext.Provider
