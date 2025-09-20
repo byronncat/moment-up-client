@@ -1,4 +1,6 @@
+import { __parseUrl } from "@/__mocks__";
 import type { MomentInfo } from "api";
+
 import { ROUTE } from "@/constants/route";
 import { BLUR_DATA_URL } from "@/constants/client";
 
@@ -25,7 +27,7 @@ export default function MediaItem({
       <div className="relative size-full">
         {file.type === "image" ? (
           <Image
-            src={file.url}
+            src={__parseUrl(file.id, "image", 640) as string}
             alt={`Moment ${index + 1}`}
             fill
             sizes="(max-width: 720px) 100vw, 600px"
@@ -35,7 +37,7 @@ export default function MediaItem({
             blurDataURL={BLUR_DATA_URL}
           />
         ) : (
-          <VideoItem url={file.url} />
+          <VideoItem url={__parseUrl(file.id, "video", 640) as string} />
         )}
       </div>
     </Link>

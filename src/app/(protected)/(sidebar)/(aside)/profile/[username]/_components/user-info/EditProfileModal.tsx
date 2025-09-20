@@ -1,6 +1,6 @@
 "use client";
 
-import { __parseImageUrl } from "@/__mocks__";
+import { __parseUrl } from "@/__mocks__";
 import type { UpdateProfileDto } from "@/services/user";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -114,8 +114,8 @@ export default function EditProfileModal({
     updates.bio = bio ?? null;
 
     if (avatarFile) {
-      const { success, public_id } = await uploadImage(avatarFile);
-      if (success) updates.avatar = public_id as string;
+      const { success, data } = await uploadImage(avatarFile);
+      if (success) updates.avatar = data?.[0].public_id;
       else {
         setIsSaving(false);
         toast.error("Avatar upload failed. Please try again.");
@@ -125,9 +125,9 @@ export default function EditProfileModal({
 
     if (isBackgroundRemoved) updates.backgroundImage = null;
     if (backgroundFile) {
-      const { success, public_id } = await uploadImage(backgroundFile);
+      const { success, data } = await uploadImage(backgroundFile);
       if (success) {
-        updates.backgroundImage = public_id as string;
+        updates.backgroundImage = data?.[0].public_id as string;
       } else {
         setIsSaving(false);
         toast.error("Background upload failed. Please try again.");
@@ -230,7 +230,7 @@ export default function EditProfileModal({
                     style={{
                       ...((backgroundPreview ?? profile.backgroundImage) &&
                         !isBackgroundRemoved && {
-                          backgroundImage: `url(${__parseImageUrl(backgroundPreview ?? profile.backgroundImage, 600, 200)})`,
+                          backgroundImage: `url(${__parseUrl(backgroundPreview ?? profile.backgroundImage, "image", 640)})`,
                           backgroundSize: "cover",
                           backgroundPosition: "start",
                         }),
@@ -282,8 +282,9 @@ export default function EditProfileModal({
               <div className="mx-auto w-fit relative z-10">
                 <div className="relative group">
                   <Avatar
-                    src={__parseImageUrl(
+                    src={__parseUrl(
                       avatarPreview ?? profile.avatar,
+                      "image",
                       120,
                       120
                     )}

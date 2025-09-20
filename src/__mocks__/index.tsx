@@ -353,16 +353,18 @@ export const mockQuickReplies: string[] = [
 
 import { getCldImageUrl } from "next-cloudinary";
 
-export function __parseImageUrl(
+export function __parseUrl(
   data: string | null,
-  width: number,
-  height: number
+  assetType: "image" | "video" = "image",
+  width?: number,
+  height?: number
 ) {
   if (!data) return null;
   if (data.startsWith("http") || data.startsWith("blob:")) return data;
   return getCldImageUrl({
+    src: data,
     width,
     height,
-    src: data,
+    assetType,
   });
 }

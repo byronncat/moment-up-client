@@ -1,6 +1,6 @@
 "use client";
 
-import { __parseImageUrl } from "@/__mocks__";
+import { __parseUrl } from "@/__mocks__";
 
 import { useState } from "react";
 import { useAuth } from "@/components/providers";
@@ -31,7 +31,7 @@ export default function UserInfo() {
           className={cn("size-full", "bg-muted")}
           style={{
             ...(profile.backgroundImage && {
-              backgroundImage: `url(${__parseImageUrl(profile.backgroundImage, 640, 640 / 3)})`,
+              backgroundImage: `url(${__parseUrl(profile.backgroundImage, "image", 640, 640 / 3)})`,
               backgroundSize: "cover",
               backgroundPosition: "start",
             }),
@@ -75,7 +75,7 @@ export default function UserInfo() {
       </div>
 
       <Avatar
-        src={__parseImageUrl(profile.avatar, 120, 120)}
+        src={__parseUrl(profile.avatar, "image", 120, 120)}
         alt={`${profile.displayName ?? profile.username}'s profile`}
         size="26"
         ring
@@ -121,7 +121,7 @@ export default function UserInfo() {
                 onClick={() => setIsEditModalOpen(true)}
                 className={cn(
                   "text-muted-foreground/60 text-center text-sm italic",
-                  "focus-indicator rounded-sm cursor-pointer",
+                  "focus-indicator rounded-sm cursor-pointer"
                 )}
               >
                 Write something here...

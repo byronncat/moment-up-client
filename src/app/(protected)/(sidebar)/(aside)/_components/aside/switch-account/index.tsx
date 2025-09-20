@@ -1,6 +1,6 @@
 "use client";
 
-import { __parseImageUrl } from "@/__mocks__";
+import { __parseUrl } from "@/__mocks__";
 import type { AccountDto } from "api";
 
 import { useState } from "react";
@@ -38,7 +38,7 @@ function Content({
         className="focus-indicator rounded-full"
       >
         <Avatar
-          src={__parseImageUrl(user.avatar, 40, 40)}
+          src={__parseUrl(user.avatar, "image", 40, 40)}
           alt={`${user.displayName ?? user.username}'s avatar`}
           size="10"
           className="hover:opacity-80 transition-opacity duration-150 ease-in-out"

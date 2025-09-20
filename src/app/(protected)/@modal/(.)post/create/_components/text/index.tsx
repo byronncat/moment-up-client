@@ -1,4 +1,4 @@
-import { __parseImageUrl } from "@/__mocks__";
+import { __parseUrl } from "@/__mocks__";
 
 import { useAuth } from "@/components/providers";
 import { usePostData } from "../../_provider/PostData";
@@ -35,7 +35,7 @@ export default function TextContent() {
     >
       <div className={cn("flex items-center gap-3", "px-2")}>
         <Avatar
-          src={__parseImageUrl(user.avatar, 120, 120)}
+          src={__parseUrl(user.avatar, "image", 120, 120)}
           alt={`${user.displayName ?? user.username} avatar`}
           size="12"
         />
