@@ -2,17 +2,17 @@
 
 import type { FileInfo } from "api";
 
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { CardContent } from "@/components/ui/card";
 import {
   Carousel,
-  CarouselContent,
-  CarouselPrevious,
-  CarouselNext,
-  CarouselItem,
   type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { SkipButtons } from "@/app/(protected)/(sidebar)/(aside)/post/[id]/_components/MediaCarousel";
 import { Play } from "@/components/icons";
@@ -93,11 +93,11 @@ export default function MediaCarousel({
         >
           <CarouselContent>
             {files.map((file, index) => (
-              <CarouselItem key={index}>
+              <CarouselItem key={file.id}>
                 {file.type === "image" ? (
                   <div className="relative h-[50vh] md:h-screen w-full">
                     <Image
-                      src={file.url}
+                      src={file.id}
                       alt={`Moment ${index + 1}`}
                       className="object-contain select-none"
                       fill
@@ -115,7 +115,7 @@ export default function MediaCarousel({
                       ref={(el) => {
                         videoRefs.current[index] = el;
                       }}
-                      src={file.url}
+                      src={file.id}
                       className="size-full object-contain"
                       controls
                       playsInline
@@ -146,12 +146,12 @@ export default function MediaCarousel({
               </CarouselItem>
             ))}
           </CarouselContent>
-          {files.length && files.length > 1 && (
+          {files.length && files.length > 1 ? (
             <>
               <CarouselPrevious className="left-2" />
               <CarouselNext className="right-2" />
             </>
-          )}
+          ) : null}
         </Carousel>
       </CardContent>
     </Wrapper>

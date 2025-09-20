@@ -132,12 +132,12 @@ type FollowedByUser = {
 
 const getFollowedByMessage = (
   displayItems: FollowedByUser[],
-  count: number
+  remainingCount: number
 ) => {
   const names = displayItems
     .map((user: FollowedByUser) => user.displayName)
     .join(", ");
-  const additionalCount = count;
+  const additionalCount = remainingCount;
   const additionalText =
     additionalCount > 0 ? ` and ${Format.number(additionalCount)} others you follow` : "";
 
@@ -188,7 +188,7 @@ function FollowedBy({
           getMaxWidthClass(displayItems.length)
         )}
       >
-        {getFollowedByMessage(displayItems, users.count)}
+        {getFollowedByMessage(displayItems, users.remainingCount)}
       </div>
     </div>
   );

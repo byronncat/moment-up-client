@@ -42,9 +42,9 @@ declare module "api" {
   }
 
   interface UserSummaryDto
-    extends Omit<ProfileDto, "backgroundImage" | "isProtected"> {
+    extends Omit<ProfileDto, "backgroundImage" | "isMuted" | "isProtected"> {
     followedBy: {
-      count: number;
+      remainingCount: number;
       displayItems: Array<{
         id: string;
         displayName: string;
@@ -53,27 +53,26 @@ declare module "api" {
     } | null;
   }
 
-  // === Moment ===
-  type PostInfo = {
-    text?: string;
-    files?: Array<{
+  // === Core ===
+  interface PostDto {
+    text: string | null;
+    files: Array<{
       id: string;
-      type: "image" | "video" | "audio";
-      url: string;
-      aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
-    }>;
-    createdAt: string;
+      type: "image" | "video";
+      aspectRatio: "1:1" | "4:5" | "1.91:1";
+    }> | null;
     likes: number;
     comments: number;
     reposts: number;
     isLiked: boolean;
     isBookmarked: boolean;
-  };
+    lastModified: string;
+  }
 
   type MomentInfo = {
     id: string;
     user: UserSummaryDto;
-    post: PostInfo;
+    post: PostDto;
   };
 
   type CommentInfo = {
@@ -176,7 +175,7 @@ declare module "api" {
   >;
 
   // === Others ===
-  type HashtagDto = {
+  interface HashtagDto {
     name: string;
     count: number;
   };

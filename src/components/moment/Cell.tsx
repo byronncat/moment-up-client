@@ -35,7 +35,7 @@ export default function MomentCell({
       <div className={cn("bg-card aspect-square", "relative")}>
         {coverFile.type === "image" ? (
           <Image
-            src={coverFile.url}
+            src={coverFile.id}
             alt={data.post.text ?? "Moment image"}
             fill
             sizes="240px"
@@ -46,7 +46,7 @@ export default function MomentCell({
           />
         ) : (
           <video
-            src={coverFile.url}
+            src={coverFile.id}
             className="size-full object-cover"
             playsInline
             preload="metadata"

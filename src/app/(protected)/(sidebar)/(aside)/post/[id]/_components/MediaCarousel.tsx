@@ -1,21 +1,21 @@
-import type { FileInfo } from "api";
+import type { PostDto } from "api";
 
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import {
   Carousel,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  type CarouselApi,
 } from "@/components/ui/carousel";
-import { Play, Chevron } from "@/components/icons";
+import { Chevron, Play } from "@/components/icons";
 import { BLUR_DATA_URL, VIDEO_SKIP_DURATION } from "@/constants/client";
 
 type MediaCarouselProps = Readonly<{
-  files: FileInfo[] | undefined;
+  files: PostDto["files"];
   initialIndex?: number;
   className?: string;
 }>;
@@ -83,11 +83,11 @@ export default function MediaCarousel({
     >
       <CarouselContent>
         {files.map((file, index) => (
-          <CarouselItem key={index}>
+          <CarouselItem key={file.id}>
             {file.type === "image" ? (
               <div className="relative w-full aspect-square bg-muted">
                 <Image
-                  src={file.url}
+                  src={file.id}
                   alt={`Moment ${index + 1}`}
                   fill
                   sizes="80vw"
@@ -104,7 +104,7 @@ export default function MediaCarousel({
                   ref={(el) => {
                     videoRefs.current[index] = el;
                   }}
-                  src={file.url}
+                  src={file.id}
                   className="size-full object-contain"
                   controls
                   playsInline

@@ -1,14 +1,14 @@
-import type { PostInfo, UserSummaryDto } from "api";
+import type { PostDto, UserSummaryDto } from "api";
 import type { Actions } from "@/components/providers/MomentStorage";
 import { useState } from "react";
 
 import { cn } from "@/libraries/utils";
 import { ColorfulIconButton, buttonStyles } from "@/components/common";
 import ShareDialog from "@/components/moment/moment-card/share-dialog";
-import { Heart, Message, Share, Repeat, Bookmark } from "@/components/icons";
+import { Bookmark, Heart, Message, Repeat, Share } from "@/components/icons";
 
 type ButtonsProps = Readonly<{
-  postData: PostInfo;
+  postData: PostDto;
   momentId: string;
   className?: string;
 }>;
