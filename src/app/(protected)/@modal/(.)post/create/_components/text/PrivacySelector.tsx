@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { usePostData } from "../../_provider/PostData";
-import { Privacy } from "@/constants/server";
+import { ContentPrivacy } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
@@ -19,25 +19,19 @@ import { Chevron, Globe, Lock, User } from "@/components/icons";
 const PrivacyOptions = [
   {
     label: "Public",
-    value: Privacy.PUBLIC,
+    value: ContentPrivacy.PUBLIC,
     icon: (className: string) => <Globe className={className} />,
     description: "Anyone can see this",
   },
   {
     label: "Followers",
-    value: Privacy.FOLLOWERS,
+    value: ContentPrivacy.FOLLOWERS,
     icon: (className: string) => <User variant="check" className={className} />,
     description: "People who follow you",
   },
   {
-    label: "Friends",
-    value: Privacy.FRIENDS,
-    icon: (className: string) => <User multiple className={className} />,
-    description: "Only your friends",
-  },
-  {
     label: "Private",
-    value: Privacy.PRIVATE,
+    value: ContentPrivacy.PRIVATE,
     icon: (className: string) => <Lock className={className} />,
     description: "Only you can see this",
   },

@@ -1,41 +1,39 @@
-import { Audience } from "@/constants/server";
-import { AUDIENCE_OPTIONS } from "./shareDialog.constant";
+import type { ContentPrivacy } from "@/constants/server";
+import { PRIVACY_OPTIONS } from "./shareDialog.constant";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "../../../ui/button";
 import {
   DropdownMenu,
-  DropdownMenuGroup,
-  DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "../../../ui/dropdown-menu";
-import { User, Chevron } from "../../../icons";
+import { Chevron, User } from "../../../icons";
 import MenuItem from "../../../common/MenuItem";
 
-type AudienceSelectorProps = Readonly<{
-  selectedAudience: Audience;
-  onAudienceChange: (audience: Audience) => void;
+type PrivacySelectorProps = Readonly<{
+  selectedPrivacy: ContentPrivacy;
+  onPrivacyChange: (privacy: ContentPrivacy) => void;
 }>;
 
-export default function AudienceSelector({
-  selectedAudience,
-  onAudienceChange,
-}: AudienceSelectorProps) {
-  const selectedOption = AUDIENCE_OPTIONS.find(
-    (opt) => opt.value === selectedAudience
+export default function PrivacySelector({
+  selectedPrivacy,
+  onPrivacyChange,
+}: PrivacySelectorProps) {
+  const selectedOption = PRIVACY_OPTIONS.find(
+    (opt) => opt.value === selectedPrivacy
   );
 
   const openIncludeDialog = () => {
     // TODO: Open dialog to select specific people to include
-    console.log("Opening include people dialog");
   };
 
   const openExcludeDialog = () => {
     // TODO: Open dialog to select specific people to exclude
-    console.log("Opening exclude people dialog");
   };
 
   return (
@@ -58,10 +56,10 @@ export default function AudienceSelector({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" side="right" className="w-64">
         <DropdownMenuLabel className="text-xs font-medium text-muted-foreground">
-          Select audience
+          Select privacy
         </DropdownMenuLabel>
         <DropdownMenuGroup>
-          {AUDIENCE_OPTIONS.map((option) => (
+          {PRIVACY_OPTIONS.map((option) => (
             <DropdownMenuItem
               key={option.value}
               className={cn(
@@ -69,7 +67,7 @@ export default function AudienceSelector({
                 "p-2 h-auto",
                 "cursor-pointer"
               )}
-              onClick={() => onAudienceChange(option.value)}
+              onClick={() => onPrivacyChange(option.value)}
             >
               <MenuItem
                 icon={option.icon}
@@ -82,7 +80,7 @@ export default function AudienceSelector({
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuLabel className="text-xs font-medium text-muted-foreground">
-            Advanced options
+            Advanced options (coming soon)
           </DropdownMenuLabel>
           <DropdownMenuItem
             className={cn(
@@ -94,7 +92,7 @@ export default function AudienceSelector({
           >
             <MenuItem
               icon={<User variant="plus" className="size-4" />}
-              label="Include specific people"
+              label="Include specific people (coming soon)"
             />
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -107,7 +105,7 @@ export default function AudienceSelector({
           >
             <MenuItem
               icon={<User variant="minus" className="size-4" />}
-              label="Exclude specific people"
+              label="Exclude specific people (coming soon)"
             />
           </DropdownMenuItem>
         </DropdownMenuGroup>

@@ -1,22 +1,47 @@
 import type { API, CommentInfo, ErrorResponse, MomentInfo } from "api";
-import type { Audience } from "@/constants/server";
+import type { ContentPrivacy } from "@/constants/server";
 
 import type { Token } from "@/components/providers/Auth";
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
 
-const apiRes = {
-  report: "success" as "error" | "success",
-};
+interface CreatePostDto {
+  text?: string | null;
+  privacy?: ContentPrivacy | null;
+  attachments?: Array<{ id: string; type: "image" | "video" | "raw" }> | null;
+}
+
+export async function create(data: CreatePostDto, token: Token): API {
+  return fetch(ApiUrl.post.create, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    body: JSON.stringify(data),
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Post created successfully",
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorResponse) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
 
 interface LikeDto {
   momentId: string;
   shouldLike: boolean;
-}
-
-interface BookmarkDto {
-  momentId: string;
-  shouldBookmark: boolean;
 }
 
 export async function like(data: LikeDto, token: Token): API {
@@ -50,6 +75,11 @@ export async function like(data: LikeDto, token: Token): API {
         statusCode: error.statusCode,
       };
     });
+}
+
+interface BookmarkDto {
+  momentId: string;
+  shouldBookmark: boolean;
 }
 
 export async function bookmark(data: BookmarkDto, token: Token): API {
@@ -89,7 +119,7 @@ export async function repost(
   data: {
     momentId: string;
     text: string;
-    audience: Audience;
+    audience: ContentPrivacy;
   },
   token: Token
 ): API {
@@ -240,14 +270,6 @@ export async function deleteComment(commentId: string, token: Token): API {
 }
 
 export async function report(_momentId: string) {
-  if (apiRes.report === "error") {
-    return {
-      success: false,
-      message: "error",
-      statusCode: 500,
-    };
-  }
-
   return {
     success: true,
     message: "ok",

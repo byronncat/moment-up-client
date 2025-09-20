@@ -1,4 +1,4 @@
-import type { PostInfo } from "api";
+import type { PostDto } from "api";
 
 const HEADER_HEIGHT = 76;
 const FOOTER_HEIGHT = 60;
@@ -8,7 +8,7 @@ const BORDER_SIZE = 1;
 
 export function getItemSize(
   index: number,
-  post: PostInfo | undefined,
+  post: PostDto | undefined,
   _width: number,
   firstItemHeight: number
 ) {
@@ -30,9 +30,6 @@ export function getItemSize(
           break;
         case "1.91:1":
           height += width / 1.91; // Landscape
-          break;
-        case "9:16":
-          height += (width * 16) / 9; // Vertical
           break;
         default:
           height += width; // Default to square

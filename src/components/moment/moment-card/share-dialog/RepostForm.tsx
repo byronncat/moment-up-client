@@ -1,17 +1,17 @@
 import type { UserSummaryDto } from "api";
 
 import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
-import { Audience } from "@/constants/server";
+import { ContentPrivacy } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import Avatar from "../../../common/Avatar";
 import { Button } from "../../../ui/button";
 import { Textarea } from "../../../ui/textarea";
 import { Loader } from "@/components/icons";
-import AudienceSelector from "./AudienceSelector";
+import PrivacySelector from "./PrivacySelector";
 import { useRefreshApi } from "@/components/providers";
 
 interface RepostFormData {
@@ -30,8 +30,8 @@ export default function RepostForm({
   onClose,
 }: RepostFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedAudience, setSelectedAudience] = useState<Audience>(
-    Audience.PUBLIC
+  const [selectedPrivacy, setSelectedPrivacy] = useState<ContentPrivacy>(
+    ContentPrivacy.PUBLIC
   );
 
   const { control, handleSubmit, reset } = useForm<RepostFormData>({
@@ -46,7 +46,7 @@ export default function RepostForm({
     const { success, message } = await repost({
       momentId,
       text: data.text,
-      audience: selectedAudience,
+      audience: selectedPrivacy,
     });
 
     if (success) {
@@ -64,16 +64,16 @@ export default function RepostForm({
         <div className={cn("flex items-start gap-3", "mb-4")}>
           <Avatar
             src={userData.avatar}
-            alt={userData.displayName || userData.username}
+            alt={`${userData.displayName ?? userData.username} avatar`}
             size="14"
           />
           <div className={cn("flex flex-col gap-2", "pt-0.5")}>
             <span className="font-semibold leading-tight">
               {userData.displayName}
             </span>
-            <AudienceSelector
-              selectedAudience={selectedAudience}
-              onAudienceChange={setSelectedAudience}
+            <PrivacySelector
+              selectedPrivacy={selectedPrivacy}
+              onPrivacyChange={setSelectedPrivacy}
             />
           </div>
         </div>

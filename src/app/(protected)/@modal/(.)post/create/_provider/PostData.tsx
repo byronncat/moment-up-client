@@ -6,9 +6,10 @@ import type { UploadMediaFile } from "../types";
 type PostState = {
   files: UploadMediaFile[];
   text: string;
-  privacy: Privacy;
+  privacy: ContentPrivacy;
   phase: "media" | "text" | "preview";
   hasContent: boolean;
+  isUploading: boolean;
 };
 
 type PostAction = {
@@ -16,7 +17,7 @@ type PostAction = {
   addFiles: (newFiles: File[]) => Promise<{ added: number; rejected: number }>;
   removeFile: (index: number) => void;
   setText: Dispatch<SetStateAction<string>>;
-  setPrivacy: Dispatch<SetStateAction<Privacy>>;
+  setPrivacy: Dispatch<SetStateAction<ContentPrivacy>>;
   setPhase: Dispatch<SetStateAction<"media" | "text" | "preview">>;
   upload: () => Promise<boolean>;
 };
@@ -34,17 +35,20 @@ import {
   useState,
 } from "react";
 import { nanoid } from "nanoid";
-import { Privacy } from "@/constants/server";
-import { useCloudinary } from "@/components/providers";
+import { ContentPrivacy } from "@/constants/server";
+import { useCloudinary, useRefreshApi } from "@/components/providers";
+import { CoreApi } from "@/services";
+import { toast } from "sonner";
 
 export const MAX_FILES_LIMIT = 12;
 
 const PostDataContext = createContext<PostState & PostAction>({
   files: [],
   text: "",
-  privacy: Privacy.PUBLIC,
+  privacy: ContentPrivacy.PUBLIC,
   phase: "text",
   hasContent: false,
+  isUploading: false,
 
   setFiles: () => {},
   addFiles: () => Promise.resolve({ added: 0, rejected: 0 }),
@@ -64,11 +68,13 @@ type CreateDataProviderProps = Readonly<{
 export default function PostDataProvider({
   children,
 }: CreateDataProviderProps) {
+  const { uploadMultipleImages } = useCloudinary();
+
   const [files, setFiles] = useState<UploadMediaFile[]>([]);
   const [text, setText] = useState("");
-  const [privacy, setPrivacy] = useState<Privacy>(Privacy.PUBLIC);
+  const [privacy, setPrivacy] = useState<ContentPrivacy>(ContentPrivacy.PUBLIC);
   const [phase, setPhase] = useState<"media" | "text" | "preview">("text");
-  const { uploadMultipleImages } = useCloudinary();
+  const [isUploading, setIsUploading] = useState(false);
 
   const blobUrls = useRef<string[]>([]);
 
@@ -76,30 +82,41 @@ export default function PostDataProvider({
     return text.length > 0 || files.length > 0;
   }, [text, files]);
 
+  const uploadApi = useRefreshApi(CoreApi.create);
   const upload = useCallback(async () => {
-    try {
-      // If there are files, upload them first
-      if (files.length > 0) {
-        const result = await uploadMultipleImages(files, "moment-up/moments");
+    setIsUploading(true);
 
-        if (!result.success) {
-          return false;
-        }
-
-        // Here you would typically send the moment data with the uploaded image URLs to your backend
+    let uploadedData = null;
+    if (files.length > 0) {
+      const { success, data } = await uploadMultipleImages(
+        files,
+        "moment-up/moments"
+      );
+      if (!success) {
+        setIsUploading(false);
+        return false;
       }
-
-      const formData = {
-        text,
-        privacy,
-        files: files.length > 0 ? files : [], // You might want to replace this with the uploaded URLs
-      };
-
-      return true;
-    } catch {
-      return false;
+      uploadedData = data?.map((data) => ({
+        id: data.public_id,
+        type: data.type,
+      }));
     }
-  }, [text, files, privacy, uploadMultipleImages]);
+
+    const { success, data: _ } = await uploadApi({
+      text,
+      privacy,
+      attachments: uploadedData,
+    });
+
+    if (success) {
+      setIsUploading(false);
+      return true;
+    }
+
+    toast.error("Failed to upload post, please try again!");
+    setIsUploading(false);
+    return false;
+  }, [text, privacy, files, uploadApi, uploadMultipleImages]);
 
   const addFiles = useCallback(
     async (newFiles: File[]) => {
@@ -168,6 +185,7 @@ export default function PostDataProvider({
         privacy,
         phase,
         hasContent,
+        isUploading,
         setFiles,
         addFiles,
         removeFile,
@@ -187,27 +205,25 @@ function calculateAspectRatio(
 ): Promise<UploadMediaFile["aspectRatio"]> {
   return new Promise((resolve) => {
     if (file.type.startsWith("image/")) {
-      const img = new Image();
-      img.onload = () => {
-        const ratio = img.width / img.height;
-        if (ratio < 1) resolve("4:5");
-        else if (ratio === 1) resolve("1:1");
-        else resolve("9:16");
+      const image = new Image();
+      image.onload = () => {
+        const _ratio = image.width / image.height;
+        if (_ratio < 1) resolve("4:5");
+        else if (_ratio === 1) resolve("1:1");
+        else resolve("1.91:1");
       };
-      img.onerror = () => resolve("1:1");
-      img.src = URL.createObjectURL(file);
+      image.src = URL.createObjectURL(file);
     } else if (file.type.startsWith("video/")) {
       const video = document.createElement("video");
       video.onloadedmetadata = () => {
-        const ratio = video.videoWidth / video.videoHeight;
-        if (ratio < 1) resolve("4:5");
-        else if (ratio === 1) resolve("1:1");
-        else resolve("9:16");
+        const _ratio = video.videoWidth / video.videoHeight;
+        if (_ratio < 1) resolve("4:5");
+        else if (_ratio === 1) resolve("1:1");
+        else resolve("1.91:1");
       };
-      video.onerror = () => resolve("1:1");
       video.src = URL.createObjectURL(file);
     } else {
-      resolve("1:1");
+      resolve("1:1"); // default fallback
     }
   });
 }

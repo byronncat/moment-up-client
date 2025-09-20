@@ -32,11 +32,12 @@ export default function ProviderWrapper() {
 
 function CreatePostPage() {
   const router = useRouter();
-  const { hasContent, phase, setPhase } = usePostData();
+  const { isUploading, hasContent, phase, setPhase } = usePostData();
   const { setFocusTrapEnabled } = useFocusTrap();
   const [isDiscardDialogOpen, setIsDiscardDialogOpen] = useState(false);
 
   function handleClose() {
+    if (isUploading) return;
     if (hasContent) {
       setFocusTrapEnabled(false);
       setIsDiscardDialogOpen(true);
@@ -96,7 +97,7 @@ function CreatePostPage() {
         >
           <Header
             data={phaseData[phase]}
-            handleClose={handleClose}
+            onClose={handleClose}
             className="shrink-0"
           />
 

@@ -1,41 +1,29 @@
-import { Audience } from "@/constants/server";
-import { Globe, User, Shield, Lock } from "@/components/icons";
+import { ContentPrivacy } from "@/constants/server";
+import { Globe, Lock, User } from "@/components/icons";
 
-export type AudienceOption = {
+export type PrivacyOption = {
   label: string;
-  value: Audience;
+  value: ContentPrivacy;
   icon: React.ReactNode;
   description: string;
 };
 
-export const AUDIENCE_OPTIONS: AudienceOption[] = [
+export const PRIVACY_OPTIONS: PrivacyOption[] = [
   {
     label: "Public",
-    value: Audience.PUBLIC,
+    value: ContentPrivacy.PUBLIC,
     icon: <Globe className="size-4" />,
     description: "Anyone can see this",
   },
   {
-    label: "Friends",
-    value: Audience.FRIENDS,
-    icon: <User multiple className="size-4" />,
-    description: "Only your friends",
-  },
-  {
     label: "Followers",
-    value: Audience.FOLLOWERS,
+    value: ContentPrivacy.FOLLOWERS,
     icon: <User variant="check" className="size-4" />,
     description: "People who follow you",
   },
   {
-    label: "Verified",
-    value: Audience.VERIFIED,
-    icon: <Shield variant="check" className="size-4" />,
-    description: "Only verified accounts",
-  },
-  {
-    label: "Only me",
-    value: Audience.ONLY_ME,
+    label: "Private",
+    value: ContentPrivacy.PRIVATE,
     icon: <Lock className="size-4" />,
     description: "Only you can see this",
   },

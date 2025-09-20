@@ -1,18 +1,30 @@
 import type { PhaseData } from "../types";
 
+import { useRouter } from "next/navigation";
 import { usePostData } from "../_provider/PostData";
+import { ROUTE } from "@/constants/route";
+
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { PaperPlane, X } from "@/components/icons";
 
 type HeaderProps = Readonly<{
   data: PhaseData;
-  handleClose: () => void;
+  onClose: () => void;
   className?: string;
 }>;
 
-export default function Header({ data, handleClose, className }: HeaderProps) {
-  const { phase, upload } = usePostData();
+export default function Header({ data, onClose, className }: HeaderProps) {
+  const router = useRouter();
+  const { phase, isUploading, upload } = usePostData();
+
+  async function handleUpload() {
+    const success = await upload();
+    if (success) {
+      if (window.history.length > 1) router.back();
+      else router.replace(ROUTE.HOME);
+    }
+  }
 
   return (
     <div
@@ -25,21 +37,23 @@ export default function Header({ data, handleClose, className }: HeaderProps) {
       )}
     >
       <div className="flex justify-start items-center gap-1">
-        {data.buttons?.map((button) => (
-          <Button
-            key={button.id}
-            onClick={button.onClick}
-            variant="ghost"
-            size="icon"
-            className={cn(
-              "size-8 rounded-full",
-              "font-medium text-muted-foreground",
-              "cursor-pointer focus-visible:text-foreground"
-            )}
-          >
-            {button.icon}
-          </Button>
-        ))}
+        {isUploading
+          ? null
+          : data.buttons?.map((button) => (
+              <Button
+                key={button.id}
+                onClick={button.onClick}
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "size-8 rounded-full",
+                  "font-medium text-muted-foreground",
+                  "cursor-pointer focus-visible:text-foreground"
+                )}
+              >
+                {button.icon}
+              </Button>
+            ))}
       </div>
 
       <h1
@@ -52,31 +66,35 @@ export default function Header({ data, handleClose, className }: HeaderProps) {
       </h1>
 
       <div className="flex justify-end items-center">
-        <Button
-          onClick={handleClose}
-          variant="ghost"
-          size="icon"
-          className={cn(
-            "size-8 rounded-full",
-            "font-medium text-muted-foreground",
-            "cursor-pointer focus-visible:text-foreground"
-          )}
-        >
-          <X className="size-4" />
-        </Button>
-        {phase === "preview" && (
-          <Button
-            onClick={upload}
-            variant="ghost"
-            size="icon"
-            className={cn(
-              "size-8 rounded-full",
-              "font-medium text-muted-foreground",
-              "cursor-pointer focus-visible:text-foreground"
+        {isUploading ? null : (
+          <>
+            <Button
+              onClick={onClose}
+              variant="ghost"
+              size="icon"
+              className={cn(
+                "size-8 rounded-full",
+                "font-medium text-muted-foreground",
+                "cursor-pointer focus-visible:text-foreground"
+              )}
+            >
+              <X className="size-4" />
+            </Button>
+            {phase === "preview" && (
+              <Button
+                onClick={handleUpload}
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "size-8 rounded-full",
+                  "font-medium text-muted-foreground",
+                  "cursor-pointer focus-visible:text-foreground"
+                )}
+              >
+                <PaperPlane className="size-4" />
+              </Button>
             )}
-          >
-            <PaperPlane className="size-4" />
-          </Button>
+          </>
         )}
       </div>
     </div>
