@@ -42,11 +42,8 @@ export default function SidebarBody({ items }: SidebarBodyProps) {
                     >
                       <Link
                         href={item.url}
-                        onClick={() => {
-                          if (!haveMatchPath) {
-                            if (document.activeElement instanceof HTMLElement)
-                              document.activeElement.blur();
-                          }
+                        onMouseDown={(event) => {
+                          if (!haveMatchPath) event.preventDefault();
                         }}
                       >
                         <span className="flex items-center justify-center w-5">
@@ -67,11 +64,8 @@ export default function SidebarBody({ items }: SidebarBodyProps) {
                       >
                         <Link
                           href={item.url}
-                          onClick={() => {
-                            if (!haveMatchPath) {
-                              if (document.activeElement instanceof HTMLElement)
-                                document.activeElement.blur();
-                            }
+                          onMouseDown={(event) => {
+                            if (!haveMatchPath) event.preventDefault();
                           }}
                         >
                           <span
