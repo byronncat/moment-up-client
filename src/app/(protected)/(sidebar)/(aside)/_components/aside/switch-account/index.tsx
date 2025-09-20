@@ -1,5 +1,6 @@
 "use client";
 
+import { __parseImageUrl } from "@/__mocks__";
 import type { AccountDto } from "api";
 
 import { useState } from "react";
@@ -32,9 +33,12 @@ function Content({
 }: Readonly<{ user: AccountDto; className?: string }>) {
   return (
     <div className={cn("flex items-center gap-2", className)}>
-      <Link href={ROUTE.PROFILE(user.username)} className="focus-indicator rounded-full">
+      <Link
+        href={ROUTE.PROFILE(user.username)}
+        className="focus-indicator rounded-full"
+      >
         <Avatar
-          src={user.avatar}
+          src={__parseImageUrl(user.avatar, 40, 40)}
           alt={`${user.displayName ?? user.username}'s avatar`}
           size="10"
           className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
@@ -46,7 +50,7 @@ function Content({
           className={cn(
             "text-sm font-semibold",
             "hover:opacity-80 transition-opacity duration-150 ease-in-out",
-            "truncate min-w-0",
+            "truncate",
             "focus-indicator rounded-sm"
           )}
         >
@@ -57,7 +61,7 @@ function Content({
           className={cn(
             "text-sm text-muted-foreground",
             "hover:opacity-80 transition-opacity duration-150 ease-in-out",
-            "truncate min-w-0",
+            "truncate",
             "focus-indicator rounded-sm"
           )}
         >
