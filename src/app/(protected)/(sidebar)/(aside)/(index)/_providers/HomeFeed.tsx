@@ -1,7 +1,7 @@
 "use client";
 
 // === Type ===
-import type { MomentInfo, PaginationInfo, StoryNotificationInfo } from "api";
+import type { MomentInfo, PaginationDto, StoryNotificationInfo } from "api";
 
 type HomeFeedContextType = Readonly<{
   moments: MomentInfo[] | undefined;
@@ -55,7 +55,7 @@ export function HomeFeedProvider({
   // === Post data ===
   const getKey = (
     pageIndex: number,
-    previousPageData: PaginationInfo<MomentInfo> | null
+    previousPageData: PaginationDto<MomentInfo> | null
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
@@ -67,7 +67,7 @@ export function HomeFeedProvider({
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationInfo<MomentInfo>>(url, accessToken),
+        swrFetcherWithRefresh<PaginationDto<MomentInfo>>(url, accessToken),
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,

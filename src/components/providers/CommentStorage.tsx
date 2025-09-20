@@ -1,6 +1,6 @@
 "use client";
 
-import type { CommentInfo, PaginationInfo } from "api";
+import type { CommentInfo, PaginationDto } from "api";
 
 import { createContext, useContext, useState, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
@@ -53,7 +53,7 @@ export default function CommentStorageProvider({
 
   const getKey = (
     pageIndex: number,
-    previousPageData: PaginationInfo<CommentInfo> | null
+    previousPageData: PaginationDto<CommentInfo> | null
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
@@ -66,7 +66,7 @@ export default function CommentStorageProvider({
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationInfo<CommentInfo>>(url, accessToken),
+        swrFetcherWithRefresh<PaginationDto<CommentInfo>>(url, accessToken),
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,

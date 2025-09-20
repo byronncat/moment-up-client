@@ -1,6 +1,6 @@
 "use client";
 
-import type { MomentInfo, PaginationInfo } from "api";
+import type { MomentInfo, PaginationDto } from "api";
 import { useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import {
@@ -48,7 +48,7 @@ export default function Moments({
 
   const getKey = (
     pageIndex: number,
-    previousPageData: PaginationInfo<MomentInfo> | null
+    previousPageData: PaginationDto<MomentInfo> | null
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
@@ -60,7 +60,7 @@ export default function Moments({
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationInfo<MomentInfo>>(url, accessToken),
+        swrFetcherWithRefresh<PaginationDto<MomentInfo>>(url, accessToken),
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,

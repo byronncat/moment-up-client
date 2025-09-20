@@ -1,4 +1,6 @@
+import { __parseUrl } from "@/__mocks__";
 import type { MomentInfo } from "api";
+
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 import { BLUR_DATA_URL } from "@/constants/client";
@@ -35,7 +37,7 @@ export default function MomentCell({
       <div className={cn("bg-card aspect-square", "relative")}>
         {coverFile.type === "image" ? (
           <Image
-            src={coverFile.id}
+            src={__parseUrl(coverFile.id, "image") as string}
             alt={data.post.text ?? "Moment image"}
             fill
             sizes="240px"
@@ -46,7 +48,7 @@ export default function MomentCell({
           />
         ) : (
           <video
-            src={coverFile.id}
+            src={__parseUrl(coverFile.id, "video") as string}
             className="size-full object-cover"
             playsInline
             preload="metadata"

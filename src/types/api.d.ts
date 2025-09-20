@@ -14,8 +14,8 @@ declare module "api" {
     statusCode: number;
   }
 
-  interface PaginationInfo<T> {
-    total: number;
+  interface PaginationDto<T> {
+    total?: number;
     page: number;
     limit: number;
     hasNextPage: boolean;

@@ -1,6 +1,6 @@
 "use client";
 
-import type { SearchItem, PaginationInfo } from "api";
+import type { SearchItem, PaginationDto } from "api";
 
 import { useSearchParams } from "next/navigation";
 import { useState, useCallback, useEffect, useMemo } from "react";
@@ -81,7 +81,7 @@ export default function SearchPage() {
   const getKey = useCallback(
     (
       pageIndex: number,
-      previousPageData: PaginationInfo<SearchItem> | null
+      previousPageData: PaginationDto<SearchItem> | null
     ) => {
       if (query.trim().length === 0) return null;
       if (previousPageData && !previousPageData.hasNextPage) return null;
@@ -97,7 +97,7 @@ export default function SearchPage() {
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationInfo<SearchItem>>(url, accessToken),
+        swrFetcherWithRefresh<PaginationDto<SearchItem>>(url, accessToken),
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,

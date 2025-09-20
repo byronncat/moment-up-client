@@ -1,6 +1,6 @@
 "use client";
 
-import type { MomentInfo, PaginationInfo } from "api";
+import type { MomentInfo, PaginationDto } from "api";
 import { useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useMomentStore } from "@/components/providers/MomentStorage";
@@ -45,7 +45,7 @@ export default function MomentGrid({
 
   const getKey = (
     pageIndex: number,
-    previousPageData: PaginationInfo<MomentInfo> | null
+    previousPageData: PaginationDto<MomentInfo> | null
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
@@ -57,7 +57,7 @@ export default function MomentGrid({
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationInfo<MomentInfo>>(url, accessToken),
+        swrFetcherWithRefresh<PaginationDto<MomentInfo>>(url, accessToken),
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,

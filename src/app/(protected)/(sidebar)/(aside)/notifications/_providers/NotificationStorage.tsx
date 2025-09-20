@@ -1,6 +1,6 @@
 "use client";
 
-import type { NotificationInfo, PaginationInfo } from "api";
+import type { NotificationInfo, PaginationDto } from "api";
 
 import { usePathname } from "next/navigation";
 import { createContext, useContext, useState, useEffect } from "react";
@@ -53,7 +53,7 @@ export default function NotificationStorageProvider({
 
   const getKey = (
     pageIndex: number,
-    previousPageData: PaginationInfo<NotificationInfo> | null
+    previousPageData: PaginationDto<NotificationInfo> | null
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
@@ -69,7 +69,7 @@ export default function NotificationStorageProvider({
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationInfo<NotificationInfo>>(
+        swrFetcherWithRefresh<PaginationDto<NotificationInfo>>(
           url,
           accessToken
         ),

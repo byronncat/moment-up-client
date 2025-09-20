@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { API, SearchItem, ErrorResponse, PaginationInfo } from "api";
+import type { API, SearchItem, ErrorResponse, PaginationDto } from "api";
 import type { Token } from "@/components/providers/Auth";
 
 import zodSchema from "@/libraries/zodSchema";
@@ -20,7 +20,7 @@ interface SearchData extends z.infer<typeof zodSchema.core.search> {
 export async function search(
   data: SearchData,
   token: Omit<Token, "csrfToken">
-): API<PaginationInfo<SearchItem>> {
+): API<PaginationDto<SearchItem>> {
   return await fetch(
     ApiUrl.search.search(
       data.query,
