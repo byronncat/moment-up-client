@@ -1,11 +1,11 @@
 import {
+  Abel,
   Merriweather,
+  Monoton,
   Montserrat,
   Roboto,
   Source_Code_Pro,
   Yesteryear,
-  Monoton,
-  Abel,
 } from "next/font/google";
 
 // Serif
