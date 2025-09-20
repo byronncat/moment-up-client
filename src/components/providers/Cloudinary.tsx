@@ -3,9 +3,14 @@
 // === Types ===
 import type { CloudinaryResponse } from "cloudinary";
 
+type CloudinaryUploadedData = {
+  public_id: string;
+  type: "image" | "video" | "raw";
+};
+
 interface UploadResponse {
   success: boolean;
-  public_id?: string | string[];
+  data?: CloudinaryUploadedData[];
 }
 
 interface CloudinaryAction {
@@ -19,10 +24,9 @@ interface CloudinaryAction {
 // === Provider ===
 import { createContext, useCallback, useContext } from "react";
 
+/* eslint-disable require-await */
 const CloudinaryContext = createContext<CloudinaryAction>({
-  // eslint-disable-next-line require-await
   uploadImage: async () => ({ success: false }),
-  // eslint-disable-next-line require-await
   uploadMultipleImages: async () => ({ success: false }),
 });
 
@@ -60,7 +64,7 @@ export default function CloudinaryProvider({
 
       return {
         success: true,
-        public_id: data.public_id,
+        data: [{ public_id: data.public_id, type: data.resource_type }],
       };
     } catch {
       return {
@@ -78,26 +82,18 @@ export default function CloudinaryProvider({
         });
 
         const results = await Promise.all(uploadPromises);
-
-        const failedUploads = results.filter((result) => !result.success);
-        if (failedUploads.length > 0) {
+        if (results.some((result) => !result.success || !result.data))
           return {
             success: false,
           };
-        }
 
-        const imageIds = results
-          .filter((result) => result.success && result.public_id)
-          .map((result) => result.public_id);
-
-        if (imageIds)
-          return {
-            success: false,
-          };
+        const uploadedData = results
+          .map((result) => result.data)
+          .flat() as CloudinaryUploadedData[];
 
         return {
           success: true,
-          public_id: imageIds,
+          data: uploadedData,
         };
       } catch {
         return {
