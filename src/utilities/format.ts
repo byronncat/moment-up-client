@@ -2,14 +2,14 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
 
-function number(value: number) {
+function formatNumber(value: number) {
   if (value >= 1000000000) return `${(value / 1000000000).toFixed(1)}B`;
   if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
   if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
   return value;
 }
 
-function date(dateInput: string | Date) {
+function formatDate(dateInput: string | Date) {
   const postDate = dayjs(dateInput);
   const now = dayjs();
 
@@ -18,7 +18,7 @@ function date(dateInput: string | Date) {
   return postDate.format("MMM YYYY");
 }
 
-function _relativeTime(dateInput: string | Date) {
+function formatRelativeTime(dateInput: string | Date) {
   dayjs.extend(relativeTime);
   dayjs.extend(updateLocale);
 
@@ -44,9 +44,9 @@ function _relativeTime(dateInput: string | Date) {
 }
 
 const Format = {
-  number,
-  date,
-  relativeTime: _relativeTime,
+  number: formatNumber,
+  date: formatDate,
+  relativeTime: formatRelativeTime,
 };
 
 export default Format;
