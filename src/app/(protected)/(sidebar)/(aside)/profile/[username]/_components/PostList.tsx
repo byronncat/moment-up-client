@@ -1,6 +1,6 @@
 "use client";
 
-import type { MomentInfo, PaginationDto } from "api";
+import type { FeedItemDto, PaginationDto } from "api";
 
 import { useCallback, useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
@@ -32,7 +32,7 @@ export default function MomentList({ filter }: MomentListProps) {
 
   const getKey = (
     pageIndex: number,
-    previousPageData: PaginationDto<MomentInfo> | null
+    previousPageData: PaginationDto<FeedItemDto> | null
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
@@ -44,7 +44,7 @@ export default function MomentList({ filter }: MomentListProps) {
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationDto<MomentInfo>>(url, accessToken),
+        swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,

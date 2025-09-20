@@ -1,10 +1,10 @@
 "use client";
 
 // === Type ===
-import type { MomentInfo, PaginationDto, StoryNotificationInfo } from "api";
+import type { FeedItemDto, PaginationDto, StoryNotificationInfo } from "api";
 
 type HomeFeedContextType = Readonly<{
-  moments: MomentInfo[] | undefined;
+  moments: FeedItemDto[] | undefined;
   hasNextPage: boolean;
   isLoading: boolean;
   isError: boolean;
@@ -55,7 +55,7 @@ export function HomeFeedProvider({
   // === Post data ===
   const getKey = (
     pageIndex: number,
-    previousPageData: PaginationDto<MomentInfo> | null
+    previousPageData: PaginationDto<FeedItemDto> | null
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
@@ -67,7 +67,7 @@ export function HomeFeedProvider({
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationDto<MomentInfo>>(url, accessToken),
+        swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,

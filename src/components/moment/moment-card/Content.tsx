@@ -1,13 +1,13 @@
 "use client";
 
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 
 import TextContent from "./Text";
 import MediaGrid from "./media-grid";
 
 type ContentProps = Readonly<{
-  momentId: MomentInfo["id"];
-  postData: MomentInfo["post"];
+  momentId: FeedItemDto["id"];
+  postData: FeedItemDto["post"];
 }>;
 
 export default function Content({ momentId, postData }: ContentProps) {

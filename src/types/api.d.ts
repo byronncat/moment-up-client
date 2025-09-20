@@ -8,7 +8,7 @@ declare module "api" {
     data?: T;
   }>;
 
-  interface ErrorResponse {
+  interface ErrorDto {
     error: string;
     message: string | string[];
     statusCode: number;
@@ -69,12 +69,19 @@ declare module "api" {
     lastModified: string;
   }
 
-  type MomentInfo = {
+  type FeedItemDto = {
     id: string;
     user: UserSummaryDto;
     post: PostDto;
   };
 
+  // === Others ===
+  interface HashtagDto {
+    name: string;
+    count: number;
+  }
+
+  // +++ TODO: Refactor this +++
   type CommentInfo = {
     id: string;
     user: UserSummaryDto;
@@ -154,11 +161,11 @@ declare module "api" {
     type: SearchItemType.HASHTAG;
   }
 
-  interface PostSearchItem extends MomentInfo {
+  interface PostSearchItem extends FeedItemDto {
     type: SearchItemType.POST;
   }
 
-  interface MediaSearchItem extends MomentInfo {
+  interface MediaSearchItem extends FeedItemDto {
     type: SearchItemType.MEDIA;
   }
 
@@ -173,12 +180,6 @@ declare module "api" {
     ProfileDto,
     "followers" | "following" | "hasStory" | "isFollowing"
   >;
-
-  // === Others ===
-  interface HashtagDto {
-    name: string;
-    count: number;
-  };
 
   type FileInfo = {
     id: string;

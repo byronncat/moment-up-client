@@ -1,7 +1,7 @@
 declare module "cloudinary" {
   type ResourceType = "image" | "video" | "raw";
 
-  interface CloudinaryResponse {
+  interface CloudinaryUploadResponse {
     asset_id: string;
     public_id: string;
     version: number;

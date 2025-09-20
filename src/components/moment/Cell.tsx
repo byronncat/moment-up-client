@@ -1,5 +1,5 @@
 import { __parseUrl } from "@/__mocks__";
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
@@ -11,7 +11,7 @@ import { cn } from "@/libraries/utils";
 import { Clone, Heart, Message, Video } from "@/components/icons";
 
 type MomentCellProps = Readonly<{
-  data: MomentInfo;
+  data: FeedItemDto;
   onClick?: () => void;
   className?: string;
 }>;
@@ -102,7 +102,7 @@ function MediaTypeIndicator({
 }
 
 type HoverOverlayProps = Readonly<{
-  id: MomentInfo["id"];
+  id: FeedItemDto["id"];
   isLiked: boolean;
   likes: number;
   comments: number;

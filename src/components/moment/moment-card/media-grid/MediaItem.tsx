@@ -1,5 +1,5 @@
 import { __parseUrl } from "@/__mocks__";
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 
 import { ROUTE } from "@/constants/route";
 import { BLUR_DATA_URL } from "@/constants/client";
@@ -10,7 +10,7 @@ import Link from "next/link";
 import { Play } from "../../../icons";
 
 type MediaItemProps = Readonly<{
-  file: NonNullable<MomentInfo["post"]["files"]>[0];
+  file: NonNullable<FeedItemDto["post"]["files"]>[0];
   index: number;
   momentId: string;
   className?: string;

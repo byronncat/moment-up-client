@@ -1,6 +1,6 @@
 "use client";
 
-import type { MomentInfo, PaginationDto } from "api";
+import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
@@ -26,7 +26,7 @@ export default function MomentGrid() {
 
   const getKey = (
     pageIndex: number,
-    previousPageData: PaginationDto<MomentInfo> | null
+    previousPageData: PaginationDto<FeedItemDto> | null
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
@@ -38,7 +38,7 @@ export default function MomentGrid() {
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationDto<MomentInfo>>(url, accessToken),
+        swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,

@@ -1,9 +1,9 @@
-import type { MomentInfo, SearchItem as TSearchItem } from "api";
+import type { FeedItemDto, SearchItem as TSearchItem } from "api";
 import type { SectionData } from "./constant.ts";
 import type { RowComponentProps } from "react-window";
 
 import { memo } from "react";
-import { isValidMomentInfo } from "./helper";
+import { isValidFeedItemDto } from "./helper";
 
 import { cn } from "@/libraries/utils";
 import { MomentCell } from "@/components/moment";
@@ -84,9 +84,9 @@ const Item = memo(
 
             return (
               <div key={columnIndex} style={cellStyle}>
-                {item && isValidMomentInfo(item) ? (
+                {item && isValidFeedItemDto(item) ? (
                   <MomentCell
-                    data={item as MomentInfo}
+                    data={item as FeedItemDto}
                     onClick={() => onItemClick?.(item)}
                   />
                 ) : null}

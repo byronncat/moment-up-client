@@ -1,7 +1,7 @@
 "use client";
 
 // === Types ===
-import type { CloudinaryResponse } from "cloudinary";
+import type { CloudinaryUploadResponse } from "cloudinary";
 
 type CloudinaryUploadedData = {
   public_id: string;
@@ -60,7 +60,7 @@ export default function CloudinaryProvider({
         throw new Error(errorData.error?.message ?? "Upload failed");
       }
 
-      const data: CloudinaryResponse = await response.json();
+      const data: CloudinaryUploadResponse = await response.json();
 
       return {
         success: true,

@@ -1,5 +1,5 @@
 /* eslint-disable require-await */
-import type { ErrorResponse } from "api";
+import type { ErrorDto } from "api";
 
 export async function SWRFetcher<T = void>(
   url: string
@@ -16,7 +16,7 @@ export async function SWRFetcher<T = void>(
       if (!response.ok) throw data;
       return data;
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       throw error;
     });
 }
@@ -38,7 +38,7 @@ export async function SWRFetcherWithToken<T = void>(
       if (!response.ok) throw data;
       return data;
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       throw error;
     });
 }

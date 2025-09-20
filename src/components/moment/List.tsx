@@ -1,6 +1,6 @@
 "use client";
 
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 import type { Actions } from "@/components/providers/MomentStorage";
 
 import { memo, useEffect, useRef, useState } from "react";
@@ -26,7 +26,7 @@ const BORDER_SIZE = 1;
 const ITEM_GAP = 16;
 
 type MomentListProps = Readonly<{
-  items: MomentInfo[];
+  items: FeedItemDto[];
   hasNextPage: boolean;
   isNextPageLoading: boolean;
   loadNextPage: () => void;
@@ -189,7 +189,7 @@ export default function MomentList({
 type ItemProps = Readonly<{
   index: number;
   style: React.CSSProperties;
-  items: MomentInfo[];
+  items: FeedItemDto[];
   actions: Actions;
   itemCount: number;
   topChildren?: React.ReactNode;

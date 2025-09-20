@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // === Types ====
-import type { ErrorResponse } from "api";
+import type { ErrorDto } from "api";
 
 type AuthenticatedApiFunction<TArgs extends any[], TResult> = (
   ...args: [...TArgs, Token]
@@ -37,7 +37,7 @@ export function useRefreshApi<TArgs extends any[], TResult extends ApiResult>(
       let result = await apiFunction(...args, currentToken);
       if (
         !result.success &&
-        (result as unknown as ErrorResponse).statusCode ===
+        (result as unknown as ErrorDto).statusCode ===
           UNAUTHORIZED_STATUS_CODE
       ) {
         const newAccessToken = await currentRefresh();

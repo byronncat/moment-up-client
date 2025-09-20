@@ -1,6 +1,6 @@
 import type {
   HashtagSearchItem,
-  MomentInfo,
+  FeedItemDto,
   SearchItem,
   UserSearchItem,
 } from "api";
@@ -85,7 +85,7 @@ export default function SearchItem({
     [SearchItemType.POST]: () => (
       <MomentCard
         key={data.id}
-        data={data as MomentInfo}
+        data={data as FeedItemDto}
         actions={{} as any}
         onClick={onClick}
         className="size-full"
@@ -94,7 +94,7 @@ export default function SearchItem({
     [SearchItemType.MEDIA]: () => (
       <MomentCell
         key={data.id}
-        data={data as MomentInfo}
+        data={data as FeedItemDto}
         onClick={onClick}
         className="size-full"
       />

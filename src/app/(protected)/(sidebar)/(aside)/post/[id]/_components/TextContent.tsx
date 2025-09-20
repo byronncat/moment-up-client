@@ -1,4 +1,4 @@
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 import { useRef, useState, useEffect } from "react";
 import { useTextClamp } from "@/hooks";
 import { parseText } from "@/helpers/parser";
@@ -6,7 +6,7 @@ import { cn } from "@/libraries/utils";
 
 export default function TextContent({
   data,
-}: Readonly<{ data: MomentInfo["post"]["text"] }>) {
+}: Readonly<{ data: FeedItemDto["post"]["text"] }>) {
   const textRef = useRef<HTMLDivElement>(null);
   const isTextClamped = useTextClamp(textRef);
   const [isExpanded, setIsExpanded] = useState(false);

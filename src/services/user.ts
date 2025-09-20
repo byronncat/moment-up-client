@@ -1,4 +1,4 @@
-import type { API, ErrorResponse, ProfileDto } from "api";
+import type { API, ErrorDto, ProfileDto } from "api";
 import type { Token } from "@/components/providers/Auth";
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
@@ -32,7 +32,7 @@ export async function follow(data: FollowDto, token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -61,7 +61,7 @@ export async function getProfile(username: string): API<{
         data,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -99,7 +99,7 @@ export async function block(data: BlockDto, token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -137,7 +137,7 @@ export async function mute(data: MuteDto, token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -164,7 +164,7 @@ export async function reportUser(userId: string, token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -201,7 +201,7 @@ export async function updateProfile(userId: string, data: UpdateProfileDto, toke
         data: responseData,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),

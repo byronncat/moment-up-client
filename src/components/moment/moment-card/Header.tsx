@@ -1,6 +1,6 @@
 "use client";
 
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 import type { Actions } from "../../providers/MomentStorage";
 
 import { useState } from "react";
@@ -21,7 +21,7 @@ import {
 import { Ban, Flag, MoreHorizontal, User } from "@/components/icons";
 
 type HeaderProps = Readonly<{
-  data: MomentInfo;
+  data: FeedItemDto;
   actions: Pick<Actions, "follow" | "block" | "report">;
   sideElement?: React.ReactNode;
   truncateClassName?: string;
@@ -102,8 +102,8 @@ export default function Header({
 type MoreMenuProps = Readonly<{
   isOpen: boolean;
   setOpen: (isOpen: boolean) => void;
-  user: MomentInfo["user"];
-  momentId: MomentInfo["id"];
+  user: FeedItemDto["user"];
+  momentId: FeedItemDto["id"];
   actions: Pick<Actions, "follow" | "block" | "report">;
 }>;
 

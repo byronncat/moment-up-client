@@ -1,4 +1,4 @@
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 
 import { useRef } from "react";
 import { useMoment, CommentStorageProvider } from "@/components/providers";
@@ -13,7 +13,7 @@ import TextContent from "@/app/(protected)/(sidebar)/(aside)/post/[id]/_componen
 import { X } from "@/components/icons";
 
 type ContentProps = Readonly<{
-  data: MomentInfo;
+  data: FeedItemDto;
   haveMedia?: boolean;
   onClose?: () => void;
   className?: string;

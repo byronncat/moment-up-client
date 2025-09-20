@@ -1,4 +1,4 @@
-import type { ErrorResponse } from "api";
+import type { ErrorDto } from "api";
 import { useCallback } from "react";
 import { useAuth } from "../Auth";
 
@@ -30,7 +30,7 @@ export function useRefreshSWR() {
       }
 
       if (!response.ok) {
-        const error: ErrorResponse = await response.json();
+        const error: ErrorDto = await response.json();
         throw error;
       }
 

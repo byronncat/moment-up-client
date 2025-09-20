@@ -1,10 +1,10 @@
 "use client";
 
-import type { SearchItem as TSearchItem, MomentInfo } from "api";
+import type { SearchItem as TSearchItem, FeedItemDto } from "api";
 
 import {
   prepareSectionsData,
-  isValidMomentInfo,
+  isValidFeedItemDto,
   calculatePostHeight,
 } from "./helper";
 
@@ -79,9 +79,9 @@ export default function VirtualList({
 
     switch (item.type) {
       case SearchItemType.POST:
-        if (isValidMomentInfo(item)) {
+        if (isValidFeedItemDto(item)) {
           return calculatePostHeight(
-            item as MomentInfo,
+            item as FeedItemDto,
             width > POST_MAX_WIDTH ? POST_MAX_WIDTH : width
           );
         }

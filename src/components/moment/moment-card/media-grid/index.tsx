@@ -1,4 +1,4 @@
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 
 import { cn } from "@/libraries/utils";
 import { AspectRatio } from "../../../ui/aspect-ratio";
@@ -12,7 +12,7 @@ const THIRD = 2;
 const MAX = 5;
 
 type MediaGridProps = Readonly<{
-  files: MomentInfo["post"]["files"];
+  files: FeedItemDto["post"]["files"];
   momentId: string;
 }>;
 

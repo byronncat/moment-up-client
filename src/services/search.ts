@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { API, SearchItem, ErrorResponse, PaginationDto } from "api";
+import type { API, SearchItem, ErrorDto, PaginationDto } from "api";
 import type { Token } from "@/components/providers/Auth";
 
 import zodSchema from "@/libraries/zodSchema";
@@ -48,7 +48,7 @@ export async function search(
         data,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -78,7 +78,7 @@ export async function getHistory({
         data: data.history,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -105,7 +105,7 @@ export async function clearHistory({ accessToken, csrfToken }: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -135,7 +135,7 @@ export async function removeHistoryItem(
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),

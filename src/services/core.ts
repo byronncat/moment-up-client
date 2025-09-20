@@ -1,4 +1,4 @@
-import type { API, CommentInfo, ErrorResponse, MomentInfo } from "api";
+import type { API, CommentInfo, ErrorDto, FeedItemDto } from "api";
 import type { ContentPrivacy } from "@/constants/server";
 
 import type { Token } from "@/components/providers/Auth";
@@ -30,7 +30,7 @@ export async function create(data: CreatePostDto, token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -68,7 +68,7 @@ export async function like(data: LikeDto, token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -106,7 +106,7 @@ export async function bookmark(data: BookmarkDto, token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -144,7 +144,7 @@ export async function repost(
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -171,7 +171,7 @@ export async function deleteStory(storyId: string, token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -180,7 +180,7 @@ export async function deleteStory(storyId: string, token: Token): API {
     });
 }
 
-export async function getMoment(momentId: string): API<MomentInfo | null> {
+export async function getMoment(momentId: string): API<FeedItemDto | null> {
   return fetch(ApiUrl.post.getById(momentId), {
     method: "GET",
     headers: {
@@ -196,7 +196,7 @@ export async function getMoment(momentId: string): API<MomentInfo | null> {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -233,7 +233,7 @@ export async function addComment(
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -260,7 +260,7 @@ export async function deleteComment(commentId: string, token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -301,7 +301,7 @@ export async function likeComment(
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),

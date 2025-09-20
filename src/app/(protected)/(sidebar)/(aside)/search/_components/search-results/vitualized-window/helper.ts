@@ -1,6 +1,6 @@
 "use client";
 
-import type { SearchItem, MomentInfo } from "api";
+import type { SearchItem, FeedItemDto } from "api";
 import type { SectionData } from "./constant";
 
 import { SearchCategory } from "@/constants/client";
@@ -15,7 +15,7 @@ import {
   MEDIA_COLUMNS,
 } from "./constant";
 
-export function isValidMomentInfo(item: SearchItem): boolean {
+export function isValidFeedItemDto(item: SearchItem): boolean {
   return (
     (item.type === SearchItemType.POST || item.type === SearchItemType.MEDIA) &&
     "post" in item &&
@@ -23,7 +23,7 @@ export function isValidMomentInfo(item: SearchItem): boolean {
   );
 }
 
-export function calculatePostHeight(moment: MomentInfo, width: number): number {
+export function calculatePostHeight(moment: FeedItemDto, width: number): number {
   let height =
     POST_HEADER_HEIGHT +
     POST_FOOTER_HEIGHT +

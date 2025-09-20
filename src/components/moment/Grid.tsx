@@ -1,6 +1,6 @@
 "use client";
 
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 import { useEffect, useRef, useState } from "react";
 import { debounce } from "lodash";
 import { PAGE_RELOAD_TIME } from "@/constants/client";
@@ -13,7 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const COLUMN_COUNT = 3;
 
 type GridProps = Readonly<{
-  items: MomentInfo[];
+  items: FeedItemDto[];
   hasNextPage: boolean;
   isNextPageLoading: boolean;
   loadNextPage: () => void;
@@ -119,7 +119,7 @@ export default function Grid({
 }
 
 type RowProps = RowComponentProps<{
-  items: MomentInfo[];
+  items: FeedItemDto[];
   onClick: (index: number) => void;
   itemCount: number;
   hasNextPage: boolean;

@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { API, AccountDto, ErrorResponse } from "api";
+import type { API, AccountDto, ErrorDto } from "api";
 import type { Token } from "@/components/providers/Auth";
 import type zodSchema from "@/libraries/zodSchema";
 
@@ -32,7 +32,7 @@ export async function login(
         data,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -68,7 +68,7 @@ export async function switchAccount(
         data,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -98,7 +98,7 @@ export async function signup(
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -125,7 +125,7 @@ export async function logout(token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -189,7 +189,7 @@ export async function getUser(accessToken: string): API<{ user: AccountDto }> {
         data,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -219,7 +219,7 @@ export async function sendOtpEmail(
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -249,7 +249,7 @@ export async function recoverPassword(
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
@@ -278,7 +278,7 @@ export async function addGoogleAccount(token: Token): API<{ user: AccountDto }> 
         data,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),

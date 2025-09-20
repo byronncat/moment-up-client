@@ -1,6 +1,6 @@
 "use client";
 
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 
 import { createContext, useCallback, useContext, useMemo } from "react";
 import { Store, useStore } from "@tanstack/react-store";
@@ -10,7 +10,7 @@ import { Link } from "@/components/icons";
 import { useRefreshApi } from "./hooks/useRefreshApi";
 
 type MomentState = {
-  moments: MomentInfo[] | undefined;
+  moments: FeedItemDto[] | undefined;
   currentIndex: number;
   actionLoading: {
     mute: boolean;
@@ -18,17 +18,17 @@ type MomentState = {
     report: boolean;
   };
   undoBuffer: Array<{
-    blockedMoments: Array<{ index: number; moment: MomentInfo }>;
+    blockedMoments: Array<{ index: number; moment: FeedItemDto }>;
   }>;
 };
 
 export type Actions = {
-  like: (momentId: MomentInfo["id"]) => Promise<void>;
-  bookmark: (momentId: MomentInfo["id"]) => Promise<void>;
-  follow: (momentId: MomentInfo["id"]) => Promise<void>;
-  block: (momentId: MomentInfo["id"]) => Promise<void>;
-  share: (momentId: MomentInfo["id"]) => void;
-  report: (momentId: MomentInfo["id"]) => Promise<void>;
+  like: (momentId: FeedItemDto["id"]) => Promise<void>;
+  bookmark: (momentId: FeedItemDto["id"]) => Promise<void>;
+  follow: (momentId: FeedItemDto["id"]) => Promise<void>;
+  block: (momentId: FeedItemDto["id"]) => Promise<void>;
+  share: (momentId: FeedItemDto["id"]) => void;
+  report: (momentId: FeedItemDto["id"]) => Promise<void>;
 };
 
 const momentStore = new Store<MomentState>({
@@ -43,7 +43,7 @@ const momentStore = new Store<MomentState>({
 });
 
 const momentActions = {
-  setMoments: (moments: MomentInfo[]) => {
+  setMoments: (moments: FeedItemDto[]) => {
     momentStore.setState((state) => ({
       ...state,
       moments,
@@ -69,7 +69,7 @@ const momentActions = {
     }
   },
 
-  addMoments: (newMoments: MomentInfo[]) => {
+  addMoments: (newMoments: FeedItemDto[]) => {
     if (newMoments.length > 0) {
       momentStore.setState((state) => {
         const updated = [...(state.moments ?? []), ...newMoments];
@@ -126,7 +126,7 @@ const momentActions = {
     }));
   },
 
-  toggleFollowState: (momentId: MomentInfo["id"]) => {
+  toggleFollowState: (momentId: FeedItemDto["id"]) => {
     momentStore.setState((state) => ({
       ...state,
       moments: state.moments?.map((moment) =>
@@ -144,7 +144,7 @@ const momentActions = {
   },
 
   toggleBlockState: (
-    userId: MomentInfo["user"]["id"],
+    userId: FeedItemDto["user"]["id"],
     options?: { undo?: boolean; remove?: boolean }
   ) => {
     if (!options?.remove) return;
@@ -166,7 +166,7 @@ const momentActions = {
         });
       }
     } else if (moments) {
-      const blockedMoments: Array<{ index: number; moment: MomentInfo }> = [];
+      const blockedMoments: Array<{ index: number; moment: FeedItemDto }> = [];
       for (let index = moments.length - 1; index >= 0; index--) {
         const moment = moments[index];
         if (moment.user.id === userId) blockedMoments.push({ index, moment });
@@ -214,7 +214,7 @@ const momentActions = {
     }
   },
 
-  share: (momentId: MomentInfo["id"]) => {
+  share: (momentId: FeedItemDto["id"]) => {
     const url = window.location.href;
     const { origin } = new URL(url);
     navigator.clipboard.writeText(`${origin}/moment/${momentId}`);
@@ -284,11 +284,11 @@ export const useMomentStore = () => {
 };
 
 type MomentContextType = {
-  moments: MomentInfo[] | undefined;
-  getCurrentMoment: () => MomentInfo | undefined;
+  moments: FeedItemDto[] | undefined;
+  getCurrentMoment: () => FeedItemDto | undefined;
   setCurrentIndex: (index: number | string) => void;
-  setMoments: (moments: MomentInfo[]) => void;
-  addMoments: (moments: MomentInfo[]) => void;
+  setMoments: (moments: FeedItemDto[]) => void;
+  addMoments: (moments: FeedItemDto[]) => void;
   removeMoment: (momentId: string) => void;
   like: (momentId: string) => Promise<void>;
   bookmark: (momentId: string) => Promise<void>;

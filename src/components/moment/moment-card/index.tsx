@@ -1,4 +1,4 @@
-import type { MomentInfo } from "api";
+import type { FeedItemDto } from "api";
 import type { Actions } from "../../providers/MomentStorage";
 
 import { Card } from "../../ui/card";
@@ -9,7 +9,7 @@ import MomentContent from "./Content";
 import MomentButtonGroup from "./ButtonGroup";
 
 type MomentCardProps = Readonly<{
-  data: MomentInfo;
+  data: FeedItemDto;
   className?: string;
   actions: Actions;
   onClick?: () => void;

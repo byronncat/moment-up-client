@@ -1,4 +1,4 @@
-import type { API, ErrorResponse } from "api";
+import type { API, ErrorDto } from "api";
 import type { Token } from "@/components/providers/Auth";
 import type { TrendingReportType } from "@/constants/server";
 
@@ -32,7 +32,7 @@ export async function reportTopic(data: ReportTopicDto, token: Token): API {
         statusCode: response.status,
       };
     })
-    .catch((error: ErrorResponse) => {
+    .catch((error: ErrorDto) => {
       return {
         success: false,
         message: parseErrorMessage(error),
