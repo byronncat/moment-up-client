@@ -9,18 +9,20 @@ export interface MetadataMap {
   forgotPassword: NextMetadata;
 
   // === Public ===
-  explore: NextMetadata;
-  search: NextMetadata;
   profile: (username: string) => NextMetadata;
-  notifications: NextMetadata;
-  moment: (username: string, content?: string) => NextMetadata;
-  story: NextMetadata;
 
   // === Private ===
   messages: NextMetadata;
 
   // === Error ===
   notFound: NextMetadata;
+
+  // +++ TODO: Ongoing +++
+  moment: (username: string, content?: string) => NextMetadata;
+  story: NextMetadata;
+  explore: NextMetadata;
+  search: NextMetadata;
+  notifications: NextMetadata;
 }
 
 export const Metadata: MetadataMap = {
@@ -55,6 +57,13 @@ export const Metadata: MetadataMap = {
     };
   },
 
+  // === Error ===
+  notFound: {
+    title: "Page Not Found",
+    description: "Sorry, we couldn't find the page you're looking for.",
+  },
+
+  // +++ TODO: Ongoing +++
   explore: {
     title: "Explore",
     description: "Explore page",
@@ -82,11 +91,5 @@ export const Metadata: MetadataMap = {
   messages: {
     title: "Messages",
     description: "View and communicate with your friends",
-  },
-
-  // === Error ===
-  notFound: {
-    title: "Page Not Found",
-    description: "Sorry, we couldn't find the page you're looking for.",
   },
 };

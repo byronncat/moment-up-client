@@ -40,7 +40,7 @@ export default function ChangePasswordForm({
     },
   });
 
-  const { recoverPassword: changePassword, sendOtpEmail } = useAuth();
+  const { recoverPassword: changePassword, sendOtp } = useAuth();
   async function handleVerify(
     values: z.infer<typeof zodSchema.auth.recoverPassword>
   ) {
@@ -54,7 +54,7 @@ export default function ChangePasswordForm({
   }
 
   function handleResend() {
-    toast.promise(sendOtpEmail({ identity: defaultValue }), {
+    toast.promise(sendOtp({ identity: defaultValue }), {
       loading: "Sending recovery email...",
       success: ({ success, message }) => {
         if (success) return "Recovery email sent!";

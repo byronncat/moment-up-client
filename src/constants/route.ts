@@ -1,5 +1,6 @@
 import type { SearchCategory } from "./client";
 import { type ExploreType, NotificationType } from "./server";
+import { buildUrl } from "@/utilities";
 
 export const ROUTE = {
   // === Auth ===
@@ -8,32 +9,47 @@ export const ROUTE = {
   FORGOT_PASSWORD: "/forgot-password",
 
   // === Public ===
-  PROFILE: (username?: string, type?: "media" | "tagged") =>
-    `/profile${username ? `/${username}` : ""}${type ? `/${type}` : ""}`,
+  PROFILE: (username?: string, type?: "media" | "tagged") => {
+    let path = "/profile";
+    if (username) path = buildUrl("/profile/:username", { pathParams: { username } });
+    if (type) path = buildUrl(`${path}/:type`, { pathParams: { type } });
+    return path;
+  },
   POST: (postId?: string, imgIndex?: number) =>
-    `/post${postId ? `/${postId}` : ""}${imgIndex ? `?imgIndex=${imgIndex}` : ""}`,
+    postId 
+      ? buildUrl("/post/:postId", { pathParams: { postId }, queryParams: { imgIndex } })
+      : buildUrl("/post", { queryParams: { imgIndex } }),
 
   // === Private ===
   HOME: "/",
-  EXPLORE: (type?: ExploreType) => `/explore${type ? `/${type}` : ""}`,
-  SEARCH: (query?: string, filter?: SearchCategory) => {
-    const params = new URLSearchParams();
-    if (query) params.set(SearchParamName.QUERY, query);
-    if (filter) params.set(SearchParamName.CATEGORY, filter);
-    const queryString = params.toString();
-    return `/search${queryString ? `?${queryString}` : ""}`;
-  },
+  EXPLORE: (type?: ExploreType) =>
+    type ? buildUrl("/explore/:type", { pathParams: { type } }) : "/explore",
+  SEARCH: (query?: string, filter?: SearchCategory) =>
+    buildUrl("/search", {
+      queryParams: {
+        [SearchParamName.QUERY]: query,
+        [SearchParamName.CATEGORY]: filter,
+      },
+      useSetForQuery: true,
+    }),
   POST_CREATE: "/post/create",
-  STORY: (username?: string, storyId?: string) =>
-    `/stories${username ? `/${username}` : ""}${storyId ? `/${storyId}` : ""}`,
+  STORY: (username?: string, storyId?: string) => {
+    let path = "/stories";
+    if (username) path = buildUrl("/stories/:username", { pathParams: { username } });
+    if (storyId) path = buildUrl(`${path}/:storyId`, { pathParams: { storyId } });
+    return path;
+  },
   STORY_CREATE: "/stories/create",
   MESSAGES: "/messages",
   MESSAGE: (contactId?: string) =>
-    `/messages${contactId ? `/${contactId}` : ""}`,
+    contactId ? buildUrl("/messages/:contactId", { pathParams: { contactId } }) : "/messages",
   NOTIFICATION: (type: NotificationType = NotificationType.ALL) =>
-    `/notifications${type === NotificationType.ALL ? "" : `/${type}`}`,
+    type === NotificationType.ALL 
+      ? "/notifications" 
+      : buildUrl("/notifications/:type", { pathParams: { type } }),
   SETTINGS: "/settings",
-  ARCHIVE: (type: "bookmarks" | "likes" = "bookmarks") => `/archive/${type}`,
+  ARCHIVE: (type: "bookmarks" | "likes" = "bookmarks") => 
+    buildUrl("/archive/:type", { pathParams: { type } }),
 };
 
 export const PRIVATE_ROUTES = [

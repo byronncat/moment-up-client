@@ -6,6 +6,8 @@ export const INITIAL_PAGE = 1;
 export const MAX_NAME_LENGTH = 50;
 export const MAX_BIO_LENGTH = 160;
 export const MAX_TEXT_CONTENT_LENGTH = 2000;
+export const MIN_USERNAME_LENGTH = 5;
+export const MIN_PASSWORD_LENGTH = 7;
 
 export enum ContentPrivacy {
   PUBLIC,

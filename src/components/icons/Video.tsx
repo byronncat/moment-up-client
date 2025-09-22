@@ -1,6 +1,6 @@
 type VideoProps = Readonly<{
-  className?: string;
   type?: "regular" | "solid";
+  className?: string;
 }>;
 
 export default function Video({ className, type = "regular" }: VideoProps) {

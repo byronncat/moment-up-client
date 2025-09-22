@@ -38,11 +38,11 @@ export function useAuthOperations({
   );
 
   const authenticate = useCallback(async () => {
-    const csrfToken = await AuthApi.csrf();
-    token.current.csrfToken = csrfToken;
+    const csrfToken = await AuthApi.getCsrf();
+    token.current.csrfToken = csrfToken ?? "";
 
     const accessToken = await AuthApi.refresh();
-    token.current.accessToken = accessToken;
+    token.current.accessToken = accessToken ?? "";
 
     const hasGuardCookie = authCookie.exists();
 

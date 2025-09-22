@@ -1,8 +1,9 @@
+// +++ TODO: Ongoing +++
 import type { z } from "zod";
-import type { API, SearchItem, ErrorDto, PaginationDto } from "api";
+import type { API, ErrorDto, PaginationDto, SearchItem } from "api";
 import type { Token } from "@/components/providers/Auth";
+import type zodSchema from "@/libraries/zodSchema";
 
-import zodSchema from "@/libraries/zodSchema";
 import {
   ApiUrl,
   type SearchSortParams,
@@ -21,7 +22,7 @@ export async function search(
   data: SearchData,
   token: Omit<Token, "csrfToken">
 ): API<PaginationDto<SearchItem>> {
-  return await fetch(
+  return fetch(
     ApiUrl.search.search(
       data.query,
       data.type,
@@ -60,7 +61,7 @@ export async function search(
 export async function getHistory({
   accessToken,
 }: Omit<Token, "csrfToken">): API<SearchItem[]> {
-  return await fetch(ApiUrl.search.getHistory(), {
+  return fetch(ApiUrl.search.getHistory(), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -88,7 +89,7 @@ export async function getHistory({
 }
 
 export async function clearHistory({ accessToken, csrfToken }: Token): API {
-  return await fetch(ApiUrl.search.clearHistory, {
+  return fetch(ApiUrl.search.clearHistory, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -118,7 +119,7 @@ export async function removeHistoryItem(
   itemId: string,
   { accessToken, csrfToken }: Token
 ): API {
-  return await fetch(ApiUrl.search.removeHistoryItem(itemId), {
+  return fetch(ApiUrl.search.removeHistoryItem(itemId), {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

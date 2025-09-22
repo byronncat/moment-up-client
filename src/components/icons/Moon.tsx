@@ -1,6 +1,6 @@
 type MoonProps = Readonly<{
-  className?: string;
   type?: "regular" | "solid";
+  className?: string;
 }>;
 
 export default function Moon({ className, type = "regular" }: MoonProps) {

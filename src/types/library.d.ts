@@ -1,9 +1,10 @@
 declare module "cloudinary" {
   type ResourceType = "image" | "video" | "raw";
+  type PublicId = string;
 
   interface CloudinaryUploadResponse {
     asset_id: string;
-    public_id: string;
+    public_id: PublicId;
     version: number;
     version_id: string;
     signature: string;

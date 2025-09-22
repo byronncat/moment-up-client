@@ -1,4 +1,9 @@
 import * as z from "zod";
+import {
+  MAX_NAME_LENGTH,
+  MIN_PASSWORD_LENGTH,
+  MIN_USERNAME_LENGTH,
+} from "@/constants/server";
 
 const login = z.object({
   identity: z.string().min(1, {
@@ -22,11 +27,11 @@ const signup = z.object({
     .min(1, {
       error: "Username is required",
     })
-    .min(2, {
-      error: "Username must be at least 2 characters",
+    .min(MIN_USERNAME_LENGTH, {
+      error: `Username must be at least ${MIN_USERNAME_LENGTH} characters`,
     })
-    .max(50, {
-      error: "Username must be less than 50 characters",
+    .max(MAX_NAME_LENGTH, {
+      error: `Username must be less than ${MAX_NAME_LENGTH} characters`,
     })
     .regex(/^[a-zA-Z0-9._-]+$/, {
       error:
@@ -37,8 +42,8 @@ const signup = z.object({
     .min(1, {
       error: "Password is required",
     })
-    .min(8, {
-      error: "Password must be at least 8 characters",
+    .min(MIN_PASSWORD_LENGTH, {
+      error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
     })
     .refine(
       (password) => {
@@ -55,7 +60,7 @@ const signup = z.object({
     ),
 });
 
-const sendOtpEmail = z.object({
+const sendOtp = z.object({
   identity: z.string().min(1, {
     error: "Username or email is required",
   }),
@@ -79,8 +84,8 @@ const recoverPassword = z
       .min(1, {
         error: "New password is required",
       })
-      .min(8, {
-        error: "Password must be at least 8 characters",
+      .min(MIN_PASSWORD_LENGTH, {
+        error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
       })
       .refine(
         (password) => {
@@ -114,7 +119,7 @@ const zodSchema = {
   auth: {
     login,
     signup,
-    sendOtpEmail,
+    sendOtp,
     recoverPassword,
   },
   core: {

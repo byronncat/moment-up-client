@@ -19,16 +19,13 @@ export async function reportTopic(data: ReportTopicDto, token: Token): API {
       Authorization: `Bearer ${token.accessToken}`,
     },
     credentials: "include",
-    body: JSON.stringify({
-      topic: data.topic,
-      type: data.type,
-    }),
+    body: JSON.stringify(data),
   })
     .then(async (response) => {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: "Report submitted successfully",
+        message: "Report submitted",
         statusCode: response.status,
       };
     })

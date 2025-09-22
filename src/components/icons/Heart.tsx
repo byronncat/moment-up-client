@@ -1,6 +1,6 @@
 type HeartProps = Readonly<{
-  className?: string;
   type?: "regular" | "solid";
+  className?: string;
 }>;
 
 export default function Heart({ className, type = "regular" }: HeartProps) {

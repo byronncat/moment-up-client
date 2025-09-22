@@ -1,18 +1,37 @@
+// === Type ===
 import type { z } from "zod";
 import type { API, AccountDto, ErrorDto } from "api";
 import type { Token } from "@/components/providers/Auth";
 import type zodSchema from "@/libraries/zodSchema";
 
+interface AuthDto {
+  accessToken: string;
+  user: AccountDto;
+}
+
+interface UserDto {
+  user: AccountDto;
+}
+
+// === Service ===
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
+
+const SuccessMessage = {
+  login: "Logged in",
+  switchAccount: "Account switched",
+  signup: "Signed up",
+  logout: "Logged out",
+  getUser: "User loaded",
+  sendOtp: "OTP sent",
+  recoverPassword: "Password updated",
+  addGoogleAccount: "Google account linked",
+};
 
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>,
   csrfToken: string
-): API<{
-  accessToken: string;
-  user: AccountDto;
-}> {
+): API<AuthDto> {
   return fetch(ApiUrl.auth.login, {
     method: "POST",
     headers: {
@@ -27,7 +46,7 @@ export async function login(
       if (!response.ok) throw data;
       return {
         success: true,
-        message: "Login successful",
+        message: SuccessMessage.login,
         statusCode: response.status,
         data,
       };
@@ -44,10 +63,7 @@ export async function login(
 export async function switchAccount(
   accountId: AccountDto["id"],
   token: Token
-): API<{
-  accessToken: string;
-  user: AccountDto;
-}> {
+): API<AuthDto> {
   return fetch(ApiUrl.auth.switch, {
     method: "POST",
     headers: {
@@ -63,7 +79,7 @@ export async function switchAccount(
       if (!response.ok) throw data;
       return {
         success: true,
-        message: "Account switched successfully",
+        message: SuccessMessage.switchAccount,
         statusCode: response.status,
         data,
       };
@@ -94,7 +110,7 @@ export async function signup(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: "Signup successful",
+        message: SuccessMessage.signup,
         statusCode: response.status,
       };
     })
@@ -121,7 +137,7 @@ export async function logout(token: Token): API {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: "Logout successful",
+        message: SuccessMessage.logout,
         statusCode: response.status,
       };
     })
@@ -134,7 +150,7 @@ export async function logout(token: Token): API {
     });
 }
 
-export async function csrf() {
+export async function getCsrf() {
   return fetch(ApiUrl.auth.csrf, {
     method: "GET",
     headers: {
@@ -148,7 +164,7 @@ export async function csrf() {
       return data.csrfToken;
     })
     .catch(() => {
-      return "";
+      return null;
     });
 }
 
@@ -166,11 +182,11 @@ export async function refresh() {
       return data.accessToken;
     })
     .catch(() => {
-      return "";
+      return null;
     });
 }
 
-export async function getUser(accessToken: string): API<{ user: AccountDto }> {
+export async function getUser(accessToken: string): API<UserDto> {
   return fetch(ApiUrl.auth.me, {
     method: "GET",
     headers: {
@@ -184,7 +200,7 @@ export async function getUser(accessToken: string): API<{ user: AccountDto }> {
       if (!response.ok) throw data;
       return {
         success: true,
-        message: "User fetched successfully",
+        message: SuccessMessage.getUser,
         statusCode: response.status,
         data,
       };
@@ -198,11 +214,11 @@ export async function getUser(accessToken: string): API<{ user: AccountDto }> {
     });
 }
 
-export async function sendOtpEmail(
-  data: z.infer<typeof zodSchema.auth.sendOtpEmail>,
+export async function sendOtp(
+  data: z.infer<typeof zodSchema.auth.sendOtp>,
   csrfToken: string
 ): API {
-  return fetch(ApiUrl.auth.sendOtpEmail, {
+  return fetch(ApiUrl.auth.sendOtp, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -215,7 +231,7 @@ export async function sendOtpEmail(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: "Send successful",
+        message: SuccessMessage.sendOtp,
         statusCode: response.status,
       };
     })
@@ -245,7 +261,7 @@ export async function recoverPassword(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: "Password changed successfully",
+        message: SuccessMessage.recoverPassword,
         statusCode: response.status,
       };
     })
@@ -258,7 +274,7 @@ export async function recoverPassword(
     });
 }
 
-export async function addGoogleAccount(token: Token): API<{ user: AccountDto }> {
+export async function addGoogleAccount(token: Token): API<UserDto> {
   return fetch(ApiUrl.auth.addGoogleAccount, {
     method: "POST",
     headers: {
@@ -273,7 +289,7 @@ export async function addGoogleAccount(token: Token): API<{ user: AccountDto }> 
       if (!response.ok) throw data;
       return {
         success: true,
-        message: "Google account added successfully",
+        message: SuccessMessage.addGoogleAccount,
         statusCode: response.status,
         data,
       };

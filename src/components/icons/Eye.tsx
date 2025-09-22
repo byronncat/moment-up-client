@@ -1,8 +1,7 @@
-import { SVGProps } from "react";
-
-type EyeProps = Pick<SVGProps<SVGSVGElement>, "className"> & {
+type EyeProps = Readonly<{
   isOpen?: boolean;
-};
+  className?: string;
+}>;
 
 export default function Eye({ className, isOpen = true }: EyeProps) {
   if (isOpen) {

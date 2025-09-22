@@ -1,5 +1,10 @@
 declare module "api" {
   import type { SearchItemType, StoryBackground } from "@/constants/server";
+  import type { PublicId } from "cloudinary";
+
+  type Uuid = string;
+  type SnowflakeId = string;
+  type Timestamptz = string;
 
   type API<T = void> = Promise<{
     success: boolean;
@@ -24,7 +29,7 @@ declare module "api" {
 
   // === User ===
   interface AccountDto {
-    id: string;
+    id: Uuid;
     username: string;
     displayName: string | null;
     avatar: string | null;
@@ -46,7 +51,7 @@ declare module "api" {
     followedBy: {
       remainingCount: number;
       displayItems: Array<{
-        id: string;
+        id: PublicId;
         displayName: string;
         avatar: AccountDto["avatar"];
       }>;
@@ -57,7 +62,7 @@ declare module "api" {
   interface PostDto {
     text: string | null;
     files: Array<{
-      id: string;
+      id: PublicId;
       type: "image" | "video";
       aspectRatio: "1:1" | "4:5" | "1.91:1";
     }> | null;
@@ -66,11 +71,11 @@ declare module "api" {
     reposts: number;
     isLiked: boolean;
     isBookmarked: boolean;
-    lastModified: string;
+    lastModified: Timestamptz;
   }
 
   type FeedItemDto = {
-    id: string;
+    id: SnowflakeId;
     user: UserSummaryDto;
     post: PostDto;
   };

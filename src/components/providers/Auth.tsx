@@ -27,7 +27,7 @@ interface AuthAction {
   addGoogleAccount: (token: string) => API;
   signup: (values: z.infer<typeof zodSchema.auth.signup>) => API;
   logout: () => API;
-  sendOtpEmail: (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => API;
+  sendOtp: (values: z.infer<typeof zodSchema.auth.sendOtp>) => API;
   recoverPassword: (
     values: z.infer<typeof zodSchema.auth.recoverPassword>
   ) => API;
@@ -76,7 +76,7 @@ const AuthContext = createContext<AuthState & AuthAction>({
   addGoogleAccount: () => Promise.resolve(defaultResponse),
   signup: () => Promise.resolve(defaultResponse),
   logout: () => Promise.resolve(defaultResponse),
-  sendOtpEmail: () => Promise.resolve(defaultResponse),
+  sendOtp: () => Promise.resolve(defaultResponse),
   recoverPassword: () => Promise.resolve(defaultResponse),
   switchAccount: () => Promise.resolve(defaultResponse),
   reload: () => {},
@@ -234,9 +234,9 @@ export default function AuthProvider({
     return { success, message, statusCode };
   }, [router, authCookie, logoutApi, user]);
 
-  const sendOtpEmail = useCallback(
-    async (values: z.infer<typeof zodSchema.auth.sendOtpEmail>) => {
-      const res = await AuthApi.sendOtpEmail(values, token.current.csrfToken);
+  const sendOtp = useCallback(
+    async (values: z.infer<typeof zodSchema.auth.sendOtp>) => {
+      const res = await AuthApi.sendOtp(values, token.current.csrfToken);
       return res;
     },
     []
@@ -281,7 +281,7 @@ export default function AuthProvider({
         addGoogleAccount,
         signup,
         logout,
-        sendOtpEmail,
+        sendOtp,
         recoverPassword,
         switchAccount,
         reload,

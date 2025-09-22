@@ -1,14 +1,19 @@
 import type { API, CommentInfo, ErrorDto, FeedItemDto } from "api";
+import type { PublicId, ResourceType } from "cloudinary";
+import type { Token } from "@/components/providers/Auth";
 import type { ContentPrivacy } from "@/constants/server";
 
-import type { Token } from "@/components/providers/Auth";
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
+
+const SuccessMessage = {
+  createPost: "Post created",
+};
 
 interface CreatePostDto {
   text?: string | null;
   privacy?: ContentPrivacy | null;
-  attachments?: Array<{ id: string; type: "image" | "video" | "raw" }> | null;
+  attachments?: Array<{ id: PublicId; type: ResourceType }> | null;
 }
 
 export async function create(data: CreatePostDto, token: Token): API {
@@ -26,7 +31,7 @@ export async function create(data: CreatePostDto, token: Token): API {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: "Post created successfully",
+        message: SuccessMessage.createPost,
         statusCode: response.status,
       };
     })
@@ -39,6 +44,7 @@ export async function create(data: CreatePostDto, token: Token): API {
     });
 }
 
+// +++ TODO: Need to change momentId to postId +++
 interface LikeDto {
   momentId: string;
   shouldLike: boolean;

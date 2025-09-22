@@ -29,10 +29,10 @@ export default function ErrorContent({
               className="size-12 fill-red-500 dark:fill-red-400"
             />
           ))}
-      <p className={cn("text-lg font-medium", "mt-3")}>{title}</p>
-      <p className={cn("text-sm text-muted-foreground", "mt-0.5")}>
+      <span className={cn("text-lg font-medium", "mt-3")}>{title}</span>
+      <span className={cn("text-sm text-muted-foreground", "mt-0.5")}>
         {description}
-      </p>
+      </span>
       {onRefresh ? (
         <Button
           variant="outline"

@@ -1,4 +1,4 @@
-import { Shield as LucidShield, ShieldCheck, ShieldAlert } from "lucide-react";
+import { Shield as LucidShield, ShieldAlert, ShieldCheck } from "lucide-react";
 
 type ShieldProps = Readonly<{
   variant?: "check" | "alert" | "regular";

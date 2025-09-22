@@ -22,18 +22,18 @@ export default function SendOtpForm({
 }: Readonly<{
   onSuccess: (data: string) => void;
 }>) {
-  const form = useForm<z.infer<typeof zodSchema.auth.sendOtpEmail>>({
-    resolver: zodResolver(zodSchema.auth.sendOtpEmail),
+  const form = useForm<z.infer<typeof zodSchema.auth.sendOtp>>({
+    resolver: zodResolver(zodSchema.auth.sendOtp),
     defaultValues: {
       identity: "",
     },
   });
 
-  const { sendOtpEmail } = useAuth();
+  const { sendOtp } = useAuth();
   async function handleSendEmail(
-    values: z.infer<typeof zodSchema.auth.sendOtpEmail>
+    values: z.infer<typeof zodSchema.auth.sendOtp>
   ) {
-    const { success, message } = await sendOtpEmail(values);
+    const { success, message } = await sendOtp(values);
     if (success) onSuccess(values.identity);
     else toast.error(message || "Failed to send recovery email");
   }

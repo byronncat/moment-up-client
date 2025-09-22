@@ -1,4 +1,5 @@
-import { useState, useEffect, RefObject } from "react";
+// +++ TODO: Ongoing +++
+import { type RefObject, useEffect, useState } from "react";
 
 /**
  * Custom hook to detect if text content is clamped (truncated)

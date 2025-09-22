@@ -1,4 +1,4 @@
-import { Users, UserCheck, UserMinus, UserPlus, UserX } from "lucide-react";
+import { UserCheck, UserMinus, UserPlus, UserX, Users } from "lucide-react";
 
 type UserProps = Readonly<{
   variant?: "regular" | "check" | "minus" | "plus" | "x";

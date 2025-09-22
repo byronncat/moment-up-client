@@ -1,4 +1,5 @@
 import { SERVER_HOST_URL } from "@/constants/server";
+import { buildUrl } from "@/utilities";
 
 export const ApiUrl = {
   // === Auth ===
@@ -10,99 +11,95 @@ export const ApiUrl = {
     csrf: `${SERVER_HOST_URL}/v1/auth/csrf`,
     refresh: `${SERVER_HOST_URL}/v1/auth/refresh`,
     me: `${SERVER_HOST_URL}/v1/auth/me`,
-    sendOtpEmail: `${SERVER_HOST_URL}/v1/auth/send-otp-email`,
+    sendOtp: `${SERVER_HOST_URL}/v1/auth/send-otp-email`,
     recoverPassword: `${SERVER_HOST_URL}/v1/auth/recover-password`,
     addGoogleAccount: `${SERVER_HOST_URL}/v1/auth/google/add-account`,
   },
 
-  // === Core ===
-  post: {
-    home: (page?: number, limit?: number) => {
-      const params = new URLSearchParams();
-      if (page) params.append("page", page.toString());
-      if (limit) params.append("limit", limit.toString());
-      const queryString = params.toString();
-      return `${SERVER_HOST_URL}/v1/posts/home${queryString ? `?${queryString}` : ""}`;
-    },
-    explore: (type?: "media" | "post", page?: number, limit?: number) => {
-      const params = new URLSearchParams();
-      if (type) params.append("type", type);
-      if (page) params.append("page", page.toString());
-      if (limit) params.append("limit", limit.toString());
-      const queryString = params.toString();
-      return `${SERVER_HOST_URL}/v1/posts/explore${queryString ? `?${queryString}` : ""}`;
-    },
-    user: (
-      userId: string,
-      filter?: "media" | "tagged" | "reposts" | "liked",
-      page?: number,
-      limit?: number
-    ) => {
-      const params = new URLSearchParams();
-      if (page) params.append("page", page.toString());
-      if (filter) params.append("filter", filter);
-      if (limit) params.append("limit", limit.toString());
-      const queryString = params.toString();
-      return `${SERVER_HOST_URL}/v1/posts/user/${userId}${queryString ? `?${queryString}` : ""}`;
-    },
-    getById: (momentId: string) => `${SERVER_HOST_URL}/v1/posts/${momentId}`,
-    create: `${SERVER_HOST_URL}/v1/posts`,
-    like: (momentId: string) => `${SERVER_HOST_URL}/v1/posts/${momentId}/like`,
-    unlike: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/posts/${momentId}/unlike`,
-    bookmark: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/posts/${momentId}/bookmark`,
-    unbookmark: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/posts/${momentId}/unbookmark`,
-    repost: (momentId: string) =>
-      `${SERVER_HOST_URL}/v1/posts/${momentId}/repost`,
-  },
-
-  story: {
-    get: `${SERVER_HOST_URL}/v1/stories`,
-    getByUsername: (username: string) =>
-      `${SERVER_HOST_URL}/v1/stories/user/${username}`,
-    delete: (id: string) => `${SERVER_HOST_URL}/v1/stories/${id}`,
-  },
-
-  comment: {
-    get: (momentId: string, page?: number, limit?: number) => {
-      const params = new URLSearchParams();
-      if (page) params.append("page", page.toString());
-      if (limit) params.append("limit", limit.toString());
-      const queryString = params.toString();
-      return `${SERVER_HOST_URL}/v1/comments/moment/${momentId}${queryString ? `?${queryString}` : ""}`;
-    },
-    add: `${SERVER_HOST_URL}/v1/comments`,
-    like: (commentId: string) =>
-      `${SERVER_HOST_URL}/v1/comments/${commentId}/like`,
-    unlike: (commentId: string) =>
-      `${SERVER_HOST_URL}/v1/comments/${commentId}/unlike`,
-    delete: (commentId: string) =>
-      `${SERVER_HOST_URL}/v1/comments/${commentId}`,
+  // === User ===
+  user: {
+    follow: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/follow`, { pathParams: { userId } }),
+    unfollow: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/unfollow`, { pathParams: { userId } }),
+    block: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/block`, { pathParams: { userId } }),
+    unblock: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/unblock`, { pathParams: { userId } }),
+    mute: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/mute`, { pathParams: { userId } }),
+    unmute: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/unmute`, { pathParams: { userId } }),
+    report: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/report`, { pathParams: { userId } }),
+    getProfile: (username: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:username`, { pathParams: { username } }),
+    updateProfile: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId`, { pathParams: { userId } }),
   },
 
   // === Suggestion ===
   suggestion: {
     users: `${SERVER_HOST_URL}/v1/suggestion/users`,
-    trending: `${SERVER_HOST_URL}/v1/suggestion/trending?limit=5`,
+    trending: buildUrl(`${SERVER_HOST_URL}/v1/suggestion/trending`, {
+      queryParams: { limit: 5 },
+    }),
     report: `${SERVER_HOST_URL}/v1/suggestion/trending/report`,
     popular: `${SERVER_HOST_URL}/v1/suggestion/popular`,
   },
 
-  // === User ===
-  user: {
-    follow: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/follow`,
-    unfollow: (userId: string) =>
-      `${SERVER_HOST_URL}/v1/users/${userId}/unfollow`,
-    block: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/block`,
-    unblock: (userId: string) =>
-      `${SERVER_HOST_URL}/v1/users/${userId}/unblock`,
-    mute: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/mute`,
-    unmute: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/unmute`,
-    report: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}/report`,
-    getProfile: (username: string) => `${SERVER_HOST_URL}/v1/users/${username}`,
-    updateProfile: (userId: string) => `${SERVER_HOST_URL}/v1/users/${userId}`,
+  // === Core ===
+  post: {
+    home: (page?: number, limit?: number) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/home`, { queryParams: { page, limit } }),
+    explore: (type?: "media" | "post", page?: number, limit?: number) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/explore`, { queryParams: { type, page, limit } }),
+    user: (
+      userId: string,
+      filter?: "media" | "tagged" | "reposts" | "liked",
+      page?: number,
+      limit?: number
+    ) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/user/:userId`, {
+        pathParams: { userId },
+        queryParams: { filter, page, limit },
+      }),
+    getById: (momentId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId`, { pathParams: { momentId } }),
+    create: `${SERVER_HOST_URL}/v1/posts`,
+    like: (momentId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/like`, { pathParams: { momentId } }),
+    unlike: (momentId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/unlike`, { pathParams: { momentId } }),
+    bookmark: (momentId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/bookmark`, { pathParams: { momentId } }),
+    unbookmark: (momentId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/unbookmark`, { pathParams: { momentId } }),
+    repost: (momentId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/repost`, { pathParams: { momentId } }),
+  },
+
+  story: {
+    get: `${SERVER_HOST_URL}/v1/stories`,
+    getByUsername: (username: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/stories/user/:username`, { pathParams: { username } }),
+    delete: (id: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/stories/:id`, { pathParams: { id } }),
+  },
+
+  comment: {
+    get: (momentId: string, page?: number, limit?: number) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/comments/moment/:momentId`, {
+        pathParams: { momentId },
+        queryParams: { page, limit },
+      }),
+    add: `${SERVER_HOST_URL}/v1/comments`,
+    like: (commentId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/comments/:commentId/like`, { pathParams: { commentId } }),
+    unlike: (commentId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/comments/:commentId/unlike`, { pathParams: { commentId } }),
+    delete: (commentId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/comments/:commentId`, { pathParams: { commentId } }),
   },
 
   // === Search ===
@@ -113,40 +110,21 @@ export const ApiUrl = {
       order?: SearchSortParams,
       page?: number,
       limit?: number
-    ) => {
-      const params = new URLSearchParams();
-      params.append("query", query);
-      if (type) params.append("type", type);
-      if (order) params.append("order", order);
-      if (page !== undefined) params.append("page", page.toString());
-      if (limit !== undefined) params.append("limit", limit.toString());
-      return `${SERVER_HOST_URL}/v1/search?${params.toString()}`;
-    },
-    getHistory: (limit?: number) => {
-      const params = new URLSearchParams();
-      if (limit) params.append("limit", limit.toString());
-      const queryString = params.toString();
-      return `${SERVER_HOST_URL}/v1/search/history${queryString ? `?${queryString}` : ""}`;
-    },
+    ) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/search`, {
+        queryParams: { query, type, order, page, limit },
+      }),
+    getHistory: (limit?: number) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/search/history`, { queryParams: { limit } }),
     clearHistory: `${SERVER_HOST_URL}/v1/search/history/clear`,
     removeHistoryItem: (itemId: string) =>
-      `${SERVER_HOST_URL}/v1/search/history/${itemId}`,
+      buildUrl(`${SERVER_HOST_URL}/v1/search/history/:itemId`, { pathParams: { itemId } }),
   },
 
   // === Notification ===
   notification: {
-    get: (
-      type: "all" | "request" | "social",
-      page?: number,
-      limit?: number
-    ) => {
-      const params = new URLSearchParams();
-      if (type) params.append("type", type);
-      if (page) params.append("page", page.toString());
-      if (limit) params.append("limit", limit.toString());
-      const queryString = params.toString();
-      return `${SERVER_HOST_URL}/v1/notifications${queryString ? `?${queryString}` : ""}`;
-    },
+    get: (type: "all" | "request" | "social", page?: number, limit?: number) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/notifications`, { queryParams: { type, page, limit } }),
   },
 } as const;
 
