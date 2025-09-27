@@ -41,24 +41,17 @@ export function useAuthOperations({
     const csrfToken = await AuthApi.getCsrf();
     token.current.csrfToken = csrfToken ?? "";
 
-    const accessToken = await AuthApi.refresh();
-    token.current.accessToken = accessToken ?? "";
-
     const hasGuardCookie = authCookie.exists();
 
-    if (accessToken) {
-      const { success, data } = await AuthApi.getUser(
-        token.current.accessToken
-      );
+    const { success, data } = await AuthApi.refresh();
+    if (success && data) {
       setLogged(success);
-
-      if (success && data) {
-        setUser(data.user);
-        document.cookie = authCookie.set();
-        if (!hasGuardCookie) {
-          handlePageReload(() => router.push(ROUTE.HOME));
-          return;
-        }
+      setUser(data.user);
+      token.current.accessToken = data.accessToken;
+      document.cookie = authCookie.set();
+      if (!hasGuardCookie) {
+        handlePageReload(() => router.push(ROUTE.HOME));
+        return;
       }
     } else {
       document.cookie = authCookie.remove();

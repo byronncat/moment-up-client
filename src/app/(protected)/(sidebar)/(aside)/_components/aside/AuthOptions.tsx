@@ -38,7 +38,7 @@ function Footer() {
       By signing up, you agree to the{" "}
       <a
         href="https://github.com/byronncat/moment-up-client"
-        className={cn("underline text-blue-400", "focus-indicator rounded-sm")}
+        className={cn("hover:underline text-blue-400", "focus-within-indicator rounded-sm")}
         target="_blank"
         rel="noreferrer"
       >
@@ -47,7 +47,7 @@ function Footer() {
       and{" "}
       <a
         href="https://github.com/byronncat/moment-up-client"
-        className={cn("underline text-blue-400", "focus-indicator rounded-sm")}
+        className={cn("hover:underline text-blue-400", "focus-within-indicator rounded-sm")}
         target="_blank"
         rel="noreferrer"
       >
@@ -56,7 +56,7 @@ function Footer() {
       , including{" "}
       <a
         href="https://github.com/byronncat/moment-up-client"
-        className={cn("underline text-blue-400", "focus-indicator rounded-sm")}
+        className={cn("hover:underline text-blue-400", "focus-within-indicator rounded-sm")}
         target="_blank"
         rel="noreferrer"
       >

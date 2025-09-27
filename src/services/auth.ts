@@ -9,10 +9,6 @@ interface AuthDto {
   user: AccountDto;
 }
 
-interface UserDto {
-  user: AccountDto;
-}
-
 // === Service ===
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
@@ -22,7 +18,7 @@ const SuccessMessage = {
   switchAccount: "Account switched",
   signup: "Signed up",
   logout: "Logged out",
-  getUser: "User loaded",
+  refresh: "Session refreshed",
   sendOtp: "OTP sent",
   recoverPassword: "Password updated",
   addGoogleAccount: "Google account linked",
@@ -168,7 +164,10 @@ export async function getCsrf() {
     });
 }
 
-export async function refresh() {
+export async function refresh(): API<{
+  accessToken: string;
+  user: AccountDto;
+}> {
   return fetch(ApiUrl.auth.refresh, {
     method: "GET",
     headers: {
@@ -177,30 +176,11 @@ export async function refresh() {
     credentials: "include",
   })
     .then(async (response) => {
-      const data = (await response.json()) as { accessToken: string };
-      if (!response.ok) throw data;
-      return data.accessToken;
-    })
-    .catch(() => {
-      return null;
-    });
-}
-
-export async function getUser(accessToken: string): API<UserDto> {
-  return fetch(ApiUrl.auth.me, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    credentials: "include",
-  })
-    .then(async (response) => {
       const data = await response.json();
       if (!response.ok) throw data;
       return {
         success: true,
-        message: SuccessMessage.getUser,
+        message: SuccessMessage.refresh,
         statusCode: response.status,
         data,
       };
@@ -274,7 +254,9 @@ export async function recoverPassword(
     });
 }
 
-export async function addGoogleAccount(token: Token): API<UserDto> {
+export async function addGoogleAccount(
+  token: Token
+): API<{ user: AccountDto }> {
   return fetch(ApiUrl.auth.addGoogleAccount, {
     method: "POST",
     headers: {

@@ -107,9 +107,9 @@ export default function AuthProvider({
   });
 
   const refresh = useCallback(async () => {
-    const accessToken = await AuthApi.refresh();
-    token.current.accessToken = accessToken;
-    return accessToken;
+    const { data } = await AuthApi.refresh();
+    token.current.accessToken = data?.accessToken ?? "";
+    return data?.accessToken ?? "";
   }, []);
 
   const login = useCallback(
