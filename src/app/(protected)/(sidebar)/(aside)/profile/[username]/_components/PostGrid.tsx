@@ -2,7 +2,7 @@
 
 import type { FeedItemDto, PaginationDto } from "api";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, useRefreshSWR } from "@/components/providers";
@@ -17,7 +17,7 @@ import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ErrorContent, NoContent } from "@/components/common";
-import { MomentCell } from "@/components/moment";
+import { MomentCell } from "@/components/post";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProfileZone, { PROFILE_ZONE_HEIGHT } from "./ProfileZone";
 import { Image as ImageIcon } from "@/components/icons";
@@ -58,20 +58,16 @@ export default function PostGrid() {
       }
     );
 
-  const { setMoments, setCurrentIndex } = useMomentStore();
+  const { moments, setMoments, setCurrentIndex } = useMomentStore();
 
   const hasNextPage = data?.[data.length - 1].hasNextPage ?? true;
 
-  const allPosts = useMemo(() => {
-    return data?.flatMap((page) => page.items);
-  }, [data]);
-
-  const remainder = allPosts ? allPosts.length % COLUMN_COUNT : 0;
-  const dataRowCount = allPosts ? Math.ceil(allPosts.length / COLUMN_COUNT) : 0;
+  const remainder = moments ? moments.length % COLUMN_COUNT : 0;
+  const dataRowCount = moments ? Math.ceil(moments.length / COLUMN_COUNT) : 0;
   const needsSkeletonRow = hasNextPage && remainder === 0;
   const skeletonRowCount = needsSkeletonRow ? 1 : 0;
-  const itemCount = allPosts
-    ? allPosts.length === 0 || error
+  const itemCount = moments
+    ? moments.length === 0 || error
       ? 2 // Profile + Content
       : 1 + dataRowCount + skeletonRowCount // Profile + Data rows + Skeleton row
     : isLoading
@@ -100,24 +96,36 @@ export default function PostGrid() {
   }
 
   useEffect(() => {
+    const allPosts = data?.flatMap((page) => page.items);
     if (!error && allPosts) setMoments(allPosts);
-  }, [allPosts, setMoments, error]);
+  }, [data, error, setMoments]);
 
   useEffect(() => {
-    if (!allPosts) return;
     const [lastItem] = [...virtualItems].reverse();
     if (!lastItem) return;
 
     if (lastItem.index - 1 >= dataRowCount - 1 && hasNextPage && !isValidating)
       loadNextPage();
   }, [
-    allPosts,
+    moments,
     virtualItems,
     hasNextPage,
     isValidating,
     dataRowCount,
     loadNextPage,
   ]);
+
+  const prevIsFollowingRef = useRef<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    if (
+      prevIsFollowingRef.current !== undefined &&
+      prevIsFollowingRef.current !== profile.isFollowing
+    )
+      mutate();
+
+    prevIsFollowingRef.current = profile.isFollowing;
+  }, [profile.isFollowing, mutate]);
 
   return (
     <div
@@ -161,7 +169,7 @@ export default function PostGrid() {
                 onRefresh={() => mutate()}
                 className="pt-19 pb-20"
               />
-            ) : allPosts === undefined ? null : allPosts.length === 0 ? (
+            ) : moments === undefined ? null : moments.length === 0 ? (
               <div className={cn("pt-19 pb-20", "flex flex-col items-center")}>
                 <NoContent
                   icon={
@@ -189,10 +197,10 @@ export default function PostGrid() {
                   let content = null;
 
                   if (rowIndex < dataRowCount) {
-                    if (allPosts && dataIndex < allPosts.length)
+                    if (moments && dataIndex < moments.length)
                       content = (
                         <MomentCell
-                          data={allPosts[dataIndex]}
+                          data={moments[dataIndex]}
                           onClick={() => handleClick(dataIndex)}
                         />
                       );

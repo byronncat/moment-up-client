@@ -11,27 +11,32 @@ const colorVariants = {
   pink: {
     text: "text-pink-500",
     hover: "hover:text-pink-500 dark:hover:text-pink-400",
-    bg: "group-hover:bg-pink-500/10 dark:group-hover:bg-pink-400/10",
+    bg: "group-hover:bg-pink-500/10 dark:group-hover:bg-pink-400/10 group-focus-within:bg-pink-500/10 dark:group-focus-within:bg-pink-400/10",
+    focus: "focus-within:text-pink-500 dark:focus-within:text-pink-400",
   },
   sky: {
     text: "text-sky-500",
     hover: "hover:text-sky-500 dark:hover:text-sky-400",
-    bg: "group-hover:bg-sky-500/10 dark:group-hover:bg-sky-400/10",
+    bg: "group-hover:bg-sky-500/10 dark:group-hover:bg-sky-400/10 group-focus-within:bg-sky-500/10 dark:group-focus-within:bg-sky-400/10",
+    focus: "focus-within:text-sky-500 dark:focus-within:text-sky-400",
   },
   green: {
     text: "text-green-500",
     hover: "hover:text-green-500 dark:hover:text-green-400",
-    bg: "group-hover:bg-green-500/10 dark:group-hover:bg-green-400/10",
+    bg: "group-hover:bg-green-500/10 dark:group-hover:bg-green-400/10 group-focus-within:bg-green-500/10 dark:group-focus-within:bg-green-400/10",
+    focus: "focus-within:text-green-500 dark:focus-within:text-green-400",
   },
   yellow: {
     text: "text-yellow-500",
     hover: "hover:text-yellow-500 dark:hover:text-yellow-400",
-    bg: "group-hover:bg-yellow-500/10 dark:group-hover:bg-yellow-400/10",
+    bg: "group-hover:bg-yellow-500/10 dark:group-hover:bg-yellow-400/10 group-focus-within:bg-yellow-500/10 dark:group-focus-within:bg-yellow-400/10",
+    focus: "focus-within:text-yellow-500 dark:focus-within:text-yellow-400",
   },
   blue: {
     text: "text-blue-500",
     hover: "hover:text-blue-500 dark:hover:text-blue-400",
-    bg: "group-hover:bg-blue-500/10 dark:group-hover:bg-blue-400/10",
+    bg: "group-hover:bg-blue-500/10 dark:group-hover:bg-blue-400/10 group-focus-within:bg-blue-500/10 dark:group-focus-within:bg-blue-400/10",
+    focus: "focus-within:text-blue-500 dark:focus-within:text-blue-400",
   },
 } as const;
 
@@ -40,6 +45,7 @@ type ColorfulIconButtonProps = {
   color: "pink" | "sky" | "green" | "yellow" | "blue";
   tooltip: string;
   count?: number;
+  emptyText?: string;
   isActive?: boolean;
   onClick?: () => void;
 };
@@ -50,6 +56,7 @@ export default function ColorfulIconButton({
   count,
   tooltip,
   isActive = false,
+  emptyText,
   onClick,
 }: ColorfulIconButtonProps) {
   const variant = colorVariants[color];
@@ -59,12 +66,13 @@ export default function ColorfulIconButton({
         onClick={onClick}
         className={cn(
           "group flex items-center gap-1",
+          "cursor-pointer outline-none",
           isActive ? variant.text : variant.hover,
-          "cursor-pointer",
+          variant.focus,
           buttonStyles.transition
         )}
       >
-        <div
+        <span
           className={cn(
             "p-2 rounded-full",
             variant.bg,
@@ -72,8 +80,12 @@ export default function ColorfulIconButton({
           )}
         >
           {icon}
-        </div>
-        {count !== undefined && <span>{Format.number(count)}</span>}
+        </span>
+        {count !== undefined && count > 0 ? (
+          <span>{Format.number(count)}</span>
+        ) : (
+          <span className="text-muted-foreground text-sm">{emptyText}</span>
+        )}
       </button>
     </Tooltip>
   );

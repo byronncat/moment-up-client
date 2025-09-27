@@ -1,5 +1,6 @@
 "use client";
 
+import { __parseUrl } from "@/__mocks__";
 import type { AccountDto, UserSummaryDto } from "api";
 
 import { useRef } from "react";
@@ -9,9 +10,7 @@ import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
-import { NumberTooltip } from "./Tooltip";
 import Link from "next/link";
-import Avatar from "./Avatar";
 import { Button } from "../ui/button";
 import {
   CardContent,
@@ -20,6 +19,8 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import Avatar from "./Avatar";
+import { NumberTooltip } from "./Tooltip";
 import { Settings, User } from "@/components/icons";
 
 type UserInfoCardProps = Readonly<{
@@ -39,9 +40,9 @@ export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
           className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
         >
           <Avatar
-            src={user.avatar}
+            src={__parseUrl(user.avatar, "image", 48)}
             alt={`${user.displayName ?? user.username}'s avatar`}
-            size="14"
+            size="12"
             ring
             showRing={user.hasStory}
           />
@@ -141,7 +142,9 @@ const getFollowedByMessage = (
     .join(", ");
   const additionalCount = remainingCount;
   const additionalText =
-    additionalCount > 0 ? ` and ${Format.number(additionalCount)} others you follow` : "";
+    additionalCount > 0
+      ? ` and ${Format.number(additionalCount)} others you follow`
+      : "";
 
   return `Followed by ${names}${additionalText}`;
 };
@@ -218,7 +221,7 @@ function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {
 
   return (
     <Button
-      variant={isFollowing ? (isHover ? "destructive" : "default") : "outline"}
+      variant={isFollowing ? (isHover ? "destructive" : "outline") : "accent"}
       className="text-sm w-full [&_svg]:size-4"
       onClick={handleClick}
       ref={hoverRef}
@@ -230,18 +233,12 @@ function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {
 }
 
 function EditProfileButton() {
-  const handleClick = () => {
-    // TODO: Implement edit profile
-  };
-
   return (
-    <Button
-      variant="outline"
-      className="text-sm w-full [&_svg]:size-4"
-      onClick={handleClick}
-    >
-      <Settings />
-      Edit Profile
-    </Button>
+    <Link href={ROUTE.SETTINGS} className="w-full">
+      <Button variant="outline" className="text-sm w-full [&_svg]:size-4">
+        <Settings />
+        Edit Profile
+      </Button>
+    </Link>
   );
 }

@@ -28,51 +28,54 @@ export default function Sidebar({
   const { isMobile } = useSidebar();
   const { open, isAboveXl } = useResponsiveSidebar();
 
-  if (!user)
-    return (
-      <Link
-        href={ROUTE.LOGIN}
-        className={cn(
-          "text-primary",
-          "font-bold text-2xl tracking-wide",
-          "px-4 py-3 h-fit",
-          "hidden xl:block",
-          "select-none",
-          sourceCodePro.className
-        )}
-      >
-        MomentUp
-      </Link>
-    );
   const items = getNavigationItems(pathname, user?.username);
   const [notificationItem, profileItem] = items.slice(-2);
 
   return (
     <>
-      <SidebarUI collapsible="icon">
-        <SidebarHeader />
-        <SidebarBody items={items} />
-        <SidebarFooter />
-      </SidebarUI>
+      {user ? (
+        <>
+          <SidebarUI collapsible="icon">
+            <SidebarHeader />
+            <SidebarBody items={items} />
+            <SidebarFooter />
+          </SidebarUI>
 
-      {isAboveXl ? (
-        <div
+          {isAboveXl ? (
+            <div
+              className={cn(
+                "fixed top-5 left-14 z-10",
+                "transition-all duration-300",
+                open
+                  ? "opacity-0 pointer-events-none translate-x-2"
+                  : "opacity-100 translate-x-0"
+              )}
+            >
+              <SidebarTrigger
+                className="text-foreground"
+                tabIndex={open ? -1 : 0}
+              />
+            </div>
+          ) : null}
+        </>
+      ) : (
+        <Link
+          href={ROUTE.LOGIN}
           className={cn(
-            "fixed top-5 left-14 z-10",
-            "transition-all duration-300",
-            open
-              ? "opacity-0 pointer-events-none translate-x-2"
-              : "opacity-100 translate-x-0"
+            "sticky top-0 left-0 right-0",
+            "text-primary",
+            "font-bold text-2xl tracking-wide",
+            "px-4 py-3 h-fit",
+            "hidden xl:block",
+            "select-none",
+            sourceCodePro.className
           )}
         >
-          <SidebarTrigger
-            className="text-foreground"
-            tabIndex={open ? -1 : 0}
-          />
-        </div>
-      ) : null}
+          MomentUp
+        </Link>
+      )}
 
-      {isMobile ? (
+      {isMobile && user ? (
         <div className="flex flex-col size-full">
           <MobileHeader
             notificationItem={notificationItem}

@@ -2,7 +2,7 @@
 
 import type { FeedItemDto, PaginationDto } from "api";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, useRefreshSWR } from "@/components/providers";
@@ -20,7 +20,7 @@ import { INITIAL_PAGE } from "@/constants/server";
 import Link from "next/link";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
-import { MomentCard, PostSkeleton } from "@/components/moment";
+import { FeedCard, PostSkeleton } from "@/components/post";
 import { ErrorContent, NoContent } from "@/components/common";
 import ProfileZone, { PROFILE_ZONE_HEIGHT } from "./ProfileZone";
 import { Camera } from "@/components/icons";
@@ -63,19 +63,16 @@ export default function PostList({ filter }: PostListProps) {
       }
     );
 
-  const { setMoments, setCurrentIndex, ...momentActions } = useMomentStore();
+  const { moments, setMoments, setCurrentIndex, ...momentActions } =
+    useMomentStore();
   const { like, bookmark, follow } = useMoment();
 
   const hasNextPage = user && (data?.[data.length - 1].hasNextPage ?? true);
 
-  const allPosts = useMemo(() => {
-    return data?.flatMap((page) => page.items);
-  }, [data]);
-
-  const itemCount = allPosts
-    ? allPosts.length === 0 || error // Profile + Content
+  const itemCount = moments
+    ? moments.length === 0 || error // Profile + Content
       ? 2
-      : 1 + allPosts.length + (hasNextPage && error?.statusCode !== 403 ? 1 : 0) // Profile + Posts + Loading
+      : 1 + moments.length + (hasNextPage && error?.statusCode !== 403 ? 1 : 0) // Profile + Posts + Loading
     : isLoading
       ? 2
       : 1; // Profile only
@@ -87,7 +84,7 @@ export default function PostList({ filter }: PostListProps) {
     paddingEnd: POST_CARD_LIST_GAP,
     estimateSize: (index) => {
       if (index === 0) return PROFILE_ZONE_HEIGHT;
-      return getPostHeight(allPosts?.[index - 1]?.post, window.innerWidth);
+      return getPostHeight(moments?.[index - 1]?.post, window.innerWidth);
     },
   });
   const virtualItems = virtualizer.getVirtualItems();
@@ -101,22 +98,35 @@ export default function PostList({ filter }: PostListProps) {
   }
 
   useEffect(() => {
+    const allPosts = data?.flatMap((page) => page.items);
     if (!error && allPosts) setMoments(allPosts);
-  }, [allPosts, setMoments, error]);
+  }, [data, error, setMoments]);
 
   useEffect(() => {
-    if (!allPosts) return;
+    if (!moments) return;
     const [lastItem] = [...virtualItems].reverse();
     if (!lastItem) return;
 
     if (
-      lastItem.index - 1 >= allPosts.length - 1 &&
+      lastItem.index - 1 >= moments.length - 1 &&
       hasNextPage &&
       !isValidating &&
       user
     )
       loadNextPage();
-  }, [user, allPosts, virtualItems, hasNextPage, isValidating, loadNextPage]);
+  }, [user, moments, virtualItems, hasNextPage, isValidating, loadNextPage]);
+
+  const prevIsFollowingRef = useRef<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    if (
+      prevIsFollowingRef.current !== undefined &&
+      prevIsFollowingRef.current !== profile.isFollowing
+    )
+      mutate();
+
+    prevIsFollowingRef.current = profile.isFollowing;
+  }, [profile.isFollowing, mutate]);
 
   return (
     <div
@@ -133,7 +143,7 @@ export default function PostList({ filter }: PostListProps) {
           error?.statusCode !== 403 &&
           vItem.index === itemCount - 1;
         const dataIndex = vItem.index - 1;
-        const post = allPosts?.[dataIndex];
+        const post = moments?.[dataIndex];
 
         return (
           <div
@@ -165,7 +175,7 @@ export default function PostList({ filter }: PostListProps) {
                 onRefresh={() => mutate()}
                 className="pt-16 pb-20"
               />
-            ) : allPosts === undefined ? null : allPosts.length === 0 ? (
+            ) : moments === undefined ? null : moments.length === 0 ? (
               <div className={cn("pt-16 pb-20", "flex flex-col items-center")}>
                 <NoContent
                   icon={
@@ -195,7 +205,7 @@ export default function PostList({ filter }: PostListProps) {
               </div>
             ) : post ? (
               <div className="max-w-[calc(600px+16px)] px-2 mx-auto">
-                <MomentCard
+                <FeedCard
                   data={post}
                   actions={{ like, bookmark, follow, ...momentActions }}
                   onClick={() => handleClick(dataIndex)}

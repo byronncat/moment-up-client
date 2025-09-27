@@ -6,7 +6,7 @@ import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { AspectRatioHelper } from "@/components/moment/moment-card/media-grid/aspectRatio.helper";
+import { AspectRatioHelper } from "@/components/post/feed/media-grid/aspectRatio.helper";
 import { Play } from "@/components/icons";
 import { BLUR_DATA_URL } from "@/constants/client";
 

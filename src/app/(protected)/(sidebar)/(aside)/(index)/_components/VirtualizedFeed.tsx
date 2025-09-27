@@ -11,7 +11,7 @@ import { getPostHeight } from "@/helpers/ui";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
 
 import { ErrorContent, NoContent } from "@/components/common";
-import { MomentCard, PostSkeleton } from "@/components/moment";
+import { FeedCard, PostSkeleton } from "@/components/post";
 import Stories from "./stories";
 import { Camera } from "@/components/icons";
 
@@ -124,7 +124,7 @@ export default function VirtualizedFeed() {
                 className="max-w-[600px] mx-auto"
               />
             ) : moment ? (
-              <MomentCard
+              <FeedCard
                 data={moment}
                 actions={{ like, bookmark, follow, ...momentActions }}
                 onClick={() => handleClick(dataIndex)}

@@ -14,7 +14,7 @@ import {
   CommentZone,
   MomentButtonGroup,
   MomentHeader,
-} from "@/components/moment";
+} from "@/components/post";
 import TextContent from "./TextContent";
 import MediaCarousel from "./MediaCarousel";
 import CommentInput from "./CommentInput";

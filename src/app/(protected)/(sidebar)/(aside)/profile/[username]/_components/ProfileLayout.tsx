@@ -29,7 +29,7 @@ export default function ProfileLayout({ children, tabs }: ProfileLayoutProps) {
       <div
         className={cn(
           "sticky top-0 left-0 z-10 w-full",
-          "bg-background/70 backdrop-blur-md"
+          "bg-background/90 backdrop-blur-md"
         )}
       >
         <Header profile={profile} isSelf={isSelf} />

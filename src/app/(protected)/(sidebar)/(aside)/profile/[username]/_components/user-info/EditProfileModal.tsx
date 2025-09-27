@@ -198,8 +198,8 @@ export default function EditProfileModal({
           <DialogHeader
             className={cn(
               "absolute top-0 left-0 z-20",
-              "w-full backdrop-blur-lg",
-              "h-12 border-b border-border"
+              "w-full h-12",
+              "border-b border-border"
             )}
           >
             <DialogTitle className="px-6 py-4">Edit Profile</DialogTitle>
