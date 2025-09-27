@@ -32,11 +32,8 @@ function Content({
   className,
 }: Readonly<{ user: AccountDto; className?: string }>) {
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      <Link
-        href={ROUTE.PROFILE(user.username)}
-        className="focus-indicator rounded-full"
-      >
+    <div className={cn("flex items-center", className)}>
+      <Link href={ROUTE.PROFILE(user.username)} tabIndex={-1}>
         <Avatar
           src={__parseUrl(user.avatar, "image", 40, 40)}
           alt={`${user.displayName ?? user.username}'s avatar`}
@@ -44,26 +41,22 @@ function Content({
           className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
         />
       </Link>
-      <div className="flex flex-col min-w-0">
+      <div className={cn("flex flex-col", "min-w-0", "ml-2.5 mr-3")}>
         <Link
           href={ROUTE.PROFILE(user.username)}
           className={cn(
             "text-sm font-semibold",
-            "hover:opacity-80 transition-opacity duration-150 ease-in-out",
+            "hover:underline",
             "truncate",
-            "focus-indicator rounded-sm"
+            "focus:underline outline-none rounded-sm"
           )}
         >
           {user.displayName ?? user.username}
         </Link>
         <Link
           href={ROUTE.PROFILE(user.username)}
-          className={cn(
-            "text-sm text-muted-foreground",
-            "hover:opacity-80 transition-opacity duration-150 ease-in-out",
-            "truncate",
-            "focus-indicator rounded-sm"
-          )}
+          className={cn("text-xs text-muted-foreground", "truncate")}
+          tabIndex={-1}
         >
           @{user.username}
         </Link>

@@ -141,9 +141,10 @@ function AccountItem({
         "relative",
         "px-6 py-3",
         "flex items-center gap-2 max-w-full",
-        isSelf ? "cursor-default" : "cursor-pointer",
-        "hover:bg-accent/[.07] transition-colors duration-150 ease-in-out",
-        "focus-indicator"
+        isSelf
+          ? "cursor-default"
+          : "hover:bg-accent/[.07] transition-colors duration-150 ease-in-out cursor-pointer",
+        "focus-within-indicator"
       )}
     >
       <Avatar

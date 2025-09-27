@@ -19,9 +19,10 @@ export default function MobileHeader({
     <div
       className={cn(
         "px-4",
-        "fixed top-0 left-0 right-0 z-20",
+        "sticky top-0 left-0 right-0 z-20",
         "bg-background border-b border-border",
-        "flex items-center justify-between"
+        "flex items-center justify-between",
+        isProfileActive && "hidden"
       )}
       style={{ height: MOBILE_NAV_HEIGHT }}
     >
@@ -29,7 +30,7 @@ export default function MobileHeader({
         href="/"
         className={cn(
           "text-primary font-semibold text-lg",
-          "focus-indicator rounded-sm"
+          "focus-within-indicator rounded-sm"
         )}
       >
         MomentUp
@@ -40,7 +41,7 @@ export default function MobileHeader({
           className={cn(
             "flex items-center justify-center",
             "p-2",
-            "hover:bg-accent/[.1] focus-indicator rounded-sm",
+            "hover:bg-accent/[.1] focus-within-indicator rounded-sm",
             "transition-colors duration-150 ease-in-out"
           )}
         >
@@ -53,7 +54,7 @@ export default function MobileHeader({
           className={cn(
             "flex items-center justify-center",
             "p-2 ml-2",
-            "hover:bg-accent/[.1] focus-indicator rounded-sm",
+            "hover:bg-accent/[.1] focus-within-indicator rounded-sm",
             "transition-colors duration-150 ease-in-out"
           )}
         >

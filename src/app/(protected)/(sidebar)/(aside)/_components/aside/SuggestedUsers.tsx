@@ -26,13 +26,38 @@ import SectionHeader from "./SectionHeader";
 
 export default function SuggestedUsers() {
   const { token } = useAuth();
-  const { data, isLoading, error } = useSWRImmutable(
+  const { data, isLoading, error, mutate } = useSWRImmutable(
     [ApiUrl.suggestion.users, token.accessToken],
     ([url, token]) =>
       SWRFetcherWithToken<{
         users: UserSummaryDto[];
       }>(url, token)
   );
+
+  const follow = useRefreshApi(UserApi.follow);
+  async function handleFollow(userId: string, shouldFollow: boolean) {
+    if (!data) return;
+
+    const prev = data;
+    mutate(
+      {
+        users: data.users.map((u) =>
+          u.id === userId ? { ...u, isFollowing: shouldFollow } : u
+        ),
+      },
+      { revalidate: false }
+    );
+
+    const { success, message } = await follow({
+      targetId: userId,
+      shouldFollow,
+    });
+
+    if (!success) {
+      mutate(prev, { revalidate: false });
+      toast.error(message || "Failed to follow/unfollow user");
+    }
+  }
 
   if (isLoading) return <SuggestedUsersSkeleton />;
   if (!data || data.users.length === 0 || error) return null;
@@ -41,7 +66,15 @@ export default function SuggestedUsers() {
       <SectionHeader className="mb-4">Suggested for you</SectionHeader>
       <div className="w-[calc(100%-4px)] mx-auto">
         {data.users.map((user) => (
-          <SuggestedUserItem key={user.id} _user={user} />
+          <SuggestedUserItem
+            key={user.id}
+            user={user}
+            onFollow={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              return handleFollow(user.id, !user.isFollowing);
+            }}
+          />
         ))}
       </div>
     </div>
@@ -49,30 +82,19 @@ export default function SuggestedUsers() {
 }
 
 function SuggestedUserItem({
-  _user,
+  user,
+  onFollow,
 }: Readonly<{
-  _user: UserSummaryDto;
+  user: UserSummaryDto;
+  onFollow: (event: React.MouseEvent) => Promise<void>;
 }>) {
-  const [user, setUser] = useState(_user);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const follow = useRefreshApi(UserApi.follow);
   async function handleFollow(event: React.MouseEvent) {
-    event.preventDefault();
-    event.stopPropagation();
     if (isLoading) return;
-
     setIsLoading(true);
-    setUser((prev) => ({ ...prev, isFollowing: !user.isFollowing }));
-    const { success, message } = await follow({
-      targetId: user.id,
-      shouldFollow: !user.isFollowing,
-    });
-    if (!success) {
-      setUser((prev) => ({ ...prev, isFollowing: user.isFollowing }));
-      toast.error(message || "Failed to follow/unfollow user");
-    }
+    await onFollow(event);
     setIsLoading(false);
   }
 
@@ -91,33 +113,30 @@ function SuggestedUserItem({
       )}
       onClick={handleClick}
     >
-      <UserHoverCard
-        user={user}
-        onFollow={handleFollow}
-        className="focus-indicator rounded-full"
-      >
+      <UserHoverCard user={user} onFollow={handleFollow}>
         <Link
           href={ROUTE.PROFILE(user.username)}
           className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
+          tabIndex={-1}
         >
           <Avatar
             src={user.avatar}
             alt={`${user.displayName ?? user.username}'s avatar`}
             size="10"
+            ring
+            showRing={user.hasStory}
           />
         </Link>
       </UserHoverCard>
 
-      <div className={cn("flex flex-col", "min-w-0 w-full ml-2 mr-3")}>
+      <div className={cn("flex flex-col", "min-w-0 w-full ml-2.5 mr-3")}>
         <UserHoverCard user={user} onFollow={handleFollow}>
           <Link
             href={ROUTE.PROFILE(user.username)}
             className={cn(
               "text-sm font-semibold",
               "truncate",
-              "hover:opacity-80",
-              "transition-opacity duration-150 ease-in-out",
-              "focus-indicator rounded-sm"
+              "hover:underline focus:underline outline-none"
             )}
           >
             {user.username}
@@ -127,7 +146,7 @@ function SuggestedUserItem({
         <span className={cn("text-xs text-muted-foreground", "truncate")}>
           {user.followedBy
             ? `Followed by ${user.followedBy.displayItems[0].displayName}`
-            : `Popular user`}
+            : `Suggested for you`}
         </span>
       </div>
 
@@ -158,7 +177,7 @@ export function FollowButton({
     <Button
       ref={hoverRef}
       size="sm"
-      variant={isFollowing && isHover ? "destructive" : "outline"}
+      variant={isFollowing ? (isHover ? "destructive" : "outline") : "accent"}
       onClick={onFollow}
       className={cn("w-[88px] cursor-pointer", className)}
     >

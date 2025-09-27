@@ -11,7 +11,7 @@ export default function MobileNav({ items }: MobileNavProps) {
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 z-20 w-full",
+        "sticky bottom-0 left-0 z-20 w-full pb-[env(safe-area-inset-bottom)]",
         "bg-background border-t border-border",
         "flex justify-around items-center"
       )}
@@ -26,7 +26,7 @@ export default function MobileNav({ items }: MobileNavProps) {
             href={item.url}
             className={cn(
               "flex items-center justify-center size-10",
-              "hover:bg-accent/[.1] focus-indicator rounded-sm",
+              "hover:bg-accent/[.1] focus-within-indicator rounded-sm",
               "transition-colors duration-150 ease-in-out",
               isActive && "pointer-events-none"
             )}

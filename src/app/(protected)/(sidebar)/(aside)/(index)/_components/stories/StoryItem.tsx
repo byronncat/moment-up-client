@@ -18,7 +18,7 @@ export default function StoryItem({
         href={ROUTE.STORY(data.username, data.id)}
         className={cn(
           "group",
-          "cursor-pointer focus-indicator rounded-sm",
+          "cursor-pointer focus-within-indicator rounded-sm",
           "flex flex-col items-center"
         )}
         aria-label={`View story from ${data.displayName}${!data.viewed ? " (unread)" : ""}`}

@@ -110,7 +110,7 @@ export default function MediaView({ onBrowse }: MediaViewProps) {
                   "transition-colors duration-150",
                   "border-muted-foreground/40 hover:border-accent/50 focus-visible:border-accent/50",
                   "bg-muted/30 hover:bg-muted focus-visible:bg-muted",
-                  "focus-indicator"
+                  "focus-within-indicator"
                 )}
               >
                 <Plus
@@ -232,7 +232,7 @@ function MediaItem({
               "absolute top-2 right-2",
               "p-1 rounded-full bg-black/50 text-white",
               "transition-opacity hover:bg-black/70",
-              "cursor-pointer focus-indicator-dark"
+              "cursor-pointer focus-within-indicator-dark"
             )}
           >
             <X className="size-4" />

@@ -143,7 +143,7 @@ function ReportButton({
             "rounded-full p-1 cursor-pointer",
             "hover:bg-primary/10 group/report-button",
             "transition-colors duration-150 ease-in-out",
-            "focus-indicator",
+            "focus-within-indicator",
             className
           )}
         >

@@ -1,28 +1,35 @@
 "use client";
 
 import type { FeedItemDto, PaginationDto } from "api";
+
 import { useCallback, useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useAuth, useRefreshSWR } from "@/components/providers";
 import { useMomentStore } from "@/components/providers/MomentStorage";
-import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { useProfile } from "../_providers/ProfileProvider";
+import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
+import { ROUTE } from "@/constants/route";
 import { INITIAL_PAGE } from "@/constants/server";
 
-import ProfileZone from "./ProfileZone";
+import { cn } from "@/libraries/utils";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { ErrorContent, NoContent } from "@/components/common";
 import { MomentCell } from "@/components/moment";
 import { Skeleton } from "@/components/ui/skeleton";
+import ProfileZone, { PROFILE_ZONE_HEIGHT } from "./ProfileZone";
 import { Image as ImageIcon } from "@/components/icons";
 
 const COLUMN_COUNT = 3;
 const GAP = 4;
+const ITEMS_EACH_PAGE = 3;
 
-export default function MomentGrid() {
+export default function PostGrid() {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
-  const { profile } = useProfile();
+  const { profile, isSelf } = useProfile();
 
   const getKey = (
     pageIndex: number,
@@ -30,7 +37,12 @@ export default function MomentGrid() {
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
-    const url = ApiUrl.post.user(profile?.id ?? "", "media", pageIndex + 1);
+    const url = ApiUrl.post.user(
+      profile.id,
+      "media",
+      pageIndex + 1,
+      ITEMS_EACH_PAGE
+    );
     return [url, token.accessToken];
   };
 
@@ -48,27 +60,33 @@ export default function MomentGrid() {
 
   const { setMoments, setCurrentIndex } = useMomentStore();
 
-  const hasNextPage = data
-    ? (data[data.length - 1]?.hasNextPage ?? false)
-    : true;
-  const allMoments = useMemo(() => {
-    return data ? data.flatMap((page) => page?.items || []) : undefined;
+  const hasNextPage = data?.[data.length - 1].hasNextPage ?? true;
+
+  const allPosts = useMemo(() => {
+    return data?.flatMap((page) => page.items);
   }, [data]);
 
-  // Calculate grid layout
-  const remainder = allMoments ? allMoments.length % COLUMN_COUNT : 0;
-  const dataRowCount = allMoments
-    ? Math.ceil(allMoments.length / COLUMN_COUNT)
-    : 0;
+  const remainder = allPosts ? allPosts.length % COLUMN_COUNT : 0;
+  const dataRowCount = allPosts ? Math.ceil(allPosts.length / COLUMN_COUNT) : 0;
   const needsSkeletonRow = hasNextPage && remainder === 0;
   const skeletonRowCount = needsSkeletonRow ? 1 : 0;
-  const itemCount = allMoments ? 1 + dataRowCount + skeletonRowCount : 1; // Profile + Data rows + Skeleton row
+  const itemCount = allPosts
+    ? allPosts.length === 0 || error
+      ? 2 // Profile + Content
+      : 1 + dataRowCount + skeletonRowCount // Profile + Data rows + Skeleton row
+    : isLoading
+      ? 2
+      : 1; // Profile only
 
   const virtualizer = useWindowVirtualizer({
     count: itemCount,
     overscan: 3,
     gap: GAP,
-    estimateSize: () => 150, // Approximate row height for grid
+    paddingEnd: 16,
+    estimateSize: (index) => {
+      if (index === 0) return PROFILE_ZONE_HEIGHT;
+      return getMediaHeight(window.innerWidth);
+    },
     measureElement: (element) => element.getBoundingClientRect().height,
   });
   const virtualItems = virtualizer.getVirtualItems();
@@ -82,57 +100,24 @@ export default function MomentGrid() {
   }
 
   useEffect(() => {
-    if (!error && allMoments) setMoments(allMoments);
-  }, [allMoments, setMoments, error]);
+    if (!error && allPosts) setMoments(allPosts);
+  }, [allPosts, setMoments, error]);
 
   useEffect(() => {
-    if (!allMoments) return;
+    if (!allPosts) return;
     const [lastItem] = [...virtualItems].reverse();
     if (!lastItem) return;
 
-    // Check if we need to load more when approaching the last row
-    if (
-      lastItem.index >= dataRowCount - 1 &&
-      hasNextPage &&
-      error?.statusCode !== 403 &&
-      !isValidating
-    )
+    if (lastItem.index - 1 >= dataRowCount - 1 && hasNextPage && !isValidating)
       loadNextPage();
   }, [
-    allMoments,
+    allPosts,
     virtualItems,
     hasNextPage,
     isValidating,
-    error?.statusCode,
-    loadNextPage,
     dataRowCount,
+    loadNextPage,
   ]);
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-3 gap-1 px-1 pt-1">
-        {Array.from({ length: 9 }, (_, index) => (
-          <Skeleton
-            className="aspect-square rounded-none"
-            key={`loading-skeleton-${index}`}
-          />
-        ))}
-      </div>
-    );
-  }
-
-  if (error && error.statusCode !== 403)
-    return <ErrorContent onRefresh={() => mutate()} className="pt-[80px]" />;
-  if (!allMoments) return null;
-  if (allMoments.length === 0)
-    return (
-      <NoContent
-        icon={<ImageIcon className="size-16 text-muted-foreground" />}
-        title="No media found"
-        description="This user has not posted any media yet."
-        className="pt-[80px]"
-      />
-    );
 
   return (
     <div
@@ -151,7 +136,7 @@ export default function MomentGrid() {
           <div
             key={vItem.key}
             data-index={vItem.index}
-            ref={virtualizer.measureElement}
+            ref={(element) => virtualizer.measureElement(element)}
             style={{
               position: "absolute",
               top: 0,
@@ -160,9 +145,42 @@ export default function MomentGrid() {
               transform: `translateY(${vItem.start}px)`,
             }}
           >
-            {isProfileRow ? (
-              <div className="pb-1">
-                <ProfileZone />
+            {isProfileRow && profile ? (
+              <ProfileZone />
+            ) : isLoading ? (
+              <div className="grid grid-cols-3 gap-1 px-1">
+                {Array.from({ length: 9 }, (_, index) => (
+                  <Skeleton
+                    className="aspect-square rounded-none"
+                    key={`loading-skeleton-${index}`}
+                  />
+                ))}
+              </div>
+            ) : error ? (
+              <ErrorContent
+                onRefresh={() => mutate()}
+                className="pt-19 pb-20"
+              />
+            ) : allPosts === undefined ? null : allPosts.length === 0 ? (
+              <div className={cn("pt-19 pb-20", "flex flex-col items-center")}>
+                <NoContent
+                  icon={
+                    <ImageIcon className="size-14 m-1 text-muted-foreground" />
+                  }
+                  title="No media yet"
+                  description={
+                    isSelf
+                      ? "When you share media, they will appear on your profile."
+                      : "This user has not posted any media yet."
+                  }
+                />
+                {isSelf ? (
+                  <Link href={ROUTE.POST_CREATE}>
+                    <Button variant="outline" size="sm" className="mt-5">
+                      Upload media
+                    </Button>
+                  </Link>
+                ) : null}
               </div>
             ) : (
               <div className="flex justify-around gap-1 px-1">
@@ -171,27 +189,25 @@ export default function MomentGrid() {
                   let content = null;
 
                   if (rowIndex < dataRowCount) {
-                    if (allMoments && dataIndex < allMoments.length) {
+                    if (allPosts && dataIndex < allPosts.length)
                       content = (
                         <MomentCell
-                          data={allMoments[dataIndex]}
+                          data={allPosts[dataIndex]}
                           onClick={() => handleClick(dataIndex)}
                         />
                       );
-                    } else if (
+                    else if (
                       hasNextPage &&
                       remainder > 0 &&
                       rowIndex === dataRowCount - 1
-                    ) {
+                    )
                       content = (
                         <Skeleton className="aspect-square rounded-none" />
                       );
-                    }
-                  } else if (hasNextPage) {
+                  } else if (hasNextPage)
                     content = (
                       <Skeleton className="aspect-square rounded-none" />
                     );
-                  }
 
                   return (
                     <div

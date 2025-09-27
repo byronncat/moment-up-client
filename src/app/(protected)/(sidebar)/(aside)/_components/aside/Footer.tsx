@@ -18,8 +18,9 @@ export default function Footer() {
             <Link
               href={link.href}
               className={cn(
-                "text-xs text-muted-foreground hover:underline",
-                "focus-indicator rounded-sm"
+                "text-xs text-muted-foreground",
+                "hover:underline",
+                "focus:underline outline-none"
               )}
             >
               {link.text}

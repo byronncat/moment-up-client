@@ -5,30 +5,36 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useAuth, useRefreshSWR } from "@/components/providers";
 import {
   useMoment,
   useMomentStore,
 } from "@/components/providers/MomentStorage";
-import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { useProfile } from "../_providers/ProfileProvider";
+import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
-import { INITIAL_PAGE } from "@/constants/server";
-import { getItemSize } from "@/helpers/ui";
+import { ROUTE } from "@/constants/route";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
+import { INITIAL_PAGE } from "@/constants/server";
 
-import { MomentCard, MomentSkeleton } from "@/components/moment";
+import Link from "next/link";
+import { cn } from "@/libraries/utils";
+import { Button } from "@/components/ui/button";
+import { MomentCard, PostSkeleton } from "@/components/moment";
 import { ErrorContent, NoContent } from "@/components/common";
-import ProfileZone from "./ProfileZone";
+import ProfileZone, { PROFILE_ZONE_HEIGHT } from "./ProfileZone";
 import { Camera } from "@/components/icons";
 
-type MomentListProps = Readonly<{
+type PostListProps = Readonly<{
   filter?: "media" | "tagged";
 }>;
 
-export default function MomentList({ filter }: MomentListProps) {
+const ITEMS_EACH_PAGE = 20;
+
+export default function PostList({ filter }: PostListProps) {
   const swrFetcherWithRefresh = useRefreshSWR();
-  const { token } = useAuth();
-  const { profile } = useProfile();
+  const { token, user } = useAuth();
+  const { profile, isSelf } = useProfile();
 
   const getKey = (
     pageIndex: number,
@@ -36,7 +42,12 @@ export default function MomentList({ filter }: MomentListProps) {
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
-    const url = ApiUrl.post.user(profile?.id ?? "", filter, pageIndex + 1);
+    const url = ApiUrl.post.user(
+      profile.id,
+      filter,
+      pageIndex + 1,
+      ITEMS_EACH_PAGE
+    );
     return [url, token.accessToken];
   };
 
@@ -55,29 +66,29 @@ export default function MomentList({ filter }: MomentListProps) {
   const { setMoments, setCurrentIndex, ...momentActions } = useMomentStore();
   const { like, bookmark, follow } = useMoment();
 
-  const hasNextPage = data
-    ? (data[data.length - 1]?.hasNextPage ?? false)
-    : true;
+  const hasNextPage = user && (data?.[data.length - 1].hasNextPage ?? true);
 
-  const allMoments = useMemo(() => {
-    return data ? data.flatMap((page) => page?.items || []) : undefined;
+  const allPosts = useMemo(() => {
+    return data?.flatMap((page) => page.items);
   }, [data]);
 
-  const itemCount = allMoments
-    ? 1 + allMoments.length + (hasNextPage && error?.statusCode !== 403 ? 1 : 0)
-    : 1; // Profile + Posts + Loading
+  const itemCount = allPosts
+    ? allPosts.length === 0 || error // Profile + Content
+      ? 2
+      : 1 + allPosts.length + (hasNextPage && error?.statusCode !== 403 ? 1 : 0) // Profile + Posts + Loading
+    : isLoading
+      ? 2
+      : 1; // Profile only
 
   const virtualizer = useWindowVirtualizer({
     count: itemCount,
     overscan: 3,
     gap: POST_CARD_LIST_GAP,
-    estimateSize: (index) =>
-      getItemSize(
-        index,
-        allMoments?.[index - 1]?.post,
-        600,
-        600 + POST_CARD_LIST_GAP
-      ),
+    paddingEnd: POST_CARD_LIST_GAP,
+    estimateSize: (index) => {
+      if (index === 0) return PROFILE_ZONE_HEIGHT;
+      return getPostHeight(allPosts?.[index - 1]?.post, window.innerWidth);
+    },
   });
   const virtualItems = virtualizer.getVirtualItems();
 
@@ -90,29 +101,22 @@ export default function MomentList({ filter }: MomentListProps) {
   }
 
   useEffect(() => {
-    if (!error && allMoments) setMoments(allMoments);
-  }, [allMoments, setMoments, error]);
+    if (!error && allPosts) setMoments(allPosts);
+  }, [allPosts, setMoments, error]);
 
   useEffect(() => {
-    if (!allMoments) return;
+    if (!allPosts) return;
     const [lastItem] = [...virtualItems].reverse();
     if (!lastItem) return;
 
     if (
-      lastItem.index - 1 >= allMoments.length - 1 &&
+      lastItem.index - 1 >= allPosts.length - 1 &&
       hasNextPage &&
-      error?.statusCode !== 403 &&
-      !isValidating
+      !isValidating &&
+      user
     )
       loadNextPage();
-  }, [
-    allMoments,
-    virtualItems,
-    hasNextPage,
-    isValidating,
-    error?.statusCode,
-    loadNextPage,
-  ]);
+  }, [user, allPosts, virtualItems, hasNextPage, isValidating, loadNextPage]);
 
   return (
     <div
@@ -129,7 +133,7 @@ export default function MomentList({ filter }: MomentListProps) {
           error?.statusCode !== 403 &&
           vItem.index === itemCount - 1;
         const dataIndex = vItem.index - 1;
-        const moment = allMoments?.[dataIndex];
+        const post = allPosts?.[dataIndex];
 
         return (
           <div
@@ -147,39 +151,57 @@ export default function MomentList({ filter }: MomentListProps) {
             {isProfileRow && profile ? (
               <ProfileZone />
             ) : isLoading ? (
-              <>
-                <MomentSkeleton
-                  haveText
-                  media="horizontal"
-                  className="max-w-[600px] mx-auto mb-4"
-                />
-                <MomentSkeleton
-                  media="square"
-                  className="max-w-[600px] mx-auto"
-                />
-              </>
-            ) : error ? (
-              <ErrorContent onRefresh={() => mutate()} className="pt-24" />
-            ) : !allMoments ? null : allMoments.length === 0 ? (
-              <NoContent
-                icon={<Camera className="size-16 text-muted-foreground" />}
-                title="No moments yet"
-                description="This user has not posted any moments yet."
-                className="pt-24"
+              <div
+                className={cn(
+                  "max-w-[calc(600px+16px)] px-2 mx-auto",
+                  "space-y-4"
+                )}
+              >
+                <PostSkeleton haveText media="horizontal" className="w-full" />
+                <PostSkeleton media="square" className="w-full" />
+              </div>
+            ) : error && error?.statusCode !== 403 ? (
+              <ErrorContent
+                onRefresh={() => mutate()}
+                className="pt-16 pb-20"
               />
+            ) : allPosts === undefined ? null : allPosts.length === 0 ? (
+              <div className={cn("pt-16 pb-20", "flex flex-col items-center")}>
+                <NoContent
+                  icon={
+                    <Camera
+                      variant="regular"
+                      className="size-16 text-muted-foreground"
+                    />
+                  }
+                  title="No posts yet"
+                  description={
+                    isSelf
+                      ? "When you share posts, they will appear on your profile."
+                      : "This user has not posted any posts yet."
+                  }
+                />
+                {isSelf ? (
+                  <Link href={ROUTE.POST_CREATE}>
+                    <Button variant="outline" size="sm" className="mt-5">
+                      Create post
+                    </Button>
+                  </Link>
+                ) : null}
+              </div>
             ) : isLoaderRow ? (
-              <MomentSkeleton
-                haveText
-                media="horizontal"
-                className="max-w-[600px] mx-auto"
-              />
-            ) : moment ? (
-              <MomentCard
-                data={moment}
-                actions={{ like, bookmark, follow, ...momentActions }}
-                onClick={() => handleClick(dataIndex)}
-                className="max-w-[600px] mx-auto"
-              />
+              <div className="max-w-[calc(600px+16px)] px-2 mx-auto">
+                <PostSkeleton haveText media="horizontal" className="w-full" />
+              </div>
+            ) : post ? (
+              <div className="max-w-[calc(600px+16px)] px-2 mx-auto">
+                <MomentCard
+                  data={post}
+                  actions={{ like, bookmark, follow, ...momentActions }}
+                  onClick={() => handleClick(dataIndex)}
+                  className="w-full"
+                />
+              </div>
             ) : null}
           </div>
         );
