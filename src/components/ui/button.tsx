@@ -12,7 +12,7 @@ const buttonVariants = cva(
     "whitespace-nowrap rounded-md",
     "text-sm font-medium",
     "transition-colors duration-200 ease-in-out",
-    "focus-indicator",
+    "focus-within-indicator",
     "disabled:pointer-events-none disabled:opacity-50",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0"
     // "[&_svg]:size-4",
@@ -31,6 +31,12 @@ const buttonVariants = cva(
         ),
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+        accent: clsx(
+          "bg-[hsl(210_25%_7%)] text-[hsl(0_0%_100%)]",
+          "dark:bg-[hsl(192_19%_95%)] dark:text-[hsl(210_25%_8%)]",
+          "transition-opacity hover:opacity-80 focus:opacity-80",
+          "shadow-xs"
+        ),
         ghost: "hover:bg-accent/[.1] hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },

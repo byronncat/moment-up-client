@@ -3,6 +3,7 @@
 import { toast } from "sonner";
 import { useAuth } from "@/components/providers";
 import { useProfile } from "../../_providers/ProfileProvider";
+import { UserReportType } from "@/constants/server";
 
 import { Tooltip } from "@/components/common";
 import { Button } from "@/components/ui/button";
@@ -11,13 +12,33 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Ban, Flag, Link, MoreHorizontal, Volume } from "@/components/icons";
+import {
+  Ban,
+  Flag,
+  Link,
+  MoreHorizontal,
+  User,
+  Volume,
+} from "@/components/icons";
+import {
+  AlertTriangle,
+  Angry,
+  EyeOff,
+  HelpCircle,
+  Info,
+  MessageCircleWarning,
+  ShieldAlert,
+  Skull,
+} from "lucide-react";
 
 export default function MoreButton() {
   const { user } = useAuth();
-  const { profile, mute, block, report } = useProfile();
+  const { profile, mute, block, report, removeFollower } = useProfile();
 
   async function handleCopyProfileLink() {
     try {
@@ -45,6 +66,10 @@ export default function MoreButton() {
     }
   }
 
+  function handleRemoveFollower() {
+    removeFollower();
+  }
+
   function handleMute() {
     mute();
   }
@@ -53,8 +78,8 @@ export default function MoreButton() {
     block();
   }
 
-  function handleReport() {
-    report();
+  function handleReport(reportType: UserReportType) {
+    report(reportType);
   }
 
   if (!user) return null;
@@ -75,7 +100,15 @@ export default function MoreButton() {
           <Link className="size-4" />
           Copy link to profile
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
+        {profile.isFollower ? (
+          <DropdownMenuItem
+            onClick={handleRemoveFollower}
+            className="cursor-pointer"
+          >
+            <User variant="minus" className="size-4" />
+            Remove this follower
+          </DropdownMenuItem>
+        ) : null}
         <DropdownMenuItem onClick={handleMute} className="cursor-pointer">
           <Volume
             variant={profile.isMuted ? "off" : "regular"}
@@ -87,6 +120,9 @@ export default function MoreButton() {
               : `Mute @${profile.username}`}
           </span>
         </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
         <DropdownMenuItem
           onClick={handleBlock}
           className="destructive-item cursor-pointer"
@@ -94,14 +130,78 @@ export default function MoreButton() {
           <Ban className="size-4" />
           <span className="truncate">Block @{profile.username}</span>
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={handleReport}
-          className="destructive-item cursor-pointer"
-        >
-          <Flag className="size-4" />
-          <span className="truncate">Report @{profile.username}</span>
-        </DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger className="destructive-item cursor-pointer">
+            <Flag className="size-4" />
+            <span className="truncate">Report @{profile.username}</span>
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent sideOffset={8}>
+            {ReportOptions.map((option) => (
+              <DropdownMenuItem
+                key={option.value}
+                onClick={() => handleReport(option.value)}
+                className="cursor-pointer"
+              >
+                {option.icon}
+                <span>{option.label}</span>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
+
+const ReportOptions = [
+  {
+    label: "Spam",
+    icon: <Ban className="size-4" />,
+    value: UserReportType.SPAM,
+  },
+  {
+    label: "Impersonation",
+    icon: <User variant="x" className="size-4" />,
+    value: UserReportType.IMPERSONATION,
+  },
+  {
+    label: "Inappropriate content",
+    icon: <AlertTriangle className="size-4" />,
+    value: UserReportType.INAPPROPRIATE_CONTENT,
+  },
+  {
+    label: "Abusive",
+    icon: <Angry className="size-4" />,
+    value: UserReportType.ABUSIVE,
+  },
+  {
+    label: "Harmful",
+    icon: <Skull className="size-4" />,
+    value: UserReportType.HARMFUL,
+  },
+  {
+    label: "Child exploration",
+    icon: <ShieldAlert className="size-4" />,
+    value: UserReportType.CHILD_EXPLORATION,
+  },
+  {
+    label: "Sexual content",
+    icon: <MessageCircleWarning className="size-4" />,
+    value: UserReportType.SEXUAL_CONTENT,
+  },
+  {
+    label: "Fake information",
+    icon: <Info className="size-4" />,
+    value: UserReportType.FAKE_INFORMATION,
+  },
+  {
+    label: "Don't want to see",
+    icon: <EyeOff className="size-4" />,
+    value: UserReportType.DONT_WANT_TO_SEE,
+  },
+  {
+    label: "Other",
+    icon: <HelpCircle className="size-4" />,
+    value: UserReportType.OTHER,
+  },
+];

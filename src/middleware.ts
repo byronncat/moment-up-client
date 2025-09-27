@@ -9,12 +9,16 @@ export function middleware(request: NextRequest) {
   if (hasSession && AUTH_ROUTES.some((route) => pathname.startsWith(route)))
     return NextResponse.redirect(new URL(ROUTE.HOME, request.url));
 
-  if (
-    !hasSession &&
-    PRIVATE_ROUTES.some(
-      (route) => pathname === route || pathname.startsWith(`${route}/`)
-    )
-  )
+  const isPrivateRoute = PRIVATE_ROUTES.some(route => {
+    if (route.includes('*')) {
+      const routePattern = route.replace('*', '[^/]+');
+      const regex = new RegExp(`^${routePattern}$`);
+      return regex.test(pathname);
+    }
+    return pathname === route || pathname.startsWith(`${route}/`);
+  });
+
+  if (!hasSession && isPrivateRoute)
     return NextResponse.redirect(new URL(ROUTE.LOGIN, request.url));
 
   return NextResponse.next();

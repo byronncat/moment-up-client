@@ -3,20 +3,23 @@
 // === Type ===
 import type { ProfileDto } from "api";
 import type { UpdateProfileDto } from "@/services/user";
+import type { UserReportType } from "@/constants/server";
 
 type ProfileContextType = {
   username: string;
   profile: ProfileDto;
-  isProtected: boolean;
+  isSelf: boolean;
+  canView: boolean;
   follow: () => Promise<void>;
+  removeFollower: () => Promise<void>;
   mute: () => Promise<void>;
   block: () => Promise<void>;
-  report: () => Promise<void>;
+  report: (reportType: UserReportType) => void;
   updateProfile: (data: UpdateProfileDto) => Promise<void>;
 };
 
 // === Provider ===
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useAuth, useRefreshApi } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcherWithToken } from "@/libraries/swr";
@@ -25,7 +28,7 @@ import { ApiUrl, UserApi } from "@/services";
 
 import { cn } from "@/libraries/utils";
 import ErrorContent from "@/components/common/ErrorContent";
-import { ProfileZone, ProfileZoneSkeleton } from "../_components";
+import { Header, ProfileZone, ProfileZoneSkeleton } from "../_components";
 
 const ProfileContext = createContext<ProfileContextType>({
   username: "",
@@ -38,13 +41,16 @@ const ProfileContext = createContext<ProfileContextType>({
     bio: null,
     followers: 0,
     following: 0,
-    isFollowing: null,
-    isMuted: null,
+    isFollower: false,
+    isFollowing: false,
+    isMuted: false,
     isProtected: false,
     hasStory: false,
   },
-  isProtected: false,
+  canView: false,
+  isSelf: false,
   follow: async () => {},
+  removeFollower: async () => {},
   mute: async () => {},
   block: async () => {},
   report: async () => {},
@@ -68,19 +74,25 @@ export default function ProfileProvider({
     ([url, token]) => SWRFetcherWithToken<{ profile: ProfileDto }>(url, token)
   );
 
-  const [profile, setProfile] = useState<ProfileDto | undefined>();
-  const [isProtected, setIsProtected] = useState<boolean>(false);
+  const profile = useMemo(() => data?.profile, [data]);
+  const isSelf = useMemo(() => user?.username === username, [user, username]);
+  const [canView, setCanView] = useState<boolean>(false);
 
   const followApi = useRefreshApi(UserApi.follow);
   async function follow() {
     if (!profile) return;
 
     const _prev = profile;
-    setProfile({
-      ..._prev,
-      followers: _prev.followers + (profile.isFollowing ? -1 : 1),
-      isFollowing: !profile.isFollowing,
-    });
+    mutate(
+      {
+        profile: {
+          ..._prev,
+          followers: _prev.followers + (profile.isFollowing ? -1 : 1),
+          isFollowing: !profile.isFollowing,
+        },
+      },
+      { revalidate: false }
+    );
 
     const { success, message } = await followApi({
       targetId: profile.id,
@@ -88,10 +100,34 @@ export default function ProfileProvider({
     });
 
     if (success) {
-      if (profile.isProtected) setIsProtected(!isProtected);
+      if (profile.isProtected) setCanView(!canView);
     } else {
-      setProfile(_prev);
+      mutate({ profile: _prev }, { revalidate: false });
       toast.error(message || "Failed to follow/unfollow");
+    }
+  }
+
+  const removeFollowerApi = useRefreshApi(UserApi.removeFollower);
+  async function removeFollower() {
+    if (!profile) return;
+
+    const _prev = profile;
+    mutate(
+      {
+        profile: {
+          ..._prev,
+          following: _prev.following - 1,
+          isFollower: false,
+        },
+      },
+      { revalidate: false }
+    );
+
+    const { success, message } = await removeFollowerApi(profile.id);
+
+    if (!success) {
+      mutate({ profile: _prev }, { revalidate: false });
+      toast.error(message || "Failed to remove follower");
     }
   }
 
@@ -100,10 +136,10 @@ export default function ProfileProvider({
     if (!profile) return;
 
     const _prev = profile;
-    setProfile({
-      ..._prev,
-      isMuted: !profile.isMuted,
-    });
+    mutate(
+      { profile: { ..._prev, isMuted: !profile.isMuted } },
+      { revalidate: false }
+    );
 
     const { success, message } = await muteApi({
       targetId: profile.id,
@@ -111,7 +147,7 @@ export default function ProfileProvider({
     });
 
     if (!success) {
-      setProfile(_prev);
+      mutate({ profile: _prev }, { revalidate: false });
       toast.error(message || "Failed to mute user");
     }
   }
@@ -121,32 +157,41 @@ export default function ProfileProvider({
     if (!profile) return;
 
     const _prev = profile;
-    setProfile({
-      ..._prev,
-      followers: _prev.isFollowing ? _prev.followers - 1 : _prev.followers,
-      isFollowing: false,
-    });
+    mutate(
+      {
+        profile: {
+          ..._prev,
+          followers: _prev.isFollowing ? _prev.followers - 1 : _prev.followers,
+          isFollowing: false,
+        },
+      },
+      { revalidate: false }
+    );
 
     const { success, message } = await blockApi({
       targetId: profile.id,
       shouldBlock: true,
     });
 
-    if (success) setIsProtected(profile.isProtected);
+    if (success) setCanView(profile.isProtected);
     else {
-      setProfile(_prev);
+      mutate({ profile: _prev }, { revalidate: false });
       toast.error(message || "Failed to block user");
     }
   }
 
   const reportApi = useRefreshApi(UserApi.reportUser);
-  async function report() {
+  function report(reportType: UserReportType) {
     if (!profile) return;
-
-    const { success, message } = await reportApi(profile.id);
-
-    if (success) toast.success(message || "User reported successfully");
-    else toast.error(message || "Failed to report user");
+    toast.promise(reportApi(profile.id, { type: reportType }), {
+      loading: "Submitting report...",
+      success: (res) => {
+        if (res.success)
+          return "Report submitted. Our team will review it soon.";
+        throw new Error(res.message);
+      },
+      error: "Submission failed. Try again later.",
+    });
   }
 
   const updateProfileApi = useRefreshApi(UserApi.updateProfile);
@@ -154,11 +199,8 @@ export default function ProfileProvider({
     if (!profile || !user) return;
     const { success, message } = await updateProfileApi(profile.id, data);
 
-    if (success) {
-      setProfile({
-        ...profile,
-        ...data,
-      });
+    if (success && data) {
+      mutate({ profile: { ...profile, ...data } }, { revalidate: false });
       setUser({
         ...user,
         displayName: data.displayName ?? null,
@@ -168,12 +210,8 @@ export default function ProfileProvider({
   }
 
   useEffect(() => {
-    if (data?.profile) setProfile(data.profile);
-  }, [data]);
-
-  useEffect(() => {
     if (data?.profile)
-      setIsProtected(
+      setCanView(
         data.profile.isFollowing || data.profile.username === user?.username
           ? false
           : data.profile.isProtected
@@ -184,6 +222,7 @@ export default function ProfileProvider({
   if (error?.statusCode === 404)
     return (
       <div className={cn("w-full relative", "flex flex-col items-center")}>
+        <Header className="w-full" />
         <div className={cn("w-full h-40 -mb-15", "bg-muted")} />
         <div className="size-28 rounded-full bg-card" />
 
@@ -199,7 +238,13 @@ export default function ProfileProvider({
         />
       </div>
     );
-  if (error) return <ErrorContent onRefresh={mutate} className="pt-[80px]" />;
+  if (error)
+    return (
+      <div>
+        <Header />
+        <ErrorContent onRefresh={mutate} className="pt-[80px]" />
+      </div>
+    );
   if (!profile) return null;
 
   return (
@@ -207,15 +252,24 @@ export default function ProfileProvider({
       value={{
         username,
         profile,
-        isProtected,
+        canView,
+        isSelf,
         follow,
+        removeFollower,
         mute,
         block,
         report,
         updateProfile,
       }}
     >
-      {isProtected ? <ProfileZone /> : children}
+      {canView ? (
+        <>
+          <Header />
+          <ProfileZone />
+        </>
+      ) : (
+        children
+      )}
     </ProfileContext.Provider>
   );
 }

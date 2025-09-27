@@ -34,7 +34,7 @@ export default function HorizontalNavigationBar({
         if (item.href) {
           const activeTab = items.find((item) => pathname === item.href)?.id;
           return (
-            <Link href={item.href} key={item.id} className="flex-1 focus-indicator">
+            <Link href={item.href} key={item.id} className="flex-1 focus-within-indicator">
               <Item data={item} active={activeTab === item.id} />
             </Link>
           );
@@ -47,7 +47,7 @@ export default function HorizontalNavigationBar({
               item.onSelect?.();
               setActiveTab(item.id);
             }}
-            className="flex-1 cursor-pointer focus-indicator"
+            className="flex-1 cursor-pointer focus-within-indicator"
           >
             <Item data={item} active={activeTab === item.id} />
           </button>

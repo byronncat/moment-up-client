@@ -7,11 +7,11 @@ import {
   useMoment,
   useMomentStore,
 } from "@/components/providers/MomentStorage";
-import { getItemSize } from "@/helpers/ui";
+import { getPostHeight } from "@/helpers/ui";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
 
 import { ErrorContent, NoContent } from "@/components/common";
-import { MomentCard, MomentSkeleton } from "@/components/moment";
+import { MomentCard, PostSkeleton } from "@/components/moment";
 import Stories from "./stories";
 import { Camera } from "@/components/icons";
 
@@ -43,14 +43,14 @@ export default function VirtualizedFeed() {
     count: itemCount,
     overscan: 3,
     gap: POST_CARD_LIST_GAP,
-    estimateSize: (index) =>
-      getItemSize(
-        index,
+    estimateSize: (index) => {
+      if (index === 0) return STORIES_HEIGHT;
+      return getPostHeight(
         // Add ? after post to avoid undefined error
         moments?.[index - 1]?.post,
-        window.innerWidth,
-        STORIES_HEIGHT
-      ),
+        window.innerWidth
+      );
+    },
   });
   const virtualItems = virtualizer.getVirtualItems();
 
@@ -98,12 +98,12 @@ export default function VirtualizedFeed() {
               <Stories />
             ) : isLoading ? (
               <>
-                <MomentSkeleton
+                <PostSkeleton
                   haveText
                   media="horizontal"
                   className="max-w-[600px] mx-auto mb-4"
                 />
-                <MomentSkeleton
+                <PostSkeleton
                   media="square"
                   className="max-w-[600px] mx-auto"
                 />
@@ -118,7 +118,7 @@ export default function VirtualizedFeed() {
                 className="pt-24"
               />
             ) : isLoaderRow ? (
-              <MomentSkeleton
+              <PostSkeleton
                 haveText
                 media="horizontal"
                 className="max-w-[600px] mx-auto"

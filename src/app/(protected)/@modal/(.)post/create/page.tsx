@@ -113,7 +113,7 @@ function CreatePostPage() {
               "absolute right-2 top-2",
               "text-muted-foreground-dark",
               "hover:bg-accent-dark/[.1] hover:text-accent-foreground-dark",
-              "focus-indicator-dark"
+              "focus-within-indicator-dark"
             )}
           >
             <X className="size-5" />

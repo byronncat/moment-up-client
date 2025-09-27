@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { ActionableText, PageTitle } from "../_components";
 import { ChangePasswordForm, SendOtpForm } from "./_components";
-import styles from "../_constants/styles";
 import { ROUTE } from "@/constants/route";
+import styles from "../_constants/styles";
 
 export default function VerifyRecoveryPage() {
   const [user, setUser] = useState<string>("");
@@ -23,7 +24,7 @@ export default function VerifyRecoveryPage() {
               "mt-5 float-right",
               "text-muted-foreground text-sm",
               "hover:text-primary hover:underline",
-              "focus-indicator rounded-sm"
+              "focus-within-indicator rounded-sm"
             )}
           >
             Back to Login

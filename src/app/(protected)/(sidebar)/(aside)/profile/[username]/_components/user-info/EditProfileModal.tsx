@@ -244,7 +244,7 @@ export default function EditProfileModal({
                           "flex items-center justify-center",
                           "bg-black/40 hover:bg-black/70",
                           "transition-colors ease-in-out",
-                          "focus-indicator cursor-pointer"
+                          "focus-within-indicator cursor-pointer"
                         )}
                       >
                         <ImageIcon
@@ -260,7 +260,7 @@ export default function EditProfileModal({
                             "flex items-center justify-center",
                             "bg-black/40 hover:bg-black/70",
                             "transition-colors ease-in-out",
-                            "focus-indicator cursor-pointer"
+                            "focus-within-indicator cursor-pointer"
                           )}
                         >
                           <X className="size-5 text-white" />
@@ -299,7 +299,7 @@ export default function EditProfileModal({
                       "absolute inset-0 flex items-center justify-center",
                       "transition-opacity duration-200 cursor-pointer",
                       "bg-black/30 rounded-full opacity-0 group-hover:opacity-100",
-                      "focus-within:opacity-100 focus-indicator"
+                      "focus-within:opacity-100 focus-within-indicator"
                     )}
                   >
                     <ImageIcon
@@ -325,7 +325,7 @@ export default function EditProfileModal({
                   "bg-input rounded-md",
                   "border border-border",
                   "shadow-xs transition-colors",
-                  "focus-indicator"
+                  "focus-within-indicator"
                 )}
               >
                 <div
@@ -366,7 +366,7 @@ export default function EditProfileModal({
                   "bg-input rounded-md",
                   "border border-border",
                   "shadow-xs transition-colors",
-                  "focus-indicator"
+                  "focus-within-indicator"
                 )}
               >
                 <div

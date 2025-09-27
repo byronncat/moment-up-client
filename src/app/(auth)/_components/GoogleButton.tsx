@@ -27,7 +27,7 @@ export default async function GoogleButton() {
           "bg-white text-black/[.8]",
           "dark:hover:bg-white/[.7] hover:bg-black/[.08]",
           "transition-colors duration-200 ease-in-out",
-          "focus-indicator"
+          "focus-within-indicator"
         )}
       >
         <Image src={GoogleUrl} alt="Google icon" width={20} height={20} />

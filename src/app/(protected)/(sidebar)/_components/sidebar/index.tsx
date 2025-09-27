@@ -20,7 +20,9 @@ import SidebarBody from "./SidebarBody";
 import SidebarFooter from "./SidebarFooter";
 import { sourceCodePro } from "@/styles/fonts";
 
-export default function Sidebar() {
+export default function Sidebar({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   const pathname = usePathname();
   const { user } = useAuth();
   const { isMobile } = useSidebar();
@@ -63,19 +65,27 @@ export default function Sidebar() {
               : "opacity-100 translate-x-0"
           )}
         >
-          <SidebarTrigger className="text-foreground" tabIndex={open ? -1 : 0} />
+          <SidebarTrigger
+            className="text-foreground"
+            tabIndex={open ? -1 : 0}
+          />
         </div>
       ) : null}
 
       {isMobile ? (
-        <>
+        <div className="flex flex-col size-full">
           <MobileHeader
             notificationItem={notificationItem}
             profileItem={profileItem}
           />
+
+          {children}
+
           <MobileNav items={items.slice(0, 5)} />
-        </>
-      ) : null}
+        </div>
+      ) : (
+        children
+      )}
     </>
   );
 }

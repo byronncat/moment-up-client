@@ -1,6 +1,3 @@
-import { cookies } from "next/headers";
-import { CookieName, MOBILE_NAV_HEIGHT } from "@/constants/client";
-
 import { cn } from "@/libraries/utils";
 import Sidebar from "./_components/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -9,22 +6,16 @@ type LayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-export default async function Layout({ children }: LayoutProps) {
-  const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get(CookieName.SIDEBAR)?.value === "true";
-
+export default function Layout({ children }: LayoutProps) {
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
-      <div
-        className={cn("w-screen min-h-screen", "relative", "laptop:!py-0")}
-        style={{
-          paddingTop: MOBILE_NAV_HEIGHT,
-          paddingBottom: MOBILE_NAV_HEIGHT,
-        }}
-      >
+    <SidebarProvider>
+      <div className={cn("w-screen min-h-screen", "relative")}>
         <div className="min-h-full flex">
-          <Sidebar />
-          <div className="flex-1">{children}</div>
+          <Sidebar>
+            <div className="flex-1">
+              {children}
+            </div>
+          </Sidebar>
         </div>
       </div>
     </SidebarProvider>

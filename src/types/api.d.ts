@@ -32,26 +32,30 @@ declare module "api" {
     id: Uuid;
     username: string;
     displayName: string | null;
-    avatar: string | null;
+    avatar: PublicId | null;
   }
 
   interface ProfileDto extends AccountDto {
     bio: string | null;
-    backgroundImage: string | null;
+    backgroundImage: PublicId | null;
     followers: number;
     following: number;
-    isFollowing: boolean | null;
-    isMuted: boolean | null;
+    isFollower: boolean;
+    isFollowing: boolean;
+    isMuted: boolean;
     isProtected: boolean;
     hasStory: boolean;
   }
 
   interface UserSummaryDto
-    extends Omit<ProfileDto, "backgroundImage" | "isMuted" | "isProtected"> {
+    extends Omit<
+      ProfileDto,
+      "backgroundImage" | "isMuted" | "isProtected" | "isFollower"
+    > {
     followedBy: {
       remainingCount: number;
       displayItems: Array<{
-        id: PublicId;
+        id: Uuid;
         displayName: string;
         avatar: AccountDto["avatar"];
       }>;
@@ -189,7 +193,6 @@ declare module "api" {
   type FileInfo = {
     id: string;
     type: "image" | "video" | "audio";
-    url: string;
     aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
   };
 }

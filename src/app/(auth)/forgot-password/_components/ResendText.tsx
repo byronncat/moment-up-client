@@ -36,7 +36,7 @@ export default function ResendText({
           "text-primary font-semibold",
           "hover:opacity-60 transition-opacity duration-150 ease-in-out",
           "disabled:opacity-50 disabled:cursor-default",
-          "focus-indicator rounded-sm"
+          "focus-within-indicator rounded-sm"
         )}
         onClick={handleResend}
       >

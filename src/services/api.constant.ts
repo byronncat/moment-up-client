@@ -18,24 +18,56 @@ export const ApiUrl = {
 
   // === User ===
   user: {
-    follow: (userId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/follow`, { pathParams: { userId } }),
-    unfollow: (userId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/unfollow`, { pathParams: { userId } }),
-    block: (userId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/block`, { pathParams: { userId } }),
-    unblock: (userId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/unblock`, { pathParams: { userId } }),
-    mute: (userId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/mute`, { pathParams: { userId } }),
-    unmute: (userId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/unmute`, { pathParams: { userId } }),
-    report: (userId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/report`, { pathParams: { userId } }),
     getProfile: (username: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/users/:username`, { pathParams: { username } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:username`, {
+        pathParams: { username },
+      }),
     updateProfile: (userId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId`, { pathParams: { userId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId`, {
+        pathParams: { userId },
+      }),
+    getFollowers: (userId: string, page?: number, limit?: number) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/followers`, {
+        pathParams: { userId },
+        queryParams: { page, limit },
+      }),
+    getFollowing: (userId: string, page?: number, limit?: number) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/following`, {
+        pathParams: { userId },
+        queryParams: { page, limit },
+      }),
+    follow: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/follow`, {
+        pathParams: { userId },
+      }),
+    unfollow: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/unfollow`, {
+        pathParams: { userId },
+      }),
+    removeFollower: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/remove-follower`, {
+        pathParams: { userId },
+      }),
+    block: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/block`, {
+        pathParams: { userId },
+      }),
+    unblock: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/unblock`, {
+        pathParams: { userId },
+      }),
+    mute: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/mute`, {
+        pathParams: { userId },
+      }),
+    unmute: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/unmute`, {
+        pathParams: { userId },
+      }),
+    report: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/report`, {
+        pathParams: { userId },
+      }),
   },
 
   // === Suggestion ===
@@ -51,9 +83,13 @@ export const ApiUrl = {
   // === Core ===
   post: {
     home: (page?: number, limit?: number) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/home`, { queryParams: { page, limit } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/home`, {
+        queryParams: { page, limit },
+      }),
     explore: (type?: "media" | "post", page?: number, limit?: number) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/explore`, { queryParams: { type, page, limit } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/explore`, {
+        queryParams: { type, page, limit },
+      }),
     user: (
       userId: string,
       filter?: "media" | "tagged" | "reposts" | "liked",
@@ -65,24 +101,38 @@ export const ApiUrl = {
         queryParams: { filter, page, limit },
       }),
     getById: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId`, { pathParams: { momentId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId`, {
+        pathParams: { momentId },
+      }),
     create: `${SERVER_HOST_URL}/v1/posts`,
     like: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/like`, { pathParams: { momentId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/like`, {
+        pathParams: { momentId },
+      }),
     unlike: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/unlike`, { pathParams: { momentId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/unlike`, {
+        pathParams: { momentId },
+      }),
     bookmark: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/bookmark`, { pathParams: { momentId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/bookmark`, {
+        pathParams: { momentId },
+      }),
     unbookmark: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/unbookmark`, { pathParams: { momentId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/unbookmark`, {
+        pathParams: { momentId },
+      }),
     repost: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/repost`, { pathParams: { momentId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/repost`, {
+        pathParams: { momentId },
+      }),
   },
 
   story: {
     get: `${SERVER_HOST_URL}/v1/stories`,
     getByUsername: (username: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/stories/user/:username`, { pathParams: { username } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/stories/user/:username`, {
+        pathParams: { username },
+      }),
     delete: (id: string) =>
       buildUrl(`${SERVER_HOST_URL}/v1/stories/:id`, { pathParams: { id } }),
   },
@@ -95,11 +145,17 @@ export const ApiUrl = {
       }),
     add: `${SERVER_HOST_URL}/v1/comments`,
     like: (commentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/comments/:commentId/like`, { pathParams: { commentId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/comments/:commentId/like`, {
+        pathParams: { commentId },
+      }),
     unlike: (commentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/comments/:commentId/unlike`, { pathParams: { commentId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/comments/:commentId/unlike`, {
+        pathParams: { commentId },
+      }),
     delete: (commentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/comments/:commentId`, { pathParams: { commentId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/comments/:commentId`, {
+        pathParams: { commentId },
+      }),
   },
 
   // === Search ===
@@ -115,16 +171,22 @@ export const ApiUrl = {
         queryParams: { query, type, order, page, limit },
       }),
     getHistory: (limit?: number) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/search/history`, { queryParams: { limit } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/search/history`, {
+        queryParams: { limit },
+      }),
     clearHistory: `${SERVER_HOST_URL}/v1/search/history/clear`,
     removeHistoryItem: (itemId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/search/history/:itemId`, { pathParams: { itemId } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/search/history/:itemId`, {
+        pathParams: { itemId },
+      }),
   },
 
   // === Notification ===
   notification: {
     get: (type: "all" | "request" | "social", page?: number, limit?: number) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/notifications`, { queryParams: { type, page, limit } }),
+      buildUrl(`${SERVER_HOST_URL}/v1/notifications`, {
+        queryParams: { type, page, limit },
+      }),
   },
 } as const;
 

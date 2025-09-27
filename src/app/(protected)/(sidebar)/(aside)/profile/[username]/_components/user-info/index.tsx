@@ -20,8 +20,7 @@ import { Edit, Lock, Settings } from "@/components/icons";
 
 export default function UserInfo() {
   const { user } = useAuth();
-  const { profile, isProtected } = useProfile();
-  const isSelf = user?.id === profile.id;
+  const { profile, canView, isSelf } = useProfile();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
@@ -92,7 +91,7 @@ export default function UserInfo() {
       >
         <div className={cn("font-semibold text-xl", "flex items-center gap-1")}>
           {profile.displayName ?? profile.username}
-          {isProtected ? (
+          {profile.isProtected ? (
             <Lock className="size-4 mt-0.5 text-muted-foreground" />
           ) : null}
         </div>
@@ -121,7 +120,7 @@ export default function UserInfo() {
                 onClick={() => setIsEditModalOpen(true)}
                 className={cn(
                   "text-muted-foreground/60 text-center text-sm italic",
-                  "focus-indicator rounded-sm cursor-pointer"
+                  "focus-within-indicator rounded-sm cursor-pointer"
                 )}
               >
                 Write something here...
@@ -132,25 +131,43 @@ export default function UserInfo() {
       </div>
 
       <div className={cn("grid grid-cols-2 gap-10", "text-sm", "mb-6")}>
-        <div className="flex flex-col items-center">
+        <Link
+          href={ROUTE.PROFILE(profile.username, "following")}
+          className={cn(
+            "flex flex-col items-center",
+            user
+              ? "cursor-pointer focus-within-indicator rounded-sm"
+              : "cursor-default"
+          )}
+          onClick={(event) => !user && event.preventDefault()}
+        >
           <NumberTooltip number={profile.following} sideOffset={4}>
             <span className="font-bold">
               {Format.number(profile.following)}
             </span>
           </NumberTooltip>
           <span>Following</span>
-        </div>
-        <div className="flex flex-col items-center">
+        </Link>
+        <Link
+          href={ROUTE.PROFILE(profile.username, "followers")}
+          className={cn(
+            "flex flex-col items-center",
+            user
+              ? "cursor-pointer focus-within-indicator rounded-sm"
+              : "cursor-default"
+          )}
+          onClick={(event) => !user && event.preventDefault()}
+        >
           <NumberTooltip number={profile.followers} sideOffset={4}>
             <span className="font-bold">
               {Format.number(profile.followers)}
             </span>
           </NumberTooltip>
           <span>Followers</span>
-        </div>
+        </Link>
       </div>
 
-      {isProtected ? (
+      {canView ? (
         <div className={cn("flex flex-col", "mt-8 mx-12 max-w-[360px]")}>
           <span className="text-xl font-bold">This account is protected</span>
           <span className={cn("mt-1", "text-muted-foreground text-sm")}>

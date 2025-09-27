@@ -9,7 +9,7 @@ export const ROUTE = {
   FORGOT_PASSWORD: "/forgot-password",
 
   // === Public ===
-  PROFILE: (username?: string, type?: "media" | "tagged") => {
+  PROFILE: (username?: string, type?: "media" | "tagged" | "following" | "followers") => {
     let path = "/profile";
     if (username) path = buildUrl("/profile/:username", { pathParams: { username } });
     if (type) path = buildUrl(`${path}/:type`, { pathParams: { type } });
@@ -63,6 +63,10 @@ export const PRIVATE_ROUTES = [
   ROUTE.NOTIFICATION(),
   ROUTE.SETTINGS,
   ROUTE.ARCHIVE(),
+  ROUTE.PROFILE("*", "media"),
+  ROUTE.PROFILE("*", "tagged"),
+  ROUTE.PROFILE("*", "following"),
+  ROUTE.PROFILE("*", "followers"),
 ];
 export const AUTH_ROUTES = [ROUTE.LOGIN, ROUTE.SIGNUP, ROUTE.FORGOT_PASSWORD];
 export const PUBLIC_ROUTES = [ROUTE.PROFILE(), ROUTE.POST()];

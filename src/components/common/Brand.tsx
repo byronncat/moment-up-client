@@ -21,7 +21,7 @@ export default function Brand({
         href={ROUTE.HOME}
         className={cn(
           "cursor-pointer",
-          "focus-indicator rounded-sm",
+          "focus-within-indicator rounded-sm",
           className
         )}
       >

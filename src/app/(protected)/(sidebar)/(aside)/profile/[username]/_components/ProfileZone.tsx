@@ -5,7 +5,8 @@ import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import UserInfo, { UserInfoSkeleton } from "./user-info";
 import { type NavItem, NavigationBar } from "@/components/common";
-import { Image as ImageIcon, TableOfContents, Tag } from "@/components/icons";
+import { Header } from "./ProfileLayout";
+import { Image as ImageIcon, TableOfContents } from "@/components/icons";
 
 export const PROFILE_ZONE_HEIGHT = 472;
 export default function ProfileZone({
@@ -14,11 +15,11 @@ export default function ProfileZone({
   className?: string;
 }>) {
   const { user } = useAuth();
-  const { profile, isProtected } = useProfile();
+  const { profile, canView } = useProfile();
   const tabs: NavItem[] = [
     {
-      id: "moments",
-      label: "Moments",
+      id: "posts",
+      label: "Posts",
       icon: <TableOfContents className="size-4" />,
       href: ROUTE.PROFILE(profile.username),
     },
@@ -28,18 +29,18 @@ export default function ProfileZone({
       icon: <ImageIcon className="size-4" />,
       href: user ? ROUTE.PROFILE(profile.username, "media") : ROUTE.LOGIN,
     },
-    {
-      id: "tagged",
-      label: "Tagged",
-      icon: <Tag className="size-4" />,
-      href: user ? ROUTE.PROFILE(profile.username, "tagged") : ROUTE.LOGIN,
-    },
+    // {
+    //   id: "tagged",
+    //   label: "Tagged",
+    //   icon: <Tag className="size-4" />,
+    //   href: user ? ROUTE.PROFILE(profile.username, "tagged") : ROUTE.LOGIN,
+    // },
   ];
 
   return (
     <div className={className}>
       <UserInfo />
-      {isProtected ? null : (
+      {canView ? null : (
         <NavigationBar
           items={tabs}
           className={cn("w-full", "border-y border-border")}
@@ -52,8 +53,8 @@ export default function ProfileZone({
 export function ProfileZoneSkeleton() {
   const tabs: NavItem[] = [
     {
-      id: "moments",
-      label: "Moments",
+      id: "posts",
+      label: "Posts",
       icon: <TableOfContents className="size-4" />,
     },
     {
@@ -61,15 +62,16 @@ export function ProfileZoneSkeleton() {
       label: "Media",
       icon: <ImageIcon className="size-4" />,
     },
-    {
-      id: "tagged",
-      label: "Tagged",
-      icon: <Tag className="size-4" />,
-    },
+    // {
+    //   id: "tagged",
+    //   label: "Tagged",
+    //   icon: <Tag className="size-4" />,
+    // },
   ];
 
   return (
     <div className={cn("w-full relative", "flex flex-col items-center")}>
+      <Header className="w-full" />
       <UserInfoSkeleton />
       <NavigationBar
         items={tabs}

@@ -101,7 +101,7 @@
   }
 
   /* for px-based sizing */
-  --breakpoint-laptop: 601px;
+  --breakpoint-mobile: 601px;
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
@@ -202,10 +202,17 @@
     @apply outline-2 outline-offset-1 outline-transparent focus-visible:outline-accent/20;
     @apply focus-visible:ring-1 focus-visible:ring-ring;
 
+    @apply focus:outline-accent/20 focus:ring-1 focus:ring-ring;
+  }
+
+  .focus-within-indicator {
+    @apply outline-2 outline-offset-1 outline-transparent focus-visible:outline-accent/20;
+    @apply focus-visible:ring-1 focus-visible:ring-ring;
+
     @apply focus-within:outline-accent/20 focus-within:ring-1 focus-within:ring-ring;
   }
 
-  .focus-indicator-dark {
+  .focus-within-indicator-dark {
     @apply outline-2 outline-offset-1 outline-transparent focus-visible:outline-accent-dark/20;
     @apply focus-visible:ring-1 focus-visible:ring-ring-dark;
 

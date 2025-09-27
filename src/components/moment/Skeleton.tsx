@@ -2,17 +2,17 @@ import { cn } from "@/libraries/utils";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 
-type MomentSkeletonProps = Readonly<{
+type PostSkeletonProps = Readonly<{
   media?: "vertical" | "horizontal" | "square" | "none";
   haveText?: boolean;
   className?: string;
 }>;
 
-export default function MomentSkeleton({
+export default function PostSkeleton({
   media = "square",
   haveText = false,
   className,
-}: MomentSkeletonProps) {
+}: PostSkeletonProps) {
   let aspectRatio;
   switch (media) {
     case "vertical":

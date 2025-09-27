@@ -15,6 +15,19 @@ export enum ContentPrivacy {
   PRIVATE,
 }
 
+export enum UserReportType {
+  SPAM,
+  IMPERSONATION,
+  INAPPROPRIATE_CONTENT,
+  ABUSIVE,
+  HARMFUL,
+  CHILD_EXPLORATION,
+  SEXUAL_CONTENT,
+  FAKE_INFORMATION,
+  DONT_WANT_TO_SEE,
+  OTHER,
+}
+
 export enum TrendingReportType {
   NOT_RELEVANT,
   SPAM,

@@ -14,7 +14,7 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
         "shadow-xs transition-[color,box-shadow]",
         "placeholder:text-muted-foreground",
         // "outline-none focus-visible:ring-ring focus-visible:ring-[1px]",
-        "focus-indicator",
+        "focus-within-indicator",
         "disabled:cursor-not-allowed disabled:opacity-50",
         "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
         className

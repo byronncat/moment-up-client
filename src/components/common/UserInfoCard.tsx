@@ -24,7 +24,7 @@ import { Settings, User } from "@/components/icons";
 
 type UserInfoCardProps = Readonly<{
   user: UserSummaryDto;
-  onFollow?: (event: React.MouseEvent) => Promise<void>;
+  onFollow?: (event: React.MouseEvent) => void;
 }>;
 
 export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
@@ -42,6 +42,8 @@ export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
             src={user.avatar}
             alt={`${user.displayName ?? user.username}'s avatar`}
             size="14"
+            ring
+            showRing={user.hasStory}
           />
         </Link>
 
@@ -196,7 +198,7 @@ function FollowedBy({
 
 type FollowButtonProps = Readonly<{
   isFollowing?: UserSummaryDto["isFollowing"];
-  onFollow?: (event: React.MouseEvent) => Promise<void>;
+  onFollow?: (event: React.MouseEvent) => void;
 }>;
 
 function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {

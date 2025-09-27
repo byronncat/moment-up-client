@@ -215,7 +215,7 @@ const Sidebar = React.forwardRef<
     return (
       <div
         ref={ref}
-        className="group peer hidden laptop:block text-sidebar-foreground"
+        className="group peer hidden mobile:block text-sidebar-foreground"
         data-state={state}
         data-collapsible={state === "collapsed" ? collapsible : ""}
         data-variant={variant}
@@ -234,7 +234,7 @@ const Sidebar = React.forwardRef<
         />
         <div
           className={cn(
-            "duration-200 fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] ease-linear laptop:flex",
+            "duration-200 fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] ease-linear mobile:flex",
             side === "left"
               ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
               : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
@@ -338,7 +338,7 @@ const SidebarInset = React.forwardRef<
       ref={ref}
       className={cn(
         "relative flex min-h-svh flex-1 flex-col bg-background",
-        "peer-data-[variant=inset]:min-h-[calc(100svh-(--spacing(4)))] laptop:peer-data-[variant=inset]:m-2 laptop:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2 laptop:peer-data-[variant=inset]:ml-0 laptop:peer-data-[variant=inset]:rounded-xl laptop:peer-data-[variant=inset]:shadow-sm",
+        "peer-data-[variant=inset]:min-h-[calc(100svh-(--spacing(4)))] mobile:peer-data-[variant=inset]:m-2 mobile:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2 mobile:peer-data-[variant=inset]:ml-0 mobile:peer-data-[variant=inset]:rounded-xl mobile:peer-data-[variant=inset]:shadow-sm",
         className
       )}
       {...props}
@@ -495,7 +495,7 @@ const SidebarGroupAction = React.forwardRef<
         "focus-visible:ring-2",
         // "[&>svg]:size-4",
         "[&>svg]:shrink-0",
-        "after:absolute after:-inset-2 laptop:after:hidden",
+        "after:absolute after:-inset-2 mobile:after:hidden",
         "group-data-[collapsible=icon]:hidden",
         className
       )}
@@ -554,7 +554,7 @@ const sidebarMenuButtonVariants = cva(
     "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
     // "outline-hidden ring-sidebar-ring",
     // "focus-visible:ring-2",
-    "focus-indicator",
+    "focus-within-indicator",
     "active:bg-sidebar-accent active:text-sidebar-accent-foreground",
     "disabled:pointer-events-none disabled:opacity-50",
     "group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50",
@@ -659,13 +659,13 @@ const SidebarMenuAction = React.forwardRef<
         // "[&>svg]:size-4",
         "[&>svg]:shrink-0",
         // Increases the hit area of the button on mobile.
-        "after:absolute after:-inset-2 laptop:after:hidden",
+        "after:absolute after:-inset-2 mobile:after:hidden",
         "peer-data-[size=sm]/menu-button:top-1",
         "peer-data-[size=default]/menu-button:top-1.5",
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
-          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground laptop:opacity-0",
+          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground mobile:opacity-0",
         className
       )}
       {...props}

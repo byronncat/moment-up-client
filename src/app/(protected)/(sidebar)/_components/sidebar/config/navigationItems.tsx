@@ -22,7 +22,7 @@ export function getNavigationItems(
       icon: (open) => (
         <House
           type={open ? "solid" : "regular"}
-          className="size-7 laptop:size-5"
+          className="size-7 mobile:size-5"
         />
       ),
       matchPath: () => pathname === ROUTE.HOME,
@@ -31,7 +31,7 @@ export function getNavigationItems(
       title: "Search",
       url: ROUTE.SEARCH(),
       icon: (open) => (
-        <Search className="size-5 laptop:size-4" strokeWidth={open ? 4 : 2} />
+        <Search className="size-5 mobile:size-4" strokeWidth={open ? 4 : 2} />
       ),
       matchPath: () => pathname.startsWith(ROUTE.SEARCH()),
     },
@@ -41,7 +41,7 @@ export function getNavigationItems(
       icon: (open) => (
         <Compass
           type={open ? "solid" : "regular"}
-          className="size-5 laptop:size-4"
+          className="size-5 mobile:size-4"
         />
       ),
       matchPath: () => pathname.startsWith(ROUTE.EXPLORE(ExploreType.MEDIA)),
@@ -49,13 +49,13 @@ export function getNavigationItems(
     {
       title: "Create",
       url: ROUTE.POST_CREATE,
-      icon: () => <SquarePlus className="size-5 laptop:size-4" />,
+      icon: () => <SquarePlus className="size-5 mobile:size-4" />,
     },
     {
       title: "Messages",
       url: ROUTE.MESSAGES,
       icon: () => (
-        <Message variant="square" multiple className="size-5 laptop:size-4" />
+        <Message variant="square" multiple className="size-5 mobile:size-4" />
       ),
       matchPath: () => pathname === ROUTE.MESSAGES,
     },
@@ -65,7 +65,7 @@ export function getNavigationItems(
       icon: (open) => (
         <Bell
           variant={open ? "solid" : "regular"}
-          className="size-5 laptop:size-4"
+          className="size-5 mobile:size-4"
         />
       ),
       matchPath: () => pathname.startsWith(ROUTE.NOTIFICATION()),
@@ -76,7 +76,7 @@ export function getNavigationItems(
       icon: (open) => (
         <User
           type={open ? "solid" : "regular"}
-          className="size-5 laptop:size-4"
+          className="size-5 mobile:size-4"
         />
       ),
       matchPath: () =>

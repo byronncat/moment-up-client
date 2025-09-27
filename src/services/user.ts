@@ -1,5 +1,6 @@
 import type { API, ErrorDto, ProfileDto } from "api";
 import type { Token } from "@/components/providers/Auth";
+import type { UserReportType } from "@/constants/server";
 
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
@@ -9,10 +10,12 @@ const SuccessMessage = {
   updateProfile: "Profile updated",
   follow: "You're now following this user",
   unfollow: "Unfollowed",
+  removeFollower: "Follower removed",
   block: "User blocked",
   unblock: "User unblocked",
   mute: "User muted",
   unmute: "User unmuted",
+  reportUser: "User reported successfully",
 };
 
 export async function getProfile(username: string): API<{
@@ -42,6 +45,13 @@ export async function getProfile(username: string): API<{
         statusCode: error.statusCode,
       };
     });
+}
+
+export interface UpdateProfileDto {
+  avatar?: string | null;
+  displayName?: string | null;
+  bio?: string | null;
+  backgroundImage?: string | null;
 }
 
 export async function updateProfile(
@@ -106,6 +116,33 @@ export async function follow(data: FollowDto, token: Token): API {
       return {
         success: true,
         message: successMessage,
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorDto) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+export async function removeFollower(userId: string, token: Token): API {
+  return fetch(ApiUrl.user.removeFollower(userId), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: SuccessMessage.removeFollower,
         statusCode: response.status,
       };
     })
@@ -198,8 +235,15 @@ export async function mute(data: MuteDto, token: Token): API {
     });
 }
 
-// +++ TODO: Ongoing +++
-export async function reportUser(userId: string, token: Token): API {
+interface ReportUserDto {
+  type: UserReportType;
+}
+
+export async function reportUser(
+  userId: string,
+  data: ReportUserDto,
+  token: Token
+): API {
   return fetch(ApiUrl.user.report(userId), {
     method: "POST",
     headers: {
@@ -208,12 +252,13 @@ export async function reportUser(userId: string, token: Token): API {
       Authorization: `Bearer ${token.accessToken}`,
     },
     credentials: "include",
+    body: JSON.stringify(data),
   })
     .then(async (response) => {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: "User reported successfully",
+        message: SuccessMessage.reportUser,
         statusCode: response.status,
       };
     })
@@ -224,11 +269,4 @@ export async function reportUser(userId: string, token: Token): API {
         statusCode: error.statusCode,
       };
     });
-}
-
-export interface UpdateProfileDto {
-  avatar?: string | null;
-  displayName?: string | null;
-  bio?: string | null;
-  backgroundImage?: string | null;
 }
