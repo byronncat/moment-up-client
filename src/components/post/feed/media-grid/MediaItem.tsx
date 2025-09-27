@@ -12,23 +12,23 @@ import { Play } from "../../../icons";
 type MediaItemProps = Readonly<{
   file: NonNullable<FeedItemDto["post"]["files"]>[0];
   index: number;
-  momentId: string;
+  postId: string;
   className?: string;
 }>;
 
 export default function MediaItem({
   file,
   index,
-  momentId,
+  postId,
   className,
 }: MediaItemProps) {
   return (
-    <Link href={ROUTE.POST(momentId, index)} className={className}>
+    <Link href={ROUTE.POST(postId, index)} className={className}>
       <div className="relative size-full">
         {file.type === "image" ? (
           <Image
             src={__parseUrl(file.id, "image", 640) as string}
-            alt={`Moment ${index + 1}`}
+            alt={`Post ${index + 1}`}
             fill
             sizes="(max-width: 720px) 100vw, 600px"
             className="object-cover object-top select-none"

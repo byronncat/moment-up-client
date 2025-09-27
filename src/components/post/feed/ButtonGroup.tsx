@@ -12,7 +12,7 @@ import ColorfulIconButton, {
   buttonStyles,
 } from "../../common/ColorfulIconButton";
 import ShareDialog from "./share-dialog";
-import { Heart, Message, Share, Repeat, Bookmark } from "../../icons";
+import { Bookmark, Heart, Message, Repeat, Share } from "../../icons";
 
 type ButtonGroupProps = Readonly<{
   data: FeedItemDto;
@@ -30,8 +30,7 @@ export default function ButtonGroup({
   const router = useRouter();
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const momentId = data.id;
-  const user = data.user;
-  const post = data.post;
+  const { user, post } = data;
 
   const buttons = [
     {
@@ -39,6 +38,7 @@ export default function ButtonGroup({
         <Heart
           type={post.isLiked ? "solid" : "regular"}
           className={cn(
+            "group-focus:fill-pink-500 dark:group-focus:fill-pink-400",
             buttonStyles.iconSize,
             buttonStyles.transition,
             post.isLiked
@@ -49,6 +49,7 @@ export default function ButtonGroup({
       ),
       color: "pink" as const,
       count: post.likes,
+      emptyText: "Likes",
       tooltip: "Like",
       isActive: post.isLiked,
       onClick: () => actions.like(momentId),
@@ -57,6 +58,7 @@ export default function ButtonGroup({
       icon: (
         <Message
           className={cn(
+            "group-focus:fill-sky-500 dark:group-focus:fill-sky-400",
             buttonStyles.iconSize,
             buttonStyles.transition,
             "fill-muted-foreground group-hover:fill-sky-500",
@@ -66,16 +68,16 @@ export default function ButtonGroup({
       ),
       color: "sky" as const,
       count: post.comments,
+      emptyText: "Comments",
       tooltip: "Comment",
       onClick: () =>
-        actions.comment
-          ? actions.comment()
-          : router.push(ROUTE.POST(momentId)),
+        actions.comment ? actions.comment() : router.push(ROUTE.POST(momentId)),
     },
     {
       icon: (
         <Repeat
           className={cn(
+            "group-focus:fill-green-500 dark:group-focus:fill-green-400",
             buttonStyles.iconSize,
             buttonStyles.transition,
             "fill-muted-foreground group-hover:fill-green-500"
@@ -84,6 +86,7 @@ export default function ButtonGroup({
       ),
       color: "green" as const,
       count: post.reposts,
+      emptyText: "Reposts",
       tooltip: "Repost",
       onClick: () => setIsShareDialogOpen(true),
     },
@@ -92,6 +95,7 @@ export default function ButtonGroup({
         <Bookmark
           type={post.isBookmarked ? "solid" : "regular"}
           className={cn(
+            "group-focus:fill-yellow-500 dark:group-focus:fill-yellow-400",
             buttonStyles.iconSize,
             buttonStyles.transition,
             post.isBookmarked
@@ -109,6 +113,7 @@ export default function ButtonGroup({
       icon: (
         <Share
           className={cn(
+            "group-focus:fill-blue-500 dark:group-focus:fill-blue-400",
             buttonStyles.iconSize,
             buttonStyles.transition,
             "fill-muted-foreground group-hover:fill-blue-500"

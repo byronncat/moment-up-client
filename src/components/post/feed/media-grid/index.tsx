@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import type { FeedItemDto } from "api";
 
 import { cn } from "@/libraries/utils";
@@ -6,20 +7,17 @@ import { CardContent } from "../../../ui/card";
 import MediaItem from "./MediaItem";
 import { AspectRatioHelper } from "./aspectRatio.helper";
 
-const FIRST = 0;
-const SECOND = 1;
-const THIRD = 2;
-const MAX = 5;
+const MAX_LENGTH = 5;
 
 type MediaGridProps = Readonly<{
   files: FeedItemDto["post"]["files"];
-  momentId: string;
+  postId: string;
 }>;
 
-export default function MediaGrid({ files, momentId }: MediaGridProps) {
-  if (!files) return null;
+export default function MediaGrid({ files, postId }: MediaGridProps) {
+  if (!files || files.length === 0) return null;
   const firstImageHorizontal = AspectRatioHelper.isHorizontal(
-    files[FIRST].aspectRatio
+    files[0].aspectRatio
   );
 
   const Grid = () => {
@@ -28,10 +26,10 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
       case 1:
         return (
           <AspectRatio
-            ratio={AspectRatioHelper.getValue(files[FIRST].aspectRatio)}
+            ratio={AspectRatioHelper.getValue(files[0].aspectRatio)}
             className="relative"
           >
-            <MediaItem file={files[FIRST]} index={FIRST} momentId={momentId} />
+            <MediaItem file={files[0]} index={0} postId={postId} />
           </AspectRatio>
         );
       case 2:
@@ -43,12 +41,8 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
               firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
             )}
           >
-            <MediaItem file={files[FIRST]} index={FIRST} momentId={momentId} />
-            <MediaItem
-              file={files[SECOND]}
-              index={SECOND}
-              momentId={momentId}
-            />
+            <MediaItem file={files[0]} index={0} postId={postId} />
+            <MediaItem file={files[1]} index={1} postId={postId} />
           </AspectRatio>
         );
       case 3:
@@ -60,23 +54,15 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
               firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
             )}
           >
-            <MediaItem file={files[FIRST]} index={FIRST} momentId={momentId} />
+            <MediaItem file={files[0]} index={0} postId={postId} />
             <div
               className={cn(
                 "grid gap-1",
                 firstImageHorizontal ? "grid-cols-2" : "grid-rows-2"
               )}
             >
-              <MediaItem
-                file={files[SECOND]}
-                index={SECOND}
-                momentId={momentId}
-              />
-              <MediaItem
-                file={files[THIRD]}
-                index={THIRD}
-                momentId={momentId}
-              />
+              <MediaItem file={files[1]} index={1} postId={postId} />
+              <MediaItem file={files[2]} index={2} postId={postId} />
             </div>
           </AspectRatio>
         );
@@ -88,7 +74,7 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
                 key={index}
                 file={file}
                 index={index}
-                momentId={momentId}
+                postId={postId}
               />
             ))}
           </AspectRatio>
@@ -109,18 +95,10 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
               )}
             >
               <div className="relative">
-                <MediaItem
-                  file={files[FIRST]}
-                  index={FIRST}
-                  momentId={momentId}
-                />
+                <MediaItem file={files[0]} index={0} postId={postId} />
               </div>
               <div className="relative">
-                <MediaItem
-                  file={files[SECOND]}
-                  index={SECOND}
-                  momentId={momentId}
-                />
+                <MediaItem file={files[1]} index={1} postId={postId} />
               </div>
             </div>
             <div
@@ -129,15 +107,11 @@ export default function MediaGrid({ files, momentId }: MediaGridProps) {
                 firstImageHorizontal ? "grid-cols-3" : "grid-rows-3"
               )}
             >
-              {files.slice(THIRD, MAX).map((file, index) => (
-                <div key={index + THIRD} className="relative">
-                  <MediaItem
-                    file={file}
-                    index={index + THIRD}
-                    momentId={momentId}
-                  />
-                  {index === THIRD && files.length > MAX && (
-                    <MoreItemsOverlay count={files.length - MAX} />
+              {files.slice(2, MAX_LENGTH).map((file, index) => (
+                <div key={index + 2} className="relative">
+                  <MediaItem file={file} index={index + 2} postId={postId} />
+                  {index === 2 && files.length > MAX_LENGTH && (
+                    <MoreItemsOverlay count={files.length - MAX_LENGTH} />
                   )}
                 </div>
               ))}
