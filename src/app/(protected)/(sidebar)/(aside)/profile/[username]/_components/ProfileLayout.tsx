@@ -131,7 +131,7 @@ function FollowButton({ className }: Readonly<{ className?: string }>) {
       ref={hoverRef}
       size="sm"
       variant={
-        profile.isFollowing ? (isHover ? "destructive" : "outline") : "accent"
+        profile.isFollowing ? (isHover ? "destructive" : "outline") : "default"
       }
       onClick={handleFollow}
       className={cn("w-[88px] cursor-pointer", className)}

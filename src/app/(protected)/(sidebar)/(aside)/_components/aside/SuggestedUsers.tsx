@@ -177,7 +177,7 @@ export function FollowButton({
     <Button
       ref={hoverRef}
       size="sm"
-      variant={isFollowing ? (isHover ? "destructive" : "outline") : "accent"}
+      variant={isFollowing ? (isHover ? "destructive" : "outline") : "default"}
       onClick={onFollow}
       className={cn("w-[88px] cursor-pointer", className)}
     >

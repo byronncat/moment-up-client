@@ -37,7 +37,7 @@ export default function FollowButton() {
 
   const content = (
     <Button
-      variant={profile.isFollowing && isHover ? "destructive" : "outline"}
+      variant={profile.isFollowing ? (isHover ? "destructive" : "outline") : "default"}
       className={cn(
         "text-sm",
         "size-9 sm:px-4 sm:py-2 sm:w-[128px]",
