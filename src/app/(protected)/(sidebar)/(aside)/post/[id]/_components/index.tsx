@@ -2,9 +2,9 @@
 
 import type { CoreApi } from "@/services";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { use, useLayoutEffect, useRef, useState } from "react";
-import { CommentStorageProvider, useMoment } from "@/components/providers";
+import { CommentProvider, useMoment } from "@/components/providers";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -27,18 +27,9 @@ type MomentDetailsProps = Readonly<{
 
 export default function MomentDetails({ initialRes }: MomentDetailsProps) {
   const momentRes = use(initialRes);
-  const router = useRouter();
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
-  const {
-    setMoments,
-    setCurrentIndex,
-    follow,
-    block,
-    report,
-    bookmark,
-    share,
-    like,
-  } = useMoment();
+  const { setPosts, setCurrentPost, report, bookmark, share, like, follow } =
+    useMoment();
 
   const moment = momentRes.data;
   const searchParams = useSearchParams();
@@ -46,9 +37,11 @@ export default function MomentDetails({ initialRes }: MomentDetailsProps) {
   const [initialIndex] = useState(imgIndex ? parseInt(imgIndex) : 0);
 
   useLayoutEffect(() => {
-    setCurrentIndex(0);
-    if (moment) setMoments([moment]);
-  }, [moment, setMoments, setCurrentIndex]);
+    if (moment) {
+      setPosts([moment]);
+      setCurrentPost(moment.id);
+    }
+  }, [moment, setPosts, setCurrentPost]);
 
   if (!moment)
     return (
@@ -71,10 +64,6 @@ export default function MomentDetails({ initialRes }: MomentDetailsProps) {
         actions={{
           follow,
           report,
-          block: async (momentId) => {
-            await block(momentId, { remove: false });
-            router.push(ROUTE.HOME);
-          },
         }}
       />
       <TextContent data={moment.post.text} />
@@ -95,10 +84,10 @@ export default function MomentDetails({ initialRes }: MomentDetailsProps) {
           },
         }}
       />
-      <CommentStorageProvider momentId={moment.id}>
+      <CommentProvider momentId={moment.id}>
         <CommentInput ref={commentInputRef} />
         <CommentZone />
-      </CommentStorageProvider>
+      </CommentProvider>
     </ScrollArea>
   );
 }

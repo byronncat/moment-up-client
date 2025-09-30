@@ -1,6 +1,6 @@
 import type {
-  HashtagSearchItem,
   FeedItemDto,
+  HashtagSearchItem,
   SearchItem,
   UserSearchItem,
 } from "api";
@@ -10,7 +10,7 @@ import { SearchItemType } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
-import { MomentCard, MomentCell } from "@/components/moment";
+import { FeedCard, MomentCell } from "@/components/post";
 import { MagnifyingGlass } from "@/components/icons";
 
 type SearchItemProps = Readonly<{
@@ -83,7 +83,7 @@ export default function SearchItem({
       </>
     ),
     [SearchItemType.POST]: () => (
-      <MomentCard
+      <FeedCard
         key={data.id}
         data={data as FeedItemDto}
         actions={{} as any}

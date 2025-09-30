@@ -6,7 +6,7 @@ import { memo } from "react";
 import { isValidFeedItemDto } from "./helper";
 
 import { cn } from "@/libraries/utils";
-import { MomentCell } from "@/components/moment";
+import { MomentCell } from "@/components/post/index.js";
 import { SearchItem } from "../../../../_components";
 import LoadingIndicator from "../../LoadingIndicator";
 

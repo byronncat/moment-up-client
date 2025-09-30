@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMoment } from "@/components/providers/MomentStorage";
+import { useMoment } from "@/components/providers/PostStorage";
 
 import { cn } from "@/libraries/utils";
 import { Modal } from "@/components/common";

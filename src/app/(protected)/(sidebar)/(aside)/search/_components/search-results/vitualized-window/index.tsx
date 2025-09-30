@@ -60,7 +60,7 @@ export default function VirtualizedSearchResults({
   }, []);
 
   const router = useRouter();
-  const { setCurrentIndex, setMoments } = useMoment();
+  const { setCurrentPost: setCurrentIndex, setPosts } = useMoment();
   function handleClick(item: TSearchItem) {
     switch (item.type) {
       case SearchItemType.USER:
@@ -87,9 +87,9 @@ export default function VirtualizedSearchResults({
             : null
         )
         .filter((item) => item !== null);
-      setMoments(moments);
+      setPosts(moments);
     }
-  }, [results, setMoments]);
+  }, [results, setPosts]);
 
   if (loading)
     return (
