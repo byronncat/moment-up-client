@@ -1,5 +1,5 @@
 import type { FeedItemDto } from "api";
-import type { Actions } from "../../providers/MomentStorage";
+import type { Actions } from "../../providers/PostStorage";
 
 import { cn } from "@/libraries/utils";
 import { Card } from "../../ui/card";

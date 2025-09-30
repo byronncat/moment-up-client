@@ -4,7 +4,6 @@
 import type { FeedItemDto, PaginationDto, StoryNotificationInfo } from "api";
 
 type HomeFeedContextType = Readonly<{
-  moments: FeedItemDto[] | undefined;
   hasNextPage: boolean;
   isLoading: boolean;
   isError: boolean;
@@ -26,14 +25,13 @@ import {
 import useSWRInfinite from "swr/infinite";
 import useSWRImmutable from "swr/immutable";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
-import { useMomentStore } from "@/components/providers/MomentStorage";
+import { useMoment } from "@/components/providers/PostStorage";
 import { useStory } from "@/components/providers/StoryStorage";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
 import { INITIAL_PAGE } from "@/constants/server";
 
 const HomeFeedContext = createContext<HomeFeedContextType>({
-  moments: undefined,
   hasNextPage: false,
   isLoading: false,
   isError: false,
@@ -74,7 +72,7 @@ export function HomeFeedProvider({
       }
     );
 
-  const { moments, setMoments } = useMomentStore();
+  const { addPosts } = useMoment();
   const { setStories } = useStory();
 
   const hasNextPage = useMemo(
@@ -82,19 +80,15 @@ export function HomeFeedProvider({
     [data]
   );
 
-  const allMoments = useMemo(() => {
-    return data instanceof Array
-      ? data.flatMap((page) => page.items)
-      : undefined;
-  }, [data]);
-
   const loadNextPage = useCallback(async () => {
     if (hasNextPage && !isValidating) await setSize(size + 1);
   }, [hasNextPage, isValidating, setSize, size]);
 
   useEffect(() => {
-    if (!error && allMoments) setMoments(allMoments);
-  }, [allMoments, error, setMoments]);
+    const lastPage = data?.[data.length - 1];
+    const _posts = lastPage?.items;
+    if (!error && _posts) addPosts(_posts);
+  }, [data, error, addPosts]);
 
   // === Story data ===
   const {
@@ -110,7 +104,6 @@ export function HomeFeedProvider({
   }, [storiesData?.stories, setStories]);
 
   const value: HomeFeedContextType = {
-    moments,
     hasNextPage,
     isLoading,
     isError: !!error,

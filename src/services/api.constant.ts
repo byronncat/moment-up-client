@@ -105,25 +105,29 @@ export const ApiUrl = {
         pathParams: { momentId },
       }),
     create: `${SERVER_HOST_URL}/v1/posts`,
-    like: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/like`, {
-        pathParams: { momentId },
+    like: (postId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId/like`, {
+        pathParams: { postId },
       }),
-    unlike: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/unlike`, {
-        pathParams: { momentId },
+    unlike: (postId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId/unlike`, {
+        pathParams: { postId },
       }),
-    bookmark: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/bookmark`, {
-        pathParams: { momentId },
+    bookmark: (postId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId/bookmark`, {
+        pathParams: { postId },
       }),
-    unbookmark: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/unbookmark`, {
-        pathParams: { momentId },
+    unbookmark: (postId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId/unbookmark`, {
+        pathParams: { postId },
       }),
-    repost: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId/repost`, {
-        pathParams: { momentId },
+    repost: (postId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId/repost`, {
+        pathParams: { postId },
+      }),
+    report: (postId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId/report`, {
+        pathParams: { postId },
       }),
   },
 

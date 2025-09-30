@@ -1,7 +1,7 @@
 "use client";
 
 import type { FeedItemDto } from "api";
-import type { Actions } from "../../providers/MomentStorage";
+import type { Actions } from "../../providers/PostStorage";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -29,7 +29,7 @@ export default function ButtonGroup({
 }: ButtonGroupProps) {
   const router = useRouter();
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
-  const momentId = data.id;
+  const postId = data.id;
   const { user, post } = data;
 
   const buttons = [
@@ -52,7 +52,7 @@ export default function ButtonGroup({
       emptyText: "Likes",
       tooltip: "Like",
       isActive: post.isLiked,
-      onClick: () => actions.like(momentId),
+      onClick: () => actions.like(postId),
     },
     {
       icon: (
@@ -71,7 +71,7 @@ export default function ButtonGroup({
       emptyText: "Comments",
       tooltip: "Comment",
       onClick: () =>
-        actions.comment ? actions.comment() : router.push(ROUTE.POST(momentId)),
+        actions.comment ? actions.comment() : router.push(ROUTE.POST(postId)),
     },
     {
       icon: (
@@ -107,7 +107,7 @@ export default function ButtonGroup({
       color: "yellow" as const,
       tooltip: "Bookmark",
       isActive: post.isBookmarked,
-      onClick: () => actions.bookmark(momentId),
+      onClick: () => actions.bookmark(postId),
     },
     {
       icon: (
@@ -122,7 +122,7 @@ export default function ButtonGroup({
       ),
       color: "blue" as const,
       tooltip: "Share",
-      onClick: () => actions.share(momentId),
+      onClick: () => actions.share(postId),
     },
   ];
 
@@ -149,7 +149,7 @@ export default function ButtonGroup({
       </div>
 
       <ShareDialog
-        momentId={momentId}
+        momentId={postId}
         userData={user}
         open={isShareDialogOpen}
         onClose={() => setIsShareDialogOpen(false)}

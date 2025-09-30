@@ -2,7 +2,7 @@
 
 import type { CommentInfo, PaginationDto } from "api";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { ApiUrl, CoreApi } from "@/services";
@@ -13,10 +13,9 @@ import { INITIAL_PAGE } from "@/constants/server";
 
 import Link from "next/link";
 import { ErrorContent, NoContent } from "@/components/common";
-import CommentSkeletons from "../moment/comment/Skeletons";
-import { Message } from "@/components/icons";
+import CommentSkeletons from "../post/comment/Skeletons";
+import { Circle, Message } from "@/components/icons";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import { Circle } from "@/components/icons";
 
 type CommentContextType = {
   comments: CommentInfo[] | undefined;
@@ -39,15 +38,15 @@ const CommentContext = createContext<CommentContextType>({} as any);
 export const useComment = () => useContext(CommentContext);
 const COMMENTS_PER_PAGE = 12;
 
-type CommentStorageProviderProps = Readonly<{
+type CommentProviderProps = Readonly<{
   momentId: string;
   children: React.ReactNode;
 }>;
 
-export default function CommentStorageProvider({
+export default function CommentProvider({
   momentId,
   children,
-}: CommentStorageProviderProps) {
+}: CommentProviderProps) {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { user, token } = useAuth();
 

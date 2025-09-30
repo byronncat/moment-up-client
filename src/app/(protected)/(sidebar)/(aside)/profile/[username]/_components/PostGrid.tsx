@@ -5,8 +5,7 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect, useRef } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useAuth, useRefreshSWR } from "@/components/providers";
-import { useMomentStore } from "@/components/providers/MomentStorage";
+import { useAuth, useMoment, useRefreshSWR } from "@/components/providers";
 import { useProfile } from "../_providers/ProfileProvider";
 import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
@@ -58,16 +57,16 @@ export default function PostGrid() {
       }
     );
 
-  const { moments, setMoments, setCurrentIndex } = useMomentStore();
+  const { posts, addPosts, setCurrentPost } = useMoment();
 
   const hasNextPage = data?.[data.length - 1].hasNextPage ?? true;
 
-  const remainder = moments ? moments.length % COLUMN_COUNT : 0;
-  const dataRowCount = moments ? Math.ceil(moments.length / COLUMN_COUNT) : 0;
+  const remainder = posts ? posts.length % COLUMN_COUNT : 0;
+  const dataRowCount = posts ? Math.ceil(posts.length / COLUMN_COUNT) : 0;
   const needsSkeletonRow = hasNextPage && remainder === 0;
   const skeletonRowCount = needsSkeletonRow ? 1 : 0;
-  const itemCount = moments
-    ? moments.length === 0 || error
+  const itemCount = posts
+    ? posts.length === 0 || error
       ? 2 // Profile + Content
       : 1 + dataRowCount + skeletonRowCount // Profile + Data rows + Skeleton row
     : isLoading
@@ -83,7 +82,6 @@ export default function PostGrid() {
       if (index === 0) return PROFILE_ZONE_HEIGHT;
       return getMediaHeight(window.innerWidth);
     },
-    measureElement: (element) => element.getBoundingClientRect().height,
   });
   const virtualItems = virtualizer.getVirtualItems();
 
@@ -91,14 +89,11 @@ export default function PostGrid() {
     if (hasNextPage && !isValidating) await setSize(size + 1);
   }, [hasNextPage, isValidating, setSize, size]);
 
-  function handleClick(index: number) {
-    setCurrentIndex(index);
-  }
-
   useEffect(() => {
-    const allPosts = data?.flatMap((page) => page.items);
-    if (!error && allPosts) setMoments(allPosts);
-  }, [data, error, setMoments]);
+    const lastPage = data?.[data.length - 1];
+    const _posts = lastPage?.items;
+    if (!error && _posts) addPosts(_posts);
+  }, [data, error, addPosts]);
 
   useEffect(() => {
     const [lastItem] = [...virtualItems].reverse();
@@ -107,7 +102,7 @@ export default function PostGrid() {
     if (lastItem.index - 1 >= dataRowCount - 1 && hasNextPage && !isValidating)
       loadNextPage();
   }, [
-    moments,
+    posts,
     virtualItems,
     hasNextPage,
     isValidating,
@@ -169,7 +164,7 @@ export default function PostGrid() {
                 onRefresh={() => mutate()}
                 className="pt-19 pb-20"
               />
-            ) : moments === undefined ? null : moments.length === 0 ? (
+            ) : posts === undefined ? null : posts.length === 0 ? (
               <div className={cn("pt-19 pb-20", "flex flex-col items-center")}>
                 <NoContent
                   icon={
@@ -193,15 +188,15 @@ export default function PostGrid() {
             ) : (
               <div className="flex justify-around gap-1 px-1">
                 {Array.from({ length: COLUMN_COUNT }, (_, columnIndex) => {
-                  const dataIndex = startIndex + columnIndex;
+                  const post = posts?.[startIndex + columnIndex];
                   let content = null;
 
                   if (rowIndex < dataRowCount) {
-                    if (moments && dataIndex < moments.length)
+                    if (post)
                       content = (
                         <MomentCell
-                          data={moments[dataIndex]}
-                          onClick={() => handleClick(dataIndex)}
+                          data={post}
+                          onClick={() => setCurrentPost(post.id)}
                         />
                       );
                     else if (

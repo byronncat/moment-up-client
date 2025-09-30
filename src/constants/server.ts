@@ -28,6 +28,22 @@ export enum UserReportType {
   OTHER,
 }
 
+export enum ContentReportType {
+  SPAM,
+  MISLEADING,
+  INAPPROPRIATE_CONTENT,
+  ABUSIVE,
+  HARMFUL,
+  SEXUAL_CONTENT,
+  CHILD_EXPLOITATION,
+  COPYRIGHT_VIOLATION,
+  VIOLENCE,
+  HATE_SPEECH,
+  FAKE_INFORMATION,
+  DUPLICATE,
+  OTHER,
+}
+
 export enum TrendingReportType {
   NOT_RELEVANT,
   SPAM,
@@ -101,5 +117,5 @@ export enum NotificationType {
 
 export enum ExploreType {
   MEDIA = "media",
-  POST = "moments",
+  POST = "posts",
 }

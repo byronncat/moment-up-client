@@ -5,11 +5,7 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect, useRef } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useAuth, useRefreshSWR } from "@/components/providers";
-import {
-  useMoment,
-  useMomentStore,
-} from "@/components/providers/MomentStorage";
+import { useAuth, useMoment, useRefreshSWR } from "@/components/providers";
 import { useProfile } from "../_providers/ProfileProvider";
 import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
@@ -63,16 +59,23 @@ export default function PostList({ filter }: PostListProps) {
       }
     );
 
-  const { moments, setMoments, setCurrentIndex, ...momentActions } =
-    useMomentStore();
-  const { like, bookmark, follow } = useMoment();
+  const {
+    posts,
+    addPosts,
+    setCurrentPost,
+    like,
+    bookmark,
+    share,
+    report,
+    follow,
+  } = useMoment();
 
   const hasNextPage = user && (data?.[data.length - 1].hasNextPage ?? true);
 
-  const itemCount = moments
-    ? moments.length === 0 || error // Profile + Content
+  const itemCount = posts
+    ? posts.length === 0 || error // Profile + Content
       ? 2
-      : 1 + moments.length + (hasNextPage && error?.statusCode !== 403 ? 1 : 0) // Profile + Posts + Loading
+      : 1 + posts.length + (hasNextPage && error?.statusCode !== 403 ? 1 : 0) // Profile + Posts + Loading
     : isLoading
       ? 2
       : 1; // Profile only
@@ -84,7 +87,7 @@ export default function PostList({ filter }: PostListProps) {
     paddingEnd: POST_CARD_LIST_GAP,
     estimateSize: (index) => {
       if (index === 0) return PROFILE_ZONE_HEIGHT;
-      return getPostHeight(moments?.[index - 1]?.post, window.innerWidth);
+      return getPostHeight(posts?.[index - 1]?.post, window.innerWidth);
     },
   });
   const virtualItems = virtualizer.getVirtualItems();
@@ -93,28 +96,25 @@ export default function PostList({ filter }: PostListProps) {
     if (hasNextPage && !isValidating) await setSize(size + 1);
   }, [hasNextPage, isValidating, setSize, size]);
 
-  function handleClick(index: number) {
-    setCurrentIndex(index);
-  }
+  useEffect(() => {
+    const lastPage = data?.[data.length - 1];
+    const _posts = lastPage?.items;
+    if (!error && _posts) addPosts(_posts);
+  }, [data, error, addPosts]);
 
   useEffect(() => {
-    const allPosts = data?.flatMap((page) => page.items);
-    if (!error && allPosts) setMoments(allPosts);
-  }, [data, error, setMoments]);
-
-  useEffect(() => {
-    if (!moments) return;
+    if (!posts) return;
     const [lastItem] = [...virtualItems].reverse();
     if (!lastItem) return;
 
     if (
-      lastItem.index - 1 >= moments.length - 1 &&
+      lastItem.index - 1 >= posts.length - 1 &&
       hasNextPage &&
       !isValidating &&
       user
     )
       loadNextPage();
-  }, [user, moments, virtualItems, hasNextPage, isValidating, loadNextPage]);
+  }, [user, posts, virtualItems, hasNextPage, isValidating, loadNextPage]);
 
   const prevIsFollowingRef = useRef<boolean | undefined>(undefined);
 
@@ -143,7 +143,7 @@ export default function PostList({ filter }: PostListProps) {
           error?.statusCode !== 403 &&
           vItem.index === itemCount - 1;
         const dataIndex = vItem.index - 1;
-        const post = moments?.[dataIndex];
+        const post = posts?.[dataIndex];
 
         return (
           <div
@@ -175,7 +175,7 @@ export default function PostList({ filter }: PostListProps) {
                 onRefresh={() => mutate()}
                 className="pt-16 pb-20"
               />
-            ) : moments === undefined ? null : moments.length === 0 ? (
+            ) : posts === undefined ? null : posts.length === 0 ? (
               <div className={cn("pt-16 pb-20", "flex flex-col items-center")}>
                 <NoContent
                   icon={
@@ -207,8 +207,8 @@ export default function PostList({ filter }: PostListProps) {
               <div className="max-w-[calc(600px+16px)] px-2 mx-auto">
                 <FeedCard
                   data={post}
-                  actions={{ like, bookmark, follow, ...momentActions }}
-                  onClick={() => handleClick(dataIndex)}
+                  actions={{ like, bookmark, share, report, follow }}
+                  onClick={() => setCurrentPost(post.id)}
                   className="w-full"
                 />
               </div>

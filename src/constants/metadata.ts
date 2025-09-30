@@ -50,6 +50,10 @@ export const Metadata: MetadataMap = {
   },
 
   // === Public ===
+  explore: {
+    title: "Explore",
+    description: "The latest stories, trends, and topics in one place.",
+  },
   profile: (username: string) => {
     return {
       title: `@${username}`,
@@ -64,10 +68,7 @@ export const Metadata: MetadataMap = {
   },
 
   // +++ TODO: Ongoing +++
-  explore: {
-    title: "Explore",
-    description: "Explore page",
-  },
+
   search: {
     title: "Search",
     description: "Search page",

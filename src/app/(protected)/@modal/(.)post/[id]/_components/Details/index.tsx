@@ -1,12 +1,12 @@
 import type { FeedItemDto } from "api";
 
 import { useRef } from "react";
-import { useMoment, CommentStorageProvider } from "@/components/providers";
+import { CommentProvider, useMoment } from "@/components/providers";
+import { CommentZone, MomentHeader } from "@/components/post";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MomentHeader, CommentZone } from "@/components/moment";
 import ButtonGroup from "./ButtonGroup";
 import CommentInput from "./CommentInput";
 import TextContent from "@/app/(protected)/(sidebar)/(aside)/post/[id]/_components/TextContent";
@@ -26,7 +26,7 @@ export default function Content({
   className,
 }: ContentProps) {
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
-  const { like, bookmark, report, share, follow, block } = useMoment();
+  const { like, bookmark, report, share, follow } = useMoment();
 
   function focusCommentInput() {
     commentInputRef.current?.focus();
@@ -46,13 +46,8 @@ export default function Content({
     >
       <MomentHeader
         data={data}
-        truncateClassName="truncate max-w-[120px]"
         actions={{
           follow,
-          block: async (momentId) => {
-            onClose?.();
-            await block(momentId, { remove: true });
-          },
           report,
         }}
         sideElement={
@@ -92,10 +87,10 @@ export default function Content({
         }}
         onCommentClick={focusCommentInput}
       />
-      <CommentStorageProvider momentId={data.id}>
+      <CommentProvider momentId={data.id}>
         <CommentInput ref={commentInputRef} className="min-h-[68px]" />
         <CommentZone className="grow" />
-      </CommentStorageProvider>
+      </CommentProvider>
     </ScrollArea>
   );
 }

@@ -84,7 +84,9 @@ export default function ColorfulIconButton({
         {count !== undefined && count > 0 ? (
           <span>{Format.number(count)}</span>
         ) : (
-          <span className="text-muted-foreground text-sm">{emptyText}</span>
+          <span className={cn("text-sm", variant.focus)}>
+            {emptyText}
+          </span>
         )}
       </button>
     </Tooltip>

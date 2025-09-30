@@ -23,7 +23,7 @@ export default function MediaItem({
   className,
 }: MediaItemProps) {
   return (
-    <Link href={ROUTE.POST(postId, index)} className={className}>
+    <Link href={ROUTE.POST(postId, index)} className={className} tabIndex={-1}>
       <div className="relative size-full">
         {file.type === "image" ? (
           <Image

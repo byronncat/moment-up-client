@@ -1,12 +1,15 @@
 "use client";
 
 import type { FeedItemDto } from "api";
-import type { Actions } from "../../providers/MomentStorage";
+import type { Actions } from "../../providers/PostStorage";
+import { ContentReportType } from "@/constants/server";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/components/providers";
 import dayjs from "dayjs";
 import Format from "@/utilities/format";
+import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import HoverableComponent from "./HoverInfo";
@@ -17,14 +20,29 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { Ban, Flag, MoreHorizontal, User, Volume } from "@/components/icons";
-import { FilePenLine, FileText, Trash } from "lucide-react";
+import { Flag, MoreHorizontal, User } from "@/components/icons";
+import {
+  AlertTriangle,
+  Angry,
+  CircleHelp,
+  Copy,
+  FilePenLine,
+  FileText,
+  Info,
+  MessageCircleWarning,
+  ShieldAlert,
+  Skull,
+  Trash,
+} from "lucide-react";
 
 type HeaderProps = Readonly<{
   data: FeedItemDto;
-  actions: Pick<Actions, "follow" | "block" | "report">;
+  actions: Pick<Actions, "follow" | "report">;
   sideElement?: React.ReactNode;
 }>;
 
@@ -107,14 +125,15 @@ export default function Header({ data, actions, sideElement }: HeaderProps) {
 type MoreMenuProps = Readonly<{
   user: FeedItemDto["user"];
   postId: FeedItemDto["id"];
+  actions: Pick<Actions, "follow" | "report">;
   isOpen: boolean;
   setOpen: (isOpen: boolean) => void;
-  actions: Pick<Actions, "follow" | "block" | "report">;
 }>;
 
 function MoreMenu({ isOpen, setOpen, user, postId, actions }: MoreMenuProps) {
   const { user: currentUser } = useAuth();
   const isSelf = currentUser?.id === user.id;
+  const router = useRouter();
 
   function handleAction(actionFn: () => void | Promise<void>) {
     setOpen(false);
@@ -138,36 +157,25 @@ function MoreMenu({ isOpen, setOpen, user, postId, actions }: MoreMenuProps) {
         </DropdownMenuTrigger>
       </Tooltip>
       <DropdownMenuContent align="end" className="w-48">
-        {isSelf ? null : (
-          <>
-            {user.isFollowing ? (
-              <DropdownMenuItem
-                onClick={() => handleAction(() => actions.follow(postId))}
-                className="cursor-pointer"
-              >
-                <User variant="minus" className="size-4 shrink-0" />
-                <span className="truncate">Unfollow @{user.username}</span>
-              </DropdownMenuItem>
-            ) : (
-              <DropdownMenuItem
-                onClick={() => handleAction(() => actions.follow(postId))}
-                className="cursor-pointer"
-              >
-                <User variant="plus" className="size-4 shrink-0" />
-                <span className="truncate">Follow @{user.username}</span>
-              </DropdownMenuItem>
-            )}
-            <DropdownMenuItem
-              onClick={() => console.log("mute user")}
-              className="cursor-pointer"
-            >
-              <Volume variant="off" className="size-4 shrink-0" />
-              <span className="truncate">Mute @{user.username}</span>
-            </DropdownMenuItem>
-          </>
+        {isSelf ? null : user.isFollowing ? (
+          <DropdownMenuItem
+            onClick={() => handleAction(() => actions.follow(postId))}
+            className="cursor-pointer"
+          >
+            <User variant="minus" className="size-4 shrink-0" />
+            <span className="truncate">Unfollow @{user.username}</span>
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem
+            onClick={() => handleAction(() => actions.follow(postId))}
+            className="cursor-pointer"
+          >
+            <User variant="plus" className="size-4 shrink-0" />
+            <span className="truncate">Follow @{user.username}</span>
+          </DropdownMenuItem>
         )}
         <DropdownMenuItem
-          onClick={() => console.log("go to post")}
+          onClick={() => router.push(ROUTE.POST(postId))}
           className="cursor-pointer"
         >
           <FileText className="size-4 shrink-0" />
@@ -177,14 +185,14 @@ function MoreMenu({ isOpen, setOpen, user, postId, actions }: MoreMenuProps) {
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => console.log("edit post")}
+              onClick={() => console.warn("edit post")}
               className="cursor-pointer"
             >
               <FilePenLine className="size-4 shrink-0" />
               <span className="truncate">Edit post</span>
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => console.log("delete post")}
+              onClick={() => console.warn("delete post")}
               className={cn("cursor-pointer", "destructive-item")}
             >
               <Trash className="size-4 shrink-0" />
@@ -194,23 +202,103 @@ function MoreMenu({ isOpen, setOpen, user, postId, actions }: MoreMenuProps) {
         ) : (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => handleAction(() => actions.block(postId))}
-              className={cn("cursor-pointer", "destructive-item")}
-            >
-              <Ban className="size-4 shrink-0" />
-              <span className="truncate">Block @{user.username}</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => handleAction(() => actions.report(postId))}
-              className={cn("cursor-pointer", "destructive-item")}
-            >
-              <Flag className="size-4 shrink-0" />
-              <span className="truncate">Report post</span>
-            </DropdownMenuItem>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger
+                className={cn("cursor-pointer", "destructive-item")}
+              >
+                <Flag className="size-4 shrink-0" />
+                <span className="truncate">Report post</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent sideOffset={8} className="w-60">
+                {ReportPostOptions.map((option) => (
+                  <DropdownMenuItem
+                    key={option.value}
+                    onClick={() =>
+                      handleAction(() => actions.report(postId, option.value))
+                    }
+                    className="cursor-pointer"
+                  >
+                    {option.icon}
+                    <span className="truncate">{option.label}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
           </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
+
+const ReportPostOptions: Array<{
+  label: string;
+  value: ContentReportType;
+  icon: React.ReactNode;
+}> = [
+  {
+    label: "Spam",
+    value: ContentReportType.SPAM,
+    icon: <Copy className="size-4 shrink-0" />,
+  },
+  {
+    label: "Misleading",
+    value: ContentReportType.MISLEADING,
+    icon: <MessageCircleWarning className="size-4 shrink-0" />,
+  },
+  {
+    label: "Inappropriate content",
+    value: ContentReportType.INAPPROPRIATE_CONTENT,
+    icon: <AlertTriangle className="size-4 shrink-0" />,
+  },
+  {
+    label: "Abusive",
+    value: ContentReportType.ABUSIVE,
+    icon: <Angry className="size-4 shrink-0" />,
+  },
+  {
+    label: "Harmful",
+    value: ContentReportType.HARMFUL,
+    icon: <Skull className="size-4 shrink-0" />,
+  },
+  {
+    label: "Sexual content",
+    value: ContentReportType.SEXUAL_CONTENT,
+    icon: <MessageCircleWarning className="size-4 shrink-0" />,
+  },
+  {
+    label: "Child exploitation",
+    value: ContentReportType.CHILD_EXPLOITATION,
+    icon: <ShieldAlert className="size-4 shrink-0" />,
+  },
+  {
+    label: "Copyright violation",
+    value: ContentReportType.COPYRIGHT_VIOLATION,
+    icon: <Info className="size-4 shrink-0" />,
+  },
+  {
+    label: "Violence",
+    value: ContentReportType.VIOLENCE,
+    icon: <AlertTriangle className="size-4 shrink-0" />,
+  },
+  {
+    label: "Hate speech",
+    value: ContentReportType.HATE_SPEECH,
+    icon: <Angry className="size-4 shrink-0" />,
+  },
+  {
+    label: "Fake information",
+    value: ContentReportType.FAKE_INFORMATION,
+    icon: <Info className="size-4 shrink-0" />,
+  },
+  {
+    label: "Duplicate",
+    value: ContentReportType.DUPLICATE,
+    icon: <Copy className="size-4 shrink-0" />,
+  },
+  {
+    label: "Other",
+    value: ContentReportType.OTHER,
+    icon: <CircleHelp className="size-4 shrink-0" />,
+  },
+];

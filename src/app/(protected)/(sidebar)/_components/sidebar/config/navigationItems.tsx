@@ -37,14 +37,14 @@ export function getNavigationItems(
     },
     {
       title: "Explore",
-      url: ROUTE.EXPLORE(),
+      url: ROUTE.EXPLORE(ExploreType.POST),
       icon: (open) => (
         <Compass
           type={open ? "solid" : "regular"}
           className="size-5 mobile:size-4"
         />
       ),
-      matchPath: () => pathname.startsWith(ROUTE.EXPLORE(ExploreType.MEDIA)),
+      matchPath: () => pathname.startsWith(ROUTE.EXPLORE()),
     },
     {
       title: "Create",
@@ -79,8 +79,7 @@ export function getNavigationItems(
           className="size-5 mobile:size-4"
         />
       ),
-      matchPath: () =>
-        username ? pathname.startsWith(ROUTE.PROFILE(username)) : false,
+      matchPath: () => pathname.startsWith(ROUTE.PROFILE()),
     },
   ];
 }

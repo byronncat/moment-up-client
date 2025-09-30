@@ -9,15 +9,22 @@ export const ROUTE = {
   FORGOT_PASSWORD: "/forgot-password",
 
   // === Public ===
-  PROFILE: (username?: string, type?: "media" | "tagged" | "following" | "followers") => {
+  PROFILE: (
+    username?: string,
+    type?: "media" | "tagged" | "following" | "followers"
+  ) => {
     let path = "/profile";
-    if (username) path = buildUrl("/profile/:username", { pathParams: { username } });
+    if (username)
+      path = buildUrl("/profile/:username", { pathParams: { username } });
     if (type) path = buildUrl(`${path}/:type`, { pathParams: { type } });
     return path;
   },
   POST: (postId?: string, imgIndex?: number) =>
-    postId 
-      ? buildUrl("/post/:postId", { pathParams: { postId }, queryParams: { imgIndex } })
+    postId
+      ? buildUrl("/post/:postId", {
+          pathParams: { postId },
+          queryParams: { imgIndex },
+        })
       : buildUrl("/post", { queryParams: { imgIndex } }),
 
   // === Private ===
@@ -35,26 +42,29 @@ export const ROUTE = {
   POST_CREATE: "/post/create",
   STORY: (username?: string, storyId?: string) => {
     let path = "/stories";
-    if (username) path = buildUrl("/stories/:username", { pathParams: { username } });
-    if (storyId) path = buildUrl(`${path}/:storyId`, { pathParams: { storyId } });
+    if (username)
+      path = buildUrl("/stories/:username", { pathParams: { username } });
+    if (storyId)
+      path = buildUrl(`${path}/:storyId`, { pathParams: { storyId } });
     return path;
   },
   STORY_CREATE: "/stories/create",
   MESSAGES: "/messages",
   MESSAGE: (contactId?: string) =>
-    contactId ? buildUrl("/messages/:contactId", { pathParams: { contactId } }) : "/messages",
+    contactId
+      ? buildUrl("/messages/:contactId", { pathParams: { contactId } })
+      : "/messages",
   NOTIFICATION: (type: NotificationType = NotificationType.ALL) =>
-    type === NotificationType.ALL 
-      ? "/notifications" 
+    type === NotificationType.ALL
+      ? "/notifications"
       : buildUrl("/notifications/:type", { pathParams: { type } }),
   SETTINGS: "/settings",
-  ARCHIVE: (type: "bookmarks" | "likes" = "bookmarks") => 
+  ARCHIVE: (type: "bookmarks" | "likes" = "bookmarks") =>
     buildUrl("/archive/:type", { pathParams: { type } }),
 };
 
 export const PRIVATE_ROUTES = [
   ROUTE.HOME,
-  ROUTE.EXPLORE(),
   ROUTE.STORY(),
   ROUTE.SEARCH(),
   ROUTE.POST_CREATE,
@@ -69,7 +79,7 @@ export const PRIVATE_ROUTES = [
   ROUTE.PROFILE("*", "followers"),
 ];
 export const AUTH_ROUTES = [ROUTE.LOGIN, ROUTE.SIGNUP, ROUTE.FORGOT_PASSWORD];
-export const PUBLIC_ROUTES = [ROUTE.PROFILE(), ROUTE.POST()];
+export const PUBLIC_ROUTES = [ROUTE.EXPLORE(), ROUTE.PROFILE(), ROUTE.POST()];
 
 export const SocialAuthError = {
   AccountBlocked: {

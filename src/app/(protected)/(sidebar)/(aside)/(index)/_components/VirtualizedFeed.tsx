@@ -3,10 +3,7 @@
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useHomeFeed } from "../_providers/HomeFeed";
-import {
-  useMoment,
-  useMomentStore,
-} from "@/components/providers/MomentStorage";
+import { useMoment } from "@/components/providers/PostStorage";
 import { getPostHeight } from "@/helpers/ui";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
 
@@ -19,7 +16,6 @@ const STORIES_HEIGHT = 121;
 
 export default function VirtualizedFeed() {
   const {
-    moments,
     hasNextPage,
     isLoading,
     isError,
@@ -27,27 +23,24 @@ export default function VirtualizedFeed() {
     loadNextPage,
     reloadPost,
   } = useHomeFeed();
-  const { setCurrentIndex, ...momentActions } = useMomentStore();
-  const { like, bookmark, follow } = useMoment();
+  const { posts, like, bookmark, follow, setCurrentPost, ...PostActions } =
+    useMoment();
 
   const itemCount =
-    isLoading || isError || moments?.length === 0
+    isLoading || isError || posts?.length === 0
       ? 2
-      : 1 + (moments?.length ?? 0) + (hasNextPage ? 1 : 0); // Story + Post length + Loading Skeleton
-
-  function handleClick(index: number) {
-    setCurrentIndex(index);
-  }
+      : 1 + (posts?.length ?? 0) + (hasNextPage ? 1 : 0); // Story + Post length + Loading Skeleton
 
   const virtualizer = useWindowVirtualizer({
     count: itemCount,
     overscan: 3,
     gap: POST_CARD_LIST_GAP,
+    paddingEnd: POST_CARD_LIST_GAP,
     estimateSize: (index) => {
       if (index === 0) return STORIES_HEIGHT;
       return getPostHeight(
         // Add ? after post to avoid undefined error
-        moments?.[index - 1]?.post,
+        posts?.[index - 1]?.post,
         window.innerWidth
       );
     },
@@ -55,17 +48,17 @@ export default function VirtualizedFeed() {
   const virtualItems = virtualizer.getVirtualItems();
 
   useEffect(() => {
-    if (!moments) return;
+    if (!posts) return;
     const [lastItem] = [...virtualItems].reverse();
     if (!lastItem) return;
 
     if (
-      lastItem.index - 1 >= moments.length - 1 &&
+      lastItem.index - 1 >= posts.length - 1 &&
       hasNextPage &&
       !isNextPageLoading
     )
       loadNextPage();
-  }, [moments, virtualItems, hasNextPage, isNextPageLoading, loadNextPage]);
+  }, [posts, virtualItems, hasNextPage, isNextPageLoading, loadNextPage]);
 
   return (
     <div
@@ -79,7 +72,7 @@ export default function VirtualizedFeed() {
         const isStoriesRow = vItem.index === 0;
         const isLoaderRow = hasNextPage && vItem.index === itemCount - 1;
         const dataIndex = vItem.index - 1;
-        const moment = moments?.[dataIndex];
+        const post = posts?.[dataIndex];
 
         return (
           <div
@@ -110,7 +103,7 @@ export default function VirtualizedFeed() {
               </>
             ) : isError ? (
               <ErrorContent onRefresh={reloadPost} className="pt-24" />
-            ) : !moments ? null : moments.length === 0 ? (
+            ) : !posts ? null : posts.length === 0 ? (
               <NoContent
                 icon={<Camera className="size-16 text-muted-foreground" />}
                 title="No moments yet"
@@ -123,11 +116,11 @@ export default function VirtualizedFeed() {
                 media="horizontal"
                 className="max-w-[600px] mx-auto"
               />
-            ) : moment ? (
+            ) : post ? (
               <FeedCard
-                data={moment}
-                actions={{ like, bookmark, follow, ...momentActions }}
-                onClick={() => handleClick(dataIndex)}
+                data={post}
+                actions={{ like, bookmark, follow, ...PostActions }}
+                onClick={() => setCurrentPost(post.id)}
                 className="max-w-[600px] mx-auto"
               />
             ) : null}

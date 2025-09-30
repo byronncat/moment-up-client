@@ -25,14 +25,15 @@ export default function MomentCell({
   const coverFile = data.post.files[0];
 
   return (
-    <div
+    <Link
+      href={ROUTE.POST(data.id)}
+      onClick={onClick}
+      tabIndex={0}
       className={cn(
         "relative group select-none",
-        "shadow-lg overflow-hidden",
+        "shadow-lg overflow-hidden outline-none",
         className
       )}
-      onClick={onClick}
-      role="button"
     >
       <div className={cn("bg-card aspect-square", "relative")}>
         {coverFile.type === "image" ? (
@@ -61,13 +62,12 @@ export default function MomentCell({
         />
 
         <HoverOverlay
-          id={data.id}
           isLiked={data.post.isLiked}
           likes={data.post.likes}
           comments={data.post.comments}
         />
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -102,35 +102,37 @@ function MediaTypeIndicator({
 }
 
 type HoverOverlayProps = Readonly<{
-  id: FeedItemDto["id"];
   isLiked: boolean;
   likes: number;
   comments: number;
 }>;
 
-function HoverOverlay({ id, isLiked, likes, comments }: HoverOverlayProps) {
+function HoverOverlay({ isLiked, likes, comments }: HoverOverlayProps) {
   return (
-    <Link
-      href={ROUTE.POST(id)}
+    <div
       className={cn(
         "absolute inset-0 bg-black/50",
-        "hidden group-hover:flex",
+        "hidden group-hover:flex group-focus-within:flex",
         "items-center justify-center"
       )}
     >
       <div className="flex gap-6 text-white font-semibold">
-        <div className="flex items-center gap-2">
-          <Heart
-            className="size-6 fill-red-500"
-            type={isLiked ? "solid" : "regular"}
-          />
-          <span>{Format.number(likes)}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Message className="size-6 fill-white" type="solid" />
-          <span>{Format.number(comments)}</span>
-        </div>
+        {likes > 0 && (
+          <div className="flex items-center gap-2">
+            <Heart
+              className="size-6 fill-red-500"
+              type={isLiked ? "solid" : "regular"}
+            />
+            <span>{Format.number(likes)}</span>
+          </div>
+        )}
+        {comments > 0 && (
+          <div className="flex items-center gap-2">
+            <Message className="size-6 fill-white" type="solid" />
+            <span>{Format.number(comments)}</span>
+          </div>
+        )}
       </div>
-    </Link>
+    </div>
   );
 }
