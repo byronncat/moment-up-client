@@ -1,5 +1,6 @@
 // +++ TODO: Ongoing +++
 import type { PostDto } from "api";
+import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
 
 const HEADER_HEIGHT = 76;
 const FOOTER_HEIGHT = 60;
@@ -36,10 +37,10 @@ export function getPostHeight(post: PostDto | undefined, _width = 600) {
   return height;
 }
 
-const GRID_GAP = 4;
-const GRID_COLUMNS = 3;
-
 export function getMediaHeight(_width = 640) {
   const width = _width > 640 ? 640 : _width;
-  return (width - GRID_GAP * (GRID_COLUMNS + 1)) / GRID_COLUMNS;
+  return (
+    (width - POST_GRID_GAP * (POST_GRID_COLUMN_COUNT + 1)) /
+    POST_GRID_COLUMN_COUNT
+  );
 }

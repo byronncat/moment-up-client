@@ -8,6 +8,7 @@ import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, useMoment, useRefreshSWR } from "@/components/providers";
 import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
+import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
 import { INITIAL_PAGE } from "@/constants/server";
 
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,8 +17,6 @@ import { ErrorContent, NoContent } from "@/components/common";
 import { Image as ImageIcon } from "@/components/icons";
 
 const EXPLORER_LIMIT = 50;
-const COLUMN_COUNT = 3;
-const GAP = 4;
 
 export default function MediaPage() {
   const swrFetcherWithRefresh = useRefreshSWR();
@@ -49,8 +48,10 @@ export default function MediaPage() {
 
   const hasNextPage = user && (data?.[data.length - 1].hasNextPage ?? true);
 
-  const remainder = posts ? posts.length % COLUMN_COUNT : 0;
-  const dataRowCount = posts ? Math.ceil(posts.length / COLUMN_COUNT) : 0;
+  const remainder = posts ? posts.length % POST_GRID_COLUMN_COUNT : 0;
+  const dataRowCount = posts
+    ? Math.ceil(posts.length / POST_GRID_COLUMN_COUNT)
+    : 0;
   const needsSkeletonRow = hasNextPage && remainder === 0;
   const skeletonRowCount = needsSkeletonRow ? 1 : 0;
   const itemCount = posts
@@ -64,8 +65,8 @@ export default function MediaPage() {
   const virtualizer = useWindowVirtualizer({
     count: itemCount,
     overscan: 3,
-    gap: GAP,
-    paddingStart: GAP,
+    gap: POST_GRID_GAP,
+    paddingStart: POST_GRID_GAP,
     paddingEnd: 16,
     estimateSize: () => getMediaHeight(window.innerWidth),
   });
@@ -113,7 +114,7 @@ export default function MediaPage() {
     >
       {virtualItems.map((vItem) => {
         const rowIndex = vItem.index;
-        const startIndex = rowIndex * COLUMN_COUNT;
+        const startIndex = rowIndex * POST_GRID_COLUMN_COUNT;
         const isLoaderRow = hasNextPage && rowIndex === itemCount - 1;
 
         return (
@@ -154,49 +155,55 @@ export default function MediaPage() {
               </div>
             ) : isLoaderRow ? (
               <div className="flex justify-around gap-1 px-1">
-                {Array.from({ length: COLUMN_COUNT }, (_, columnIndex) => (
-                  <Skeleton
-                    key={`skeleton-${columnIndex}`}
-                    className="aspect-square rounded-none flex-1"
-                  />
-                ))}
+                {Array.from(
+                  { length: POST_GRID_COLUMN_COUNT },
+                  (_, columnIndex) => (
+                    <Skeleton
+                      key={`skeleton-${columnIndex}`}
+                      className="aspect-square rounded-none flex-1"
+                    />
+                  )
+                )}
               </div>
             ) : (
               <div className="flex justify-around gap-1 px-1">
-                {Array.from({ length: COLUMN_COUNT }, (_, columnIndex) => {
-                  const post = posts?.[startIndex + columnIndex];
-                  let content = null;
+                {Array.from(
+                  { length: POST_GRID_COLUMN_COUNT },
+                  (_, columnIndex) => {
+                    const post = posts?.[startIndex + columnIndex];
+                    let content = null;
 
-                  if (rowIndex < dataRowCount) {
-                    if (post)
-                      content = (
-                        <MomentCell
-                          data={post}
-                          onClick={() => setCurrentPost(post.id)}
-                        />
-                      );
-                    else if (
-                      hasNextPage &&
-                      remainder > 0 &&
-                      rowIndex === dataRowCount - 1
-                    )
+                    if (rowIndex < dataRowCount) {
+                      if (post)
+                        content = (
+                          <MomentCell
+                            data={post}
+                            onClick={() => setCurrentPost(post.id)}
+                          />
+                        );
+                      else if (
+                        hasNextPage &&
+                        remainder > 0 &&
+                        rowIndex === dataRowCount - 1
+                      )
+                        content = (
+                          <Skeleton className="aspect-square rounded-none flex-1" />
+                        );
+                    } else if (hasNextPage)
                       content = (
                         <Skeleton className="aspect-square rounded-none flex-1" />
                       );
-                  } else if (hasNextPage)
-                    content = (
-                      <Skeleton className="aspect-square rounded-none flex-1" />
-                    );
 
-                  return (
-                    <div
-                      key={`col-${vItem.index}-${columnIndex}`}
-                      className="flex-1"
-                    >
-                      {content}
-                    </div>
-                  );
-                })}
+                    return (
+                      <div
+                        key={`col-${vItem.index}-${columnIndex}`}
+                        className="flex-1"
+                      >
+                        {content}
+                      </div>
+                    );
+                  }
+                )}
               </div>
             )}
           </div>

@@ -4,6 +4,8 @@ export const PAGE_RELOAD_TIME = 500;
 
 export const MOBILE_NAV_HEIGHT = "52px";
 export const POST_CARD_LIST_GAP = 16;
+export const POST_GRID_COLUMN_COUNT = 3;
+export const POST_GRID_GAP = 4;
 
 export enum SortBy {
   NEWEST = "newest",
