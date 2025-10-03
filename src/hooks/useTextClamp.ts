@@ -1,4 +1,3 @@
-// +++ TODO: Ongoing +++
 import { type RefObject, useEffect, useState } from "react";
 
 /**
@@ -14,9 +13,8 @@ export function useTextClamp<T extends HTMLElement>(
   useEffect(() => {
     const checkClamping = () => {
       const element = ref.current;
-      if (element) {
+      if (element)
         setIsTextClamped(element.scrollHeight > element.clientHeight);
-      }
     };
 
     checkClamping();
@@ -30,9 +28,7 @@ export function useTextClamp<T extends HTMLElement>(
 
     return () => {
       window.removeEventListener("resize", checkClamping);
-      if (resizeObserver) {
-        resizeObserver.disconnect();
-      }
+      if (resizeObserver) resizeObserver.disconnect();
     };
   }, [ref]);
 
