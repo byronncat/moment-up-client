@@ -65,11 +65,7 @@ declare module "api" {
   // === Core ===
   interface PostDto {
     text: string | null;
-    files: Array<{
-      id: PublicId;
-      type: "image" | "video";
-      aspectRatio: "1:1" | "4:5" | "1.91:1";
-    }> | null;
+    files: FileInfo[] | null;
     likes: number;
     comments: number;
     reposts: number;
@@ -89,6 +85,12 @@ declare module "api" {
     name: string;
     count: number;
   }
+
+  type FileInfo = {
+    id: PublicId;
+    type: "image" | "video";
+    aspectRatio: "square" | "portrait" | "landscape";
+  };
 
   // +++ TODO: Refactor this +++
   type CommentInfo = {
@@ -189,10 +191,4 @@ declare module "api" {
     ProfileDto,
     "followers" | "following" | "hasStory" | "isFollowing"
   >;
-
-  type FileInfo = {
-    id: string;
-    type: "image" | "video" | "audio";
-    aspectRatio: "1:1" | "9:16" | "4:5" | "1.91:1";
-  };
 }

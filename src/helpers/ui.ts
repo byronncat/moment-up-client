@@ -1,4 +1,3 @@
-// +++ TODO: Ongoing +++
 import type { PostDto } from "api";
 import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
 
@@ -17,19 +16,19 @@ export function getPostHeight(post: PostDto | undefined, _width = 600) {
     if (post.files.length === 1) {
       const file = post.files[0];
       switch (file.aspectRatio) {
-        case "1:1":
-          height += width; // Square
+        case "square":
+          height += width;
           break;
-        case "4:5":
-          height += (width * 5) / 4; // Portrait
+        case "portrait":
+          height += (width * 5) / 4;
           break;
-        case "1.91:1":
-          height += width / 1.91; // Landscape
+        case "landscape":
+          height += width / 1.91;
           break;
         default:
-          height += width; // Default to square
+          height += width;
       }
-    } else height += width; // Square
+    } else height += width;
 
     if (post.text) height += SINGLE_TEXT_HEIGHT;
   } else if (post.text) height += MULTI_TEXT_HEIGHT;

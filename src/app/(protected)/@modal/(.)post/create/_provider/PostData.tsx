@@ -208,22 +208,22 @@ function calculateAspectRatio(
       const image = new Image();
       image.onload = () => {
         const _ratio = image.width / image.height;
-        if (_ratio < 1) resolve("4:5");
-        else if (_ratio === 1) resolve("1:1");
-        else resolve("1.91:1");
+        if (_ratio < 1) resolve("portrait");
+        else if (_ratio === 1) resolve("square");
+        else resolve("landscape");
       };
       image.src = URL.createObjectURL(file);
     } else if (file.type.startsWith("video/")) {
       const video = document.createElement("video");
       video.onloadedmetadata = () => {
         const _ratio = video.videoWidth / video.videoHeight;
-        if (_ratio < 1) resolve("4:5");
-        else if (_ratio === 1) resolve("1:1");
-        else resolve("1.91:1");
+        if (_ratio < 1) resolve("portrait");
+        else if (_ratio === 1) resolve("square");
+        else resolve("landscape");
       };
       video.src = URL.createObjectURL(file);
     } else {
-      resolve("1:1"); // default fallback
+      resolve("square"); // default fallback
     }
   });
 }

@@ -6,7 +6,7 @@ import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { AspectRatioHelper } from "@/components/post/feed/media-grid/aspectRatio.helper";
+import { getRatioValue } from "@/components/post/feed/media-grid/aspectRatio.helper";
 import { Play } from "@/components/icons";
 import { BLUR_DATA_URL } from "@/constants/client";
 
@@ -19,9 +19,8 @@ export default function MediaGrid() {
   const { files } = usePostData();
   if (!files || files.length === 0) return null;
 
-  const firstImageHorizontal = AspectRatioHelper.isHorizontal(
-    files[FIRST].aspectRatio
-  );
+  const firstImageHorizontal = files[FIRST].aspectRatio === "landscape";
+
 
   const Grid = () => {
     const fileCount = files.length;
@@ -29,7 +28,7 @@ export default function MediaGrid() {
       case 1:
         return (
           <AspectRatio
-            ratio={AspectRatioHelper.getValue(files[FIRST].aspectRatio)}
+            ratio={getRatioValue(files[FIRST].aspectRatio)}
             className="relative"
           >
             <MediaItem file={files[FIRST]} index={FIRST} />

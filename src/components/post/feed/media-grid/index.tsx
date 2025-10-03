@@ -5,7 +5,7 @@ import { cn } from "@/libraries/utils";
 import { AspectRatio } from "../../../ui/aspect-ratio";
 import { CardContent } from "../../../ui/card";
 import MediaItem from "./MediaItem";
-import { AspectRatioHelper } from "./aspectRatio.helper";
+import { getRatioValue } from "./aspectRatio.helper";
 
 const MAX_LENGTH = 5;
 
@@ -16,9 +16,7 @@ type MediaGridProps = Readonly<{
 
 export default function MediaGrid({ files, postId }: MediaGridProps) {
   if (!files || files.length === 0) return null;
-  const firstImageHorizontal = AspectRatioHelper.isHorizontal(
-    files[0].aspectRatio
-  );
+  const firstImageHorizontal = files[0].aspectRatio === "landscape";
 
   const Grid = () => {
     const fileCount = files.length;
@@ -26,7 +24,7 @@ export default function MediaGrid({ files, postId }: MediaGridProps) {
       case 1:
         return (
           <AspectRatio
-            ratio={AspectRatioHelper.getValue(files[0].aspectRatio)}
+            ratio={getRatioValue(files[0].aspectRatio)}
             className="relative"
           >
             <MediaItem file={files[0]} index={0} postId={postId} />

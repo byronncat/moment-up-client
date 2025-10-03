@@ -1,18 +1,18 @@
 "use client";
 
-import type { SearchItem, FeedItemDto } from "api";
-import type { SectionData } from "./constant";
+import type { FeedItemDto, SearchItem } from "api";
 
 import { SearchCategory } from "@/constants/client";
 import { SearchItemType } from "@/constants/server";
 import {
-  POST_HEADER_HEIGHT,
-  POST_FOOTER_HEIGHT,
-  POST_ITEM_GAP,
-  POST_BORDER_SIZE,
-  POST_SINGLE_TEXT_HEIGHT,
-  POST_MULTI_TEXT_HEIGHT,
   MEDIA_COLUMNS,
+  POST_BORDER_SIZE,
+  POST_FOOTER_HEIGHT,
+  POST_HEADER_HEIGHT,
+  POST_ITEM_GAP,
+  POST_MULTI_TEXT_HEIGHT,
+  POST_SINGLE_TEXT_HEIGHT,
+  type SectionData,
 } from "./constant";
 
 export function isValidFeedItemDto(item: SearchItem): boolean {
@@ -23,7 +23,10 @@ export function isValidFeedItemDto(item: SearchItem): boolean {
   );
 }
 
-export function calculatePostHeight(moment: FeedItemDto, width: number): number {
+export function calculatePostHeight(
+  moment: FeedItemDto,
+  width: number
+): number {
   let height =
     POST_HEADER_HEIGHT +
     POST_FOOTER_HEIGHT +
@@ -34,17 +37,14 @@ export function calculatePostHeight(moment: FeedItemDto, width: number): number 
     if (moment.post.files.length === 1) {
       const file = moment.post.files[0];
       switch (file.aspectRatio) {
-        case "1:1":
+        case "square":
           height += width;
           break;
-        case "4:5":
+        case "portrait":
           height += (width * 5) / 4;
           break;
-        case "1.91:1":
+        case "landscape":
           height += width / 1.91;
-          break;
-        case "9:16":
-          height += (width * 16) / 9;
           break;
         default:
           height += width;
@@ -60,7 +60,7 @@ export function calculatePostHeight(moment: FeedItemDto, width: number): number 
 export function prepareSectionsData(
   results: SearchItem[],
   type: SearchCategory,
-  hasNextPage: boolean = false
+  hasNextPage = false
 ): SectionData[] {
   const sections: SectionData[] = [];
   sections.push({ type: "top-spacing" });
