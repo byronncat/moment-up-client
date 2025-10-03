@@ -6,7 +6,7 @@ export {
   useRefreshSWR,
 } from "./Auth";
 export { default as CloudinaryProvider, useCloudinary } from "./Cloudinary";
-export { default as PostProvider, useMoment } from "./PostStorage";
+export { default as PostProvider, usePost } from "./PostStorage";
 export { default as StoryProvider, useStory } from "./StoryStorage";
 export {
   default as CommentProvider,

@@ -4,7 +4,7 @@ import type { SearchItem as TSearchItem } from "api";
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useMoment } from "@/components/providers";
+import { usePost } from "@/components/providers";
 import { debounce } from "lodash";
 
 import { NoContent } from "@/components/common";
@@ -60,7 +60,7 @@ export default function VirtualizedSearchResults({
   }, []);
 
   const router = useRouter();
-  const { setCurrentPost: setCurrentIndex, setPosts } = useMoment();
+  const { setCurrentPost: setCurrentIndex, setPosts } = usePost();
   function handleClick(item: TSearchItem) {
     switch (item.type) {
       case SearchItemType.USER:

@@ -12,26 +12,15 @@ type PostsAction =
   | { type: "REMOVE_POST"; payload: string }
   | { type: "TOGGLE_LIKE"; payload: string }
   | { type: "TOGGLE_BOOKMARK"; payload: string }
-  | { type: "TOGGLE_FOLLOW"; payload: string }
-  | {
-      type: "TOGGLE_BLOCK";
-      payload: {
-        userId: string;
-        undoBuffer?: Array<{ index: number; moment: FeedItemDto }>;
-      };
-    }
-  | {
-      type: "RESTORE_BLOCKED";
-      payload: Array<{ index: number; moment: FeedItemDto }>;
-    };
+  | { type: "TOGGLE_FOLLOW"; payload: string };
 
 type PostContextType = {
   posts: FeedItemDto[] | undefined;
-  setPosts: (moments: FeedItemDto[]) => void;
-  addPosts: (moments: FeedItemDto[]) => void;
+  setPosts: (posts: FeedItemDto[]) => void;
+  addPosts: (posts: FeedItemDto[]) => void;
   removeMoment: (postId: string) => void;
   setCurrentPost: (postId: string) => void;
-  getCurrentMoment: () => FeedItemDto | undefined;
+  getCurrentPost: () => FeedItemDto | undefined;
 
   like: (postId: string) => Promise<void>;
   bookmark: (postId: string) => Promise<void>;
@@ -135,33 +124,6 @@ function postsReducer(state: PostsState, action: PostsAction): PostsState {
       return newMap;
     }
 
-    case "TOGGLE_BLOCK": {
-      if (!state) return state;
-      const { userId } = action.payload;
-      const newMap = new Map(state);
-
-      // Remove all moments from the user
-      for (const [id, moment] of newMap.entries()) {
-        if (moment.user.id === userId) {
-          newMap.delete(id);
-        }
-      }
-
-      return newMap;
-    }
-
-    case "RESTORE_BLOCKED": {
-      if (!state) return state;
-      const newMap = new Map(state);
-
-      // Restore blocked moments
-      action.payload.forEach(({ moment }) => {
-        newMap.set(moment.id, moment);
-      });
-
-      return newMap;
-    }
-
     default:
       return state;
   }
@@ -181,7 +143,7 @@ const MomentDataContext = createContext<PostContextType>({
   addPosts: () => {},
   removeMoment: () => {},
   setCurrentPost: () => {},
-  getCurrentMoment: () => undefined,
+  getCurrentPost: () => undefined,
 
   like: async () => {},
   bookmark: async () => {},
@@ -190,7 +152,7 @@ const MomentDataContext = createContext<PostContextType>({
   follow: async () => {},
 });
 
-export const useMoment = () => useContext(MomentDataContext);
+export const usePost = () => useContext(MomentDataContext);
 
 type MomentDataProviderProps = Readonly<{
   children: React.ReactNode;
@@ -207,7 +169,7 @@ export default function MomentDataProvider({
   const reportApi = useRefreshApi(CoreApi.reportPost);
   const followApi = useRefreshApi(UserApi.follow);
 
-  const getCurrentMoment = useCallback(() => {
+  const getCurrentPost = useCallback(() => {
     if (!posts || !currentPost) return undefined;
     return posts.get(currentPost);
   }, [posts, currentPost]);
@@ -319,7 +281,7 @@ export default function MomentDataProvider({
       setPosts,
       addPosts,
       removeMoment,
-      getCurrentMoment,
+      getCurrentPost,
       setCurrentPost,
 
       like,
@@ -333,7 +295,7 @@ export default function MomentDataProvider({
       setPosts,
       addPosts,
       removeMoment,
-      getCurrentMoment,
+      getCurrentPost,
       setCurrentPost,
       like,
       bookmark,

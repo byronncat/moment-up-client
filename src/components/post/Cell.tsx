@@ -10,17 +10,17 @@ import Image from "next/image";
 import { cn } from "@/libraries/utils";
 import { Clone, Heart, Message, Video } from "@/components/icons";
 
-type MomentCellProps = Readonly<{
+type MediaCellProps = Readonly<{
   data: FeedItemDto;
   onClick?: () => void;
   className?: string;
 }>;
 
-export default function MomentCell({
+export default function MediaCell({
   data,
   onClick,
   className,
-}: MomentCellProps) {
+}: MediaCellProps) {
   if (!data.post.files || data.post.files.length === 0) return null;
   const coverFile = data.post.files[0];
 

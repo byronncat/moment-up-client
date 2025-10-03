@@ -5,7 +5,7 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useAuth, useMoment, useRefreshSWR } from "@/components/providers";
+import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { INITIAL_PAGE } from "@/constants/server";
@@ -16,7 +16,7 @@ import { FeedCard, PostSkeleton } from "@/components/post";
 import { ErrorContent, NoContent } from "@/components/common";
 import { FileText } from "lucide-react";
 
-export default function MomentPage() {
+export default function PostPage() {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token, user } = useAuth();
 
@@ -51,7 +51,7 @@ export default function MomentPage() {
     share,
     report,
     follow,
-  } = useMoment();
+  } = usePost();
 
   const hasNextPage = user && (data?.[data.length - 1].hasNextPage ?? true);
 

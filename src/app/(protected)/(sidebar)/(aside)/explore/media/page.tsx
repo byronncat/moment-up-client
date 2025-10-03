@@ -5,14 +5,14 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useAuth, useMoment, useRefreshSWR } from "@/components/providers";
+import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
 import { INITIAL_PAGE } from "@/constants/server";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { MomentCell } from "@/components/post";
+import { MediaCell } from "@/components/post";
 import { ErrorContent, NoContent } from "@/components/common";
 import { Image as ImageIcon } from "@/components/icons";
 
@@ -44,7 +44,7 @@ export default function MediaPage() {
       }
     );
 
-  const { posts, setPosts, setCurrentPost } = useMoment();
+  const { posts, setPosts, setCurrentPost } = usePost();
 
   const hasNextPage = user && (data?.[data.length - 1].hasNextPage ?? true);
 
@@ -176,7 +176,7 @@ export default function MediaPage() {
                     if (rowIndex < dataRowCount) {
                       if (post)
                         content = (
-                          <MomentCell
+                          <MediaCell
                             data={post}
                             onClick={() => setCurrentPost(post.id)}
                           />

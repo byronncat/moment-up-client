@@ -4,7 +4,7 @@ import type { CoreApi } from "@/services";
 
 import { useSearchParams } from "next/navigation";
 import { use, useLayoutEffect, useRef, useState } from "react";
-import { CommentProvider, useMoment } from "@/components/providers";
+import { CommentProvider, usePost } from "@/components/providers";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -29,7 +29,7 @@ export default function MomentDetails({ initialRes }: MomentDetailsProps) {
   const momentRes = use(initialRes);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
   const { setPosts, setCurrentPost, report, bookmark, share, like, follow } =
-    useMoment();
+    usePost();
 
   const moment = momentRes.data;
   const searchParams = useSearchParams();

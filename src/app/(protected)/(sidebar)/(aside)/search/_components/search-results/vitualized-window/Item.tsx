@@ -6,7 +6,7 @@ import { memo } from "react";
 import { isValidFeedItemDto } from "./helper";
 
 import { cn } from "@/libraries/utils";
-import { MomentCell } from "@/components/post/index.js";
+import { MediaCell } from "@/components/post/index.js";
 import { SearchItem } from "../../../../_components";
 import LoadingIndicator from "../../LoadingIndicator";
 
@@ -85,7 +85,7 @@ const Item = memo(
             return (
               <div key={columnIndex} style={cellStyle}>
                 {item && isValidFeedItemDto(item) ? (
-                  <MomentCell
+                  <MediaCell
                     data={item as FeedItemDto}
                     onClick={() => onItemClick?.(item)}
                   />

@@ -5,7 +5,7 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect, useRef } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useAuth, useMoment, useRefreshSWR } from "@/components/providers";
+import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { useProfile } from "../_providers/ProfileProvider";
 import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
@@ -17,7 +17,7 @@ import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ErrorContent, NoContent } from "@/components/common";
-import { MomentCell } from "@/components/post";
+import { MediaCell } from "@/components/post";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProfileZone, { PROFILE_ZONE_HEIGHT } from "./ProfileZone";
 import { Image as ImageIcon } from "@/components/icons";
@@ -56,7 +56,7 @@ export default function PostGrid() {
       }
     );
 
-  const { posts, addPosts, setCurrentPost } = useMoment();
+  const { posts, addPosts, setCurrentPost } = usePost();
 
   const hasNextPage = data?.[data.length - 1].hasNextPage ?? true;
 
@@ -197,7 +197,7 @@ export default function PostGrid() {
                     if (rowIndex < dataRowCount) {
                       if (post)
                         content = (
-                          <MomentCell
+                          <MediaCell
                             data={post}
                             onClick={() => setCurrentPost(post.id)}
                           />

@@ -25,7 +25,7 @@ import {
 import useSWRInfinite from "swr/infinite";
 import useSWRImmutable from "swr/immutable";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
-import { useMoment } from "@/components/providers/PostStorage";
+import { usePost } from "@/components/providers/PostStorage";
 import { useStory } from "@/components/providers/StoryStorage";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
@@ -72,7 +72,7 @@ export function HomeFeedProvider({
       }
     );
 
-  const { addPosts } = useMoment();
+  const { addPosts } = usePost();
   const { setStories } = useStory();
 
   const hasNextPage = useMemo(

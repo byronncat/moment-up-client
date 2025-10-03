@@ -1,5 +1,5 @@
 import type { FeedItemDto } from "api";
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTextClamp } from "@/hooks";
 import { parseText } from "@/helpers/parser";
 import { cn } from "@/libraries/utils";
@@ -33,12 +33,12 @@ export default function TextContent({
       >
         {parseText(data)}
       </div>
-      {canExpand && (
+      {canExpand ? (
         <ShowToggle
           onClick={handleToggleExpand}
           text={isExpanded ? "Show less" : "Show more"}
         />
-      )}
+      ) : null}
     </div>
   );
 }
