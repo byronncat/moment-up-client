@@ -57,7 +57,7 @@ export default function UploadView({ onBrowse }: UploadViewProps) {
       onClick={onBrowse}
       className={cn(
         "group p-1 bg-background cursor-pointer",
-        "h-full sm:h-auto sm:aspect-square w-[90vh] max-w-full",
+        "h-[calc(100svh-48px)] sm:h-auto sm:aspect-square w-[90vh] max-w-full",
         "transition-all duration-150 ease-in-out",
         "hover:bg-muted focus-visible:bg-muted focus-visible:outline-none",
         isDragOver && "bg-muted"

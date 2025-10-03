@@ -72,14 +72,14 @@ export default function MediaView({ onBrowse }: MediaViewProps) {
   return (
     <div
       className={cn(
-        "w-[90vh] max-w-full h-[calc(100vh-48px)] sm:h-[calc(90vh-48px)] sm:max-h-[90vh]",
-        "relative bg-background"
+        "relative bg-background",
+        "w-screen h-[calc(100svh-48px)] sm:max-w-[90vh] sm:h-[calc(90vh-48px)]"
       )}
     >
       <ScrollArea className="h-full">
         <div
           className={cn(
-            "size-full p-3",
+            "w-full p-3",
             "grid gap-2",
             files.length > 3 ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"
           )}
