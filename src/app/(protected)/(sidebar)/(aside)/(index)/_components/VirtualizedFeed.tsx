@@ -3,10 +3,11 @@
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useHomeFeed } from "../_providers/HomeFeed";
-import { useMoment } from "@/components/providers/PostStorage";
+import { usePost } from "@/components/providers/PostStorage";
 import { getPostHeight } from "@/helpers/ui";
-import { POST_CARD_LIST_GAP } from "@/constants/client";
+import { MOBILE_NAV_HEIGHT, POST_CARD_LIST_GAP } from "@/constants/client";
 
+import { cn } from "@/libraries/utils";
 import { ErrorContent, NoContent } from "@/components/common";
 import { FeedCard, PostSkeleton } from "@/components/post";
 import Stories from "./stories";
@@ -23,8 +24,8 @@ export default function VirtualizedFeed() {
     loadNextPage,
     reloadPost,
   } = useHomeFeed();
-  const { posts, like, bookmark, follow, setCurrentPost, ...PostActions } =
-    useMoment();
+  const { posts, setCurrentPost, like, bookmark, share, report, follow } =
+    usePost();
 
   const itemCount =
     isLoading || isError || posts?.length === 0
@@ -66,6 +67,7 @@ export default function VirtualizedFeed() {
         height: `${virtualizer.getTotalSize()}px`,
         position: "relative",
         width: "100%",
+        minHeight: `calc(100vh - 2*${MOBILE_NAV_HEIGHT})`,
       }}
     >
       {virtualItems.map((vItem) => {
@@ -90,17 +92,15 @@ export default function VirtualizedFeed() {
             {isStoriesRow ? (
               <Stories />
             ) : isLoading ? (
-              <>
-                <PostSkeleton
-                  haveText
-                  media="horizontal"
-                  className="max-w-[600px] mx-auto mb-4"
-                />
-                <PostSkeleton
-                  media="square"
-                  className="max-w-[600px] mx-auto"
-                />
-              </>
+              <div
+                className={cn(
+                  "max-w-[calc(600px+16px)] px-2 mx-auto",
+                  "space-y-4"
+                )}
+              >
+                <PostSkeleton haveText media="horizontal" className="w-full" />
+                <PostSkeleton media="square" className="w-full" />
+              </div>
             ) : isError ? (
               <ErrorContent onRefresh={reloadPost} className="pt-24" />
             ) : !posts ? null : posts.length === 0 ? (
@@ -111,18 +111,18 @@ export default function VirtualizedFeed() {
                 className="pt-24"
               />
             ) : isLoaderRow ? (
-              <PostSkeleton
-                haveText
-                media="horizontal"
-                className="max-w-[600px] mx-auto"
-              />
+              <div className="max-w-[calc(600px+16px)] px-2 mx-auto">
+                <PostSkeleton haveText media="horizontal" className="w-full" />
+              </div>
             ) : post ? (
-              <FeedCard
-                data={post}
-                actions={{ like, bookmark, follow, ...PostActions }}
-                onClick={() => setCurrentPost(post.id)}
-                className="max-w-[600px] mx-auto"
-              />
+              <div className="max-w-[calc(600px+16px)] px-2 mx-auto">
+                <FeedCard
+                  data={post}
+                  actions={{ like, bookmark, share, report, follow }}
+                  onClick={() => setCurrentPost(post.id)}
+                  className="w-full"
+                />
+              </div>
             ) : null}
           </div>
         );
