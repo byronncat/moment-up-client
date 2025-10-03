@@ -29,10 +29,9 @@ export default function Header({ data, onClose, className }: HeaderProps) {
   return (
     <div
       className={cn(
-        "px-3 h-12 relative",
+        "px-3 h-12 relative bg-card",
         "flex items-center justify-between",
-        "border-b border-border",
-        "shadow-sm",
+        "border-b border-border shadow-xs",
         className
       )}
     >

@@ -4,8 +4,7 @@ import type { FeedItemDto } from "api";
 import type { Actions } from "../../providers/PostStorage";
 import { ContentReportType } from "@/constants/server";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/components/providers";
 import dayjs from "dayjs";
 import Format from "@/utilities/format";
@@ -44,15 +43,15 @@ type HeaderProps = Readonly<{
   data: FeedItemDto;
   actions: Pick<Actions, "follow" | "report">;
   sideElement?: React.ReactNode;
+  className?: string;
 }>;
 
-export default function Header({ data, actions, sideElement }: HeaderProps) {
+export default function Header({ data, actions, className }: HeaderProps) {
   const { id: postId, user, post } = data;
   const { user: currentUser } = useAuth();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <div className={cn("px-4 pt-4 pb-3", "flex")}>
+    <div className={cn("px-4 pt-4 pb-3", "flex", className)}>
       <HoverableComponent
         userInfo={user}
         onFollow={() => actions.follow(postId)}
@@ -105,19 +104,14 @@ export default function Header({ data, actions, sideElement }: HeaderProps) {
         </div>
       </div>
 
-      <div className="flex gap-2 shrink-0">
-        {currentUser ? (
-          <MoreMenu
-            user={user}
-            postId={postId}
-            isOpen={isDropdownOpen}
-            setOpen={setIsDropdownOpen}
-            actions={actions}
-          />
-        ) : null}
-
-        {sideElement ? <div className="flex gap-2">{sideElement}</div> : null}
-      </div>
+      {currentUser ? (
+        <MoreMenu
+          user={user}
+          postId={postId}
+          actions={actions}
+          className="shrink-0"
+        />
+      ) : null}
     </div>
   );
 }
@@ -126,40 +120,39 @@ type MoreMenuProps = Readonly<{
   user: FeedItemDto["user"];
   postId: FeedItemDto["id"];
   actions: Pick<Actions, "follow" | "report">;
-  isOpen: boolean;
-  setOpen: (isOpen: boolean) => void;
+  className?: string;
 }>;
 
-function MoreMenu({ isOpen, setOpen, user, postId, actions }: MoreMenuProps) {
+function MoreMenu({ user, postId, actions, className }: MoreMenuProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   const { user: currentUser } = useAuth();
   const isSelf = currentUser?.id === user.id;
-  const router = useRouter();
 
-  function handleAction(actionFn: () => void | Promise<void>) {
-    setOpen(false);
-    setTimeout(() => {
-      actionFn();
-    }, 0);
-  }
+  const isPostPage = pathname.startsWith(ROUTE.POST(postId));
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setOpen}>
+    <DropdownMenu>
       <Tooltip content="More options" sideOffset={4}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             size="icon"
-            className={cn("size-8 rounded-full", "text-muted-foreground")}
+            className={cn(
+              "size-8 rounded-full",
+              "text-muted-foreground",
+              className
+            )}
           >
             <MoreHorizontal className="size-5" />
             <span className="sr-only">More options</span>
           </Button>
         </DropdownMenuTrigger>
       </Tooltip>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent align="end" className="w-48" portalDisabled>
         {isSelf ? null : user.isFollowing ? (
           <DropdownMenuItem
-            onClick={() => handleAction(() => actions.follow(postId))}
+            onClick={() => actions.follow(postId)}
             className="cursor-pointer"
           >
             <User variant="minus" className="size-4 shrink-0" />
@@ -167,23 +160,25 @@ function MoreMenu({ isOpen, setOpen, user, postId, actions }: MoreMenuProps) {
           </DropdownMenuItem>
         ) : (
           <DropdownMenuItem
-            onClick={() => handleAction(() => actions.follow(postId))}
+            onClick={() => actions.follow(postId)}
             className="cursor-pointer"
           >
             <User variant="plus" className="size-4 shrink-0" />
             <span className="truncate">Follow @{user.username}</span>
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem
-          onClick={() => router.push(ROUTE.POST(postId))}
-          className="cursor-pointer"
-        >
-          <FileText className="size-4 shrink-0" />
-          <span className="truncate">Go to post</span>
-        </DropdownMenuItem>
+        {isPostPage ? null : (
+          <DropdownMenuItem
+            onClick={() => router.push(ROUTE.POST(postId))}
+            className="cursor-pointer"
+          >
+            <FileText className="size-4 shrink-0" />
+            <span className="truncate">Go to post</span>
+          </DropdownMenuItem>
+        )}
+        {isPostPage ? null : <DropdownMenuSeparator />}
         {isSelf ? (
           <>
-            <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => console.warn("edit post")}
               className="cursor-pointer"
@@ -200,31 +195,26 @@ function MoreMenu({ isOpen, setOpen, user, postId, actions }: MoreMenuProps) {
             </DropdownMenuItem>
           </>
         ) : (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger
-                className={cn("cursor-pointer", "destructive-item")}
-              >
-                <Flag className="size-4 shrink-0" />
-                <span className="truncate">Report post</span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuSubContent sideOffset={8} className="w-60">
-                {ReportPostOptions.map((option) => (
-                  <DropdownMenuItem
-                    key={option.value}
-                    onClick={() =>
-                      handleAction(() => actions.report(postId, option.value))
-                    }
-                    className="cursor-pointer"
-                  >
-                    {option.icon}
-                    <span className="truncate">{option.label}</span>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuSubContent>
-            </DropdownMenuSub>
-          </>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger
+              className={cn("cursor-pointer", "destructive-item")}
+            >
+              <Flag className="size-4 shrink-0" />
+              <span className="truncate">Report post</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent sideOffset={8} className="w-60">
+              {ReportPostOptions.map((option) => (
+                <DropdownMenuItem
+                  key={option.value}
+                  onClick={() => actions.report(postId, option.value)}
+                  className="cursor-pointer"
+                >
+                  {option.icon}
+                  <span className="truncate">{option.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

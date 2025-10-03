@@ -1,5 +1,6 @@
 "use client";
 
+import { __parseUrl } from "@/__mocks__";
 import type { FileInfo } from "api";
 
 import { useEffect, useRef, useState } from "react";
@@ -19,7 +20,7 @@ import { Play } from "@/components/icons";
 import { BLUR_DATA_URL, VIDEO_SKIP_DURATION } from "@/constants/client";
 
 type MediaCarouselProps = Readonly<{
-  files: FileInfo[];
+  files: FileInfo[] | null;
   initialIndex?: number;
   className?: string;
 }>;
@@ -38,10 +39,9 @@ export default function MediaCarousel({
     if (currentIndex === undefined) return;
 
     const videoEl = videoRefs.current[currentIndex];
-    if (videoEl) {
+    if (videoEl)
       videoEl.currentTime +=
         VIDEO_SKIP_DURATION * (direction === "next" ? 1 : -1);
-    }
   }
 
   function handlePlay() {
@@ -80,6 +80,7 @@ export default function MediaCarousel({
     }
   }, [api, initialIndex, files]);
 
+  if (!files) return null;
   return (
     <Wrapper className={className}>
       <CardContent className="p-0 size-full">
@@ -97,14 +98,14 @@ export default function MediaCarousel({
                 {file.type === "image" ? (
                   <div className="relative h-[50vh] md:h-screen w-full">
                     <Image
-                      src={file.id}
-                      alt={`Moment ${index + 1}`}
+                      src={__parseUrl(file.id, "image") as string}
+                      alt={`Post ${index + 1}`}
                       className="object-contain select-none"
                       fill
                       sizes="90vw"
                       quality={100}
-                      priority={index === 0}
-                      loading={index === 0 ? "eager" : "lazy"}
+                      priority={index === initialIndex}
+                      loading={index === initialIndex ? "eager" : "lazy"}
                       placeholder="blur"
                       blurDataURL={BLUR_DATA_URL}
                     />
@@ -112,10 +113,10 @@ export default function MediaCarousel({
                 ) : (
                   <div className="relative h-[50vh] md:h-screen w-full">
                     <video
-                      ref={(el) => {
-                        videoRefs.current[index] = el;
+                      ref={(element) => {
+                        videoRefs.current[index] = element;
                       }}
-                      src={file.id}
+                      src={__parseUrl(file.id, "video") as string}
                       className="size-full object-contain"
                       controls
                       playsInline
@@ -165,7 +166,7 @@ function Wrapper({
   return (
     <div
       className={cn(
-        "size-full bg-background",
+        "size-full bg-muted",
         "max-h-[50vh] md:max-h-none",
         className
       )}

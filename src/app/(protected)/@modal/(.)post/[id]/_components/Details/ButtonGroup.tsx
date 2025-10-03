@@ -16,8 +16,8 @@ type ButtonsProps = Readonly<{
 type FirstGroupProps = ButtonsProps &
   Readonly<{
     userData: UserSummaryDto;
-    onCommentClick?: () => void;
     actions: Pick<Actions, "like" | "bookmark" | "share">;
+    onCommentClick?: () => void;
   }>;
 
 function FirstGroup({
@@ -46,6 +46,7 @@ function FirstGroup({
       ),
       color: "pink" as const,
       count: data.likes,
+      emptyText: "Likes",
       tooltip: "Like",
       isActive: data.isLiked,
       onClick: () => actions.like(momentId),
@@ -63,6 +64,7 @@ function FirstGroup({
       ),
       color: "sky" as const,
       count: data.comments,
+      emptyText: "Comments",
       tooltip: "Comment",
       onClick: onCommentClick,
     },
@@ -78,6 +80,7 @@ function FirstGroup({
       ),
       color: "green" as const,
       count: 73,
+      emptyText: "Reposts",
       tooltip: "Repost",
       onClick: () => setIsShareDialogOpen(true),
     },
@@ -85,9 +88,7 @@ function FirstGroup({
 
   return (
     <>
-      <div
-        className={cn("flex gap-2", "py-1 border-y border-border", className)}
-      >
+      <div className={cn("flex gap-2", "border-y border-border", className)}>
         {buttons.map((button) => (
           <div key={button.tooltip} className="flex-1 flex justify-center">
             <ColorfulIconButton {...button} />
@@ -152,11 +153,9 @@ function SecondGroup({
   ];
 
   return (
-    <div className={cn("flex justify-end", "py-1 pr-2", className)}>
+    <div className={cn("flex justify-end", className)}>
       {buttons.map((button) => (
-        <div key={button.tooltip}>
-          <ColorfulIconButton {...button} />
-        </div>
+        <ColorfulIconButton {...button} key={button.tooltip} />
       ))}
     </div>
   );

@@ -200,6 +200,15 @@ const CarouselPrevious = React.forwardRef<
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    if (!canScrollPrev) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    scrollPrev();
+  }
+
   return (
     <Button
       ref={ref}
@@ -212,8 +221,11 @@ const CarouselPrevious = React.forwardRef<
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
+      // disabled={!canScrollPrev}
+      // onClick={scrollPrev}
       disabled={!canScrollPrev}
-      onClick={scrollPrev}
+      onClick={handleClick}
+      tabIndex={0}
       {...props}
     >
       <Arrow direction="left" className="h-4 w-4" />
@@ -229,6 +241,15 @@ const CarouselNext = React.forwardRef<
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    if (!canScrollNext) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    scrollNext();
+  }
+
   return (
     <Button
       ref={ref}
@@ -241,8 +262,11 @@ const CarouselNext = React.forwardRef<
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
+      // disabled={!canScrollNext}
+      // onClick={scrollNext}
       disabled={!canScrollNext}
-      onClick={scrollNext}
+      onClick={handleClick}
+      tabIndex={0}
       {...props}
     >
       <Arrow direction="right" className="h-4 w-4" />

@@ -1,60 +1,100 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMoment } from "@/components/providers/PostStorage";
+import { usePost } from "@/components/providers/PostStorage";
 
 import { cn } from "@/libraries/utils";
 import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
-import { MediaCarousel, Details } from "./_components";
+import { Details, MediaCarousel } from "./_components";
 import { X } from "@/components/icons";
 
 export default function MomentModal() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const { getCurrentMoment } = useMoment();
+  const { getCurrentPost } = usePost();
 
   const imgIndex = searchParams.get("imgIndex");
   const initialIndex = imgIndex ? parseInt(imgIndex) : 0;
-  const moment = getCurrentMoment();
-  const haveMedia = moment?.post.files && moment.post.files.length > 0;
+  const post = getCurrentPost();
+  const haveMedia = (post?.post.files && post.post.files.length > 0) ?? false;
 
+  const router = useRouter();
   function handleClose() {
     router.back();
   }
 
-  if (!moment) return null;
+  if (!post) return null;
   return (
     <Modal
       onClose={haveMedia ? undefined : handleClose}
-      className={cn(
-        "flex",
-        "flex-col md:flex-row md:items-center md:justify-center",
-        "overflow-y-auto"
-      )}
+      className={cn(!haveMedia && "flex justify-center items-center")}
     >
-      {haveMedia && (
-        <>
-          <MediaCarousel
-            files={moment.post.files!}
-            initialIndex={initialIndex}
+      <div
+        className={cn(
+          "relative",
+          "flex flex-col",
+          haveMedia
+            ? "h-svh overflow-y-auto md:flex-row w-full"
+            : "size-full sm:w-fit sm:h-[80vh] sm:rounded-lg overflow-hidden sm:border border-border"
+        )}
+      >
+        <div
+          className={cn(
+            "relative",
+            "h-12 bg-card font-semibold",
+            "border-b border-border",
+            "flex items-center justify-center",
+            haveMedia && "md:hidden shrink-0 sticky top-0 z-10"
+          )}
+        >
+          <h2>{post.user.displayName ?? post.user.username}&apos;s post</h2>
+          <CloseButton
+            onClose={handleClose}
+            className={cn("absolute right-3 top-1.5")}
           />
-          <Button
-            variant="ghost"
-            size="icon"
-            className={cn("rounded-full", "absolute left-2 top-2")}
-            onClick={handleClose}
-          >
-            <X />
-          </Button>
-        </>
-      )}
-      <Details
-        data={moment}
-        onClose={handleClose}
-        haveMedia={haveMedia}
-        className="shrink-0"
-      />
+        </div>
+        {haveMedia ? (
+          <MediaCarousel
+            files={post.post.files}
+            initialIndex={initialIndex}
+            className="w-full"
+          />
+        ) : null}
+        <Details
+          data={post}
+          haveMedia={haveMedia}
+          className={cn(
+            "shrink-0",
+            "w-full min-h-[50vh]",
+            haveMedia
+              ? "md:h-screen md:w-[360px] md:overflow-y-auto dark:border-t dark:sm:border-t-0 dark:sm:border-l dark:border-border"
+              : "sm:max-w-[600px] h-[calc(100svh-48px)] sm:h-[calc(80svh-48px-2*1px)]"
+          )}
+        />
+        <CloseButton
+          onClose={handleClose}
+          className={cn(
+            "rounded-full absolute",
+            haveMedia ? "right-2 md:left-2 top-2" : "top-1.5 right-3"
+          )}
+        />
+      </div>
     </Modal>
+  );
+}
+
+function CloseButton({
+  onClose,
+  className,
+}: Readonly<{ onClose: () => void; className: string }>) {
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      className={cn("rounded-full", className)}
+      onClick={onClose}
+    >
+      <X className="size-5 text-muted-foreground" />
+    </Button>
   );
 }

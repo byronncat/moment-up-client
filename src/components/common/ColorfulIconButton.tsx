@@ -81,13 +81,21 @@ export default function ColorfulIconButton({
         >
           {icon}
         </span>
-        {count !== undefined && count > 0 ? (
-          <span>{Format.number(count)}</span>
-        ) : (
-          <span className={cn("text-sm", variant.focus)}>
-            {emptyText}
-          </span>
-        )}
+        {count !== undefined ? (
+          count > 0 ? (
+            <span>{Format.number(count)}</span>
+          ) : (
+            <span
+              className={cn(
+                "text-sm",
+                "hidden mobile:inline-block",
+                variant.focus
+              )}
+            >
+              {emptyText}
+            </span>
+          )
+        ) : null}
       </button>
     </Tooltip>
   );
