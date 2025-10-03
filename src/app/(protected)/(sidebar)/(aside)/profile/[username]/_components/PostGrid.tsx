@@ -22,7 +22,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import ProfileZone, { PROFILE_ZONE_HEIGHT } from "./ProfileZone";
 import { Image as ImageIcon } from "@/components/icons";
 
-const ITEMS_EACH_PAGE = 30;
+const ITEMS_EACH_PAGE = 21;
 
 export default function PostGrid() {
   const swrFetcherWithRefresh = useRefreshSWR();
@@ -56,7 +56,7 @@ export default function PostGrid() {
       }
     );
 
-  const { posts, addPosts, setCurrentPost } = usePost();
+  const { posts, setPosts, addPosts, setCurrentPost } = usePost();
 
   const hasNextPage = data?.[data.length - 1].hasNextPage ?? true;
 
@@ -93,8 +93,11 @@ export default function PostGrid() {
   useEffect(() => {
     const lastPage = data?.[data.length - 1];
     const _posts = lastPage?.items;
-    if (!error && _posts) addPosts(_posts);
-  }, [data, error, addPosts]);
+    if (!error && _posts) {
+      if (size === INITIAL_PAGE) setPosts(_posts);
+      else addPosts(_posts);
+    } else setPosts([]);
+  }, [data, error, size, setPosts, addPosts]);
 
   useEffect(() => {
     const [lastItem] = [...virtualItems].reverse();

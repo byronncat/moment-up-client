@@ -45,6 +45,7 @@ export default function PostPage() {
   const {
     posts,
     setPosts,
+    addPosts,
     setCurrentPost,
     like,
     bookmark,
@@ -81,9 +82,11 @@ export default function PostPage() {
 
   useEffect(() => {
     const _posts = data?.flatMap((page) => page.items);
-    if (!error && _posts) setPosts(_posts);
-    else setPosts([]);
-  }, [data, setPosts, error]);
+    if (!error && _posts) {
+      if (size === INITIAL_PAGE) setPosts(_posts);
+      else addPosts(_posts);
+    } else setPosts([]);
+  }, [data, error, size, setPosts, addPosts]);
 
   useEffect(() => {
     if (!posts) return;

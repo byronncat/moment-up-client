@@ -44,7 +44,7 @@ export default function MediaPage() {
       }
     );
 
-  const { posts, setPosts, setCurrentPost } = usePost();
+  const { posts, setPosts, addPosts, setCurrentPost } = usePost();
 
   const hasNextPage = user && (data?.[data.length - 1].hasNextPage ?? true);
 
@@ -78,9 +78,11 @@ export default function MediaPage() {
 
   useEffect(() => {
     const allPosts = data?.flatMap((page) => page.items);
-    if (!error && allPosts) setPosts(allPosts);
-    else setPosts([]);
-  }, [data, error, setPosts]);
+    if (!error && allPosts) {
+      if (size === INITIAL_PAGE) setPosts(allPosts);
+      else addPosts(allPosts);
+    } else setPosts([]);
+  }, [data, error, size, setPosts, addPosts]);
 
   useEffect(() => {
     if (!posts) return;

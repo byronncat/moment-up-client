@@ -72,7 +72,7 @@ export function HomeFeedProvider({
       }
     );
 
-  const { addPosts } = usePost();
+  const { setPosts, addPosts } = usePost();
   const { setStories } = useStory();
 
   const hasNextPage = useMemo(
@@ -87,8 +87,11 @@ export function HomeFeedProvider({
   useEffect(() => {
     const lastPage = data?.[data.length - 1];
     const _posts = lastPage?.items;
-    if (!error && _posts) addPosts(_posts);
-  }, [data, error, addPosts]);
+    if (!error && _posts) {
+      if (size === INITIAL_PAGE) setPosts(_posts);
+      else addPosts(_posts);
+    } else setPosts([]);
+  }, [data, error, size, setPosts, addPosts]);
 
   // === Story data ===
   const {

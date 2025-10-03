@@ -61,6 +61,7 @@ export default function PostList({ filter }: PostListProps) {
 
   const {
     posts,
+    setPosts,
     addPosts,
     setCurrentPost,
     like,
@@ -99,8 +100,11 @@ export default function PostList({ filter }: PostListProps) {
   useEffect(() => {
     const lastPage = data?.[data.length - 1];
     const _posts = lastPage?.items;
-    if (!error && _posts) addPosts(_posts);
-  }, [data, error, addPosts]);
+    if (!error && _posts) {
+      if (size === INITIAL_PAGE) setPosts(_posts);
+      else addPosts(_posts);
+    } else setPosts([]);
+  }, [data, error, size, setPosts, addPosts]);
 
   useEffect(() => {
     if (!posts) return;

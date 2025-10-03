@@ -170,8 +170,8 @@ export default function MomentDataProvider({
   const followApi = useRefreshApi(UserApi.follow);
 
   const getCurrentPost = useCallback(() => {
-    if (!posts || !currentPost) return undefined;
-    return posts.get(currentPost);
+    if (!posts) return undefined;
+    return currentPost ? posts.get(currentPost) : posts.values().next().value;
   }, [posts, currentPost]);
 
   const setPosts = useCallback((payload: FeedItemDto[]) => {
