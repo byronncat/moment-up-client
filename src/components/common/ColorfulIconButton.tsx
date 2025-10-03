@@ -3,7 +3,7 @@ import { cn } from "@/libraries/utils";
 import Tooltip from "./Tooltip";
 
 export const buttonStyles = {
-  iconSize: "size-5",
+  iconSize: "size-4 mobile:size-5",
   transition: "transition-colors duration-75 ease-in-out",
 };
 
@@ -74,7 +74,7 @@ export default function ColorfulIconButton({
       >
         <span
           className={cn(
-            "p-2 rounded-full",
+            "size-9 flex items-center justify-center rounded-full",
             variant.bg,
             buttonStyles.transition
           )}
@@ -83,11 +83,11 @@ export default function ColorfulIconButton({
         </span>
         {count !== undefined ? (
           count > 0 ? (
-            <span>{Format.number(count)}</span>
+            <span className="text-xs mobile:text-sm">{Format.number(count)}</span>
           ) : (
             <span
               className={cn(
-                "text-sm",
+                "text-xs mobile:text-sm",
                 "hidden mobile:inline-block",
                 variant.focus
               )}
