@@ -1,56 +1,23 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { FocusTrap } from "focus-trap-react";
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/libraries/utils";
+import { FocusTrap } from "focus-trap-react";
 
-type FocusTrapContextType = {
-  isFocusTrapEnabled: boolean;
-  setFocusTrapEnabled: (enabled: boolean) => void;
-};
-
-const FocusTrapContext = createContext<FocusTrapContextType>({
-  isFocusTrapEnabled: true,
-  setFocusTrapEnabled: () => {},
-});
-
-export const useFocusTrap = () => useContext(FocusTrapContext);
-
-type FocusTrapProviderProps = {
-  children: React.ReactNode;
-  defaultEnabled?: boolean;
-};
-
-export function FocusTrapProvider({
+export default function Modal({
   children,
-  defaultEnabled = true,
-}: FocusTrapProviderProps) {
-  const [isFocusTrapEnabled, setIsFocusTrapEnabled] = useState(defaultEnabled);
-
-  const setFocusTrapEnabled = (enabled: boolean) => {
-    setIsFocusTrapEnabled(enabled);
-  };
-
-  return (
-    <FocusTrapContext.Provider
-      value={{ isFocusTrapEnabled, setFocusTrapEnabled }}
-    >
-      {children}
-    </FocusTrapContext.Provider>
-  );
-}
-
-type ModalProps = Readonly<{
+  className,
+  onClose,
+}: Readonly<{
   children: React.ReactNode;
   onClose?: () => void;
   className?: string;
-}>;
-
-export default function Modal({ children, onClose, className }: ModalProps) {
-  const { isFocusTrapEnabled } = useFocusTrap();
-
-  function handleBackdropClick(event: React.MouseEvent) {
-    if (event.target === event.currentTarget) onClose?.();
+}>) {
+  function handleClick(event: React.MouseEvent<HTMLDivElement>) {
+    event.stopPropagation();
+    if (event.target !== event.currentTarget) return;
+    onClose?.();
   }
 
   useEffect(() => {
@@ -60,19 +27,22 @@ export default function Modal({ children, onClose, className }: ModalProps) {
     };
   }, []);
 
-  return (
-    <FocusTrap active={isFocusTrapEnabled}>
+  return createPortal(
+    <FocusTrap>
       <div
+        data-modal-container
         className={cn(
-          "top-0 right-0 absolute z-30",
-          "size-full",
-          "bg-black/80",
+          "fixed top-0 left-0 z-50",
+          "h-svh w-screen",
+          "flex items-center justify-center",
+          "bg-black/50",
           className
         )}
-        onClick={handleBackdropClick}
+        onClick={handleClick}
       >
         {children}
       </div>
-    </FocusTrap>
+    </FocusTrap>,
+    document.body
   );
 }

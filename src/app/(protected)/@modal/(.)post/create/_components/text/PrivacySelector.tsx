@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { usePostData } from "../../_provider/PostData";
 import { ContentPrivacy } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
-import { MenuItem, useFocusTrap } from "@/components/common";
+import { MenuItem } from "@/components/common";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,9 +37,7 @@ const PrivacyOptions = [
 ];
 
 export default function PrivacySelector() {
-  const { setFocusTrapEnabled } = useFocusTrap();
   const { privacy, setPrivacy } = usePostData();
-  const [isOpen, setIsOpen] = useState(false);
   const selectedOption = PrivacyOptions.find((opt) => opt.value === privacy);
 
   const openIncludeDialog = () => {
@@ -52,15 +49,7 @@ export default function PrivacySelector() {
   };
 
   return (
-    <DropdownMenu
-      open={isOpen}
-      onOpenChange={(open) => {
-        setFocusTrapEnabled(!open);
-        setTimeout(() => {
-          setIsOpen(open);
-        }, 0);
-      }}
-    >
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
@@ -77,7 +66,7 @@ export default function PrivacySelector() {
           <Chevron direction="down" className="size-3.5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" side="right" className="w-64">
+      <DropdownMenuContent align="start" side="right" className="w-64" portalDisabled>
         <DropdownMenuLabel className="text-xs font-medium text-muted-foreground">
           Select privacy
         </DropdownMenuLabel>

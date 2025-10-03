@@ -10,12 +10,16 @@ import {
 } from "@/components/ui/alert-dialog";
 
 type DiscardDialogProps = Readonly<{
+  onCancel: () => void;
   onClose: () => void;
 }>;
 
-export default function DiscardDialog({ onClose }: DiscardDialogProps) {
+export default function DiscardDialog({
+  onCancel,
+  onClose,
+}: DiscardDialogProps) {
   return (
-    <AlertDialogContent>
+    <AlertDialogContent portalDisabled>
       <AlertDialogHeader>
         <AlertDialogTitle>Discard post?</AlertDialogTitle>
         <AlertDialogDescription>
@@ -24,7 +28,7 @@ export default function DiscardDialog({ onClose }: DiscardDialogProps) {
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
         <AlertDialogAction
           onClick={onClose}
           className={cn(

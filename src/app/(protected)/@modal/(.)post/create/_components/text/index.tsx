@@ -27,10 +27,9 @@ export default function TextContent() {
   return (
     <div
       className={cn(
-        "relative bg-background",
-        "w-full h-full sm:h-fit",
         "p-3 pb-6",
-        "flex flex-col"
+        "flex flex-col",
+        "w-screen h-[calc(100svh-48px)] sm:max-w-lg sm:h-fit"
       )}
     >
       <div className={cn("flex items-center gap-3", "px-2")}>

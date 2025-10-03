@@ -7,8 +7,7 @@ import { useState } from "react";
 import PostDataProvider, { usePostData } from "./_provider/PostData";
 
 import { cn } from "@/libraries/utils";
-import { FocusTrapProvider, Modal, useFocusTrap } from "@/components/common";
-import { Button } from "@/components/ui/button";
+import { Modal } from "@/components/common";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import {
   DiscardDialog,
@@ -17,29 +16,25 @@ import {
   TextContent,
   UploadMediaWindow,
 } from "./_components";
-import { Image as ImageIcon, X } from "@/components/icons";
+import { Image as ImageIcon } from "@/components/icons";
 import { SquarePen } from "lucide-react";
 
 export default function ProviderWrapper() {
   return (
-    <FocusTrapProvider defaultEnabled>
-      <PostDataProvider>
-        <CreatePostPage />
-      </PostDataProvider>
-    </FocusTrapProvider>
+    <PostDataProvider>
+      <CreatePostPage />
+    </PostDataProvider>
   );
 }
 
 function CreatePostPage() {
   const router = useRouter();
   const { isUploading, hasContent, phase, setPhase } = usePostData();
-  const { setFocusTrapEnabled } = useFocusTrap();
   const [isDiscardDialogOpen, setIsDiscardDialogOpen] = useState(false);
 
   function handleClose() {
     if (isUploading) return;
     if (hasContent) {
-      setFocusTrapEnabled(false);
       setIsDiscardDialogOpen(true);
     } else router.back();
   }
@@ -79,54 +74,33 @@ function CreatePostPage() {
   };
 
   return (
-    <Modal onClose={handleClose} className="flex items-center justify-center">
+    <Modal onClose={handleClose} className={cn("items-start sm:items-center")}>
       <div
         className={cn(
           "flex flex-col",
           "bg-background sm:rounded-lg overflow-hidden",
-          "h-full sm:h-auto",
-          phase === "media" ? "w-fit" : "w-full sm:max-w-lg"
+          isDiscardDialogOpen && "hidden"
         )}
       >
-        <AlertDialog
-          open={isDiscardDialogOpen}
-          onOpenChange={(open) => {
-            setFocusTrapEnabled(!open);
-            setIsDiscardDialogOpen(open);
-          }}
-        >
-          <Header
-            data={phaseData[phase]}
-            onClose={handleClose}
-            className="shrink-0"
-          />
+        <Header
+          data={phaseData[phase]}
+          onClose={handleClose}
+          className="shrink-0"
+        />
 
-          {phaseData[phase].component}
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleClose}
-            className={cn(
-              "hidden sm:flex",
-              "rounded-full",
-              "absolute right-2 top-2",
-              "text-muted-foreground-dark",
-              "hover:bg-accent-dark/[.1] hover:text-accent-foreground-dark",
-              "focus-within-indicator-dark"
-            )}
-          >
-            <X className="size-5" />
-          </Button>
-
-          <DiscardDialog
-            onClose={() => {
-              setIsDiscardDialogOpen(false);
-              router.back();
-            }}
-          />
-        </AlertDialog>
+        {phaseData[phase].component}
       </div>
+
+      <AlertDialog open={isDiscardDialogOpen}>
+        <DiscardDialog
+          onCancel={() => {
+            setIsDiscardDialogOpen(false);
+          }}
+          onClose={() => {
+            router.back();
+          }}
+        />
+      </AlertDialog>
     </Modal>
   );
 }

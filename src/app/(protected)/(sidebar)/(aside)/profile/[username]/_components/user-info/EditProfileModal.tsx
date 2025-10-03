@@ -219,7 +219,7 @@ export default function EditProfileModal({
             </Button>
           </DialogHeader>
 
-          <div className="h-dvh sm:max-h-[640px] flex flex-col">
+          <div className="h-svh sm:max-h-[640px] flex flex-col">
             <div className="pt-[48px]">
               <div>
                 <div
