@@ -11,11 +11,13 @@ export default function MobileNav({ items }: MobileNavProps) {
   return (
     <div
       className={cn(
-        "sticky bottom-0 left-0 z-20 w-full pb-[env(safe-area-inset-bottom)]",
+        "sticky bottom-0 left-0 z-20 w-full",
         "bg-background border-t border-border",
         "flex justify-around items-center"
       )}
-      style={{ height: MOBILE_NAV_HEIGHT }}
+      style={{
+        height: MOBILE_NAV_HEIGHT,
+      }}
     >
       {items.map((item) => {
         const isActive = item.matchPath?.() ?? false;

@@ -28,14 +28,6 @@ export function getNavigationItems(
       matchPath: () => pathname === ROUTE.HOME,
     },
     {
-      title: "Search",
-      url: ROUTE.SEARCH(),
-      icon: (open) => (
-        <Search className="size-5 mobile:size-4" strokeWidth={open ? 4 : 2} />
-      ),
-      matchPath: () => pathname.startsWith(ROUTE.SEARCH()),
-    },
-    {
       title: "Explore",
       url: ROUTE.EXPLORE(ExploreType.POST),
       icon: (open) => (
@@ -45,6 +37,14 @@ export function getNavigationItems(
         />
       ),
       matchPath: () => pathname.startsWith(ROUTE.EXPLORE()),
+    },
+    {
+      title: "Search",
+      url: ROUTE.SEARCH(),
+      icon: (open) => (
+        <Search className="size-5 mobile:size-4" strokeWidth={open ? 4 : 2} />
+      ),
+      matchPath: () => pathname.startsWith(ROUTE.SEARCH()),
     },
     {
       title: "Create",
