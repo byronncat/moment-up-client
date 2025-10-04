@@ -14,7 +14,8 @@ const SuccessMessage = {
   reportPost: "Reported successfully",
   repost: "Reposted successfully",
   deleteStory: "Story deleted successfully",
-  getMoment: "Moment fetched successfully",
+  getPost: "Post fetched successfully",
+  getPostMetadata: "Post metadata fetched successfully",
   addComment: "Comment added successfully",
 };
 
@@ -160,6 +161,76 @@ export async function reportPost(
     });
 }
 
+export async function getPost(
+  postId: string,
+  token: Token
+): API<FeedItemDto | null> {
+  return fetch(ApiUrl.post.getById(postId), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: SuccessMessage.getPost,
+        data: (await response.json()).post,
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorDto) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+export async function getPostMetadata(
+  postId: string
+): API<
+  | {
+      username: string;
+      displayName: string | null;
+      text: string | null;
+      lastModified: string;
+    }
+  | undefined
+> {
+  return fetch(ApiUrl.post.getMetadata(postId), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    next: {
+      revalidate: 300, // 5 minutes
+    },
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      const data = await response.json();
+      return {
+        success: true,
+        message: SuccessMessage.getPostMetadata,
+        data: data.metadata,
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorDto) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
 // +++ TODO: Need to change momentId to postId +++
 export async function repost(
   data: {
@@ -214,31 +285,6 @@ export async function deleteStory(storyId: string, token: Token): API {
       return {
         success: true,
         message: "Story deleted successfully",
-        statusCode: response.status,
-      };
-    })
-    .catch((error: ErrorDto) => {
-      return {
-        success: false,
-        message: parseErrorMessage(error),
-        statusCode: error.statusCode,
-      };
-    });
-}
-
-export async function getMoment(momentId: string): API<FeedItemDto | null> {
-  return fetch(ApiUrl.post.getById(momentId), {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then(async (response) => {
-      if (!response.ok) throw await response.json();
-      return {
-        success: true,
-        message: "Moment fetched successfully",
-        data: (await response.json()).moment,
         statusCode: response.status,
       };
     })

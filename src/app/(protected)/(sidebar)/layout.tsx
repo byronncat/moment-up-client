@@ -9,10 +9,10 @@ type LayoutProps = Readonly<{
 export default function Layout({ children }: LayoutProps) {
   return (
     <SidebarProvider>
-      <div className={cn("w-screen min-h-screen", "relative")}>
+      <div className={cn("w-screen", "relative")}>
         <div className="min-h-full flex">
           <Sidebar>
-            <div className="flex-1">
+            <div className="flex-1 min-h-dvh">
               {children}
             </div>
           </Sidebar>

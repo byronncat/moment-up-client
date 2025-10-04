@@ -48,6 +48,7 @@ type ColorfulIconButtonProps = {
   emptyText?: string;
   isActive?: boolean;
   onClick?: () => void;
+  className?: string;
 };
 
 export default function ColorfulIconButton({
@@ -58,6 +59,7 @@ export default function ColorfulIconButton({
   isActive = false,
   emptyText,
   onClick,
+  className,
 }: ColorfulIconButtonProps) {
   const variant = colorVariants[color];
   return (
@@ -69,7 +71,8 @@ export default function ColorfulIconButton({
           "cursor-pointer outline-none",
           isActive ? variant.text : variant.hover,
           variant.focus,
-          buttonStyles.transition
+          buttonStyles.transition,
+          className
         )}
       >
         <span
@@ -83,7 +86,9 @@ export default function ColorfulIconButton({
         </span>
         {count !== undefined ? (
           count > 0 ? (
-            <span className="text-xs mobile:text-sm">{Format.number(count)}</span>
+            <span className="text-xs mobile:text-sm">
+              {Format.number(count)}
+            </span>
           ) : (
             <span
               className={cn(

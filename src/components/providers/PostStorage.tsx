@@ -19,7 +19,7 @@ type PostContextType = {
   setPosts: (posts: FeedItemDto[]) => void;
   addPosts: (posts: FeedItemDto[]) => void;
   removeMoment: (postId: string) => void;
-  setCurrentPost: (postId: string) => void;
+  setCurrentPost: (postId: string | null) => void;
   getCurrentPost: () => FeedItemDto | undefined;
 
   like: (postId: string) => Promise<void>;

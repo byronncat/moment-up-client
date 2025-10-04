@@ -136,11 +136,11 @@ export default function ButtonGroup({
             "text-muted-foreground"
           )}
         >
-          {buttons.slice(0, 3).map((button) => (
-            <ColorfulIconButton key={button.tooltip} {...button} />
-          ))}
+          <ColorfulIconButton {...buttons[0]} className="grow" />
+          <ColorfulIconButton {...buttons[1]} className="grow" />
+          <ColorfulIconButton {...buttons[2]} className="grow" />
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 w-fit">
             {buttons.slice(3).map((button) => (
               <ColorfulIconButton key={button.tooltip} {...button} />
             ))}

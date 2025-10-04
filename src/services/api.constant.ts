@@ -100,9 +100,13 @@ export const ApiUrl = {
         pathParams: { userId },
         queryParams: { filter, page, limit },
       }),
-    getById: (momentId: string) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/posts/:momentId`, {
-        pathParams: { momentId },
+    getById: (postId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId`, {
+        pathParams: { postId },
+      }),
+    getMetadata: (postId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId/metadata`, {
+        pathParams: { postId },
       }),
     create: `${SERVER_HOST_URL}/v1/posts`,
     like: (postId: string) =>
@@ -142,9 +146,9 @@ export const ApiUrl = {
   },
 
   comment: {
-    get: (momentId: string, page?: number, limit?: number) =>
-      buildUrl(`${SERVER_HOST_URL}/v1/comments/moment/:momentId`, {
-        pathParams: { momentId },
+    get: (postId: string, page?: number, limit?: number) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/comments/post/:postId`, {
+        pathParams: { postId },
         queryParams: { page, limit },
       }),
     add: `${SERVER_HOST_URL}/v1/comments`,

@@ -128,7 +128,6 @@ function MoreMenu({ user, postId, actions, className }: MoreMenuProps) {
   const pathname = usePathname();
   const { user: currentUser } = useAuth();
   const isSelf = currentUser?.id === user.id;
-
   const isPostPage = pathname.startsWith(ROUTE.POST(postId));
 
   return (

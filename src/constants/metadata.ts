@@ -9,7 +9,9 @@ export interface MetadataMap {
   forgotPassword: NextMetadata;
 
   // === Public ===
+  explore: NextMetadata;
   profile: (username: string) => NextMetadata;
+  post: (username: string, content: string | null) => NextMetadata;
 
   // === Private ===
   messages: NextMetadata;
@@ -18,9 +20,7 @@ export interface MetadataMap {
   notFound: NextMetadata;
 
   // +++ TODO: Ongoing +++
-  moment: (username: string, content?: string) => NextMetadata;
   story: NextMetadata;
-  explore: NextMetadata;
   search: NextMetadata;
   notifications: NextMetadata;
 }
@@ -60,6 +60,14 @@ export const Metadata: MetadataMap = {
       description: `See posts, stories and profile details from @${username} on MomentUp.`,
     };
   },
+  post: (username: string, content: string | null) => {
+    return {
+      title: content ? `${content} • @${username}` : `@${username}`,
+      description: content
+        ? `${username} posted: ${content}`
+        : `See posts and updates from @${username}`,
+    };
+  },
 
   // === Error ===
   notFound: {
@@ -77,12 +85,7 @@ export const Metadata: MetadataMap = {
     title: "Notifications",
     description: "Notifications page",
   },
-  moment: (username: string, content?: string) => {
-    return {
-      title: `@${username}${content ? ` | ${content}` : ""}`,
-      description: `Moment page of ${username}${content ? ` | ${content}` : ""}`,
-    };
-  },
+
   story: {
     title: "Story",
     description: "Story page",

@@ -1,79 +1,98 @@
 "use client";
 
-import type { CoreApi } from "@/services";
+import type { FeedItemDto } from "api";
 
 import { useSearchParams } from "next/navigation";
-import { use, useLayoutEffect, useRef, useState } from "react";
-import { CommentProvider, usePost } from "@/components/providers";
+import { useEffect, useRef, useState } from "react";
+import { CommentProvider, usePost, useAuth } from "@/components/providers";
+import useSWR from "swr";
+import { SWRFetcherWithToken } from "@/libraries/swr";
+import { ApiUrl } from "@/services";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  CommentZone,
-  MomentButtonGroup,
-  MomentHeader,
-} from "@/components/post";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CommentZone, PostHeader, PostButtonGroup } from "@/components/post";
+import { ErrorContent } from "@/components/common";
 import TextContent from "./TextContent";
 import MediaCarousel from "./MediaCarousel";
 import CommentInput from "./CommentInput";
-import ScrollArea from "./ScrollArea";
 import { MagnifyingGlass } from "@/components/icons";
 
-type MomentDetailsProps = Readonly<{
-  initialRes: ReturnType<typeof CoreApi.getMoment>;
+type PostDetailsProps = Readonly<{
+  postId: string;
 }>;
 
-export default function MomentDetails({ initialRes }: MomentDetailsProps) {
-  const momentRes = use(initialRes);
+export default function PostDetails({ postId }: PostDetailsProps) {
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
-  const { setPosts, setCurrentPost, report, bookmark, share, like, follow } =
-    usePost();
+  const {
+    setPosts,
+    getCurrentPost,
+    setCurrentPost,
+    share,
+    report,
+    bookmark,
+    like,
+    follow,
+  } = usePost();
+  const { token } = useAuth();
+  const { data, error, isLoading, mutate } = useSWR(
+    [ApiUrl.post.getById(postId), token.accessToken],
+    ([url, token]) => SWRFetcherWithToken<{ post: FeedItemDto }>(url, token)
+  );
 
-  const moment = momentRes.data;
+  const post = getCurrentPost();
   const searchParams = useSearchParams();
   const imgIndex = searchParams.get("imgIndex");
   const [initialIndex] = useState(imgIndex ? parseInt(imgIndex) : 0);
 
-  useLayoutEffect(() => {
-    if (moment) {
-      setPosts([moment]);
-      setCurrentPost(moment.id);
+  useEffect(() => {
+    if (data) {
+      setPosts([data.post]);
+      setCurrentPost(data.post.id);
+    } else {
+      setPosts([]);
+      setCurrentPost(null);
     }
-  }, [moment, setPosts, setCurrentPost]);
+  }, [data, setPosts, setCurrentPost]);
 
-  if (!moment)
+  if (isLoading) return <PostSkeleton />;
+  if (error?.statusCode === 404)
     return (
-      <div className={cn("pt-40", "flex flex-col items-center gap-8")}>
+      <div className={cn("pt-40 px-4", "flex flex-col items-center gap-4")}>
         <p className="text-center text-muted-foreground">
           Hmm...this page doesn&apos;t exist. Try searching for something else.
         </p>
         <Link href={ROUTE.SEARCH()}>
-          <Button size="default">
-            <MagnifyingGlass className="size-4" />
+          <Button variant="outline">
+            <MagnifyingGlass className="size-3.5" />
             Search
           </Button>
         </Link>
       </div>
     );
+  if (error) return <ErrorContent onRefresh={mutate} className="pt-40" />;
+
+  if (!post) return null;
   return (
-    <ScrollArea>
-      <MomentHeader
-        data={moment}
+    <div className="relative size-full">
+      <PostHeader
+        data={post}
         actions={{
           follow,
           report,
         }}
       />
-      <TextContent data={moment.post.text} />
+      <TextContent data={post.post.text} />
       <MediaCarousel
-        files={moment.post.files}
+        files={post.post.files}
         initialIndex={initialIndex}
         className="border-y border-border"
       />
-      <MomentButtonGroup
-        data={moment}
+      <PostButtonGroup
+        data={post}
         className="border-b border-border"
         actions={{
           bookmark,
@@ -84,10 +103,59 @@ export default function MomentDetails({ initialRes }: MomentDetailsProps) {
           },
         }}
       />
-      <CommentProvider momentId={moment.id}>
+      <CommentProvider momentId={post.id}>
         <CommentInput ref={commentInputRef} />
         <CommentZone />
       </CommentProvider>
-    </ScrollArea>
+    </div>
+  );
+}
+
+function PostSkeleton() {
+  return (
+    <div className="overflow-hidden">
+      <div className="px-4 pt-4 pb-3">
+        <div className="flex gap-2">
+          <Skeleton className="size-12 rounded-full" />
+          <div className="flex flex-col gap-1.5 mt-1.5 flex-1">
+            <div className="flex items-center gap-1">
+              <Skeleton className="w-32 h-4" />
+              <Skeleton className="w-1 h-3" />
+              <Skeleton className="w-16 h-3" />
+            </div>
+            <Skeleton className="w-20 h-3" />
+          </div>
+        </div>
+      </div>
+
+      <div className="p-0">
+        <div className="px-4 pb-2">
+          <Skeleton className="w-4/5 h-4 mb-1" />
+        </div>
+
+        <Skeleton className="w-full rounded-none aspect-square border-y border-border" />
+      </div>
+
+      <div className="px-4 py-3 border-b border-border">
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-1">
+            <Skeleton className="size-9 rounded-full" />
+            <Skeleton className="w-10 h-4" />
+          </div>
+          <div className="flex items-center gap-1">
+            <Skeleton className="size-9 rounded-full" />
+            <Skeleton className="w-10 h-4" />
+          </div>
+          <div className="flex items-center gap-1">
+            <Skeleton className="size-9 rounded-full" />
+            <Skeleton className="w-10 h-4" />
+          </div>
+          <div className="flex items-center gap-1">
+            <Skeleton className="size-9 rounded-full" />
+            <Skeleton className="size-9 rounded-full" />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -3,7 +3,7 @@ import type { FeedItemDto } from "api";
 import { useRef } from "react";
 import { cn } from "@/libraries/utils";
 import { CommentProvider, usePost } from "@/components/providers";
-import { CommentZone, MomentHeader } from "@/components/post";
+import { CommentZone, PostHeader } from "@/components/post";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ButtonGroup from "./ButtonGroup";
 import TextContent from "@/app/(protected)/(sidebar)/(aside)/post/[id]/_components/TextContent";
@@ -26,7 +26,7 @@ export default function Content({ data, haveMedia, className }: ContentProps) {
   function Content() {
     return (
       <>
-        <MomentHeader
+        <PostHeader
           data={data}
           actions={{
             follow,

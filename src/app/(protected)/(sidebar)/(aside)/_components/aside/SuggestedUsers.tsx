@@ -222,7 +222,7 @@ function SuggestedUsersSkeleton() {
             // eslint-disable-next-line react/no-array-index-key
             key={index}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <Skeleton className="size-10 rounded-full" />
               <div className="flex flex-col gap-1 mt-1">
                 <Skeleton className="h-4 w-24" />

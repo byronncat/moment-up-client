@@ -34,7 +34,7 @@ export default function PostSkeleton({
       <CardHeader className="px-4 pt-4 pb-3">
         <div className="flex gap-2">
           <Skeleton className="size-12 rounded-full" />
-          <div className="flex flex-col gap-1 mt-1 flex-1">
+          <div className="flex flex-col gap-1.5 mt-1 flex-1">
             <div className="flex items-center gap-1">
               <Skeleton className="w-32 h-4" />
               <Skeleton className="w-1 h-3" />

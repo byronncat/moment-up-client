@@ -221,7 +221,7 @@ function FollowButton({ isFollowing, onFollow }: FollowButtonProps) {
 
   return (
     <Button
-      variant={isFollowing ? (isHover ? "destructive" : "outline") : "accent"}
+      variant={isFollowing ? (isHover ? "destructive" : "outline") : "default"}
       className="text-sm w-full [&_svg]:size-4"
       onClick={handleClick}
       ref={hoverRef}
