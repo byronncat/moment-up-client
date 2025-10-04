@@ -100,7 +100,7 @@ export default function VirtualizedSearchResults({
   if (error)
     return (
       <Container>
-        <ErrorContent onRefresh={onError} />
+        <ErrorContent onRefresh={onError} className="h-full" />
       </Container>
     );
   if (isResizing || results === null) return null;

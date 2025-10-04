@@ -12,7 +12,8 @@ type PostsAction =
   | { type: "REMOVE_POST"; payload: string }
   | { type: "TOGGLE_LIKE"; payload: string }
   | { type: "TOGGLE_BOOKMARK"; payload: string }
-  | { type: "TOGGLE_FOLLOW"; payload: string };
+  | { type: "TOGGLE_FOLLOW"; payload: string }
+  | { type: "UPDATE_COMMENT_COUNT"; payload: { postId: string; mode: 'increase' | 'decrease' } };
 
 type PostContextType = {
   posts: FeedItemDto[] | undefined;
@@ -27,6 +28,7 @@ type PostContextType = {
   share: (postId: string) => void;
   report: (postId: string, type: ContentReportType) => void;
   follow: (postId: string) => Promise<void>;
+  updateCommentCount: (postId: string, mode: 'increase' | 'decrease') => Promise<void>;
 };
 
 // === Provider ===
@@ -124,6 +126,23 @@ function postsReducer(state: PostsState, action: PostsAction): PostsState {
       return newMap;
     }
 
+    case "UPDATE_COMMENT_COUNT": {
+      if (!state) return state;
+      const newMap = new Map(state);
+      const feed = newMap.get(action.payload.postId);
+      if (feed) {
+        const increment = action.payload.mode === 'increase' ? 1 : -1;
+        newMap.set(action.payload.postId, {
+          ...feed,
+          post: {
+            ...feed.post,
+            comments: Math.max(0, feed.post.comments + increment),
+          },
+        });
+      }
+      return newMap;
+    }
+
     default:
       return state;
   }
@@ -150,6 +169,7 @@ const MomentDataContext = createContext<PostContextType>({
   share: () => {},
   report: () => {},
   follow: async () => {},
+  updateCommentCount: async () => {},
 });
 
 export const usePost = () => useContext(MomentDataContext);
@@ -275,6 +295,13 @@ export default function MomentDataProvider({
     [reportApi]
   );
 
+  const updateCommentCount = useCallback(
+    async (postId: string, mode: 'increase' | 'decrease') => {
+      dispatch({ type: "UPDATE_COMMENT_COUNT", payload: { postId, mode } });
+    },
+    []
+  );
+
   const contextValue = useMemo(
     () => ({
       posts: posts ? Array.from(posts.values()) : undefined,
@@ -289,6 +316,7 @@ export default function MomentDataProvider({
       share,
       report,
       follow,
+      updateCommentCount,
     }),
     [
       posts,
@@ -302,6 +330,7 @@ export default function MomentDataProvider({
       share,
       follow,
       report,
+      updateCommentCount,
     ]
   );
 

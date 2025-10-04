@@ -2,7 +2,7 @@
 
 import { useComment } from "@/components/providers";
 import { cn } from "@/libraries/utils";
-import { CommentSkeleton } from "./Skeletons";
+import { CommentSkeleton } from "./Skeleton";
 import SortButton from "./SortButton";
 import CommentList from "./list";
 

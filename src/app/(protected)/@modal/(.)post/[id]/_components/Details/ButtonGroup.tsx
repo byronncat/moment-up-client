@@ -40,7 +40,7 @@ function FirstGroup({
             buttonStyles.transition,
             data.isLiked
               ? "fill-pink-500"
-              : "fill-muted-foreground group-hover:fill-pink-500 dark:group-hover:fill-pink-400"
+              : "fill-muted-foreground group-hover:fill-pink-500 dark:group-hover:fill-pink-400 group-focus:fill-pink-500 dark:group-focus:fill-pink-400"
           )}
         />
       ),
@@ -57,7 +57,7 @@ function FirstGroup({
           className={cn(
             buttonStyles.iconSize,
             buttonStyles.transition,
-            "fill-muted-foreground group-hover:fill-sky-500 dark:group-hover:fill-sky-400",
+            "fill-muted-foreground group-hover:fill-sky-500 dark:group-hover:fill-sky-400 group-focus:fill-sky-500 dark:group-focus:fill-sky-400",
             "translate-x-[1px]"
           )}
         />
@@ -74,7 +74,7 @@ function FirstGroup({
           className={cn(
             buttonStyles.iconSize,
             buttonStyles.transition,
-            "fill-muted-foreground group-hover:fill-green-500 dark:group-hover:fill-green-400"
+            "fill-muted-foreground group-hover:fill-green-500 dark:group-hover:fill-green-400 group-focus:fill-green-500 dark:group-focus:fill-green-400"
           )}
         />
       ),
@@ -127,7 +127,7 @@ function SecondGroup({
             buttonStyles.transition,
             data.isBookmarked
               ? "fill-yellow-500"
-              : "fill-muted-foreground group-hover:fill-yellow-500 dark:group-hover:fill-yellow-400"
+              : "fill-muted-foreground group-hover:fill-yellow-500 dark:group-hover:fill-yellow-400 group-focus:fill-yellow-500 dark:group-focus:fill-yellow-400"
           )}
         />
       ),
@@ -142,7 +142,7 @@ function SecondGroup({
           className={cn(
             buttonStyles.iconSize,
             buttonStyles.transition,
-            "fill-muted-foreground group-hover:fill-blue-500 dark:group-hover:fill-blue-400"
+            "fill-muted-foreground group-hover:fill-blue-500 dark:group-hover:fill-blue-400 group-focus:fill-blue-500 dark:group-focus:fill-blue-400"
           )}
         />
       ),

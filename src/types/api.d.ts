@@ -80,6 +80,15 @@ declare module "api" {
     post: PostDto;
   };
 
+  type CommentDto = {
+    id: string;
+    user: UserSummaryDto;
+    text: string;
+    likes: number;
+    isLiked: boolean;
+    lastModified: string;
+  };
+
   // === Others ===
   interface HashtagDto {
     name: string;
@@ -93,14 +102,6 @@ declare module "api" {
   };
 
   // +++ TODO: Refactor this +++
-  type CommentInfo = {
-    id: string;
-    user: UserSummaryDto;
-    content: string;
-    likes: number;
-    isLiked: boolean;
-    updatedAt: string;
-  };
 
   // === Story ===
   type StoryNotificationInfo = {

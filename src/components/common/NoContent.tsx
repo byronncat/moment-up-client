@@ -17,7 +17,7 @@ export default function NoContent({
     <div
       className={cn(
         "flex flex-col items-center",
-        "h-full px-5 text-muted-foreground",
+        "px-5 text-muted-foreground",
         className
       )}
     >

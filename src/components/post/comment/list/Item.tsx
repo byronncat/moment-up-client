@@ -1,4 +1,4 @@
-import type { CommentInfo } from "api";
+import type { CommentDto } from "api";
 
 import { useEffect, useRef, useState } from "react";
 import { useTextClamp } from "@/hooks";
@@ -22,7 +22,7 @@ import HoverCard from "./HoverCard";
 import { Heart, MoreHorizontal } from "@/components/icons";
 
 type CommentItemProps = Readonly<{
-  comment: CommentInfo;
+  comment: CommentDto;
   isExpanded: boolean;
   onToggleExpand: () => void;
 }>;
@@ -42,12 +42,12 @@ export default function Item({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const isFirstRender = useRef(true);
 
-  async function handleLike() {
-    await likeComment(comment.id, comment.isLiked);
+  function handleLike() {
+    likeComment(comment.id, !comment.isLiked);
   }
 
-  async function handleDelete() {
-    await deleteComment(comment.id);
+  function handleDelete() {
+    deleteComment(comment.id);
   }
 
   useEffect(() => {
@@ -58,19 +58,23 @@ export default function Item({
   }, [isTextClamped]);
 
   return (
-    <div className="flex items-start gap-3">
-      <HoverCard data={comment.user}>
+    <div className="flex items-start gap-2.5">
+      <HoverCard
+        data={comment.user}
+        className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
+        tabIndex={-1}
+      >
         <Avatar src={comment.user.avatar} size="12" />
       </HoverCard>
 
-      <div className="flex flex-col flex-1">
-        <Header user={comment.user} updatedAt={comment.updatedAt} />
+      <div className="flex flex-col flex-1 min-w-0">
+        <Header user={comment.user} lastModified={comment.lastModified} />
 
         <p
           ref={textRef}
           className={cn("text-sm", !isExpanded && "line-clamp-3")}
         >
-          {comment.content}
+          {comment.text}
         </p>
 
         {canExpand && (
@@ -95,8 +99,10 @@ export default function Item({
             className={cn(
               "flex items-center gap-1.5",
               "text-xs text-muted-foreground",
-              "hover:text-pink-500 dark:hover:text-pink-400 transition-colors duration-150 ",
-              "cursor-pointer group"
+              "hover:text-pink-500 dark:hover:text-pink-400",
+              "focus:text-pink-500 dark:focus:text-pink-400",
+              "transition-colors duration-150 ",
+              "cursor-pointer group outline-none"
             )}
           >
             <span className="h-4">
@@ -106,7 +112,7 @@ export default function Item({
                   "size-3.5 transition-colors duration-150",
                   comment.isLiked
                     ? "fill-pink-500"
-                    : "fill-muted-foreground group-hover:fill-pink-500 dark:group-hover:fill-pink-400"
+                    : "fill-muted-foreground group-hover:fill-pink-500 dark:group-hover:fill-pink-400 group-focus:fill-pink-500 dark:group-focus:fill-pink-400"
                 )}
               />
             </span>
@@ -129,26 +135,36 @@ export default function Item({
 
 function Header({
   user,
-  updatedAt,
+  lastModified,
 }: Readonly<{
-  user: CommentInfo["user"];
-  updatedAt: CommentInfo["updatedAt"];
+  user: CommentDto["user"];
+  lastModified: CommentDto["lastModified"];
 }>) {
   return (
     <div className={cn("flex items-center gap-1", "min-w-0 mb-1")}>
-      <HoverCard data={user} className="max-w-[120px] min-w-0">
-        <p className={cn("text-sm font-semibold", "truncate")}>
-          {user.displayName}
-        </p>
-      </HoverCard>
-      <HoverCard data={user} className="max-w-[100px] min-w-0">
-        <p className={cn("text-sm text-muted-foreground", "truncate")}>
+      <HoverCard
+        data={user}
+        className={cn(
+          "flex items-baseline gap-1.5 min-w-0",
+          "group outline-none"
+        )}
+      >
+        <span
+          className={cn(
+            "text-sm font-semibold",
+            "truncate",
+            "group-hover:underline group-focus:underline"
+          )}
+        >
+          {user.displayName ?? user.username}
+        </span>
+        <span className={cn("text-xs text-muted-foreground", "truncate")}>
           @{user.username}
-        </p>
+        </span>
       </HoverCard>
       <Tooltip
         sideOffset={4}
-        content={dayjs(updatedAt).format("h:mm A MMM D, YYYY")}
+        content={dayjs(lastModified).format("h:mm A MMM D, YYYY")}
       >
         <p
           className={cn(
@@ -156,7 +172,7 @@ function Header({
             "shrink-0 ml-auto"
           )}
         >
-          {Format.date(updatedAt)}
+          {Format.date(lastModified)}
         </p>
       </Tooltip>
     </div>
@@ -166,14 +182,15 @@ function Header({
 type MoreMenuProps = Readonly<{
   isDialogOpen: boolean;
   setIsDialogOpen: (open: boolean) => void;
-  onDelete: () => Promise<void>;
+  onDelete: () => void;
 }>;
 
 function MoreMenu({ isDialogOpen, setIsDialogOpen, onDelete }: MoreMenuProps) {
-  async function handleDelete() {
-    await onDelete();
+  function handleDelete() {
+    onDelete();
     setIsDialogOpen(false);
   }
+
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
@@ -183,9 +200,9 @@ function MoreMenu({ isDialogOpen, setIsDialogOpen, onDelete }: MoreMenuProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-md [&>button]:hidden p-0 overflow-hidden">
         <VisuallyHidden>
-          <DialogTitle>Delete Comment</DialogTitle>
+          <DialogTitle>Comment Options</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this comment?
+            Select an option to perform on this comment.
           </DialogDescription>
         </VisuallyHidden>
         <div className="flex flex-col">
@@ -194,7 +211,7 @@ function MoreMenu({ isDialogOpen, setIsDialogOpen, onDelete }: MoreMenuProps) {
             className={cn(
               "py-3",
               "flex items-center justify-center",
-              "text-destructive hover:bg-destructive/[.12]",
+              "font-bold text-destructive hover:bg-destructive/[.12]",
               "cursor-pointer"
             )}
           >

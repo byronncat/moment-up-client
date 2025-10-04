@@ -1,4 +1,5 @@
 import { SERVER_HOST_URL } from "@/constants/server";
+import { SortBy } from "@/constants/client";
 import { buildUrl } from "@/utilities";
 
 export const ApiUrl = {
@@ -146,12 +147,12 @@ export const ApiUrl = {
   },
 
   comment: {
-    get: (postId: string, page?: number, limit?: number) =>
+    get: (postId: string, page?: number, limit?: number, sortBy?: SortBy) =>
       buildUrl(`${SERVER_HOST_URL}/v1/comments/post/:postId`, {
         pathParams: { postId },
-        queryParams: { page, limit },
+        queryParams: { page, limit, sortBy },
       }),
-    add: `${SERVER_HOST_URL}/v1/comments`,
+    create: `${SERVER_HOST_URL}/v1/comments`,
     like: (commentId: string) =>
       buildUrl(`${SERVER_HOST_URL}/v1/comments/:commentId/like`, {
         pathParams: { commentId },

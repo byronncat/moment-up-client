@@ -56,7 +56,7 @@ export default function Content({ data, haveMedia, className }: ContentProps) {
           onCommentClick={focusCommentInput}
           className="py-1 text-muted-foreground"
         />
-        <CommentProvider momentId={data.id}>
+        <CommentProvider postId={data.id}>
           <CommentInput ref={commentInputRef} className="min-h-[68px]" />
           <CommentZone className="grow" />
         </CommentProvider>

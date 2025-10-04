@@ -1,10 +1,32 @@
 "use client";
 
-import type { CommentInfo, PaginationDto } from "api";
+// === Type ===
+import type { CommentDto, PaginationDto } from "api";
 
+type CommentContextType = {
+  comments: CommentDto[] | undefined;
+  loading: boolean;
+  sort: SortBy;
+  hasNextPage: boolean;
+
+  createComment: (text: string) => Promise<boolean>;
+  deleteComment: (commentId: string) => Promise<void>;
+  likeComment: (commentId: string, isLiked: boolean) => Promise<void>;
+  sortBy: (value: SortBy) => void;
+  isExpanded: (commentId: CommentDto["id"]) => boolean;
+  toggleExpansion: (commentId: CommentDto["id"]) => void;
+  loadNextPage: () => void;
+};
+
+// === Provider ===
 import { createContext, useContext, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
-import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
+import {
+  useAuth,
+  useRefreshApi,
+  useRefreshSWR,
+  usePost,
+} from "@/components/providers";
 import { ApiUrl, CoreApi } from "@/services";
 import { toast } from "sonner";
 import { ROUTE } from "@/constants/route";
@@ -13,25 +35,9 @@ import { INITIAL_PAGE } from "@/constants/server";
 
 import Link from "next/link";
 import { ErrorContent, NoContent } from "@/components/common";
-import CommentSkeletons from "../post/comment/Skeletons";
+import CommentZoneSkeleton from "../post/comment/Skeleton";
 import { Circle, Message } from "@/components/icons";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-
-type CommentContextType = {
-  comments: CommentInfo[] | undefined;
-  loading: boolean;
-  sort: SortBy;
-  hasNextPage: boolean;
-
-  setComments: (comments: CommentInfo[]) => void;
-  addComment: (text: string) => Promise<boolean>;
-  deleteComment: (commentId: string) => Promise<void>;
-  likeComment: (commentId: string, isLiked: boolean) => Promise<void>;
-  sortBy: (value: SortBy) => void;
-  isExpanded: (commentId: CommentInfo["id"]) => boolean;
-  toggleExpansion: (commentId: CommentInfo["id"]) => void;
-  loadNextPage: () => void;
-};
 
 const CommentContext = createContext<CommentContextType>({} as any);
 
@@ -39,33 +45,44 @@ export const useComment = () => useContext(CommentContext);
 const COMMENTS_PER_PAGE = 12;
 
 type CommentProviderProps = Readonly<{
-  momentId: string;
+  postId: string;
   children: React.ReactNode;
 }>;
 
 export default function CommentProvider({
-  momentId,
+  postId,
   children,
 }: CommentProviderProps) {
+  const [expandedComments, setExpandedComments] = useState<
+    Set<CommentDto["id"]>
+  >(new Set());
+  const [sort, setSort] = useState<SortBy>(SortBy.MOST_LIKED);
+
   const swrFetcherWithRefresh = useRefreshSWR();
   const { user, token } = useAuth();
+  const { updateCommentCount } = usePost();
 
   const getKey = (
     pageIndex: number,
-    previousPageData: PaginationDto<CommentInfo> | null
+    previousPageData: PaginationDto<CommentDto> | null
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
     if (!user) return null;
-    const url = ApiUrl.comment.get(momentId, pageIndex + 1, COMMENTS_PER_PAGE);
+    const url = ApiUrl.comment.get(
+      postId,
+      pageIndex + 1,
+      COMMENTS_PER_PAGE,
+      sort
+    );
     return [url, token.accessToken];
   };
 
-  const { data, error, size, setSize, isLoading, isValidating } =
+  const { data, error, size, setSize, isLoading, isValidating, mutate } =
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationDto<CommentInfo>>(url, accessToken),
+        swrFetcherWithRefresh<PaginationDto<CommentDto>>(url, accessToken),
       {
         initialSize: INITIAL_PAGE,
         revalidateFirstPage: false,
@@ -74,51 +91,59 @@ export default function CommentProvider({
       }
     );
 
-  const [comments, setComments] = useState<CommentInfo[] | undefined>(
-    undefined
-  );
-  const [expandedComments, setExpandedComments] = useState<
-    Set<CommentInfo["id"]>
-  >(new Set());
-  const [sort, setSort] = useState<SortBy>(SortBy.MOST_LIKED);
-
   const hasNextPage = data
     ? (data[data.length - 1]?.hasNextPage ?? false)
     : true;
 
-  useEffect(() => {
-    const comments = data
-      ? data.flatMap((page) => page?.items || [])
-      : undefined;
-    if (comments) setComments(comments);
-  }, [data]);
+  const comments = data?.flatMap((page) => page?.items);
 
   async function loadNextPage() {
     if (hasNextPage && !isValidating) await setSize(size + 1);
   }
 
-  async function addComment(content: string) {
-    const commentDto = {
-      content,
-      momentId,
-    };
-    const { success, message, data } = await CoreApi.addComment(
-      commentDto,
-      token
-    );
-    if (success && data) setComments((prev) => [data, ...(prev || [])]);
-    else toast.error(message || "Failed to comment! Please try again later.");
+  const createCommentApi = useRefreshApi(CoreApi.createComment);
+  async function createComment(text: string) {
+    const { success, message, data } = await createCommentApi({
+      text,
+      postId,
+    });
+    if (success && data) {
+      mutate(
+        (currentData) => {
+          if (!currentData) return currentData;
+          const newData = [...currentData];
+          if (newData[0]) {
+            newData[0] = {
+              ...newData[0],
+              items: [data, ...newData[0].items],
+            };
+          }
+          return newData;
+        },
+        { revalidate: false }
+      );
+      updateCommentCount(postId, "increase");
+    } else toast.error(message || "Failed to comment! Please try again later.");
     return success;
   }
 
+  const deleteCommentApi = useRefreshApi(CoreApi.deleteComment);
   async function deleteComment(commentId: string) {
-    toast.promise(CoreApi.deleteComment(commentId, token), {
+    toast.promise(deleteCommentApi(commentId), {
       loading: "Deleting comment...",
       success: ({ success, message }) => {
         if (success) {
-          setComments(
-            (prev) => prev?.filter((comment) => comment.id !== commentId) || []
+          mutate(
+            (currentData) => {
+              if (!currentData) return currentData;
+              return currentData.map((page) => ({
+                ...page,
+                items: page.items.filter((comment) => comment.id !== commentId),
+              }));
+            },
+            { revalidate: false }
           );
+          updateCommentCount(postId, "decrease");
           return message;
         }
 
@@ -128,61 +153,49 @@ export default function CommentProvider({
     });
   }
 
-  async function likeComment(commentId: string, isLiked: boolean) {
-    const { success, message } = await CoreApi.likeComment(
-      commentId,
-      isLiked,
-      token
-    );
+  const likeCommentApi = useRefreshApi(CoreApi.likeComment);
+  async function likeComment(commentId: string, shouldLike: boolean) {
+    const { success, message } = await likeCommentApi(commentId, shouldLike);
 
-    if (success)
-      setComments(
-        (prev) =>
-          prev?.map((comment) =>
-            comment.id === commentId
-              ? {
-                  ...comment,
-                  likes: comment.isLiked
-                    ? comment.likes - 1
-                    : comment.likes + 1,
-                  isLiked: !comment.isLiked,
-                }
-              : comment
-          ) || []
+    if (success) {
+      mutate(
+        (currentData) => {
+          if (!currentData) return currentData;
+          return currentData.map((page) => ({
+            ...page,
+            items: page.items.map((comment) =>
+              comment.id === commentId
+                ? {
+                    ...comment,
+                    likes: comment.isLiked
+                      ? comment.likes - 1
+                      : comment.likes + 1,
+                    isLiked: !comment.isLiked,
+                  }
+                : comment
+            ),
+          }));
+        },
+        { revalidate: false }
       );
-    else
+    } else
       toast.error(message || "Failed to like comment! Please try again later.");
   }
 
-  function sortBy(value: SortBy) {
-    if (!comments) return;
-    const orderedComments = comments.sort((a, b) => {
-      if (value === SortBy.MOST_LIKED && a.likes !== b.likes)
-        return b.likes - a.likes;
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    });
-    setSort(value);
-    setComments(orderedComments);
-  }
-
-  function isExpanded(commentId: CommentInfo["id"]) {
+  function isExpanded(commentId: CommentDto["id"]) {
     return expandedComments.has(commentId);
   }
 
-  function toggleExpansion(commentId: CommentInfo["id"]) {
+  function toggleExpansion(commentId: CommentDto["id"]) {
     const newExpanded = new Set(expandedComments);
     if (newExpanded.has(commentId)) newExpanded.delete(commentId);
     else newExpanded.add(commentId);
     setExpandedComments(newExpanded);
   }
 
-  function refetch() {
-    setSize(INITIAL_PAGE);
-  }
-
   if (!user)
     return (
-      <Link href={ROUTE.LOGIN} className="block px-3 pt-3">
+      <Link href={ROUTE.LOGIN} className="block p-3">
         <Alert>
           <Circle
             variant="info"
@@ -195,39 +208,38 @@ export default function CommentProvider({
         </Alert>
       </Link>
     );
-  let content: React.ReactNode = <CommentSkeletons className="pb-12" />;
+
+  let content: React.ReactNode = <CommentZoneSkeleton className="pb-12" />;
   if (!isLoading) {
     if (error)
       content = (
-        <InformationWrapper>
-          <ErrorContent
-            title="Failed to load comments"
-            description="Please try again later."
-            onRefresh={refetch}
-          />
-        </InformationWrapper>
+        <ErrorContent
+          title="Failed to load comments"
+          description="Please try again later."
+          onRefresh={mutate}
+          className="pt-12 pb-16"
+        />
       );
     else if (!comments) content = null;
     else if (comments.length === 0)
       content = (
         <>
           {children}
-          <InformationWrapper>
-            <NoContent
-              icon={
-                <Message
-                  variant="square"
-                  text
-                  className="size-12 text-muted-foreground"
-                />
-              }
-              title="No comments"
-              description="Be the first to comment on this moment."
-            />
-          </InformationWrapper>
+          <NoContent
+            icon={
+              <Message
+                variant="square"
+                text
+                className="size-12 text-muted-foreground"
+              />
+            }
+            title="No comments"
+            description="Be the first to comment on this moment."
+            className="pt-12 pb-16"
+          />
         </>
       );
-    else content = <>{children}</>;
+    else content = children;
   }
 
   return (
@@ -238,11 +250,10 @@ export default function CommentProvider({
         loading: isValidating,
         hasNextPage,
 
-        setComments,
-        addComment,
+        createComment,
         deleteComment,
         likeComment,
-        sortBy,
+        sortBy: (value) => setSort(value),
         isExpanded,
         toggleExpansion,
         loadNextPage,
@@ -251,10 +262,4 @@ export default function CommentProvider({
       {content}
     </CommentContext.Provider>
   );
-}
-
-function InformationWrapper({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  return <div className="pt-12 px-6 pb-12">{children}</div>;
 }

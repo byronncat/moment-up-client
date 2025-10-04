@@ -14,14 +14,14 @@ type CommentInputProps = Readonly<{
 
 export default function CommentInput({ ref, className }: CommentInputProps) {
   const { user } = useAuth();
-  const { addComment } = useComment();
+  const { createComment } = useComment();
   const [comment, setComment] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleSendComment() {
     if (!comment || !user) return;
     setIsLoading(true);
-    const success = await addComment(comment);
+    const success = await createComment(comment);
     if (success) setComment("");
     setIsLoading(false);
   }

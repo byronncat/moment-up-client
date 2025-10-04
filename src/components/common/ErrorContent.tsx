@@ -20,7 +20,7 @@ export default function ErrorContent({
   className,
 }: ErrorContentProps) {
   return (
-    <div className={cn("flex flex-col items-center", "h-full px-5", className)}>
+    <div className={cn("flex flex-col items-center", "px-5", className)}>
       {hiddenIcon
         ? null
         : (icon ?? (

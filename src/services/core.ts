@@ -1,4 +1,4 @@
-import type { API, CommentInfo, ErrorDto, FeedItemDto } from "api";
+import type { API, CommentDto, ErrorDto, FeedItemDto } from "api";
 import type { PublicId, ResourceType } from "cloudinary";
 import type { Token } from "@/components/providers/Auth";
 import type { ContentPrivacy, ContentReportType } from "@/constants/server";
@@ -16,7 +16,7 @@ const SuccessMessage = {
   deleteStory: "Story deleted successfully",
   getPost: "Post fetched successfully",
   getPostMetadata: "Post metadata fetched successfully",
-  addComment: "Comment added successfully",
+  createComment: "Comment added successfully",
 };
 
 interface CreatePostDto {
@@ -191,9 +191,7 @@ export async function getPost(
     });
 }
 
-export async function getPostMetadata(
-  postId: string
-): API<
+export async function getPostMetadata(postId: string): API<
   | {
       username: string;
       displayName: string | null;
@@ -297,16 +295,16 @@ export async function deleteStory(storyId: string, token: Token): API {
     });
 }
 
-interface CommentDto {
-  content: string;
-  momentId: string;
+interface CreateCommentDto {
+  text: string;
+  postId: string;
 }
 
-export async function addComment(
-  data: CommentDto,
+export async function createComment(
+  data: CreateCommentDto,
   token: Token
-): API<CommentInfo | null> {
-  return fetch(ApiUrl.comment.add, {
+): API<CommentDto | null> {
+  return fetch(ApiUrl.comment.create, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -320,7 +318,7 @@ export async function addComment(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: "Comment added successfully",
+        message: SuccessMessage.createComment,
         data: (await response.json()).comment,
         statusCode: response.status,
       };
@@ -363,11 +361,11 @@ export async function deleteComment(commentId: string, token: Token): API {
 
 export async function likeComment(
   commentId: string,
-  isLiked: boolean,
+  shouldLike: boolean,
   token: Token
 ): API {
-  return fetch(ApiUrl.comment[isLiked ? "like" : "unlike"](commentId), {
-    method: isLiked ? "POST" : "DELETE",
+  return fetch(ApiUrl.comment[shouldLike ? "like" : "unlike"](commentId), {
+    method: shouldLike ? "POST" : "DELETE",
     headers: {
       "Content-Type": "application/json",
       "X-CSRF-Token": token.csrfToken,
@@ -379,7 +377,7 @@ export async function likeComment(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: isLiked
+        message: shouldLike
           ? "Comment liked successfully"
           : "Comment unliked successfully",
         statusCode: response.status,

@@ -1,4 +1,4 @@
-import type { CommentInfo } from "api";
+import type { CommentDto } from "api";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -11,29 +11,25 @@ import {
 import { ROUTE } from "@/constants/route";
 
 type HoverUserCardProps = Readonly<{
-  data: CommentInfo["user"];
+  data: CommentDto["user"];
   children: React.ReactNode;
   className?: string;
+  [key: string]: any;
 }>;
 
 export default function HoverUserCard({
   data,
   children,
   className,
+  ...props
 }: HoverUserCardProps) {
   return (
     <HoverCard>
-      <HoverCardTrigger
-        className={cn(
-          "inline-flex",
-          "hover:opacity-80 transition-opacity duration-150 ease-in-out",
-          className
-        )}
-        asChild
-      >
+      <HoverCardTrigger asChild>
         <Link
           href={ROUTE.PROFILE(data.username)}
           className={cn("min-w-0", className)}
+          {...props}
         >
           {children}
         </Link>

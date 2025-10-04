@@ -2,7 +2,7 @@
 
 import type { FeedItemDto } from "api";
 
-import { useSearchParams } from "next/navigation";
+import { notFound, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CommentProvider, usePost, useAuth } from "@/components/providers";
 import useSWR from "swr";
@@ -37,7 +37,7 @@ export default function PostDetails({ postId }: PostDetailsProps) {
     like,
     follow,
   } = usePost();
-  const { token } = useAuth();
+  const { user, token } = useAuth();
   const { data, error, isLoading, mutate } = useSWR(
     [ApiUrl.post.getById(postId), token.accessToken],
     ([url, token]) => SWRFetcherWithToken<{ post: FeedItemDto }>(url, token)
@@ -59,7 +59,8 @@ export default function PostDetails({ postId }: PostDetailsProps) {
   }, [data, setPosts, setCurrentPost]);
 
   if (isLoading) return <PostSkeleton />;
-  if (error?.statusCode === 404)
+  if (error?.statusCode === 404 || error?.statusCode === 403) {
+    if (!user) return notFound();
     return (
       <div className={cn("pt-40 px-4", "flex flex-col items-center gap-4")}>
         <p className="text-center text-muted-foreground">
@@ -73,6 +74,7 @@ export default function PostDetails({ postId }: PostDetailsProps) {
         </Link>
       </div>
     );
+  }
   if (error) return <ErrorContent onRefresh={mutate} className="pt-40" />;
 
   if (!post) return null;
@@ -103,7 +105,7 @@ export default function PostDetails({ postId }: PostDetailsProps) {
           },
         }}
       />
-      <CommentProvider momentId={post.id}>
+      <CommentProvider postId={post.id}>
         <CommentInput ref={commentInputRef} />
         <CommentZone />
       </CommentProvider>

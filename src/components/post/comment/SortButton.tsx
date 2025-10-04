@@ -39,7 +39,7 @@ export default function SortButton({
             className={cn(
               "flex items-center gap-1",
               "text-sm text-muted-foreground font-semibold",
-              "cursor-pointer"
+              "cursor-pointer focus-indicator rounded-sm"
             )}
           >
             {sortOptions.find((option) => option.value === sort)?.label}
