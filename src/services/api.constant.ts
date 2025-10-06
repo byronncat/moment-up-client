@@ -93,7 +93,7 @@ export const ApiUrl = {
       }),
     user: (
       userId: string,
-      filter?: "media" | "tagged" | "reposts" | "liked",
+      filter?: "media" | "tagged" | "reposts" | "like" | "bookmark",
       page?: number,
       limit?: number
     ) =>

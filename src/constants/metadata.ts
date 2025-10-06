@@ -14,6 +14,7 @@ export interface MetadataMap {
   post: (username: string, content: string | null) => NextMetadata;
 
   // === Private ===
+  archive: NextMetadata;
   messages: NextMetadata;
 
   // === Error ===
@@ -67,6 +68,13 @@ export const Metadata: MetadataMap = {
         ? `${username} posted: ${content}`
         : `See posts and updates from @${username}`,
     };
+  },
+
+  // === Private ===
+  archive: {
+    title: "Archive",
+    description:
+      "View your complete archive: all posts, media, and interactions.",
   },
 
   // === Error ===

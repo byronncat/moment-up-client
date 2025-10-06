@@ -1,4 +1,6 @@
 import { Metadata } from "@/constants/metadata";
+export const metadata = Metadata.archive;
+
 import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import { PageHeader } from "../_components";
@@ -7,34 +9,31 @@ import { Bookmark, Heart } from "@/components/icons";
 
 const tabs: NavItem[] = [
   {
-    id: "saved",
+    id: "bookmarks",
     icon: <Bookmark className="size-5" />,
-    label: "Saved",
+    label: "Bookmarks",
     href: ROUTE.ARCHIVE("bookmarks"),
   },
   {
-    id: "liked",
+    id: "likes",
     icon: <Heart className="size-5" />,
-    label: "Liked",
+    label: "Likes",
     href: ROUTE.ARCHIVE("likes"),
   },
 ];
 
-export const metadata = Metadata.explore;
 export default function ArchiveLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="flex flex-col h-full">
-      <div className="relative">
-        <PageHeader
-          title="Archive"
-          className={cn("w-full", "absolute top-0 left-0 z-10")}
-        >
-          <NavigationBar items={tabs} />
-        </PageHeader>
-      </div>
-      <div className="flex-1">{children}</div>
+    <div>
+      <PageHeader
+        title="Archive"
+        className={cn("w-full", "sticky top-0 left-0 z-10")}
+      >
+        <NavigationBar items={tabs} />
+      </PageHeader>
+      <main className="flex-1">{children}</main>
     </div>
   );
 }
