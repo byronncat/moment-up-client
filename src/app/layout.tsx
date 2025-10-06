@@ -18,6 +18,7 @@ export default function RootLayout({
             value={{
               errorRetryCount: 3,
               errorRetryInterval: 12000,
+              shouldRetryOnError: false,
             }}
           >
             <AuthProvider>

@@ -8,7 +8,7 @@ import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, useRefreshApi, useRefreshSWR } from "@/components/providers";
 import { useProfile } from "../../_providers/ProfileProvider";
 import { ApiUrl } from "@/services/api.constant";
-import { INITIAL_PAGE } from "@/constants/server";
+import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import { ErrorContent, NoContent } from "@/components/common";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -50,15 +50,11 @@ export default function FollowList({ type }: FollowListProps) {
       getKey,
       ([url, accessToken]) =>
         swrFetcherWithRefresh<FollowResponse>(url, accessToken),
-      {
-        initialSize: INITIAL_PAGE,
-        revalidateFirstPage: false,
-        errorRetryCount: 0,
-      }
+      SWRInfiniteOptions
     );
 
   const hasNextPage = data?.[data.length - 1].hasNextPage ?? true;
-  
+
   const allUsers = useMemo(() => {
     return data?.flatMap((page) => page.items);
   }, [data]);

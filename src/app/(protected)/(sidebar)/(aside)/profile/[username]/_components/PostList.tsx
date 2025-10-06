@@ -12,6 +12,7 @@ import { ApiUrl } from "@/services/api.constant";
 import { ROUTE } from "@/constants/route";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
 import { INITIAL_PAGE } from "@/constants/server";
+import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import Link from "next/link";
 import { cn } from "@/libraries/utils";
@@ -52,11 +53,7 @@ export default function PostList({ filter }: PostListProps) {
       getKey,
       ([url, accessToken]) =>
         swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
-      {
-        initialSize: INITIAL_PAGE,
-        revalidateFirstPage: false,
-        errorRetryCount: 0,
-      }
+      SWRInfiniteOptions
     );
 
   const {

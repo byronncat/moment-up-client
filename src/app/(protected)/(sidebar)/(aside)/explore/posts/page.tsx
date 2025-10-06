@@ -10,6 +10,7 @@ import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { INITIAL_PAGE } from "@/constants/server";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
+import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import { cn } from "@/libraries/utils";
 import { FeedCard, PostSkeleton } from "@/components/post";
@@ -35,11 +36,7 @@ export default function PostPage() {
       getKey,
       ([url, accessToken]) =>
         swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
-      {
-        initialSize: INITIAL_PAGE,
-        revalidateFirstPage: false,
-        errorRetryCount: 0,
-      }
+      SWRInfiniteOptions
     );
 
   const {

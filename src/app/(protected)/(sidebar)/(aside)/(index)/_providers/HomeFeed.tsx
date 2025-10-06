@@ -30,6 +30,7 @@ import { useStory } from "@/components/providers/StoryStorage";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
 import { INITIAL_PAGE } from "@/constants/server";
+import { SWRInfiniteOptions } from "@/helpers/swr";
 
 const HomeFeedContext = createContext<HomeFeedContextType>({
   hasNextPage: false,
@@ -66,10 +67,7 @@ export function HomeFeedProvider({
       getKey,
       ([url, accessToken]) =>
         swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
-      {
-        initialSize: INITIAL_PAGE,
-        revalidateFirstPage: false,
-      }
+      SWRInfiniteOptions
     );
 
   const { setPosts, addPosts } = usePost();

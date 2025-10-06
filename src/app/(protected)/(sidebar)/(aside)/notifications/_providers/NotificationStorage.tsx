@@ -8,6 +8,7 @@ import useSWRInfinite from "swr/infinite";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { ApiUrl } from "@/services";
 import { INITIAL_PAGE, NotificationType } from "@/constants/server";
+import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import { ErrorContent, NoContent } from "@/components/common";
 import { NotificationSkeleton } from "../_components";
@@ -73,12 +74,7 @@ export default function NotificationStorageProvider({
           url,
           accessToken
         ),
-      {
-        initialSize: INITIAL_PAGE,
-        revalidateFirstPage: false,
-        errorRetryCount: 0,
-        revalidateOnFocus: false,
-      }
+      SWRInfiniteOptions
     );
 
   const [notifications, setNotifications] = useState<

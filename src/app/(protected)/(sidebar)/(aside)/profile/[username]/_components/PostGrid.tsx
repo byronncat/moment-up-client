@@ -12,6 +12,7 @@ import { ApiUrl } from "@/services/api.constant";
 import { ROUTE } from "@/constants/route";
 import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
 import { INITIAL_PAGE } from "@/constants/server";
+import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -49,11 +50,7 @@ export default function PostGrid() {
       getKey,
       ([url, accessToken]) =>
         swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
-      {
-        initialSize: INITIAL_PAGE,
-        revalidateFirstPage: false,
-        errorRetryCount: 0,
-      }
+      SWRInfiniteOptions
     );
 
   const { posts, setPosts, addPosts, setCurrentPost } = usePost();

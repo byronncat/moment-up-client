@@ -10,6 +10,7 @@ import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
 import { INITIAL_PAGE } from "@/constants/server";
+import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { MediaCell } from "@/components/post";
@@ -37,11 +38,7 @@ export default function MediaPage() {
       getKey,
       ([url, accessToken]) =>
         swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
-      {
-        initialSize: INITIAL_PAGE,
-        revalidateFirstPage: false,
-        errorRetryCount: 0,
-      }
+      SWRInfiniteOptions
     );
 
   const { posts, setPosts, addPosts, setCurrentPost } = usePost();

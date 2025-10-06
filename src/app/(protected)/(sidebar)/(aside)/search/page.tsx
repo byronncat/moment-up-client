@@ -10,7 +10,7 @@ import { useRefreshSWR, useAuth } from "@/components/providers";
 import { ApiUrl, SearchTypeParams, SearchSortParams } from "@/services";
 import { SEARCH_DEBOUNCE_TIME, SearchCategory } from "@/constants/client";
 import { ROUTE, SearchParamName } from "@/constants/route";
-import { INITIAL_PAGE } from "@/constants/server";
+import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import { cn } from "@/libraries/utils";
 import { NavigationBar, type NavItem } from "@/components/common";
@@ -79,10 +79,7 @@ export default function SearchPage() {
   const { token } = useAuth();
 
   const getKey = useCallback(
-    (
-      pageIndex: number,
-      previousPageData: PaginationDto<SearchItem> | null
-    ) => {
+    (pageIndex: number, previousPageData: PaginationDto<SearchItem> | null) => {
       if (query.trim().length === 0) return null;
       if (previousPageData && !previousPageData.hasNextPage) return null;
 
@@ -98,10 +95,7 @@ export default function SearchPage() {
       getKey,
       ([url, accessToken]) =>
         swrFetcherWithRefresh<PaginationDto<SearchItem>>(url, accessToken),
-      {
-        initialSize: INITIAL_PAGE,
-        revalidateFirstPage: false,
-      }
+      SWRInfiniteOptions
     );
 
   const hasNextPage = data

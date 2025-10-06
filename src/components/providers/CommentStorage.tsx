@@ -31,7 +31,7 @@ import { ApiUrl, CoreApi } from "@/services";
 import { toast } from "sonner";
 import { ROUTE } from "@/constants/route";
 import { SortBy } from "@/constants/client";
-import { INITIAL_PAGE } from "@/constants/server";
+import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import Link from "next/link";
 import { ErrorContent, NoContent } from "@/components/common";
@@ -83,12 +83,7 @@ export default function CommentProvider({
       getKey,
       ([url, accessToken]) =>
         swrFetcherWithRefresh<PaginationDto<CommentDto>>(url, accessToken),
-      {
-        initialSize: INITIAL_PAGE,
-        revalidateFirstPage: false,
-        errorRetryCount: 0,
-        revalidateOnFocus: false,
-      }
+      SWRInfiniteOptions
     );
 
   const hasNextPage = data
