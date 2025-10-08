@@ -11,6 +11,16 @@ import {
 } from "@/components/icons";
 import { Search } from "lucide-react";
 
+export enum ItemIndex {
+  HOME = 0,
+  EXPLORE = 1,
+  SEARCH = 2,
+  CREATE = 3,
+  MESSAGES = 4,
+  NOTIFICATIONS = 5,
+  PROFILE = 6,
+}
+
 export function getNavigationItems(
   pathname: string,
   username?: string

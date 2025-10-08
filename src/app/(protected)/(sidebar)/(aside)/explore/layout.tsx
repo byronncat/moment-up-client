@@ -30,7 +30,7 @@ export default function ExploreLayout({
     <div>
       <PageHeader
         title="Explore"
-        className={cn("w-full", "sticky top-0 left-0 z-10")}
+        className={cn("w-full", "sticky top-[52px] mobile:top-0 left-0 z-10")}
       >
         <NavigationBar items={tabs} />
       </PageHeader>

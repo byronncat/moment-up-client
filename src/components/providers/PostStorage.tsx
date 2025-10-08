@@ -7,17 +7,21 @@ import type { ContentReportType } from "@/constants/server";
 type PostsState = Map<string, FeedItemDto> | undefined;
 
 type PostsAction =
+  | { type: "CLEAR_POSTS" }
   | { type: "SET_POSTS"; payload: FeedItemDto[] }
   | { type: "ADD_POSTS"; payload: FeedItemDto[] }
   | { type: "REMOVE_POST"; payload: string }
   | { type: "TOGGLE_LIKE"; payload: string }
   | { type: "TOGGLE_BOOKMARK"; payload: string }
   | { type: "TOGGLE_FOLLOW"; payload: string }
-  | { type: "UPDATE_COMMENT_COUNT"; payload: { postId: string; mode: 'increase' | 'decrease' } };
+  | {
+      type: "UPDATE_COMMENT_COUNT";
+      payload: { postId: string; mode: "increase" | "decrease" };
+    };
 
 type PostContextType = {
   posts: FeedItemDto[] | undefined;
-  setPosts: (posts: FeedItemDto[]) => void;
+  setPosts: (posts: FeedItemDto[] | undefined) => void;
   addPosts: (posts: FeedItemDto[]) => void;
   removeMoment: (postId: string) => void;
   setCurrentPost: (postId: string | null) => void;
@@ -28,7 +32,10 @@ type PostContextType = {
   share: (postId: string) => void;
   report: (postId: string, type: ContentReportType) => void;
   follow: (postId: string) => Promise<void>;
-  updateCommentCount: (postId: string, mode: 'increase' | 'decrease') => Promise<void>;
+  updateCommentCount: (
+    postId: string,
+    mode: "increase" | "decrease"
+  ) => Promise<void>;
 };
 
 // === Provider ===
@@ -49,6 +56,10 @@ const initialPostsState: PostsState = undefined;
 
 function postsReducer(state: PostsState, action: PostsAction): PostsState {
   switch (action.type) {
+    case "CLEAR_POSTS": {
+      return undefined;
+    }
+
     case "SET_POSTS": {
       const newMap = new Map<string, FeedItemDto>();
       action.payload.forEach((post) => {
@@ -131,7 +142,7 @@ function postsReducer(state: PostsState, action: PostsAction): PostsState {
       const newMap = new Map(state);
       const feed = newMap.get(action.payload.postId);
       if (feed) {
-        const increment = action.payload.mode === 'increase' ? 1 : -1;
+        const increment = action.payload.mode === "increase" ? 1 : -1;
         newMap.set(action.payload.postId, {
           ...feed,
           post: {
@@ -194,8 +205,9 @@ export default function MomentDataProvider({
     return currentPost ? posts.get(currentPost) : posts.values().next().value;
   }, [posts, currentPost]);
 
-  const setPosts = useCallback((payload: FeedItemDto[]) => {
-    dispatch({ type: "SET_POSTS", payload });
+  const setPosts = useCallback((payload: FeedItemDto[] | undefined) => {
+    if (payload) dispatch({ type: "SET_POSTS", payload });
+    else dispatch({ type: "CLEAR_POSTS" });
   }, []);
 
   const addPosts = useCallback((moments: FeedItemDto[]) => {
@@ -296,7 +308,7 @@ export default function MomentDataProvider({
   );
 
   const updateCommentCount = useCallback(
-    async (postId: string, mode: 'increase' | 'decrease') => {
+    async (postId: string, mode: "increase" | "decrease") => {
       dispatch({ type: "UPDATE_COMMENT_COUNT", payload: { postId, mode } });
     },
     []

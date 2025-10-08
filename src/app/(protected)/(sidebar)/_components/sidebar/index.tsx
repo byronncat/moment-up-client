@@ -5,6 +5,7 @@ import { useAuth } from "@/components/providers";
 import { useResponsiveSidebar } from "./hooks/useResponsiveSidebar";
 import { getNavigationItems } from "./config/navigationItems";
 import { ROUTE } from "@/constants/route";
+import { ItemIndex } from "./config/navigationItems";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -29,7 +30,9 @@ export default function Sidebar({
   const { open, isAboveXl } = useResponsiveSidebar();
 
   const items = getNavigationItems(pathname, user?.username);
-  const [notificationItem, profileItem] = items.slice(-2);
+  const profileItem = items[ItemIndex.PROFILE];
+  const isProfilePath = profileItem.matchPath?.() ?? false;
+  const isSearchPath = items[ItemIndex.SEARCH].matchPath?.() ?? false;
 
   return (
     <>
@@ -77,14 +80,23 @@ export default function Sidebar({
 
       {isMobile && user ? (
         <div className="flex flex-col size-full">
-          <MobileHeader
-            notificationItem={notificationItem}
-            profileItem={profileItem}
-          />
+          {!(isProfilePath || isSearchPath) && (
+            <MobileHeader
+              items={[
+                items[ItemIndex.NOTIFICATIONS],
+                items[ItemIndex.MESSAGES],
+              ]}
+              className={isSearchPath ? "border-transparent" : "border-border"}
+            />
+          )}
 
           {children}
 
-          <MobileNav items={items.slice(0, 5)} />
+          <MobileNav
+            items={items
+              .slice(ItemIndex.HOME, ItemIndex.CREATE + 1)
+              .concat(profileItem)}
+          />
         </div>
       ) : (
         children

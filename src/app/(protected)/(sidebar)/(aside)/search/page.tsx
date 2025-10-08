@@ -79,7 +79,7 @@ function SearchPageContent({
         <div
           className={cn(
             "px-3 pb-3 pt-3 mobile:pt-0",
-            "mobile:border-b",
+            "border-b",
             isQueryEmpty ? "border-border" : "border-transparent"
           )}
         >

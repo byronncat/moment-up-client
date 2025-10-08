@@ -4,25 +4,20 @@ import Link from "next/link";
 import { MOBILE_NAV_HEIGHT } from "@/constants/client";
 
 type MobileHeaderProps = Readonly<{
-  notificationItem: NavItem;
-  profileItem: NavItem;
+  items: NavItem[];
+  className?: string;
 }>;
 
-export default function MobileHeader({
-  notificationItem,
-  profileItem,
-}: MobileHeaderProps) {
-  const isNotificationActive = notificationItem.matchPath?.() ?? false;
-  const isProfileActive = profileItem.matchPath?.() ?? false;
-
+export default function MobileHeader({ items, className }: MobileHeaderProps) {
   return (
     <div
       className={cn(
         "px-4",
         "sticky top-0 left-0 right-0 z-20",
-        "bg-background border-b border-border",
+        "border-b border-border",
+        "bg-background/90 backdrop-blur-md",
         "flex items-center justify-between",
-        isProfileActive && "hidden"
+        className
       )}
       style={{ height: MOBILE_NAV_HEIGHT }}
     >
@@ -37,7 +32,7 @@ export default function MobileHeader({
       </Link>
       <div className="flex items-center">
         <Link
-          href={notificationItem.url}
+          href={items[0].url}
           className={cn(
             "flex items-center justify-center",
             "p-2",
@@ -46,11 +41,11 @@ export default function MobileHeader({
           )}
         >
           <span className="flex items-center justify-center size-5">
-            {notificationItem.icon(isNotificationActive)}
+            {items[0].icon(false)}
           </span>
         </Link>
         <Link
-          href={profileItem.url}
+          href={items[1].url}
           className={cn(
             "flex items-center justify-center",
             "p-2 ml-2",
@@ -59,7 +54,7 @@ export default function MobileHeader({
           )}
         >
           <span className="flex items-center justify-center size-5">
-            {profileItem.icon(isProfileActive)}
+            {items[1].icon(false)}
           </span>
         </Link>
       </div>

@@ -67,7 +67,7 @@ export default function SearchProvider({
   const [query] = useDebounceValue(rawQuery, SEARCH_DEBOUNCE_TIME);
   const [activeCategory, setActiveCategory] =
     useState<SearchCategory>(initialCategory);
-  const [results, setResults] = useState<SearchItem[]>([]);
+  const [results, setResults] = useState<SearchItem[] | undefined>(undefined);
   const isQueryEmpty = rawQuery.trim().length === 0;
 
   const getKey = useCallback(
@@ -106,9 +106,9 @@ export default function SearchProvider({
         activeCategory === SearchCategory.MEDIA
       ) {
         setPosts(allResults as FeedItemDto[]);
-        setResults([]);
+        setResults(undefined);
       } else {
-        setPosts([]);
+        setPosts(undefined);
         setResults(allResults);
       }
   }, [data, error, activeCategory, setPosts]);
