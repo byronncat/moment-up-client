@@ -1,13 +1,11 @@
 "use client";
 
-import type { SearchItem as TSearchItem } from "api";
+import type { SearchItem as TSearchItem } from "@/utilities/search-history";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useRefreshApi } from "@/components/providers/hooks";
-import { SearchApi } from "@/services";
-import { toast } from "sonner";
 import { ROUTE } from "@/constants/route";
+import { SearchHistory as SearchHistoryUtil } from "@/utilities";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
@@ -16,17 +14,15 @@ import { X } from "@/components/icons";
 import { SearchCategory } from "@/constants/client";
 import { SearchItemType } from "@/constants/server";
 
-interface SearchHistoryProps {
-  history: TSearchItem[];
-  className?: string;
-}
+const HISTORY_LIMIT = 7;
 
 export default function SearchHistory({
-  history,
   className,
-}: Readonly<SearchHistoryProps>) {
-  const [items, setItems] = useState<TSearchItem[]>(history);
+}: Readonly<{ className?: string }>) {
   const router = useRouter();
+  const [historyItems, setHistoryItems] = useState<TSearchItem[]>(() =>
+    SearchHistoryUtil.get(HISTORY_LIMIT)
+  );
 
   async function handleClick(item: TSearchItem) {
     switch (item.type) {
@@ -34,68 +30,34 @@ export default function SearchHistory({
         router.push(ROUTE.PROFILE(item.username));
         break;
       case SearchItemType.QUERY:
-        router.push(ROUTE.SEARCH(item.id, SearchCategory.TOP));
-        break;
-      case SearchItemType.HASHTAG:
-        router.push(ROUTE.SEARCH(item.id, SearchCategory.HASHTAG));
-        break;
-      default:
-        router.push(ROUTE.SEARCH(item.id, SearchCategory.TOP));
+        router.push(ROUTE.SEARCH(item.query, SearchCategory.PEOPLE));
         break;
     }
   }
 
-  const remove = useRefreshApi(SearchApi.removeHistoryItem);
-  async function handleRemove(itemId: TSearchItem["id"]) {
-    if (!items) return;
-
-    const originalIndex = items.findIndex((item) => item.id === itemId);
-    const itemToDelete = items.find((item) => item.id === itemId);
-    if (!itemToDelete || originalIndex === -1) return;
-
-    setItems(items.filter((item) => item.id !== itemId));
-
-    const { success, message } = await remove(itemId);
-    if (!success) {
-      setItems((currentItems) => {
-        if (!currentItems) return [itemToDelete];
-
-        const adjustedIndex = Math.min(originalIndex, currentItems.length);
-        const newItems = [...currentItems];
-        newItems.splice(adjustedIndex, 0, itemToDelete);
-
-        return newItems;
-      });
-
-      toast.error(message || "Failed to remove search item");
-    }
+  async function handleRemove(item: TSearchItem) {
+    const id = item.type === SearchItemType.USER ? item.id : item.query;
+    setHistoryItems(SearchHistoryUtil.remove(id));
   }
 
-  const clearItems = useRefreshApi(SearchApi.clearHistory);
   async function handleClear() {
-    const previousItems = items;
-    setItems([]);
-
-    const { success, message } = await clearItems();
-    if (!success) {
-      setItems(previousItems);
-      toast.error(message || "Failed to clear search history");
-    }
+    SearchHistoryUtil.clear();
+    setHistoryItems([]);
   }
 
-  if (items.length === 0) return null;
+  if (historyItems.length === 0) return null;
   return (
     <div className={className}>
       <Header onClear={handleClear} />
-      <div className="space-y-1">
-        {items.map((item) => (
+      <div>
+        {historyItems.map((item) => (
           <div
-            key={item.id}
+            key={item.type === SearchItemType.USER ? item.id : item.query}
             onClick={() => handleClick(item)}
             className={cn(
               "flex items-center justify-between",
               "group",
-              "px-4 py-2",
+              "px-4 py-3",
               "cursor-pointer hover:bg-accent/[.05]"
             )}
           >
@@ -106,7 +68,7 @@ export default function SearchHistory({
               className="size-7 rounded-full"
               onClick={(event) => {
                 event.stopPropagation();
-                handleRemove(item.id);
+                handleRemove(item);
               }}
             >
               <X className="size-4 fill-muted-foreground" />
@@ -120,12 +82,14 @@ export default function SearchHistory({
 
 function Header({ onClear }: Readonly<{ onClear: () => void }>) {
   return (
-    <div className={cn("flex justify-between items-center", "mb-2 px-4")}>
+    <div className={cn("flex justify-between items-center", "mb-2 pl-4")}>
       <h2 className="font-semibold">Recent</h2>
       <button
         onClick={onClear}
         className={cn(
-          "text-primary hover:text-primary/80",
+          "text-primary",
+          "hover:bg-primary/10 px-1.5 py-0.5 mr-2.5 rounded-lg",
+          "transition-colors duration-200 ease-in-out",
           "text-sm cursor-pointer"
         )}
       >
@@ -134,3 +98,51 @@ function Header({ onClear }: Readonly<{ onClear: () => void }>) {
     </div>
   );
 }
+
+// import { cn } from "@/libraries/utils";
+// import {
+//   AlertDialog,
+//   AlertDialogAction,
+//   AlertDialogCancel,
+//   AlertDialogContent,
+//   AlertDialogDescription,
+//   AlertDialogFooter,
+//   AlertDialogHeader,
+//   AlertDialogTitle,
+//   AlertDialogTrigger,
+// } from "@/components/ui/alert-dialog";
+
+// type ClearButtonProps = {
+//   onClear: () => void;
+// };
+
+// export default function ClearButton({ onClear }: ClearButtonProps) {
+//   return (
+//     <AlertDialog>
+//       <AlertDialogTrigger asChild>
+//         <button
+//           className={cn(
+//             "text-xs font-semibold text-primary",
+//             "cursor-pointer hover:bg-primary/10 px-1.5 py-1 rounded-lg",
+//             "transition-colors duration-150 ease-in-out"
+//           )}
+//         >
+//           Clear all
+//         </button>
+//       </AlertDialogTrigger>
+//       <AlertDialogContent>
+//         <AlertDialogHeader>
+//           <AlertDialogTitle>Clear search history</AlertDialogTitle>
+//           <AlertDialogDescription>
+//             Are you sure you want to clear all your recent searches? This action
+//             cannot be undone.
+//           </AlertDialogDescription>
+//         </AlertDialogHeader>
+//         <AlertDialogFooter>
+//           <AlertDialogCancel>Cancel</AlertDialogCancel>
+//           <AlertDialogAction onClick={onClear}>Clear</AlertDialogAction>
+//         </AlertDialogFooter>
+//       </AlertDialogContent>
+//     </AlertDialog>
+//   );
+// }

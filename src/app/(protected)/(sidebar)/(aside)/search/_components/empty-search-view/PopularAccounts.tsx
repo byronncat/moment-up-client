@@ -1,10 +1,12 @@
 "use client";
 
-import type { PopularProfileItem } from "api";
+import { __parseUrl } from "@/__mocks__";
+import type { PopularUserDto } from "api";
 
 import { useRef, useState } from "react";
 import { useHover } from "usehooks-ts";
 import { useRefreshApi } from "@/components/providers";
+import { useSearch } from "../../_Search.provider";
 import { UserApi } from "@/services";
 import { toast } from "sonner";
 import { ROUTE } from "@/constants/route";
@@ -13,16 +15,16 @@ import Link from "next/link";
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
 import { Button } from "@/components/ui/button";
-
-interface PopularAccountsProps {
-  users: PopularProfileItem[];
-  className?: string;
-}
+import LoadingIndicator from "../LoadingIndicator";
 
 export default function PopularAccounts({
-  users,
   className,
-}: Readonly<PopularAccountsProps>) {
+}: Readonly<{ className?: string }>) {
+  const { popularUsers, isLoadingPopular, errorPopular } = useSearch();
+
+  if (isLoadingPopular) return <LoadingIndicator />;
+  if (errorPopular) return null;
+  const users = popularUsers;
   return (
     users.length > 0 && (
       <div className={className}>
@@ -45,7 +47,7 @@ function Header() {
   );
 }
 
-function UserCard({ user }: Readonly<{ user: PopularProfileItem }>) {
+function UserCard({ user }: Readonly<{ user: PopularUserDto }>) {
   const [isFollowing, setIsFollowing] = useState(false);
   const hoverRef = useRef<HTMLButtonElement>(null);
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
@@ -68,11 +70,10 @@ function UserCard({ user }: Readonly<{ user: PopularProfileItem }>) {
   return (
     <div
       className={cn(
-        "p-3 h-[200px]",
-        "flex flex-col items-center",
-        "border border-border",
         "text-center",
-        "rounded-lg relative overflow-hidden"
+        "flex flex-col items-center",
+        "h-[200px] border border-border",
+        "rounded-lg overflow-hidden"
       )}
     >
       <div
@@ -83,10 +84,14 @@ function UserCard({ user }: Readonly<{ user: PopularProfileItem }>) {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className={cn("absolute inset-0 h-10")}
+        className="h-10 w-full"
       />
 
-      <Avatar src={user.avatar} size="12" />
+      <Avatar
+        src={__parseUrl(user.avatar, "image", 48)}
+        size="12"
+        className="-mt-6"
+      />
 
       <div
         className={cn("flex items-center mt-1", "font-semibold", "max-w-32")}
@@ -100,7 +105,7 @@ function UserCard({ user }: Readonly<{ user: PopularProfileItem }>) {
         </p>
       </div>
 
-      <div className="flex items-center gap-2 w-full mt-3">
+      <div className={cn("flex items-center gap-2", "w-full mt-3 px-3 pb-3")}>
         <Button
           ref={hoverRef}
           variant={isFollowing && isHover ? "destructive" : "outline"}

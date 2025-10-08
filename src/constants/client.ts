@@ -12,12 +12,11 @@ export enum SortBy {
   MOST_LIKED = "most_liked",
 }
 
-export const SEARCH_DEBOUNCE_TIME = 500;
+export const SEARCH_DEBOUNCE_TIME = 1000;
 export enum SearchCategory {
-  TOP = "top",
-  LATEST = "latest",
+  // TOP = "top",
+  // LATEST = "latest",
   PEOPLE = "people",
-  HASHTAG = "tag",
   POSTS = "posts",
   MEDIA = "media",
 }
@@ -31,6 +30,7 @@ export enum CookieName {
 export enum LocalStorageKey {
   STORIES_DISPLAY = "hide-stories",
   THEME = "theme",
+  SEARCH_HISTORY = "search-history",
 }
 
 // === UI ===
