@@ -73,7 +73,7 @@ function ClearButton({ onClear }: Readonly<{ onClear: () => void }>) {
         "absolute right-3 top-1/2 -translate-y-1/2 z-10",
         "p-1 rounded-full",
         "cursor-pointer",
-        "hover:bg-accent/[.07]",
+        "hover:bg-accent/7 focus-indicator",
         "transition-colors duration-150 ease-in-out"
       )}
     >

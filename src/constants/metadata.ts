@@ -14,16 +14,14 @@ export interface MetadataMap {
   post: (username: string, content: string | null) => NextMetadata;
 
   // === Private ===
+  search: NextMetadata;
+  story: NextMetadata;
   archive: NextMetadata;
   messages: NextMetadata;
+  notifications: NextMetadata;
 
   // === Error ===
   notFound: NextMetadata;
-
-  // +++ TODO: Ongoing +++
-  story: NextMetadata;
-  search: NextMetadata;
-  notifications: NextMetadata;
 }
 
 export const Metadata: MetadataMap = {
@@ -71,37 +69,31 @@ export const Metadata: MetadataMap = {
   },
 
   // === Private ===
+  search: {
+    title: "Search",
+    description: "Find people, posts, and trends.",
+  },
+  story: {
+    title: "Story",
+    description: "Story page",
+  },
   archive: {
     title: "Archive",
     description:
       "View your complete archive: all posts, media, and interactions.",
   },
-
-  // === Error ===
-  notFound: {
-    title: "Page Not Found",
-    description: "Sorry, we couldn't find the page you're looking for.",
-  },
-
-  // +++ TODO: Ongoing +++
-
-  search: {
-    title: "Search",
-    description: "Search page",
+  messages: {
+    title: "Messages",
+    description: "View and communicate with your friends",
   },
   notifications: {
     title: "Notifications",
     description: "Notifications page",
   },
 
-  story: {
-    title: "Story",
-    description: "Story page",
-  },
-
-  // === Private ===
-  messages: {
-    title: "Messages",
-    description: "View and communicate with your friends",
+  // === Error ===
+  notFound: {
+    title: "Page Not Found",
+    description: "Sorry, we couldn't find the page you're looking for.",
   },
 };

@@ -74,11 +74,11 @@ export const ApiUrl = {
   // === Suggestion ===
   suggestion: {
     users: `${SERVER_HOST_URL}/v1/suggestion/users`,
+    popular: `${SERVER_HOST_URL}/v1/suggestion/popular`,
     trending: buildUrl(`${SERVER_HOST_URL}/v1/suggestion/trending`, {
       queryParams: { limit: 5 },
     }),
     report: `${SERVER_HOST_URL}/v1/suggestion/trending/report`,
-    popular: `${SERVER_HOST_URL}/v1/suggestion/popular`,
   },
 
   // === Core ===
@@ -171,13 +171,13 @@ export const ApiUrl = {
   search: {
     search: (
       query: string,
-      type?: SearchTypeParams,
+      filter?: SearchFilterParams,
       order?: SearchSortParams,
       page?: number,
       limit?: number
     ) =>
       buildUrl(`${SERVER_HOST_URL}/v1/search`, {
-        queryParams: { query, type, order, page, limit },
+        queryParams: { query, filter, order, page, limit },
       }),
     getHistory: (limit?: number) =>
       buildUrl(`${SERVER_HOST_URL}/v1/search/history`, {
@@ -199,13 +199,13 @@ export const ApiUrl = {
   },
 } as const;
 
-export type SearchTypeParams =
+export type SearchFilterParams =
   | "user"
   | "hashtag"
   | "post"
   | "media"
   | "user&hashtag"
   | "user&hashtag&post"
-  | "alll";
+  | "all";
 
 export type SearchSortParams = "most_popular" | "newest";

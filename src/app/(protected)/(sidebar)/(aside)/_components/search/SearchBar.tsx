@@ -1,6 +1,6 @@
 "use client";
 
-import type { SearchItem } from "api";
+import type { UserSearchItem, QuerySearchItem } from "api";
 
 import { usePathname, useRouter } from "next/navigation";
 import { useRef } from "react";
@@ -14,42 +14,40 @@ import { cn } from "@/libraries/utils";
 import SearchInput from "./SearchInput";
 import Dropdown from "./dropdown";
 
-export default function SearchBar() {
+export default function SearchBar({
+  className,
+}: Readonly<{ className?: string }>) {
   const {
+    items,
+    query,
     isLoading,
     isSearching,
-    setIsSearching,
-    query,
     setQuery,
-    items,
-    removeItem,
-    clearAllItems,
+    setSearching,
+    addHistory,
+    removeHistory,
+    clearHistory,
     reset,
   } = useSearch();
 
   const pathname = usePathname();
   const router = useRouter();
-
   const ref = useRef<HTMLDivElement>(null);
   useOnClickOutside(ref as React.RefObject<HTMLElement>, (event) => {
     if ((event.target as HTMLElement).closest('[role="alertdialog"]')) return;
     reset();
   });
 
-  function handleClickItem(item: SearchItem) {
+  function handleClickItem(item: UserSearchItem | QuerySearchItem) {
     reset();
     switch (item.type) {
       case SearchItemType.USER:
         router.push(ROUTE.PROFILE(item.username));
+        addHistory(item, SearchItemType.USER);
         break;
       case SearchItemType.QUERY:
-        router.push(ROUTE.SEARCH(item.id, SearchCategory.TOP));
-        break;
-      case SearchItemType.HASHTAG:
-        router.push(ROUTE.SEARCH(item.id, SearchCategory.HASHTAG));
-        break;
-      default:
-        router.push(ROUTE.SEARCH(item.id, SearchCategory.TOP));
+        router.push(ROUTE.SEARCH(item.query, SearchCategory.PEOPLE));
+        addHistory(item, SearchItemType.QUERY);
         break;
     }
   }
@@ -59,13 +57,13 @@ export default function SearchBar() {
   }
 
   function handleInputFocus() {
-    setIsSearching(true);
+    setSearching(true);
   }
 
   if (pathname === ROUTE.SEARCH()) return null;
   const showDropdown = isSearching && !isLoading;
   return (
-    <div className={cn("w-full mb-6", "relative")} ref={ref}>
+    <div className={cn("relative", className)} ref={ref}>
       <SearchInput
         id="side-search-input"
         loading={isLoading}
@@ -76,8 +74,8 @@ export default function SearchBar() {
         <Dropdown
           query={query}
           items={items}
-          onRemoveItem={removeItem}
-          onClearAllItems={clearAllItems}
+          onRemoveItem={removeHistory}
+          onClearAllItems={clearHistory}
           onClickItem={handleClickItem}
         />
       )}

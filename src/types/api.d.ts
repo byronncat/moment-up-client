@@ -160,17 +160,13 @@ declare module "api" {
   type NotificationInfo = SecurityNotification | CommunityNotification;
 
   // === Search ===
-  interface UserSearchItem extends AccountDto {
-    type: SearchItemType.USER;
-  }
-
   interface QuerySearchItem {
     type: SearchItemType.QUERY;
-    id: string;
+    query: string;
   }
 
-  interface HashtagSearchItem extends HashtagDto {
-    type: SearchItemType.HASHTAG;
+  interface UserSearchItem extends AccountDto {
+    type: SearchItemType.USER;
   }
 
   interface PostSearchItem extends FeedItemDto {
@@ -181,15 +177,12 @@ declare module "api" {
     type: SearchItemType.MEDIA;
   }
 
+  type PopularUserDto = AccountDto &
+    Pick<ProfileDto, "backgroundImage" | "bio">;
+
   type SearchItem =
     | UserSearchItem
     | QuerySearchItem
-    | HashtagSearchItem
     | PostSearchItem
     | MediaSearchItem;
-
-  type PopularProfileItem = Omit<
-    ProfileDto,
-    "followers" | "following" | "hasStory" | "isFollowing"
-  >;
 }

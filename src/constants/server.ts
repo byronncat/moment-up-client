@@ -56,7 +56,6 @@ export enum TrendingReportType {
 export enum SearchItemType {
   USER,
   QUERY,
-  HASHTAG,
   POST,
   MEDIA,
 }

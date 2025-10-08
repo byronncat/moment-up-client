@@ -19,7 +19,7 @@ export default async function Aside({
     <aside className={cn("h-fit w-[320px]", "space-y-6", className)}>
       {isAuth ? (
         <>
-          <SearchBar />
+          <SearchBar className="mb-6" />
           <SwitchAccount />
           <div
             className={cn(

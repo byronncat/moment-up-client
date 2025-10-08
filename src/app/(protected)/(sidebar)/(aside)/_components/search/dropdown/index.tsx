@@ -1,4 +1,4 @@
-import type { SearchItem as SearchItemType } from "api";
+import type { SearchItem } from "../hooks/useSearch";
 
 import { cn } from "@/libraries/utils";
 import { Card } from "@/components/ui/card";
@@ -7,10 +7,10 @@ import ItemList from "./ItemList";
 
 type DropdownProps = {
   query: string;
-  items: SearchItemType[] | null;
-  onRemoveItem: (itemId: SearchItemType["id"]) => void;
+  items: SearchItem[] | null;
+  onRemoveItem: (itemId: string) => void;
   onClearAllItems: () => void;
-  onClickItem: (item: SearchItemType) => void;
+  onClickItem: (item: any) => void;
 };
 
 export default function Dropdown({
@@ -21,12 +21,18 @@ export default function Dropdown({
   onClickItem,
 }: DropdownProps) {
   if (!items) return null;
+  const haveItems = items.length > 0;
 
   return (
     <Card
-      className={cn("absolute top-full mt-2 z-10", "w-full", "overflow-hidden")}
+      className={cn(
+        "absolute top-full mt-2 z-10",
+        "w-full",
+        haveItems && "pt-1",
+        "overflow-hidden"
+      )}
     >
-      {items.length > 0 ? (
+      {haveItems ? (
         <ItemList
           query={query}
           items={items}

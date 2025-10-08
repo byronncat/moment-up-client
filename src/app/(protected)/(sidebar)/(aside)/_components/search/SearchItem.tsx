@@ -1,13 +1,12 @@
 import type {
   FeedItemDto,
-  HashtagSearchItem,
+  QuerySearchItem,
   SearchItem,
   UserSearchItem,
 } from "api";
+import type { Actions } from "@/components/providers/PostStorage";
 
-import { Format } from "@/utilities";
-import { SearchItemType } from "@/constants/server";
-
+import { SearchItemType, ContentReportType } from "@/constants/server";
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
 import { FeedCard, MediaCell } from "@/components/post";
@@ -15,16 +14,38 @@ import { MagnifyingGlass } from "@/components/icons";
 
 type SearchItemProps = Readonly<{
   data: SearchItem;
-  className?: string;
+  actions?: Actions;
   onClick?: () => void;
+  className?: string;
 }>;
 
 export default function SearchItem({
   data,
-  className,
+  actions,
   onClick,
+  className,
 }: SearchItemProps) {
   const variant = data.type;
+
+  if (variant === SearchItemType.POST)
+    return (
+      <FeedCard
+        data={data as FeedItemDto}
+        actions={actions || ({} as any)}
+        onClick={onClick}
+        className={cn("w-full", className)}
+      />
+    );
+
+  if (variant === SearchItemType.MEDIA)
+    return (
+      <MediaCell
+        data={data as FeedItemDto}
+        onClick={onClick}
+        className={cn("w-full", className)}
+      />
+    );
+
   const Variant = {
     [SearchItemType.USER]: () => (
       <>
@@ -56,48 +77,9 @@ export default function SearchItem({
           <MagnifyingGlass className="size-5 fill-muted-foreground" />
         </IconContainer>
         <span className={cn("text-sm", "max-w-[180px] truncate")}>
-          {data.id}
+          {(data as QuerySearchItem).query}
         </span>
       </>
-    ),
-    [SearchItemType.HASHTAG]: () => (
-      <>
-        <IconContainer>
-          <span className="text-xl">#</span>
-        </IconContainer>
-        <div className="flex flex-col items-start">
-          <span
-            className={cn("text-sm font-semibold", "max-w-[180px] truncate")}
-          >
-            {data.id}
-          </span>
-          <span
-            className={cn(
-              "text-sm text-muted-foreground",
-              "max-w-[180px] truncate"
-            )}
-          >
-            {`${Format.number((data as HashtagSearchItem).count)} tagged`}
-          </span>
-        </div>
-      </>
-    ),
-    [SearchItemType.POST]: () => (
-      <FeedCard
-        key={data.id}
-        data={data as FeedItemDto}
-        actions={{} as any}
-        onClick={onClick}
-        className="size-full"
-      />
-    ),
-    [SearchItemType.MEDIA]: () => (
-      <MediaCell
-        key={data.id}
-        data={data as FeedItemDto}
-        onClick={onClick}
-        className="size-full"
-      />
     ),
   };
 

@@ -9,6 +9,8 @@ export const ROUTE = {
   FORGOT_PASSWORD: "/forgot-password",
 
   // === Public ===
+  EXPLORE: (type?: ExploreType) =>
+    type ? buildUrl("/explore/:type", { pathParams: { type } }) : "/explore",
   PROFILE: (
     username?: string,
     type?: "media" | "tagged" | "following" | "followers"
@@ -29,13 +31,11 @@ export const ROUTE = {
 
   // === Private ===
   HOME: "/",
-  EXPLORE: (type?: ExploreType) =>
-    type ? buildUrl("/explore/:type", { pathParams: { type } }) : "/explore",
   SEARCH: (query?: string, filter?: SearchCategory) =>
     buildUrl("/search", {
       queryParams: {
         [SearchParamName.QUERY]: query,
-        [SearchParamName.CATEGORY]: filter,
+        [SearchParamName.FILTER]: filter,
       },
       useSetForQuery: true,
     }),
@@ -96,5 +96,5 @@ export const SocialAuthError = {
 
 export enum SearchParamName {
   QUERY = "query",
-  CATEGORY = "category",
+  FILTER = "filter",
 }

@@ -6,27 +6,26 @@ import { ROUTE } from "@/constants/route";
 export default function EmptyState({ query }: Readonly<{ query: string }>) {
   if (!query)
     return (
-      <div>
-        <div
-          className={cn(
-            "text-sm text-muted-foreground",
-            "text-center flex flex-col items-center",
-            "px-4 pt-3 pb-6"
-          )}
-        >
-          <span>Try searching for people, places,</span>
-          <span>things, or hashtags</span>
-        </div>
+      <div
+        className={cn(
+          "px-4 pt-3 pb-6",
+          "text-sm text-muted-foreground",
+          "text-center flex flex-col items-center"
+        )}
+      >
+        <span>Try searching for people, places,</span>
+        <span>things, or hashtags</span>
       </div>
     );
 
   return (
-    <div className="space-y-2">
+    <div>
       <Link
         href={ROUTE.SEARCH(query)}
         className={cn(
-          "pl-5 py-2 block",
+          "pl-5 py-3 block",
           "cursor-pointer hover:bg-accent/[.05]",
+          "outline-none focus:bg-accent/[.05]",
           "transition-colors duration-150 ease-in-out"
         )}
       >
@@ -43,8 +42,9 @@ export default function EmptyState({ query }: Readonly<{ query: string }>) {
       <Link
         href={ROUTE.SEARCH(`@${query}`)}
         className={cn(
-          "pl-5 py-2 block",
+          "pl-5 py-3 block",
           "cursor-pointer hover:bg-accent/[.05]",
+          "outline-none focus:bg-accent/[.05]",
           "transition-colors duration-150 ease-in-out"
         )}
       >

@@ -22,7 +22,8 @@ export default function ClearButton({ onClear }: ClearButtonProps) {
         <button
           className={cn(
             "text-xs font-semibold text-primary",
-            "cursor-pointer hover:text-primary/80",
+            "cursor-pointer",
+            "hover:bg-primary/10 px-1.5 py-1 rounded-lg",
             "transition-colors duration-150 ease-in-out"
           )}
         >
