@@ -33,9 +33,17 @@ const signup = z.object({
     .max(MAX_NAME_LENGTH, {
       error: `Username must be less than ${MAX_NAME_LENGTH} characters`,
     })
-    .regex(/^[a-zA-Z0-9._-]+$/, {
-      error:
-        "Only letters, numbers, dots, underscores, and hyphens are allowed",
+    .refine((value) => !value.startsWith("."), {
+      error: "Username cannot start with a dot",
+    })
+    .refine((value) => !value.endsWith("."), {
+      error: "Username cannot end with a dot",
+    })
+    .refine((value) => !value.includes(".."), {
+      error: "Username cannot contain consecutive dots",
+    })
+    .regex(/^[a-zA-Z0-9._]+$/, {
+      error: "Only letters, numbers, underscores, and dots are allowed",
     }),
   password: z
     .string()
