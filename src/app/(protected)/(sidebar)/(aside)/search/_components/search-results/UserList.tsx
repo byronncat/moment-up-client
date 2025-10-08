@@ -1,9 +1,8 @@
-import type { SearchItem as TSearchItem } from "api";
+import type { UserSearchItem } from "api";
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { usePost } from "@/components/providers";
 import { useSearch } from "../../_Search.provider";
 import { SearchItemType } from "@/constants/server";
 import { ROUTE } from "@/constants/route";
@@ -17,7 +16,6 @@ import LoadingIndicator from "../LoadingIndicator";
 
 export default function MixedVirtualList() {
   const router = useRouter();
-  const { setCurrentPost, like, bookmark, share, report, follow } = usePost();
   const {
     results,
     error,
@@ -59,18 +57,8 @@ export default function MixedVirtualList() {
   });
   const virtualItems = virtualizer.getVirtualItems();
 
-  function handleClick(item: TSearchItem) {
-    switch (item.type) {
-      case SearchItemType.USER:
-        router.push(ROUTE.PROFILE(item.username));
-        break;
-      case SearchItemType.MEDIA:
-        setCurrentPost(item.id);
-        break;
-      case SearchItemType.POST:
-        setCurrentPost(item.id);
-        break;
-    }
+  function handleClick(item: UserSearchItem) {
+    router.push(ROUTE.PROFILE(item.username));
   }
 
   useEffect(() => {
@@ -130,12 +118,10 @@ export default function MixedVirtualList() {
               ) : item ? (
                 <SearchItem
                   data={item}
-                  onClick={() => handleClick(item)}
-                  actions={{ like, bookmark, share, report, follow }}
+                  onClick={() => handleClick(item as UserSearchItem)}
                   className={cn(
-                    item.type === SearchItemType.USER
-                      ? "cursor-pointer hover:bg-accent/5 px-4 py-3 transition-colors"
-                      : ""
+                    item.type === SearchItemType.USER &&
+                      "cursor-pointer hover:bg-accent/5 px-4 py-3 transition-colors"
                   )}
                 />
               ) : null}

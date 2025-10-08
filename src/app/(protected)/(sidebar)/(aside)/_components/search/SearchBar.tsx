@@ -46,7 +46,7 @@ export default function SearchBar({
         addHistory(item, SearchItemType.USER);
         break;
       case SearchItemType.QUERY:
-        router.push(ROUTE.SEARCH(item.query, SearchCategory.PEOPLE));
+        router.push(ROUTE.SEARCH(item.query, SearchCategory.POSTS));
         addHistory(item, SearchItemType.QUERY);
         break;
     }

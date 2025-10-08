@@ -52,7 +52,6 @@ export function useSearch(): UseSearchReturn {
     const { success, data } = await callSearchApi({
       query,
       filter: "user",
-      order: "most_popular",
       page: INITIAL_PAGE,
       limit: MAX_ITEMS,
     });

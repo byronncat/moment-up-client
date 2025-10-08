@@ -2,6 +2,7 @@ import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { MagnifyingGlass, User } from "@/components/icons";
 import { ROUTE } from "@/constants/route";
+import { SearchCategory } from "@/constants/client";
 
 export default function EmptyState({ query }: Readonly<{ query: string }>) {
   if (!query)
@@ -21,7 +22,7 @@ export default function EmptyState({ query }: Readonly<{ query: string }>) {
   return (
     <div>
       <Link
-        href={ROUTE.SEARCH(query)}
+        href={ROUTE.SEARCH(query, SearchCategory.POSTS)}
         className={cn(
           "pl-5 py-3 block",
           "cursor-pointer hover:bg-accent/[.05]",
@@ -40,7 +41,7 @@ export default function EmptyState({ query }: Readonly<{ query: string }>) {
         </div>
       </Link>
       <Link
-        href={ROUTE.SEARCH(`@${query}`)}
+        href={ROUTE.SEARCH(`@${query}`, SearchCategory.PEOPLE)}
         className={cn(
           "pl-5 py-3 block",
           "cursor-pointer hover:bg-accent/[.05]",

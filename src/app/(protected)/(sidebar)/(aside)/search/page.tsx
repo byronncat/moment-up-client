@@ -30,16 +30,17 @@ export default function SearchPage() {
       initialQuery={initialQuery}
       initialCategory={initialCategory}
     >
-      <SearchPageContent />
+      <SearchPageContent initialQuery={initialQuery} />
     </SearchProvider>
   );
 }
 
-function SearchPageContent() {
+function SearchPageContent({
+  initialQuery,
+}: Readonly<{ initialQuery: string }>) {
   const { setQuery, setCategory, activeCategory, isQueryEmpty, query } =
     useSearch();
 
-  // keep URL in sync with current search state
   useEffect(() => {
     const isSearchRoute = window.location.pathname.includes(ROUTE.SEARCH());
     if (!isSearchRoute || isQueryEmpty) return;
@@ -52,16 +53,6 @@ function SearchPageContent() {
   }, [query, activeCategory, isQueryEmpty]);
 
   const categories: NavItem[] = [
-    // {
-    //   id: SearchCategory.TOP,
-    //   label: "Top",
-    //   onSelect: () => setCategory(SearchCategory.TOP),
-    // },
-    // {
-    //   id: SearchCategory.LATEST,
-    //   label: "Latest",
-    //   onSelect: () => setCategory(SearchCategory.LATEST),
-    // },
     {
       id: SearchCategory.PEOPLE,
       label: "People",
@@ -94,7 +85,7 @@ function SearchPageContent() {
         >
           <SearchInput
             id="side-search-input"
-            defaultValue={""}
+            defaultValue={initialQuery}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               setQuery(event.target.value)
             }

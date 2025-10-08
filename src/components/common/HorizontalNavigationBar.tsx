@@ -16,14 +16,14 @@ export type NavItem = {
 
 type NavigationProps = Readonly<{
   items: NavItem[];
-  className?: string;
   initialValue?: NavItem["id"];
+  className?: string;
 }>;
 
 export default function HorizontalNavigationBar({
   items,
-  className,
   initialValue,
+  className,
 }: NavigationProps) {
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState(initialValue ?? items[0]?.id);
@@ -34,7 +34,11 @@ export default function HorizontalNavigationBar({
         if (item.href) {
           const activeTab = items.find((item) => pathname === item.href)?.id;
           return (
-            <Link href={item.href} key={item.id} className="flex-1 focus-within-indicator">
+            <Link
+              href={item.href}
+              key={item.id}
+              className="flex-1 focus-within-indicator"
+            >
               <Item data={item} active={activeTab === item.id} />
             </Link>
           );

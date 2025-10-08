@@ -172,12 +172,11 @@ export const ApiUrl = {
     search: (
       query: string,
       filter?: SearchFilterParams,
-      order?: SearchSortParams,
       page?: number,
       limit?: number
     ) =>
       buildUrl(`${SERVER_HOST_URL}/v1/search`, {
-        queryParams: { query, filter, order, page, limit },
+        queryParams: { query, filter, page, limit },
       }),
     getHistory: (limit?: number) =>
       buildUrl(`${SERVER_HOST_URL}/v1/search/history`, {
@@ -207,5 +206,3 @@ export type SearchFilterParams =
   | "user&hashtag"
   | "user&hashtag&post"
   | "all";
-
-export type SearchSortParams = "most_popular" | "newest";

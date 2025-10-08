@@ -12,7 +12,6 @@ import {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useCallback,
   useState,
 } from "react";
@@ -76,8 +75,8 @@ export default function SearchProvider({
       if (query.trim().length === 0) return null;
       if (previousPageData && !previousPageData.hasNextPage) return null;
 
-      const { filter: type, order } = TypeMap[activeCategory];
-      const url = ApiUrl.search.search(query, type, order, pageIndex + 1);
+      const { filter } = TypeMap[activeCategory];
+      const url = ApiUrl.search.search(query, filter, pageIndex + 1);
       return [url, token.accessToken];
     },
     [query, activeCategory, token.accessToken]
