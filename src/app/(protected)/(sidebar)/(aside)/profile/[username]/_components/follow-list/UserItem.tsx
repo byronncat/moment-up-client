@@ -84,7 +84,7 @@ export default function UserItem({ data, onFollow }: UserItemProps) {
           />
         </div>
 
-        <p className="text-sm mt-1.5">{data.bio}</p>
+        {data.bio && <p className="text-sm mt-1.5">{data.bio}</p>}
       </div>
     </Link>
   );
