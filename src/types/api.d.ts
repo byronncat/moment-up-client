@@ -74,20 +74,20 @@ declare module "api" {
     lastModified: Timestamptz;
   }
 
-  type FeedItemDto = {
+  interface FeedItemDto {
     id: SnowflakeId;
     user: UserSummaryDto;
     post: PostDto;
-  };
+  }
 
-  type CommentDto = {
+  interface CommentDto {
     id: string;
     user: UserSummaryDto;
     text: string;
     likes: number;
     isLiked: boolean;
     lastModified: string;
-  };
+  }
 
   // === Others ===
   interface HashtagDto {
@@ -95,11 +95,11 @@ declare module "api" {
     count: number;
   }
 
-  type FileInfo = {
+  interface FileInfo {
     id: PublicId;
     type: "image" | "video";
     aspectRatio: "square" | "portrait" | "landscape";
-  };
+  }
 
   // +++ TODO: Refactor this +++
 
@@ -185,4 +185,38 @@ declare module "api" {
     | QuerySearchItem
     | PostSearchItem
     | MediaSearchItem;
+
+  // === Chat ===
+  interface MessageDto {
+    id: string;
+    text: string;
+    user: {
+      id: string;
+      name: string;
+      avatar: string;
+    };
+    timestamp: string;
+  }
+
+  interface ContactDto {
+    id: string;
+    name: string;
+    avatar: string | null;
+    lastMessage: string;
+    timestamp: string;
+    isActive: boolean;
+    type: "user" | "group";
+    members: Array<{
+      id: string;
+      name: string;
+      avatar: string;
+    }> | null;
+  }
+
+  interface UserStatusDto {
+    id: string;
+    name: string;
+    avatar: string;
+    isActive: boolean;
+  }
 }

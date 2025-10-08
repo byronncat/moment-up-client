@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Circle, FaceSmile, PaperPlane } from "@/components/icons";
 
 type MessageInputProps = {
@@ -29,39 +28,40 @@ export default function MessageInput({ onSendMessage }: MessageInputProps) {
 
   return (
     <div
-      className={cn("p-3", "flex items-center gap-2", "border-t border-border")}
+      className={cn(
+        "flex items-center gap-2",
+        "border-t border-border",
+        "px-4 py-3"
+      )}
     >
-      <Button variant="ghost" className="rounded-full" size="icon">
-        <Circle variant="plus" type="solid" className="size-5 fill-primary" />
-      </Button>
-      <div className="grow relative">
-        <Input
+      <div
+        className={cn(
+          "flex items-center gap-2",
+          "px-2 py-1 bg-input w-full rounded-full"
+        )}
+      >
+        <Button variant="ghost" className="rounded-full" size="icon">
+          <Circle variant="plus" className="size-4 fill-muted-foreground" />
+        </Button>
+
+        <input
           value={inputValue}
           onChange={(event) => setInputValue(event.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Aa"
-          className={cn(
-            "border-0 focus-visible:ring-0",
-            "bg-card rounded-full"
-          )}
+          className={cn("bg-transparent", "block py-2 grow", "outline-none")}
         />
+
         <Button
-          variant="ghost"
-          className={cn("rounded-full", "absolute right-0 top-0")}
           size="icon"
+          onClick={handleSendMessage}
+          disabled={!inputValue.trim()}
+          variant="ghost"
+          className="rounded-full"
         >
-          <FaceSmile className="size-5 fill-primary" />
+          <PaperPlane className="size-4 fill-foreground" />
         </Button>
       </div>
-      <Button
-        size="icon"
-        onClick={handleSendMessage}
-        disabled={!inputValue.trim()}
-        variant="ghost"
-        className="rounded-full"
-      >
-        <PaperPlane className="size-5 fill-primary" />
-      </Button>
     </div>
   );
 }

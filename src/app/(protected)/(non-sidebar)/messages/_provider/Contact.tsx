@@ -1,22 +1,25 @@
 "use client";
 
-import {
-  type Contact,
-  mockContacts,
-  mockUserStatuses,
-  type UserStatus,
-} from "@/__mocks__";
+import { mockContacts, mockUserStatuses } from "@/__mocks__";
+import type { ContactDto, UserStatusDto } from "api";
+
 import { createContext, useContext, useState } from "react";
 
-const ContactContext = createContext(
-  {} as {
-    contacts: Contact[];
-    setContacts: (contacts: Contact[]) => void;
-    currentContactId: string | null;
-    setCurrentContactId: (currentContactId: string | null) => void;
-    userStatuses: UserStatus[];
-  }
-);
+type ContactContextType = {
+  contacts: ContactDto[];
+  currentContactId: string | null;
+  userStatuses: UserStatusDto[];
+  setContacts: (contacts: ContactDto[]) => void;
+  setCurrentContactId: (currentContactId: string | null) => void;
+};
+
+const ContactContext = createContext<ContactContextType>({
+  contacts: [],
+  currentContactId: null,
+  userStatuses: [],
+  setContacts: () => {},
+  setCurrentContactId: () => {},
+});
 
 export const useContact = () => useContext(ContactContext);
 
@@ -25,21 +28,21 @@ export default function ContactProvider({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [contacts, setContacts] = useState<Contact[]>(mockContacts);
+  const [contacts, setContacts] = useState<ContactDto[]>(mockContacts);
   const [currentContactId, setCurrentContactId] = useState<string | null>(
     mockContacts[0].id || null
   );
 
-  const [userStatuses] = useState<UserStatus[]>(mockUserStatuses || []);
+  const [userStatuses] = useState<UserStatusDto[]>(mockUserStatuses || []);
 
   return (
     <ContactContext.Provider
       value={{
         contacts,
-        setContacts,
         currentContactId,
-        setCurrentContactId,
         userStatuses,
+        setContacts,
+        setCurrentContactId,
       }}
     >
       {children}

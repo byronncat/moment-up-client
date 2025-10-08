@@ -1,11 +1,7 @@
 "use client";
 
-import {
-  type Message,
-  mockContacts,
-  mockInitialMessages,
-  // getRandomAvatar,
-} from "@/__mocks__";
+import { mockContacts, mockInitialMessages, getRandomFile } from "@/__mocks__";
+import type { MessageDto } from "api";
 
 import { useState } from "react";
 import { cn } from "@/libraries/utils";
@@ -13,17 +9,15 @@ import { Header, Message as ChatMessage, MessageInput } from "./_components";
 import { useParams } from "next/navigation";
 export default function Message() {
   const contactId = useParams().id;
-  const [messages, setMessages] = useState<Message[]>(mockInitialMessages);
+  const [messages, setMessages] = useState<MessageDto[]>(mockInitialMessages);
   const handleSendMessage = (text: string) => {
-    const newMessage: Message = {
+    const newMessage: MessageDto = {
       id: Date.now().toString(),
       text,
       user: {
         id: "1",
-        name: "La Vie",
-        // avatar: getRandomAvatar(),
-        avatar:
-          "https://pbs.twimg.com/profile_images/1713024402486321152/X48G9Bl_400x400.jpg",
+        name: "cberling0",
+        avatar: getRandomFile("cberling0"),
       },
       timestamp: "Just now",
     };

@@ -84,7 +84,7 @@ export const Metadata: MetadataMap = {
   },
   messages: {
     title: "Messages",
-    description: "View and communicate with your friends",
+    description: "Chat privately with people you follow.",
   },
   notifications: {
     title: "Notifications",

@@ -1,22 +1,22 @@
 "use client";
 
-import { type Contact } from "@/__mocks__";
+import type { ContactDto } from "api";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar } from "@/components/common";
 import { Phone, Video, Circle, User } from "@/components/icons";
 
-type HeaderProps = {
-  contact?: Contact;
-};
+type HeaderProps = Readonly<{
+  contact?: ContactDto;
+}>;
 
 export default function Header({ contact }: HeaderProps) {
   return (
     <div
       className={cn(
         "flex items-center justify-between",
-        "p-4 border-b border-border"
+        "px-4 py-3 border-b border-border"
       )}
     >
       <HeaderLeft contact={contact} />
@@ -28,16 +28,12 @@ export default function Header({ contact }: HeaderProps) {
 function HeaderLeft({ contact }: HeaderProps) {
   return (
     <div className="flex items-center">
-      <Avatar className="size-12 mr-3">
-        <AvatarImage
-          src={contact?.avatar || undefined}
-          alt={contact?.name}
-          className="object-cover object-top"
-        />
-        <AvatarFallback className="bg-primary">
-          <User className="size-6 fill-card" type="solid" />
-        </AvatarFallback>
-      </Avatar>
+      <Avatar
+        src={contact?.avatar}
+        alt={contact?.name}
+        size="12"
+        className="mr-3"
+      />
       <div>
         <h2 className={cn("font-semibold text-lg", "flex items-center")}>
           {contact?.name}
@@ -47,7 +43,7 @@ function HeaderLeft({ contact }: HeaderProps) {
                 "ml-2 size-2 rounded-full inline-block",
                 "bg-green-500"
               )}
-            ></span>
+            />
           )}
         </h2>
         <p className="text-xs text-muted-foreground">
@@ -61,14 +57,14 @@ function HeaderLeft({ contact }: HeaderProps) {
 function HeaderRight() {
   return (
     <div className="flex space-x-2">
-      <Button variant="ghost" size="icon">
-        <Phone className="size-5 fill-muted-foreground" />
+      <Button variant="ghost" size="icon" className="rounded-full">
+        <Phone className="size-4 fill-muted-foreground" />
       </Button>
-      <Button variant="ghost" size="icon">
-        <Video className="size-5 fill-muted-foreground" />
+      <Button variant="ghost" size="icon" className="rounded-full">
+        <Video className="size-4 fill-muted-foreground" />
       </Button>
-      <Button variant="ghost" size="icon">
-        <Circle variant="info" className="size-5 fill-muted-foreground" />
+      <Button variant="ghost" size="icon" className="rounded-full">
+        <Circle variant="info" className="size-4 fill-muted-foreground" />
       </Button>
     </div>
   );

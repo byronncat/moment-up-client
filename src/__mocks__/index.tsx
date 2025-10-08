@@ -1,40 +1,15 @@
-const avatar = [
-  "https://pbs.twimg.com/media/GgHsZ5vakAAz5jI?format=jpg&name=large",
-  "https://pbs.twimg.com/media/GHv15bhbwAAXQlJ?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/GgHsVFvbYAU2ZpA?format=jpg&name=large",
-  "https://pbs.twimg.com/media/GgHsRA8akAAeirJ?format=jpg&name=large",
-  "https://pbs.twimg.com/media/F7_0tmmbMAAuv6G?format=jpg&name=large",
-  "https://pbs.twimg.com/media/GlLNYbPbIAANJjZ?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/GgC22OAaMAAmA9I?format=jpg&name=large",
-  "https://pbs.twimg.com/media/Gdm5F3mboAgSG_x?format=jpg&name=large",
-  "https://pbs.twimg.com/media/GNVppwoakAA3Yxq?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/GCpqzHQbwAABMGr?format=jpg&name=large",
-  "https://pbs.twimg.com/media/F-I4FN2bgAAbsbE?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/GLGU7XDbEAADwGY?format=jpg&name=large",
-  "https://pbs.twimg.com/media/Fi2-RJ9acAA7gYr?format=jpg&name=large",
-  "https://pbs.twimg.com/media/GowgbJ9aIAADxvn?format=jpg&name=large",
-  "https://pbs.twimg.com/media/Ghvkngoa0AAZBHM?format=jpg&name=large",
-  "https://pbs.twimg.com/media/Gj8UYDjbEAAVJeD?format=jpg&name=large",
-  "https://pbs.twimg.com/media/GmkyyAnaEAA3K9v?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/Gj_e2lNbEAAWF9u?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/GjMsVS9a0AA66Tb?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/GgLvSHibYAMCR1k?format=jpg&name=medium",
+import type { ContactDto, MessageDto, UserStatusDto } from "api";
 
-  "https://pbs.twimg.com/media/F1IgZYmagAAbcwm?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/GkUVxpLaIAAK5fK?format=jpg&name=large",
-  "https://pbs.twimg.com/media/GoFJ8_PbYAAGVxY?format=jpg&name=large",
-  "https://pbs.twimg.com/media/GmE2QNobcAE18qo?format=jpg&name=medium",
-  "https://pbs.twimg.com/media/GTP4USoaYAMKWLD?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/GCsUDkvaQAASmNU?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/GllqHMLa4AATGzZ?format=jpg&name=4096x4096",
-  "https://pbs.twimg.com/media/GllqHMLa4AATGzZ?format=jpg&name=4096x4096",
+const avatar = [
+  "https://pbs.twimg.com/media/G2Qcoh3WIAAzwD6?format=jpg&name=large",
+  "https://pbs.twimg.com/media/G2o8WN2XAAAr8D2?format=jpg&name=medium",
 ];
 
 const video = [
   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
 ];
 
-function getRandomFile(
+export function getRandomFile(
   text: string,
   type: "image" | "video" | "audio" = "image"
 ) {
@@ -45,146 +20,124 @@ function getRandomFile(
   return avatar[seed % avatar.length];
 }
 
-// Chat mocks
-export type Message = {
-  id: string;
-  user: {
-    id: string;
-    name: string;
-    avatar: string;
-  };
-  text: string;
-  timestamp: string;
-};
-
-export type Contact = {
-  id: string;
-  name: string;
-  avatar?: string;
-  lastMessage: string;
-  time: string;
-  isActive?: boolean;
-  type: "user" | "group";
-  members?: Array<{
-    id: string;
-    name: string;
-    avatar: string;
-  }>;
-};
-
-export type UserStatus = {
-  id: string;
-  name: string;
-  avatar: string;
-  isActive: boolean;
-};
-
-export const mockUserStatuses: UserStatus[] = [
+export const mockUserStatuses: UserStatusDto[] = [
   {
     id: "1",
-    name: "La Vie",
-    avatar: getRandomFile("la_vie"),
+    name: "cberling0",
+    avatar: getRandomFile("1"),
     isActive: true,
   },
   {
     id: "2",
-    name: "KingOfGames",
-    avatar: getRandomFile("king_of_games"),
+    name: "mpellitt2",
+    avatar: getRandomFile("2"),
     isActive: true,
   },
   {
     id: "3",
-    name: "John Doe",
-    avatar: getRandomFile("john_doe"),
+    name: "lteall5",
+    avatar: getRandomFile("3"),
     isActive: true,
   },
   {
     id: "4",
-    name: "Jane Doe",
-    avatar: getRandomFile("jane_doe"),
+    name: "shaydon6",
+    avatar: getRandomFile("4"),
     isActive: false,
   },
   {
     id: "5",
-    name: "John Doe",
-    avatar: getRandomFile("john_doe"),
+    name: "cbartol1",
+    avatar: getRandomFile("5"),
     isActive: false,
   },
   {
     id: "6",
-    name: "John Doe",
-    avatar: getRandomFile("john_doe"),
+    name: "cmalecky3",
+    avatar: getRandomFile("6"),
     isActive: false,
   },
   {
     id: "7",
-    name: "John Doe",
-    avatar: getRandomFile("john_doe"),
+    name: "cbradnum4",
+    avatar: getRandomFile("7"),
     isActive: false,
   },
 ];
 
-export const mockContacts: Contact[] = [
+export const mockContacts: ContactDto[] = [
   {
     id: "1",
-    name: "La Vie",
-    avatar: getRandomFile("la_vie"),
+    name: "cberling0",
+    avatar: getRandomFile("1"),
     lastMessage: "Hi, Thinh! Please let us know how we can help you.",
-    time: "2h",
+    timestamp: "2h",
     isActive: true,
     type: "user",
+    members: null,
   },
   {
     id: "2",
-    name: "KingOfGames",
-    avatar: getRandomFile("king_of_games"),
-    lastMessage: "Phương reacted 👍 to your message",
-    time: "2w",
+    name: "mpellitt2",
+    avatar: getRandomFile("2"),
+    lastMessage: "Phuong reacted 👍 to your message",
+    timestamp: "2w",
+    isActive: true,
     type: "user",
+    members: null,
   },
   {
     id: "3",
-    name: "Minh Thông",
-    avatar: getRandomFile("minh_thong"),
-    lastMessage: "t đi trước rồi á, kkkk",
-    time: "3w",
+    name: "lteall5",
+    avatar: getRandomFile("3"),
+    lastMessage: "I'm going ahead, kkkk",
+    timestamp: "3w",
+    isActive: true,
     type: "user",
+    members: null,
   },
   {
     id: "4",
-    name: "Meta AI",
-    avatar: getRandomFile("meta_ai"),
-    lastMessage: "Tôi là Meta AI. Hãy coi tôi như một...",
-    time: "4w",
+    name: "shaydon6",
+    avatar: getRandomFile("4"),
+    lastMessage: "I'm Meta AI. Please treat me as one...",
+    timestamp: "4w",
+    isActive: false,
     type: "user",
+    members: null,
   },
   {
     id: "5",
-    name: "Hà Minh",
-    avatar: getRandomFile("ha_minh"),
+    name: "cbartol1",
+    avatar: getRandomFile("5"),
     lastMessage: "Messages and calls are secured with end-to-end encryption",
-    time: "6w",
+    timestamp: "6w",
+    isActive: false,
     type: "user",
+    members: null,
   },
   {
     id: "6",
-    name: "Phương Khanh",
-    avatar: getRandomFile("phuong_khanh"),
+    name: "cmalecky3",
+    avatar: getRandomFile("6"),
     lastMessage: "Reacted 😊 to your message",
-    time: "7w",
+    timestamp: "7w",
+    isActive: false,
     type: "user",
+    members: null,
   },
   {
     id: "7",
-    name: "Frontend Team",
-    avatar: getRandomFile("frontend_team"),
+    name: "cbradnum4",
+    avatar: getRandomFile("7"),
     lastMessage: "Alex: Let's meet tomorrow to discuss the UI updates",
-    time: "1d",
+    timestamp: "1d",
+    isActive: false,
     type: "group",
     members: [
       {
         id: "1",
-        name: "Alex",
+        name: "alex",
         avatar: getRandomFile("alex_walker"),
       },
       {
@@ -204,12 +157,13 @@ export const mockContacts: Contact[] = [
     name: "Family Group",
     avatar: "",
     lastMessage: "Mom: Don't forget the dinner on Sunday!",
-    time: "3d",
+    timestamp: "3d",
+    isActive: false,
     type: "group",
     members: [
       {
         id: "1",
-        name: "Mom",
+        name: "mom",
         avatar: getRandomFile("mom"),
       },
       {
@@ -229,7 +183,8 @@ export const mockContacts: Contact[] = [
     name: "Project Alpha",
     avatar: "",
     lastMessage: "David: I've uploaded the latest designs",
-    time: "5d",
+    timestamp: "5d",
+    isActive: false,
     type: "group",
     members: [
       {
@@ -254,7 +209,8 @@ export const mockContacts: Contact[] = [
     name: "Gaming Squad",
     avatar: "",
     lastMessage: "Kevin: Anyone up for a game tonight?",
-    time: "1w",
+    timestamp: "1w",
+    isActive: false,
     type: "group",
     members: [
       {
@@ -274,7 +230,8 @@ export const mockContacts: Contact[] = [
     name: "Gaming Squad",
     avatar: "",
     lastMessage: "Kevin: Anyone up for a game tonight?",
-    time: "1w",
+    timestamp: "1w",
+    isActive: false,
     type: "group",
     members: [
       {
@@ -299,56 +256,54 @@ export const mockContacts: Contact[] = [
     name: "Mom",
     avatar: getRandomFile("mom"),
     lastMessage: "Mom: Don't forget the dinner on Sunday!",
-    time: "3d",
+    timestamp: "3d",
+    isActive: false,
     type: "user",
+    members: null,
   },
   {
     id: "13",
     name: "Dad",
     avatar: getRandomFile("dad"),
     lastMessage: "Dad: Don't forget the dinner on Sunday!",
-    time: "3d",
+    timestamp: "3d",
+    isActive: false,
     type: "user",
+    members: null,
   },
 ];
 
-export const mockInitialMessages: Message[] = [
+export const mockInitialMessages: MessageDto[] = [
   {
     id: "1",
     text: "Hi, Thinh! Please let us know how we can help you.",
     user: {
       id: "1",
-      name: "La Vie",
+      name: "cberling0",
       avatar: getRandomFile("la_vie"),
     },
     timestamp: "Just now",
   },
   {
     id: "2",
-    text: "Hi, Thinh! Please let us know how we can help you.",
+    text: "Can I learn more about your business?",
     user: {
-      id: "1",
-      name: "La Vie",
+      id: "2",
+      name: "mpellitt2",
       avatar: getRandomFile("la_vie"),
     },
     timestamp: "Just now",
   },
   {
     id: "3",
-    text: "Can I learn more about your business?",
+    text: "Sure, I'll send you the details. Please wait a moment.",
     user: {
-      id: "2",
-      name: "Byron",
-      avatar: getRandomFile("king_of_games"),
+      id: "1",
+      name: "cberling0",
+      avatar: getRandomFile("la_vie"),
     },
     timestamp: "Just now",
   },
-];
-
-export const mockQuickReplies: string[] = [
-  "Can I learn more about your business?",
-  "Can you tell me more about your ad?",
-  "Is anyone available to chat?",
 ];
 
 import { getCldImageUrl } from "next-cloudinary";
