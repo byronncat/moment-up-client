@@ -86,29 +86,16 @@ export default function PostsList() {
                   <PostSkeleton media="square" className="w-full" />
                 </div>
               ) : error ? (
-                <div
-                  className={cn(
-                    "flex justify-center items-center",
-                    "pt-16 pb-20"
-                  )}
-                >
-                  <ErrorContent onRefresh={() => refresh()} />
-                </div>
+                <ErrorContent onRefresh={() => refresh()} className="pt-12 pb-20" />
               ) : posts === undefined ? null : posts.length === 0 ? (
-                <div
-                  className={cn(
-                    "flex flex-col items-center justify-center",
-                    "pt-16 pb-20"
-                  )}
-                >
-                  <NoContent
-                    icon={
-                      <MagnifyingGlass className="size-14 m-1 text-muted-foreground" />
-                    }
-                    title="No posts found"
-                    description="Try searching for something else."
-                  />
-                </div>
+                <NoContent
+                  icon={
+                    <MagnifyingGlass className="size-14 m-1 text-muted-foreground" />
+                  }
+                  title="No posts found"
+                  description="Try searching for something else."
+                  className="pt-12 pb-20"
+                />
               ) : isLoaderRow ? (
                 <div className="max-w-[calc(600px+16px)] px-2 mx-auto">
                   <PostSkeleton

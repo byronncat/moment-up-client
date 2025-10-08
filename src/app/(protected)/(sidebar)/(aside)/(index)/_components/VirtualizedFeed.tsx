@@ -102,13 +102,13 @@ export default function VirtualizedFeed() {
                 <PostSkeleton media="square" className="w-full" />
               </div>
             ) : isError ? (
-              <ErrorContent onRefresh={reloadPost} className="pt-24" />
+              <ErrorContent onRefresh={reloadPost} className="pt-24 pb-20" />
             ) : !posts ? null : posts.length === 0 ? (
               <NoContent
                 icon={<Camera className="size-16 text-muted-foreground" />}
                 title="No moments yet"
                 description="When anyone you follow posts, they'll show up here."
-                className="pt-24"
+                className="pt-24 pb-20"
               />
             ) : isLoaderRow ? (
               <div className="max-w-[calc(600px+16px)] px-2 mx-auto">

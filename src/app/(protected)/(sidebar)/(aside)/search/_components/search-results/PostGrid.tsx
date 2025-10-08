@@ -91,19 +91,16 @@ export default function MediaGrid() {
                 ))}
               </div>
             ) : error ? (
-              <div className="flex justify-center items-center py-20">
-                <ErrorContent onRefresh={refresh} />
-              </div>
+              <ErrorContent onRefresh={refresh} className="pt-15 pb-20" />
             ) : posts === undefined ? null : posts.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20">
-                <NoContent
-                  icon={
-                    <MagnifyingGlass className="size-14 m-1 text-muted-foreground" />
-                  }
-                  title="No media found"
-                  description="Try searching for something else."
-                />
-              </div>
+              <NoContent
+                icon={
+                  <MagnifyingGlass className="size-14 m-1 text-muted-foreground" />
+                }
+                title="No media found"
+                description="Try searching for something else."
+                className="pt-15 pb-20"
+              />
             ) : isLoaderRow ? (
               <div className="flex justify-around gap-1 px-1">
                 {Array.from(
