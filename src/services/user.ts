@@ -16,6 +16,8 @@ const SuccessMessage = {
   mute: "User muted",
   unmute: "User unmuted",
   reportUser: "User reported successfully",
+  acceptFollowRequest: "Follow request accepted",
+  declineFollowRequest: "Follow request declined",
 };
 
 export async function getProfile(username: string): API<{
@@ -116,6 +118,60 @@ export async function follow(data: FollowDto, token: Token): API {
       return {
         success: true,
         message: successMessage,
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorDto) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+export async function acceptFollowRequest(userId: string, token: Token): API {
+  return fetch(ApiUrl.user.acceptFollowRequest(userId), {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: SuccessMessage.acceptFollowRequest,
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorDto) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+export async function declineFollowRequest(userId: string, token: Token): API {
+  return fetch(ApiUrl.user.declineFollowRequest(userId), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Csrf-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: SuccessMessage.declineFollowRequest,
         statusCode: response.status,
       };
     })

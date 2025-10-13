@@ -43,6 +43,7 @@ const ProfileContext = createContext<ProfileContextType>({
     following: 0,
     isFollower: false,
     isFollowing: false,
+    isFollowRequest: false,
     isMuted: false,
     isProtected: false,
     hasStory: false,
@@ -76,19 +77,26 @@ export default function ProfileProvider({
 
   const profile = useMemo(() => data?.profile, [data]);
   const isSelf = useMemo(() => user?.username === username, [user, username]);
-  const [canView, setCanView] = useState<boolean>(false);
+  const [canView, setCanView] = useState(true);
 
   const followApi = useRefreshApi(UserApi.follow);
   async function follow() {
     if (!profile) return;
 
+    const isFollowRequest = profile.isProtected && !profile.isFollowing;
     const _prev = profile;
     mutate(
       {
         profile: {
           ..._prev,
-          followers: _prev.followers + (profile.isFollowing ? -1 : 1),
-          isFollowing: !profile.isFollowing,
+          ...(isFollowRequest
+            ? {
+                isFollowRequest: !_prev.isFollowRequest,
+              }
+            : {
+                followers: _prev.followers + (_prev.isFollowing ? -1 : 1),
+                isFollowing: !profile.isFollowing,
+              }),
         },
       },
       { revalidate: false }
@@ -96,12 +104,12 @@ export default function ProfileProvider({
 
     const { success, message } = await followApi({
       targetId: profile.id,
-      shouldFollow: !profile.isFollowing,
+      shouldFollow: isFollowRequest
+        ? !_prev.isFollowRequest
+        : !_prev.isFollowing,
     });
 
-    if (success) {
-      if (profile.isProtected) setCanView(!canView);
-    } else {
+    if (!success) {
       mutate({ profile: _prev }, { revalidate: false });
       toast.error(message || "Failed to follow/unfollow");
     }
@@ -173,8 +181,7 @@ export default function ProfileProvider({
       shouldBlock: true,
     });
 
-    if (success) setCanView(profile.isProtected);
-    else {
+    if (!success) {
       mutate({ profile: _prev }, { revalidate: false });
       toast.error(message || "Failed to block user");
     }
@@ -213,8 +220,8 @@ export default function ProfileProvider({
     if (data?.profile)
       setCanView(
         data.profile.isFollowing || data.profile.username === user?.username
-          ? false
-          : data.profile.isProtected
+          ? true
+          : !data.profile.isProtected
       );
   }, [data, user]);
 
@@ -263,12 +270,12 @@ export default function ProfileProvider({
       }}
     >
       {canView ? (
+        children
+      ) : (
         <>
           <Header />
           <ProfileZone />
         </>
-      ) : (
-        children
       )}
     </ProfileContext.Provider>
   );

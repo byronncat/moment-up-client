@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { usePost } from "@/components/providers";
-import { useSearch } from "../../_Search.provider";
+import { useSearch } from "../../Search.provider";
 import { getPostHeight } from "@/helpers/ui";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
 

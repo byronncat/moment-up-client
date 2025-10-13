@@ -1,5 +1,5 @@
 import type { SearchCategory } from "./client";
-import { type ExploreType, NotificationType } from "./server";
+import type { ExploreType, NotificationFilter } from "./server";
 import { buildUrl } from "@/utilities";
 
 export const ROUTE = {
@@ -54,10 +54,10 @@ export const ROUTE = {
     contactId
       ? buildUrl("/messages/:contactId", { pathParams: { contactId } })
       : "/messages",
-  NOTIFICATION: (type: NotificationType = NotificationType.ALL) =>
-    type === NotificationType.ALL
-      ? "/notifications"
-      : buildUrl("/notifications/:type", { pathParams: { type } }),
+  NOTIFICATION: (type?: NotificationFilter) =>
+    type
+      ? buildUrl("/notifications/:type", { pathParams: { type } })
+      : "/notifications",
   SETTINGS: "/settings",
   ARCHIVE: (type: "bookmarks" | "likes" = "bookmarks") =>
     buildUrl("/archive/:type", { pathParams: { type } }),

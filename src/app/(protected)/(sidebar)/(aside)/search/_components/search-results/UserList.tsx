@@ -3,10 +3,10 @@ import type { UserSearchItem } from "api";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useSearch } from "../../_Search.provider";
+import { useSearch } from "../../_providers/Search.provider";
 import { SearchItemType } from "@/constants/server";
 import { ROUTE } from "@/constants/route";
-import { getPostHeight, getMediaHeight } from "@/helpers/ui";
+import { getMediaHeight, getPostHeight } from "@/helpers/ui";
 
 import { cn } from "@/libraries/utils";
 import { ErrorContent, NoContent } from "@/components/common";

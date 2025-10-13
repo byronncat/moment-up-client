@@ -32,10 +32,7 @@ type PostContextType = {
   share: (postId: string) => void;
   report: (postId: string, type: ContentReportType) => void;
   follow: (postId: string) => Promise<void>;
-  updateCommentCount: (
-    postId: string,
-    mode: "increase" | "decrease"
-  ) => Promise<void>;
+  updateCommentCount: (postId: string, mode: "increase" | "decrease") => void;
 };
 
 // === Provider ===
@@ -43,7 +40,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useMemo,
   useReducer,
   useState,
 } from "react";
@@ -308,46 +304,30 @@ export default function MomentDataProvider({
   );
 
   const updateCommentCount = useCallback(
-    async (postId: string, mode: "increase" | "decrease") => {
+    (postId: string, mode: "increase" | "decrease") => {
       dispatch({ type: "UPDATE_COMMENT_COUNT", payload: { postId, mode } });
     },
     []
   );
 
-  const contextValue = useMemo(
-    () => ({
-      posts: posts ? Array.from(posts.values()) : undefined,
-      setPosts,
-      addPosts,
-      removeMoment,
-      getCurrentPost,
-      setCurrentPost,
-
-      like,
-      bookmark,
-      share,
-      report,
-      follow,
-      updateCommentCount,
-    }),
-    [
-      posts,
-      setPosts,
-      addPosts,
-      removeMoment,
-      getCurrentPost,
-      setCurrentPost,
-      like,
-      bookmark,
-      share,
-      follow,
-      report,
-      updateCommentCount,
-    ]
-  );
-
   return (
-    <MomentDataContext.Provider value={contextValue}>
+    <MomentDataContext.Provider
+      value={{
+        posts: posts ? Array.from(posts.values()) : undefined,
+        setPosts,
+        addPosts,
+        removeMoment,
+        getCurrentPost,
+        setCurrentPost,
+
+        like,
+        bookmark,
+        share,
+        report,
+        follow,
+        updateCommentCount,
+      }}
+    >
       {children}
     </MomentDataContext.Provider>
   );

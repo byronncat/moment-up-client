@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearch } from "../../_Search.provider";
+import { useSearch } from "../../Search.provider";
 import { SearchCategory } from "@/constants/client";
 import PostsList from "./PostList";
 import MediaGrid from "./PostGrid";

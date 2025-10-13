@@ -1,30 +1,29 @@
 "use client";
 
 import type {
-  SearchItem,
-  PaginationDto,
-  PopularUserDto,
   ErrorDto,
   FeedItemDto,
+  PaginationDto,
+  PopularUserDto,
+  SearchItem,
 } from "api";
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
-  useCallback,
   useState,
 } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import useSWRInfinite from "swr/infinite";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcherWithToken } from "@/libraries/swr";
-import { useAuth, useRefreshSWR, usePost } from "@/components/providers";
+import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { ApiUrl } from "@/services";
 import { SWRInfiniteOptions } from "@/helpers/swr";
-import { SearchCategory } from "@/constants/client";
-import { SEARCH_DEBOUNCE_TIME } from "@/constants/client";
-import { TypeMap } from "./_constant";
+import { SEARCH_DEBOUNCE_TIME, SearchCategory } from "@/constants/client";
+import { TypeMap } from "../_constants";
 
 type SearchContextType = {
   rawQuery: string;
@@ -67,7 +66,7 @@ export default function SearchProvider({
   const [query] = useDebounceValue(rawQuery, SEARCH_DEBOUNCE_TIME);
   const [activeCategory, setActiveCategory] =
     useState<SearchCategory>(initialCategory);
-  const [results, setResults] = useState<SearchItem[] | undefined>(undefined);
+
   const isQueryEmpty = rawQuery.trim().length === 0;
 
   const getKey = useCallback(
@@ -90,6 +89,12 @@ export default function SearchProvider({
       SWRInfiniteOptions
     );
 
+  const results =
+    activeCategory === SearchCategory.POSTS ||
+    activeCategory === SearchCategory.MEDIA
+      ? undefined
+      : data?.flatMap((page) => page?.items || []);
+
   const hasNextPage = data
     ? (data[data.length - 1]?.hasNextPage ?? false)
     : false;
@@ -104,13 +109,9 @@ export default function SearchProvider({
       if (
         activeCategory === SearchCategory.POSTS ||
         activeCategory === SearchCategory.MEDIA
-      ) {
+      )
         setPosts(allResults as FeedItemDto[]);
-        setResults(undefined);
-      } else {
-        setPosts(undefined);
-        setResults(allResults);
-      }
+      else setPosts(undefined);
   }, [data, error, activeCategory, setPosts]);
 
   // === Popular Users ===

@@ -40,12 +40,12 @@ export default function ProfileZone({
   return (
     <div className={className}>
       <UserInfo />
-      {canView ? null : (
+      {canView ? (
         <NavigationBar
           items={tabs}
           className={cn("w-full", "border-y border-border")}
         />
-      )}
+      ) : null}
     </div>
   );
 }

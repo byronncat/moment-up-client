@@ -116,12 +116,13 @@ export default function PostGrid() {
   useEffect(() => {
     if (
       prevIsFollowingRef.current !== undefined &&
-      prevIsFollowingRef.current !== profile.isFollowing
+      prevIsFollowingRef.current !== profile.isFollowing &&
+      !profile.isProtected
     )
       mutate();
 
     prevIsFollowingRef.current = profile.isFollowing;
-  }, [profile.isFollowing, mutate]);
+  }, [profile.isFollowing, profile.isProtected, mutate]);
 
   return (
     <div

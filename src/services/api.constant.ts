@@ -1,5 +1,5 @@
-import { SERVER_HOST_URL } from "@/constants/server";
-import { SortBy } from "@/constants/client";
+import type { SortBy } from "@/constants/client";
+import { type NotificationFilter, SERVER_HOST_URL } from "@/constants/server";
 import { buildUrl } from "@/utilities";
 
 export const ApiUrl = {
@@ -43,6 +43,14 @@ export const ApiUrl = {
       }),
     unfollow: (userId: string) =>
       buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/unfollow`, {
+        pathParams: { userId },
+      }),
+    acceptFollowRequest: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/follow-request/accept`, {
+        pathParams: { userId },
+      }),
+    declineFollowRequest: (userId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/users/:userId/follow-request/decline`, {
         pathParams: { userId },
       }),
     removeFollower: (userId: string) =>
@@ -191,9 +199,9 @@ export const ApiUrl = {
 
   // === Notification ===
   notification: {
-    get: (type: "all" | "request" | "social", page?: number, limit?: number) =>
+    get: (filter?: NotificationFilter, page?: number, limit?: number) =>
       buildUrl(`${SERVER_HOST_URL}/v1/notifications`, {
-        queryParams: { type, page, limit },
+        queryParams: { filter, page, limit },
       }),
   },
 } as const;

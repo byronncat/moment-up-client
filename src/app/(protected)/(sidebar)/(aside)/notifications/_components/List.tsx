@@ -1,25 +1,109 @@
 "use client";
 
-import { useSidebar } from "@/components/ui/sidebar";
+import type { NotificationDto } from "api";
+import { useEffect } from "react";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useNotification } from "../_providers/NotificationStorage";
-import { HEADER_HEIGHT } from "../../_constants/spacing";
-import VirtualizedList from "./VirtualizedList";
+import { NotificationType } from "@/constants/server";
+
+import { ErrorContent, NoContent } from "@/components/common";
+import NotificationItem from "./item";
+import { NotificationItemSkeleton } from "./Skeleton";
+import { Bell } from "@/components/icons";
+
+const NOTIFICATION_HEIGHT = 80;
 
 export default function NotificationList() {
-  const { isMobile } = useSidebar();
-  const { notifications, loadNextPage, hasNextPage, isLoading } =
+  const { notifications, error, hasNextPage, isLoading, loadNextPage, mutate } =
     useNotification();
 
+  const itemCount = notifications
+    ? notifications.length + (hasNextPage ? 1 : 0)
+    : 0;
+
+  const virtualizer = useWindowVirtualizer({
+    count: itemCount,
+    overscan: 3,
+    estimateSize: () => NOTIFICATION_HEIGHT,
+    measureElement: (element) => element.getBoundingClientRect().height,
+  });
+
+  const virtualItems = virtualizer.getVirtualItems();
+
+  useEffect(() => {
+    if (!notifications?.length) return;
+    const [lastItem] = [...virtualItems].reverse();
+    if (!lastItem) return;
+
+    if (lastItem.index >= itemCount - 2 && hasNextPage && !isLoading)
+      loadNextPage();
+  }, [
+    notifications?.length,
+    virtualItems,
+    hasNextPage,
+    isLoading,
+    itemCount,
+    loadNextPage,
+  ]);
+
+  function onItemClick(_item: NotificationDto) {
+    if (_item.type === NotificationType.FOLLOW_REQUEST) {
+      mutate();
+      return;
+    }
+  }
+
   return (
-    <VirtualizedList
-      items={notifications}
-      hasNextPage={hasNextPage}
-      isNextPageLoading={isLoading}
-      loadNextPage={loadNextPage}
-      listOptions={{
-        topPadding: 121 - (isMobile ? HEADER_HEIGHT : 0),
-        bottomPadding: 48,
+    <div
+      style={{
+        height: `${virtualizer.getTotalSize()}px`,
+        position: "relative",
+        width: "100%",
       }}
-    />
+    >
+      {virtualItems.map((vItem) => {
+        const isLoaderRow = hasNextPage && vItem.index === itemCount - 1;
+        const notification = notifications?.[vItem.index];
+        return (
+          <div
+            key={vItem.key}
+            data-index={vItem.index}
+            ref={(element) => virtualizer.measureElement(element)}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              transform: `translateY(${vItem.start}px)`,
+            }}
+          >
+            {isLoading ? (
+              <NotificationItemSkeleton />
+            ) : error ? (
+              <ErrorContent onRefresh={mutate} className="pt-16 pb-20" />
+            ) : notifications === undefined ? null : notifications.length ===
+              0 ? (
+              <NoContent
+                icon={
+                  <Bell
+                    variant="regular"
+                    className="size-16 text-muted-foreground"
+                  />
+                }
+                title="No notifications"
+                description="When you have notifications, they'll show up here."
+              />
+            ) : isLoaderRow ? (
+              <NotificationItemSkeleton />
+            ) : notification ? (
+              <NotificationItem
+                notification={notification}
+                onClick={() => onItemClick(notification)}
+              />
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
   );
 }

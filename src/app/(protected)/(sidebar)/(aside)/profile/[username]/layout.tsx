@@ -7,7 +7,7 @@ export async function generateMetadata({
 }
 
 import { use } from "react";
-import { ProfileProvider } from "./_providers";
+import ProfileProvider from "./_providers/ProfileProvider";
 
 export default function Layout({
   children,

@@ -122,12 +122,15 @@ export default function PostList({ filter }: PostListProps) {
   useEffect(() => {
     if (
       prevIsFollowingRef.current !== undefined &&
-      prevIsFollowingRef.current !== profile.isFollowing
-    )
+      prevIsFollowingRef.current !== profile.isFollowing &&
+      !profile.isProtected
+    ) {
+      console.log("mutate");
       mutate();
+    }
 
     prevIsFollowingRef.current = profile.isFollowing;
-  }, [profile.isFollowing, mutate]);
+  }, [profile.isFollowing, profile.isProtected, mutate]);
 
   return (
     <div

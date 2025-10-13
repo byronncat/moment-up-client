@@ -167,7 +167,7 @@ export default function UserInfo() {
         </Link>
       </div>
 
-      {canView ? (
+      {canView ? null : (
         <div className={cn("flex flex-col", "mt-8 mx-12 max-w-[360px]")}>
           <span className="text-xl font-bold">This account is protected</span>
           <span className={cn("mt-1", "text-muted-foreground text-sm")}>
@@ -175,7 +175,7 @@ export default function UserInfo() {
             request access, click Follow.
           </span>
         </div>
-      ) : null}
+      )}
 
       <EditProfileModal
         open={isEditModalOpen}

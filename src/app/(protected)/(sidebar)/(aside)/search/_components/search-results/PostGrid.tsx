@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { usePost } from "@/components/providers";
-import { useSearch } from "../../_Search.provider";
+import { useSearch } from "../../Search.provider";
 import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
 import { getMediaHeight } from "@/helpers/ui";
 

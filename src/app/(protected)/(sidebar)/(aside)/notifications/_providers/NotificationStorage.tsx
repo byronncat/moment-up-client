@@ -1,47 +1,47 @@
 "use client";
 
-import type { NotificationInfo, PaginationDto } from "api";
-
-import { usePathname } from "next/navigation";
-import { createContext, useContext, useState, useEffect } from "react";
-import useSWRInfinite from "swr/infinite";
-import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
-import { ApiUrl } from "@/services";
-import { INITIAL_PAGE, NotificationType } from "@/constants/server";
-import { SWRInfiniteOptions } from "@/helpers/swr";
-
-import { ErrorContent, NoContent } from "@/components/common";
-import { NotificationSkeleton } from "../_components";
-import { Bell } from "@/components/icons";
+import type { ErrorDto, NotificationDto, PaginationDto } from "api";
+import type { NotificationFilter } from "@/constants/server";
 
 type NotificationContextType = {
-  notifications: NotificationInfo[];
-  hasNextPage: boolean;
+  notifications: NotificationDto[] | undefined;
+  error: ErrorDto | undefined;
   isLoading: boolean;
-  setNotifications: (notifications: NotificationInfo[]) => void;
+  hasNextPage: boolean;
   loadNextPage: () => void;
+  mutate: () => void;
 };
 
-const NotificationContext = createContext<NotificationContextType>({} as any);
+const getNotificationFilter = (
+  _pathname: string
+): NotificationFilter | undefined => {
+  // const segments = pathname.split("/");
+  // const filterSegment = segments[segments.length - 1];
+  return undefined;
+};
+
+// === Provider ===
+import { usePathname } from "next/navigation";
+import { createContext, useContext } from "react";
+import useSWRInfinite from "swr/infinite";
+import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
+import { SWRInfiniteOptions } from "@/helpers/swr";
+import { ApiUrl } from "@/services";
+
+const NotificationContext = createContext<NotificationContextType>({
+  notifications: undefined,
+  error: undefined,
+  isLoading: false,
+  hasNextPage: false,
+  loadNextPage: () => {},
+  mutate: () => {},
+});
 
 export const useNotification = () => useContext(NotificationContext);
-const NOTIFICATIONS_PER_PAGE = 24;
 
 type NotificationStorageProviderProps = Readonly<{
   children: React.ReactNode;
 }>;
-
-const getNotificationType = (
-  pathname: string
-): "all" | "request" | "social" => {
-  const segments = pathname.split("/");
-  const typeSegment = segments[segments.length - 1];
-
-  if (typeSegment === "" || typeSegment === "notifications")
-    return NotificationType.ALL;
-  if (typeSegment === "request" || typeSegment === "social") return typeSegment;
-  return NotificationType.ALL;
-};
 
 export default function NotificationStorageProvider({
   children,
@@ -49,97 +49,48 @@ export default function NotificationStorageProvider({
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
   const pathname = usePathname();
-
-  const type = getNotificationType(pathname);
+  const filter = getNotificationFilter(pathname);
 
   const getKey = (
     pageIndex: number,
-    previousPageData: PaginationDto<NotificationInfo> | null
+    previousPageData: PaginationDto<NotificationDto> | null
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
-    const url = ApiUrl.notification.get(
-      type,
-      pageIndex + 1,
-      NOTIFICATIONS_PER_PAGE
-    );
+    const url = ApiUrl.notification.get(filter, pageIndex + 1);
     return [url, token.accessToken];
   };
 
-  const { data, error, size, setSize, isLoading, isValidating } =
+  const { data, error, size, setSize, isLoading, isValidating, mutate } =
     useSWRInfinite(
       getKey,
       ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationDto<NotificationInfo>>(
-          url,
-          accessToken
-        ),
+        swrFetcherWithRefresh<PaginationDto<NotificationDto>>(url, accessToken),
       SWRInfiniteOptions
     );
 
-  const [notifications, setNotifications] = useState<
-    NotificationInfo[] | undefined
-  >(undefined);
+  const notifications = data?.flatMap((page) => page?.items);
+
   const hasNextPage = data
     ? (data[data.length - 1]?.hasNextPage ?? false)
     : true;
-
-  useEffect(() => {
-    const notifications = data
-      ? data.flatMap((page) => page?.items || [])
-      : undefined;
-    if (notifications) setNotifications(notifications);
-  }, [data]);
 
   async function loadNextPage() {
     if (hasNextPage && !isValidating) await setSize(size + 1);
   }
 
-  function refetch() {
-    setSize(INITIAL_PAGE);
-  }
-
-  if (isLoading)
-    return (
-      <Wrapper>
-        <NotificationSkeleton />
-      </Wrapper>
-    );
-  if (error)
-    return (
-      <Wrapper>
-        <ErrorContent onRefresh={refetch} className="pt-24" />
-      </Wrapper>
-    );
-  if (!notifications) return null;
-  if (notifications.length === 0)
-    return (
-      <Wrapper>
-        <NoContent
-          icon={
-            <Bell variant="solid" className="size-16 text-muted-foreground" />
-          }
-          title="No notifications"
-          description="When you have notifications, they'll show up here."
-          className="pt-24"
-        />
-      </Wrapper>
-    );
   return (
     <NotificationContext.Provider
       value={{
         notifications,
+        error,
+        isLoading,
         hasNextPage,
-        isLoading: isValidating,
-        setNotifications,
         loadNextPage,
+        mutate,
       }}
     >
       {children}
     </NotificationContext.Provider>
   );
-}
-
-function Wrapper({ children }: { children: React.ReactNode }) {
-  return <div className="pt-[121px]">{children}</div>;
 }

@@ -104,14 +104,12 @@ export enum StoryBackground {
   ORANGE_SUN_TORNADO,
 }
 
+export enum NotificationFilter {
+  FOLLOW_REQUEST = "follow_request",
+}
+
 export enum NotificationType {
-  ALL = "all",
-  SECURITY = "security",
-  SOCIAL = "social",
-  POST = "post",
-  REQUEST = "request",
-  MENTION = "mention",
-  FOLLOW = "follow",
+  FOLLOW_REQUEST,
 }
 
 export enum ExploreType {

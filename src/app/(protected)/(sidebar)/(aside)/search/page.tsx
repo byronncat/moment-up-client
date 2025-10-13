@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { SearchCategory } from "@/constants/client";
 import { ROUTE, SearchParamName } from "@/constants/route";
-import SearchProvider, { useSearch } from "./_Search.provider";
+import SearchProvider, { useSearch } from "./Search.provider";
 
 import { cn } from "@/libraries/utils";
 import { NavigationBar, type NavItem } from "@/components/common";

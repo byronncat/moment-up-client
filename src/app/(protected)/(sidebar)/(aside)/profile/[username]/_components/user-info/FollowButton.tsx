@@ -17,7 +17,10 @@ export default function FollowButton() {
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
   const router = useRouter();
   const { user } = useAuth();
-  const { profile, follow } = useProfile();
+  const {
+    profile: { isFollowing, isFollowRequest },
+    follow,
+  } = useProfile();
   const { width } = useWindowSize();
 
   function handleNavigate(event: React.MouseEvent) {
@@ -30,14 +33,23 @@ export default function FollowButton() {
   }
 
   const renderIcon = () => {
-    if (profile.isFollowing)
+    if (isFollowing)
       return isHover ? <User variant="minus" /> : <User variant="check" />;
+    if (isFollowRequest && isHover) return <User variant="x" />;
     return <User variant="plus" />;
   };
 
   const content = (
     <Button
-      variant={profile.isFollowing ? (isHover ? "destructive" : "outline") : "default"}
+      variant={
+        isFollowRequest
+          ? "outline"
+          : isFollowing
+            ? isHover
+              ? "destructive"
+              : "outline"
+            : "default"
+      }
       className={cn(
         "text-sm",
         "size-9 sm:px-4 sm:py-2 sm:w-[128px]",
@@ -48,7 +60,15 @@ export default function FollowButton() {
     >
       {renderIcon()}
       <span className="hidden sm:block">
-        {profile.isFollowing ? (isHover ? "Unfollow" : "Following") : "Follow"}
+        {isFollowRequest
+          ? isHover
+            ? "Cancel"
+            : "Pending"
+          : isFollowing
+            ? isHover
+              ? "Unfollow"
+              : "Following"
+            : "Follow"}
       </span>
     </Button>
   );

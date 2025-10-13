@@ -1,5 +1,9 @@
 declare module "api" {
-  import type { SearchItemType, StoryBackground } from "@/constants/server";
+  import type {
+    NotificationType,
+    SearchItemType,
+    StoryBackground,
+  } from "@/constants/server";
   import type { PublicId } from "cloudinary";
 
   type Uuid = string;
@@ -42,16 +46,18 @@ declare module "api" {
     following: number;
     isFollower: boolean;
     isFollowing: boolean;
+    isFollowRequest: boolean;
     isMuted: boolean;
     isProtected: boolean;
     hasStory: boolean;
   }
 
-  interface UserSummaryDto
-    extends Omit<
-      ProfileDto,
-      "backgroundImage" | "isMuted" | "isProtected" | "isFollower"
-    > {
+  interface UserSummaryDto extends AccountDto {
+    bio: string | null;
+    followers: number;
+    following: number;
+    isFollowing: boolean;
+    hasStory: boolean;
     followedBy: {
       remainingCount: number;
       displayItems: Array<{
@@ -157,7 +163,15 @@ declare module "api" {
         };
   };
 
-  type NotificationInfo = SecurityNotification | CommunityNotification;
+  type FollowRequestDto = {
+    type: NotificationType.FOLLOW_REQUEST;
+    data: UserSummaryDto;
+  };
+
+  type NotificationDto = FollowRequestDto & {
+    viewed: boolean;
+    createdAt: timestamptz;
+  };
 
   // === Search ===
   interface QuerySearchItem {

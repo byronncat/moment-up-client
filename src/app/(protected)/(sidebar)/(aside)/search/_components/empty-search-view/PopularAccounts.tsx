@@ -6,7 +6,7 @@ import type { PopularUserDto } from "api";
 import { useRef, useState } from "react";
 import { useHover } from "usehooks-ts";
 import { useRefreshApi } from "@/components/providers";
-import { useSearch } from "../../_Search.provider";
+import { useSearch } from "../../Search.provider";
 import { UserApi } from "@/services";
 import { toast } from "sonner";
 import { ROUTE } from "@/constants/route";

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { usePost } from "@/components/providers";
-import { useSearch } from "../../_Search.provider";
+import { useSearch } from "../../Search.provider";
 import { SearchItemType } from "@/constants/server";
 import { ROUTE } from "@/constants/route";
 import { getPostHeight, getMediaHeight } from "@/helpers/ui";
