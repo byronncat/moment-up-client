@@ -6,7 +6,7 @@ import type { PopularUserDto } from "api";
 import { useRef, useState } from "react";
 import { useHover } from "usehooks-ts";
 import { useRefreshApi } from "@/components/providers";
-import { useSearch } from "../../Search.provider";
+import { useSearch } from "../../_providers/Search";
 import { UserApi } from "@/services";
 import { toast } from "sonner";
 import { ROUTE } from "@/constants/route";
@@ -23,19 +23,17 @@ export default function PopularAccounts({
   const { popularUsers, isLoadingPopular, errorPopular } = useSearch();
 
   if (isLoadingPopular) return <LoadingIndicator />;
-  if (errorPopular) return null;
+  if (errorPopular || popularUsers.length === 0) return null;
   const users = popularUsers;
   return (
-    users.length > 0 && (
-      <div className={className}>
-        <Header />
-        <div className={cn("grid grid-cols-2", "px-2 gap-2")}>
-          {users.map((user) => (
-            <UserCard user={user} key={user.id} />
-          ))}
-        </div>
+    <div className={className}>
+      <Header />
+      <div className={cn("grid grid-cols-2", "px-2 gap-2")}>
+        {users.map((user) => (
+          <UserCard user={user} key={user.id} />
+        ))}
       </div>
-    )
+    </div>
   );
 }
 
@@ -118,6 +116,7 @@ function UserCard({ user }: Readonly<{ user: PopularUserDto }>) {
         <Link
           href={ROUTE.PROFILE(user.username)}
           className="block flex-1/2 h-full"
+          tabIndex={-1}
         >
           <Button size="sm" className="size-full">
             View
