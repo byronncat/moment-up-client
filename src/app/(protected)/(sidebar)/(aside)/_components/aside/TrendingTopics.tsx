@@ -92,7 +92,7 @@ function TopicItem({ topic }: Readonly<{ topic: HashtagDto }>) {
         "group/topic-item",
         "w-full p-2 rounded-md",
         "flex items-center justify-between gap-4",
-        "hover:bg-accent/[.05] cursor-pointer",
+        "hover:bg-accent/5 cursor-pointer",
         "transition-colors duration-150 ease-in-out",
         "focus-indicator"
       )}
@@ -107,7 +107,12 @@ function TopicItem({ topic }: Readonly<{ topic: HashtagDto }>) {
         >
           #{topic.name}
         </span>
-        <NumberTooltip number={topic.count} align="start" side="bottom" sideOffset={4}>
+        <NumberTooltip
+          number={topic.count}
+          align="start"
+          side="bottom"
+          sideOffset={4}
+        >
           <span className="text-xs text-muted-foreground w-fit">
             {Format.number(topic.count)} posts
           </span>
@@ -126,52 +131,50 @@ function ReportButton({
   function report(reportType: TrendingReportType) {
     toast.promise(reportTopic({ topic, type: reportType }), {
       loading: "Submitting report...",
-      success: (res) => {
-        if (res.success) return "Report submitted";
-        throw new Error(res.message);
+      success: ({ success, message }) => {
+        if (success) return message || "Report submitted.";
+        throw new Error(message);
       },
-      error: "Failed to submit report",
+      error: (error) => error.message || "Failed to submit report.",
     });
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          onClick={(event) => event.stopPropagation()}
-          className={cn(
-            "rounded-full p-1 cursor-pointer",
-            "hover:bg-primary/10 group/report-button",
-            "transition-colors duration-150 ease-in-out",
-            "focus-within-indicator",
-            className
-          )}
-        >
-          <MoreHorizontal
+    <div onClick={(event) => event.preventDefault()}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
             className={cn(
-              "size-4 text-muted-foreground",
-              "group-hover/report-button:text-primary",
-              "transition-colors duration-150 ease-in-out"
+              "rounded-full p-1 cursor-pointer",
+              "hover:bg-primary/10 group/report-button",
+              "transition-colors duration-150 ease-in-out",
+              "focus-indicator",
+              className
             )}
-          />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" side="bottom">
-        {FEEDBACK_OPTIONS.map((option) => (
-          <DropdownMenuItem
-            key={option.value}
-            onClick={(event) => {
-              event.stopPropagation();
-              report(option.value);
-            }}
-            className="cursor-pointer"
           >
-            {option.icon}
-            {option.label}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+            <MoreHorizontal
+              className={cn(
+                "size-4 text-muted-foreground",
+                "group-hover/report-button:text-primary",
+                "transition-colors duration-150 ease-in-out"
+              )}
+            />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" side="bottom">
+          {FEEDBACK_OPTIONS.map((option) => (
+            <DropdownMenuItem
+              key={option.value}
+              onClick={() => report(option.value)}
+              className="cursor-pointer"
+            >
+              {option.icon}
+              {option.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
 
