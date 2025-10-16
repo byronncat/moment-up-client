@@ -66,7 +66,12 @@ export default function PrivacySelector() {
           <Chevron direction="down" className="size-3.5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" side="right" className="w-64" portalDisabled>
+      <DropdownMenuContent
+        align="start"
+        side="right"
+        className="w-64"
+        portalDisabled
+      >
         <DropdownMenuLabel className="text-xs font-medium text-muted-foreground">
           Select privacy
         </DropdownMenuLabel>

@@ -709,7 +709,6 @@ const SidebarMenuSkeleton = React.forwardRef<
   //   return `${Math.floor(Math.random() * 40) + 50}%`;
   // }, []);
 
-
   return (
     <div
       ref={ref}

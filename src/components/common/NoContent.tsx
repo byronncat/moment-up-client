@@ -23,9 +23,7 @@ export default function NoContent({
     >
       {icon}
       <p className={cn("text-lg font-semibold", "mt-2 mb-0.5")}>{title}</p>
-      <p className="text-sm text-center">
-        {description}
-      </p>
+      <p className="text-sm text-center">{description}</p>
     </div>
   );
 }

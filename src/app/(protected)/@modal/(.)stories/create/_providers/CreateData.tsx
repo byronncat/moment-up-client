@@ -130,9 +130,10 @@ export default function CreateDataProvider({
   );
 
   const removeAudio = useCallback(() => {
-    if (uploadedAudio?.preview) URL.revokeObjectURL(uploadedAudio.preview);
-    setUploadedAudio(null);
-  }, [uploadedAudio?.preview]);
+    //   if (uploadedAudio?.preview) URL.revokeObjectURL(uploadedAudio.preview);
+    //   setUploadedAudio(null);
+    // }, [uploadedAudio?.preview]);
+  }, []);
 
   const reset = useCallback(() => {
     setType(null);

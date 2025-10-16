@@ -107,11 +107,11 @@ export function useContentProgress(
     };
   }, [handleLoadedMetadata]);
 
-  useEffect(() => {
-    if (typeof content === "object" && content?.type === "video")
-      setDuration(DEFAULT_DURATION);
-    else setDuration(DEFAULT_DURATION);
-  }, [content]);
+  // useEffect(() => {
+  //   if (typeof content === "object" && content?.type === "video")
+  //     setDuration(DEFAULT_DURATION);
+  //   else setDuration(DEFAULT_DURATION);
+  // }, [content]);
 
   return {
     progress,

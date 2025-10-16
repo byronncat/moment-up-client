@@ -50,7 +50,7 @@ export default function SuggestedUsers() {
 
     const { success, message } = await follow({
       targetId: userId,
-      shouldFollow, 
+      shouldFollow,
     });
 
     if (!success) {

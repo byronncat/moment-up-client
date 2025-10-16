@@ -18,7 +18,13 @@ export default function NotificationItem({
 }: NotificationItemProps) {
   let content = null;
   if (type === NotificationType.FOLLOW_REQUEST)
-    content = <FollowRequestContent user={data} onClick={onClick} createdAt={createdAt} />;
+    content = (
+      <FollowRequestContent
+        user={data}
+        onClick={onClick}
+        createdAt={createdAt}
+      />
+    );
 
   return (
     <div className={cn("p-4 flex", className)} onClick={onClick}>

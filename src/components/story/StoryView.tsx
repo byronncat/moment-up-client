@@ -46,7 +46,7 @@ export default function StoryView({
 
     if (currentStoryIndex >= totalStories) {
       const index = totalStories - 1 > 0 ? totalStories - 1 : 0;
-      setCurrentStoryIndex(index);
+      // setCurrentStoryIndex(index);
       return viewingStory?.stories.at(index);
     }
 

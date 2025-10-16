@@ -9,9 +9,9 @@ export function middleware(request: NextRequest) {
   if (hasSession && AUTH_ROUTES.some((route) => pathname.startsWith(route)))
     return NextResponse.redirect(new URL(ROUTE.HOME, request.url));
 
-  const isPrivateRoute = PRIVATE_ROUTES.some(route => {
-    if (route.includes('*')) {
-      const routePattern = route.replace('*', '[^/]+');
+  const isPrivateRoute = PRIVATE_ROUTES.some((route) => {
+    if (route.includes("*")) {
+      const routePattern = route.replace("*", "[^/]+");
       const regex = new RegExp(`^${routePattern}$`);
       return regex.test(pathname);
     }

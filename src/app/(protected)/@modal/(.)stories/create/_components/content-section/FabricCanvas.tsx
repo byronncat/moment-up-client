@@ -73,16 +73,14 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
     canvas.on(
       "selection:created",
       (event: { selected: fabric.FabricObject[] }) => {
-        if (event.selected?.length === 1)
-          setSelectedObject(event.selected[0]);
+        if (event.selected?.length === 1) setSelectedObject(event.selected[0]);
       }
     );
 
     canvas.on(
       "selection:updated",
       (event: { selected: fabric.FabricObject[] }) => {
-        if (event.selected?.length === 1)
-          setSelectedObject(event.selected[0]);
+        if (event.selected?.length === 1) setSelectedObject(event.selected[0]);
         else setSelectedObject(null);
       }
     );
@@ -123,7 +121,8 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
 
   // Handle media uploads
   useEffect(() => {
-    if (!fabricCanvasRef.current || !isCanvasReadyRef.current || !uploadedMedia) return;
+    if (!fabricCanvasRef.current || !isCanvasReadyRef.current || !uploadedMedia)
+      return;
 
     const canvas = fabricCanvasRef.current;
     canvas.clear();

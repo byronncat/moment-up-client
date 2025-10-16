@@ -62,7 +62,7 @@ const SearchContext = createContext<SearchContextType>({
   setCategory: () => {},
   loadNextPage: () => Promise.resolve(),
   refresh: () => {},
-  
+
   popularUsers: [],
   isLoadingPopular: false,
   errorPopular: undefined,

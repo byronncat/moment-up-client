@@ -33,6 +33,7 @@ export default function MediaGrid() {
           <MediaItem file={files[FIRST]} index={FIRST} />
         </AspectRatio>
       );
+      break;
     case 2:
       grid = (
         <AspectRatio
@@ -46,6 +47,7 @@ export default function MediaGrid() {
           <MediaItem file={files[SECOND]} index={SECOND} />
         </AspectRatio>
       );
+      break;
     case 3:
       grid = (
         <AspectRatio
@@ -67,6 +69,7 @@ export default function MediaGrid() {
           </div>
         </AspectRatio>
       );
+      break;
     case 4:
       grid = (
         <AspectRatio ratio={1} className="grid gap-1 grid-cols-2 grid-rows-2">
@@ -75,6 +78,7 @@ export default function MediaGrid() {
           ))}
         </AspectRatio>
       );
+      break;
     default:
       grid = (
         <AspectRatio

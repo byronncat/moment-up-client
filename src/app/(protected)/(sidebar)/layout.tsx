@@ -12,9 +12,7 @@ export default function Layout({ children }: LayoutProps) {
       <div className={cn("w-screen", "relative")}>
         <div className="min-h-full flex">
           <Sidebar>
-            <div className="flex-1 min-h-dvh">
-              {children}
-            </div>
+            <div className="flex-1 min-h-dvh">{children}</div>
           </Sidebar>
         </div>
       </div>

@@ -88,10 +88,7 @@ export default function PostDataProvider({
 
     let uploadedData = null;
     if (files.length > 0) {
-      const { success, data } = await uploadMultipleImages(
-        files,
-        "moment-up"
-      );
+      const { success, data } = await uploadMultipleImages(files, "moment-up");
       if (!success) {
         setIsUploading(false);
         return false;

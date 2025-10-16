@@ -37,8 +37,7 @@ export function useRefreshApi<TArgs extends any[], TResult extends ApiResult>(
       let result = await apiFunction(...args, currentToken);
       if (
         !result.success &&
-        (result as unknown as ErrorDto).statusCode ===
-          UNAUTHORIZED_STATUS_CODE
+        (result as unknown as ErrorDto).statusCode === UNAUTHORIZED_STATUS_CODE
       ) {
         const newAccessToken = await currentRefresh();
         result = await apiFunction(...args, {

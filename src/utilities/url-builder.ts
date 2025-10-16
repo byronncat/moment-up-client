@@ -9,32 +9,32 @@ interface UrlBuilderOptions {
 
 /**
  * Build a complete URL/path with both path parameters and query parameters
- * 
+ *
  * @param template - URL template with optional :param placeholders
  * @param options - Configuration object with pathParams and queryParams
  * @returns Complete URL/path with parameters replaced and query string appended
- * 
+ *
  * @example
  * // Path parameters only
  * buildUrl("/users/:userId/posts", { pathParams: { userId: "123" } })
  * // Returns: "/users/123/posts"
- * 
+ *
  * @example
  * // Query parameters only
  * buildUrl("/search", { queryParams: { q: "hello", page: 1 } })
  * // Returns: "/search?q=hello&page=1"
- * 
+ *
  * @example
  * // Both path and query parameters
- * buildUrl("/users/:userId/posts", { 
- *   pathParams: { userId: "123" }, 
- *   queryParams: { page: 1, limit: 10 } 
+ * buildUrl("/users/:userId/posts", {
+ *   pathParams: { userId: "123" },
+ *   queryParams: { page: 1, limit: 10 }
  * })
  * // Returns: "/users/123/posts?page=1&limit=10"
- * 
+ *
  * @example
  * // API URL with server host
- * buildUrl("https://api.example.com/v1/users/:userId", { 
+ * buildUrl("https://api.example.com/v1/users/:userId", {
  *   pathParams: { userId: "123" },
  *   queryParams: { include: "profile" }
  * })
@@ -45,7 +45,7 @@ export function buildUrl(
   options: UrlBuilderOptions = {}
 ): string {
   const { pathParams, queryParams, useSetForQuery = false } = options;
-  
+
   // Step 1: Replace path parameters
   let url = template;
   if (pathParams) {
@@ -53,7 +53,7 @@ export function buildUrl(
       url = url.replace(`:${key}`, value.toString());
     });
   }
-  
+
   // Step 2: Add query parameters
   if (queryParams) {
     const urlParams = new URLSearchParams();
@@ -66,13 +66,13 @@ export function buildUrl(
         }
       }
     });
-    
+
     const queryString = urlParams.toString();
     if (queryString) {
       url += `?${queryString}`;
     }
   }
-  
+
   return url;
 }
 
@@ -80,7 +80,7 @@ export function buildUrl(
  * Convenience function for building URLs with path parameters only
  */
 export function buildPath(
-  template: string, 
+  template: string,
   pathParams: Record<string, string | number>
 ): string {
   return buildUrl(template, { pathParams });
@@ -90,7 +90,7 @@ export function buildPath(
  * Convenience function for building URLs with query parameters only
  */
 export function buildQuery(
-  baseUrl: string, 
+  baseUrl: string,
   queryParams: Record<string, string | number | undefined>,
   useSet = false
 ): string {

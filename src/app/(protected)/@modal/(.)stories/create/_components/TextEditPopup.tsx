@@ -35,8 +35,7 @@ export default function TextEditPopup({
       };
     }
     return {
-      font:
-        Font.find((f) => f.family === selectedObject.fontFamily) ?? Font[0],
+      font: Font.find((f) => f.family === selectedObject.fontFamily) ?? Font[0],
       color: (selectedObject.fill as string) || TextColors[0],
       fontSize: selectedObject.fontSize || 24,
     };

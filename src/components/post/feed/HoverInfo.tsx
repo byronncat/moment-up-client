@@ -27,7 +27,11 @@ export default function HoverableComponent({
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
-        <Link href={ROUTE.PROFILE(userInfo.username)} className={className} {...props}>
+        <Link
+          href={ROUTE.PROFILE(userInfo.username)}
+          className={className}
+          {...props}
+        >
           {children}
         </Link>
       </HoverCardTrigger>
