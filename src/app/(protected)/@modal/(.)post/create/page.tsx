@@ -78,7 +78,7 @@ function CreatePostPage() {
       <div
         className={cn(
           "flex flex-col",
-          "bg-background sm:rounded-lg overflow-hidden",
+          "bg-background sm:rounded-lg overflow-hidden w-full sm:w-fit",
           isDiscardDialogOpen && "hidden"
         )}
       >

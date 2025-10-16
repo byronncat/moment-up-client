@@ -14,7 +14,9 @@ export default function Preview() {
   return (
     <ScrollArea
       className={cn(
-        "w-[calc(600px+2*8px)] px-2 max-w-full h-[calc(100vh-48px)] sm:max-h-fit",
+        "w-full sm:max-w-[calc(600px+2*8px)] px-2",
+        "h-[calc(100dvh-48px)] sm:h-fit sm:max-h-[calc(90dvh-48px)]", // Using dvh to ensure full viewport height on mobile devices
+        "flex flex-col overflow-y-auto", // For max-height to work
         "bg-background cursor-default relative"
       )}
     >
@@ -22,7 +24,7 @@ export default function Preview() {
         className={cn(
           isUploading && "animate-pulse",
           "bg-card",
-          "max-w-[600px] my-4",
+          "max-w-[600px] my-5 mx-auto sm:mx-3",
           "border border-border rounded-lg"
         )}
       >
