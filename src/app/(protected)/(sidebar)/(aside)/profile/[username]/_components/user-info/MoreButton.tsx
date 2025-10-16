@@ -1,8 +1,9 @@
 "use client";
 
-import { toast } from "sonner";
+import { useState } from "react";
 import { useAuth } from "@/components/providers";
-import { useProfile } from "../../_providers/ProfileProvider";
+import { useProfile } from "../../_providers/Profile";
+import { toast } from "sonner";
 import { UserReportType } from "@/constants/server";
 
 import { Tooltip } from "@/components/common";
@@ -39,6 +40,7 @@ import {
 export default function MoreButton() {
   const { user } = useAuth();
   const { profile, mute, block, report, removeFollower } = useProfile();
+  const [isBlocked, setIsBlocked] = useState(false);
 
   async function handleCopyProfileLink() {
     try {
@@ -75,7 +77,9 @@ export default function MoreButton() {
   }
 
   function handleBlock() {
+    if (isBlocked) return;
     block();
+    setIsBlocked(!isBlocked);
   }
 
   function handleReport(reportType: UserReportType) {
@@ -128,7 +132,11 @@ export default function MoreButton() {
           className="destructive-item cursor-pointer"
         >
           <Ban className="size-4" />
-          <span className="truncate">Block @{profile.username}</span>
+          <span className="truncate">
+            {isBlocked
+              ? `Unblock @${profile.username}`
+              : `Block @${profile.username}`}
+          </span>
         </DropdownMenuItem>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger className="destructive-item cursor-pointer">

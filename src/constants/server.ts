@@ -116,3 +116,7 @@ export enum ExploreType {
   MEDIA = "media",
   POST = "posts",
 }
+
+export enum ErrorCode {
+  EMAIL_NOT_VERIFIED = "EMAIL_NOT_VERIFIED",
+}

@@ -1,1 +1,1 @@
-export { default as ProfileProvider, useProfile } from "./ProfileProvider";
+export { default as ProfileProvider, useProfile } from "./Profile";

@@ -33,7 +33,7 @@ type SearchContextType = {
   isQueryEmpty: boolean;
   isLoading: boolean;
   isValidating: boolean;
-  error: ErrorDto;
+  error: ErrorDto | undefined;
   hasNextPage: boolean;
 
   setQuery: (value: string) => void;
@@ -43,11 +43,31 @@ type SearchContextType = {
 
   popularUsers: PopularUserDto[];
   isLoadingPopular: boolean;
-  errorPopular: ErrorDto;
+  errorPopular: ErrorDto | undefined;
   refreshPopular: () => void;
 };
 
-const SearchContext = createContext<SearchContextType>({} as any);
+const SearchContext = createContext<SearchContextType>({
+  rawQuery: "",
+  query: "",
+  activeCategory: SearchCategory.PEOPLE,
+  results: undefined,
+  isQueryEmpty: false,
+  isLoading: false,
+  isValidating: false,
+  error: undefined,
+  hasNextPage: false,
+
+  setQuery: () => {},
+  setCategory: () => {},
+  loadNextPage: () => Promise.resolve(),
+  refresh: () => {},
+  
+  popularUsers: [],
+  isLoadingPopular: false,
+  errorPopular: undefined,
+  refreshPopular: () => {},
+});
 
 export default function SearchProvider({
   initialQuery,

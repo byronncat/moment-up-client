@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCreateData } from "../../../_providers";
 import { debounce } from "lodash";
 
@@ -18,6 +18,22 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const { uploadedAudio, trimAudio, removeAudio } = useCreateData();
+
+  // Store the debounced function in a ref to avoid recreating it on every render
+  // Using a ref initialization function to create it only once
+  const debouncedUpdateCurrentTimeRef = useRef(
+    debounce(
+      (
+        time: number,
+        audioEl: HTMLAudioElement,
+        setTime: (time: number) => void
+      ) => {
+        audioEl.currentTime = time;
+        setTime(time);
+      },
+      DEBOUNCE_TIME
+    )
+  );
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -39,6 +55,14 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
       audio.removeEventListener("ended", handleEnded);
     };
   }, [uploadedAudio, isPlaying]);
+
+  // Cleanup debounced function on unmount
+  useEffect(() => {
+    const debouncedFn = debouncedUpdateCurrentTimeRef.current;
+    return () => {
+      debouncedFn.cancel();
+    };
+  }, []);
 
   function handleRemoveAudio() {
     setIsPlaying(false);
@@ -73,19 +97,20 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
 
   // Using useMemo to avoid re-creating the debounced function on every render
   // When a debounced function is recreated, it loses its internal timer state, which means it can't properly debounce the calls.
-  const debouncedUpdateCurrentTime = useMemo(
-    () =>
-      debounce((time: number) => {
-        const audio = audioRef.current;
-        if (!audio) return;
-        audio.currentTime = time;
-        setCurrentTime(time);
-      }, DEBOUNCE_TIME),
-    []
-  );
+  // const debouncedUpdateCurrentTime = useMemo(
+  //   () =>
+  //     debounce((time: number) => {
+  //       const audio = audioRef.current;
+  //       if (!audio) return;
+  //       audio.currentTime = time;
+  //       setCurrentTime(time);
+  //     }, DEBOUNCE_TIME),
+  //   []
+  // );
 
   function handleTrimChange(start: number, end: number) {
-    if (!uploadedAudio) return;
+    // if (!uploadedAudio) return;
+    if (!uploadedAudio || !audioRef.current) return;
 
     const adjustedStart = Math.max(0, Math.min(start, end - TRIM_TIME_GAP));
     const adjustedEnd = Math.min(
@@ -94,7 +119,12 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
     );
 
     trimAudio(adjustedStart, adjustedEnd);
-    debouncedUpdateCurrentTime(adjustedStart);
+    // debouncedUpdateCurrentTime(adjustedStart);
+    debouncedUpdateCurrentTimeRef.current(
+      adjustedStart,
+      audioRef.current,
+      setCurrentTime
+    );
   }
 
   if (!uploadedAudio) return null;

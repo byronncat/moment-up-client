@@ -47,13 +47,13 @@ export const SearchHistory = {
         return (
           a.type === SearchItemType.USER &&
           b.type === SearchItemType.USER &&
-          (a as UserSearchItem).id === (b as UserSearchItem).id
+          a.id === b.id
         );
       if (type === SearchItemType.QUERY)
         return (
           a.type === SearchItemType.QUERY &&
           b.type === SearchItemType.QUERY &&
-          (a as QuerySearchItem).query === (b as QuerySearchItem).query
+          a.query === b.query
         );
       return false;
     };

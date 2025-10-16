@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserSearchItem, QuerySearchItem } from "api";
+import type { QuerySearchItem, UserSearchItem } from "api";
 
 import { usePathname, useRouter } from "next/navigation";
 import { useRef } from "react";
@@ -70,7 +70,7 @@ export default function SearchBar({
         onFocus={handleInputFocus}
         onChange={handleInputChange}
       />
-      {showDropdown && (
+      {showDropdown ? (
         <Dropdown
           query={query}
           items={items}
@@ -78,7 +78,7 @@ export default function SearchBar({
           onClearAllItems={clearHistory}
           onClickItem={handleClickItem}
         />
-      )}
+      ) : null}
     </div>
   );
 }

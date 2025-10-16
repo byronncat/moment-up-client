@@ -13,17 +13,6 @@ interface AuthDto {
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
 
-const SuccessMessage = {
-  login: "Logged in",
-  switchAccount: "Account switched",
-  signup: "Signed up",
-  logout: "Logged out",
-  refresh: "Session refreshed",
-  sendOtp: "OTP sent",
-  recoverPassword: "Password updated",
-  addGoogleAccount: "Google account linked",
-};
-
 export async function login(
   data: z.infer<typeof zodSchema.auth.login>,
   csrfToken: string
@@ -42,7 +31,7 @@ export async function login(
       if (!response.ok) throw data;
       return {
         success: true,
-        message: SuccessMessage.login,
+        message: "Logged in.",
         statusCode: response.status,
         data,
       };
@@ -52,6 +41,7 @@ export async function login(
         success: false,
         message: parseErrorMessage(error),
         statusCode: error.statusCode,
+        code: error.code,
       };
     });
 }
@@ -75,7 +65,7 @@ export async function switchAccount(
       if (!response.ok) throw data;
       return {
         success: true,
-        message: SuccessMessage.switchAccount,
+        message: "Account switched.",
         statusCode: response.status,
         data,
       };
@@ -106,7 +96,7 @@ export async function signup(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: SuccessMessage.signup,
+        message: "Signed up.",
         statusCode: response.status,
       };
     })
@@ -133,7 +123,7 @@ export async function logout(token: Token): API {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: SuccessMessage.logout,
+        message: "Logged out.",
         statusCode: response.status,
       };
     })
@@ -180,7 +170,7 @@ export async function refresh(): API<{
       if (!response.ok) throw data;
       return {
         success: true,
-        message: SuccessMessage.refresh,
+        message: "Session refreshed.",
         statusCode: response.status,
         data,
       };
@@ -211,7 +201,7 @@ export async function sendOtp(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: SuccessMessage.sendOtp,
+        message: "OTP sent.",
         statusCode: response.status,
       };
     })
@@ -241,7 +231,7 @@ export async function recoverPassword(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: SuccessMessage.recoverPassword,
+        message: "Password updated.",
         statusCode: response.status,
       };
     })
@@ -271,7 +261,7 @@ export async function addGoogleAccount(
       if (!response.ok) throw data;
       return {
         success: true,
-        message: SuccessMessage.addGoogleAccount,
+        message: "Google account linked.",
         statusCode: response.status,
         data,
       };

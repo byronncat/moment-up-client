@@ -44,24 +44,36 @@ export function useTextTruncate<
   const containerRef = useRef<T>(null);
   const textRef = useRef<U>(null);
   const [isTruncated, setIsTruncated] = useState(false);
+  const rafIdRef = useRef<number | null>(null);
 
   const calculateTruncation = useCallback(() => {
     const container = containerRef.current;
     const textElement = textRef.current;
+
+    // Cancel any pending calculation
+    if (rafIdRef.current !== null) {
+      cancelAnimationFrame(rafIdRef.current);
+    }
 
     if (!container || !textElement) {
       setIsTruncated(false);
       return;
     }
 
-    const containerWidth = container.offsetWidth;
-    const textWidth = textElement.scrollWidth;
-    setIsTruncated(textWidth > containerWidth);
+    // Use requestAnimationFrame to defer state update and avoid synchronous setState in effects
+    rafIdRef.current = requestAnimationFrame(() => {
+      const containerWidth = container.offsetWidth;
+      const textWidth = textElement.scrollWidth;
+      setIsTruncated(textWidth > containerWidth);
+      rafIdRef.current = null;
+    });
   }, []);
 
   // Recalculate when text changes
   useEffect(() => {
-    calculateTruncation();
+    // Defer to avoid synchronous setState in effect
+    const timer = setTimeout(calculateTruncation, 0);
+    return () => clearTimeout(timer);
   }, [text, calculateTruncation]);
 
   // Recalculate on window resize
@@ -79,6 +91,16 @@ export function useTextTruncate<
       return () => clearTimeout(timer);
     }
   }, [calculateTruncation]);
+
+  // Cleanup: Cancel pending animation frame on unmount
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+    };
+  }, []);
 
   return {
     containerRef,

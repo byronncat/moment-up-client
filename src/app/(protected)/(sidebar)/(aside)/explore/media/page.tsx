@@ -70,8 +70,9 @@ export default function MediaPage() {
   const virtualItems = virtualizer.getVirtualItems();
 
   const loadNextPage = useCallback(async () => {
+    if (!user) return;
     if (hasNextPage && !isValidating) await setSize(size + 1);
-  }, [hasNextPage, isValidating, setSize, size]);
+  }, [hasNextPage, isValidating, setSize, size, user]);
 
   useEffect(() => {
     const allPosts = data?.flatMap((page) => page.items);
@@ -141,16 +142,14 @@ export default function MediaPage() {
             ) : error ? (
               <ErrorContent
                 onRefresh={() => mutate()}
-                className="pt-15 pb-20"
+                className="pt-19 pb-20"
               />
             ) : posts === undefined ? null : posts.length === 0 ? (
               <NoContent
-                icon={
-                  <ImageIcon className="size-14 m-1 text-muted-foreground" />
-                }
+                icon={<ImageIcon className="size-14 text-muted-foreground" />}
                 title="No media yet"
                 description="No media posts have been shared yet."
-                className="pt-15 pb-20"
+                className="pt-19 pb-20"
               />
             ) : isLoaderRow ? (
               <div className="flex justify-around gap-1 px-1">

@@ -5,7 +5,7 @@ import type { ContactDto } from "api";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/common";
-import { Phone, Video, Circle, User } from "@/components/icons";
+import { Circle, Phone, Video } from "@/components/icons";
 
 type HeaderProps = Readonly<{
   contact?: ContactDto;
@@ -37,14 +37,14 @@ function HeaderLeft({ contact }: HeaderProps) {
       <div>
         <h2 className={cn("font-semibold text-lg", "flex items-center")}>
           {contact?.name}
-          {contact?.isActive && (
+          {contact?.isActive ? (
             <span
               className={cn(
                 "ml-2 size-2 rounded-full inline-block",
                 "bg-green-500"
               )}
             />
-          )}
+          ) : null}
         </h2>
         <p className="text-xs text-muted-foreground">
           Typically replies within a few hours

@@ -12,3 +12,4 @@ export {
   default as CommentProvider,
   useComment,
 } from "./CommentStorage";
+export { default as NotificationProvider, useNotification } from "./NotificationStorage";

@@ -2,18 +2,18 @@
 
 import { useRouter } from "next/navigation";
 import {
-  CreateDataProvider,
   CanvasProvider,
+  CreateDataProvider,
   useCreateData,
 } from "@/app/(protected)/@modal/(.)stories/create/_providers";
 import { ROUTE } from "@/constants/route";
 
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import {
-  ContentSection,
-  RightNav,
-  DiscardDialog,
   CloseButton,
+  ContentSection,
+  DiscardDialog,
+  RightNav,
 } from "@/app/(protected)/@modal/(.)stories/create/_components";
 
 function CreateStoryPage() {

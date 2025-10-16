@@ -14,7 +14,7 @@ type HoverUserCardProps = Readonly<{
   data: CommentDto["user"];
   children: React.ReactNode;
   className?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }>;
 
 export default function HoverUserCard({

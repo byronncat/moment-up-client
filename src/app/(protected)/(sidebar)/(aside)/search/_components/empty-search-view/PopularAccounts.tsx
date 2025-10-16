@@ -99,7 +99,7 @@ function UserCard({ user }: Readonly<{ user: PopularUserDto }>) {
 
       <div className="grow px-2 mt-1">
         <p className="text-xs text-muted-foreground line-clamp-2">
-          {user.bio || `@${user.username}`}
+          {user.bio ?? `@${user.username}`}
         </p>
       </div>
 

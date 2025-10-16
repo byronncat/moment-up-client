@@ -3,7 +3,7 @@ import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 type ActionButtonsProps = {
   onShare: () => void;
-  canvasRef: React.RefObject<any>;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
   className?: string;
 };
 
@@ -14,12 +14,12 @@ export default function ActionButtons({
 }: ActionButtonsProps) {
   const handleShare = () => {
     if (canvasRef.current) {
-      const dataURL = canvasRef.current.toDataURL({
-        format: "png",
-        quality: 1,
-        multiplier: 2,
-      });
-      console.log("Sharing story with data:", dataURL);
+      // const dataURL = canvasRef.current.toDataURL({
+      //   format: "png",
+      //   quality: 1,
+      //   multiplier: 2,
+      // });
+      // console.log("Sharing story with data:", dataURL);
       onShare();
     }
   };

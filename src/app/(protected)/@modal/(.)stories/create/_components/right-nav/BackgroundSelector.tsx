@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+
 import { useCreateData } from "../../_providers";
 import { cn } from "@/libraries/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";

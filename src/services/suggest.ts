@@ -22,10 +22,11 @@ export async function reportTopic(data: ReportTopicDto, token: Token): API {
     body: JSON.stringify(data),
   })
     .then(async (response) => {
-      if (!response.ok) throw await response.json();
+      const data = await response.json();
+      if (!response.ok) throw data;
       return {
         success: true,
-        message: "Report submitted",
+        message: data.message,
         statusCode: response.status,
       };
     })

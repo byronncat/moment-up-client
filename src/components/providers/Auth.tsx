@@ -31,7 +31,7 @@ interface AuthAction {
   recoverPassword: (
     values: z.infer<typeof zodSchema.auth.recoverPassword>
   ) => API;
-  switchAccount: (accountId: AccountDto["id"]) => API;
+  switchAccount: (accountId: string) => API;
   reload: () => void;
 }
 
@@ -39,8 +39,8 @@ interface AuthAction {
 import { useRouter } from "next/navigation";
 import {
   createContext,
+  use,
   useCallback,
-  useContext,
   useMemo,
   useRef,
   useState,
@@ -82,7 +82,7 @@ const AuthContext = createContext<AuthState & AuthAction>({
   reload: () => {},
 });
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => use(AuthContext);
 export { useRefreshApi, useRefreshSWR } from "./hooks";
 
 export default function AuthProvider({
@@ -114,7 +114,7 @@ export default function AuthProvider({
 
   const login = useCallback(
     async (values: z.infer<typeof zodSchema.auth.login>) => {
-      const { success, message, statusCode, data } = await AuthApi.login(
+      const { success, message, statusCode, data, code } = await AuthApi.login(
         values,
         token.current.csrfToken
       );
@@ -127,7 +127,7 @@ export default function AuthProvider({
 
         router.push(ROUTE.HOME);
       }
-      return { success, message, statusCode };
+      return { success, message, statusCode, code };
     },
     [router, authCookie]
   );
@@ -181,7 +181,7 @@ export default function AuthProvider({
     _refresh: refresh,
   });
   const switchAccount = useCallback(
-    async (accountId: AccountDto["id"]) => {
+    async (accountId: string) => {
       const { success, message, statusCode, data } = await switchApi(accountId);
       if (success && data) {
         setLogged(true);
@@ -262,7 +262,7 @@ export default function AuthProvider({
   }, [setLoaded]);
 
   return (
-    <AuthContext.Provider
+    <AuthContext
       value={{
         user,
         logged,
@@ -288,6 +288,6 @@ export default function AuthProvider({
       }}
     >
       {loaded ? children : <LoadingPage />}
-    </AuthContext.Provider>
+    </AuthContext>
   );
 }

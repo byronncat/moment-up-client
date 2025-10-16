@@ -3,13 +3,13 @@
 import type { NotificationDto } from "api";
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useNotification } from "../_providers/NotificationStorage";
+import { useNotification } from "../../../../../../components/providers/NotificationStorage";
 import { NotificationType } from "@/constants/server";
 
 import { ErrorContent, NoContent } from "@/components/common";
 import NotificationItem from "./item";
 import { NotificationItemSkeleton } from "./Skeleton";
-import { Bell } from "@/components/icons";
+import { Bell } from "lucide-react";
 
 const NOTIFICATION_HEIGHT = 80;
 
@@ -18,8 +18,10 @@ export default function NotificationList() {
     useNotification();
 
   const itemCount = notifications
-    ? notifications.length + (hasNextPage ? 1 : 0)
-    : 0;
+    ? notifications.length === 0 || error
+      ? 1
+      : notifications.length + (hasNextPage ? 1 : 0)
+    : 1;
 
   const virtualizer = useWindowVirtualizer({
     count: itemCount,
@@ -80,18 +82,14 @@ export default function NotificationList() {
             {isLoading ? (
               <NotificationItemSkeleton />
             ) : error ? (
-              <ErrorContent onRefresh={mutate} className="pt-16 pb-20" />
+              <ErrorContent onRefresh={mutate} className="py-20" />
             ) : notifications === undefined ? null : notifications.length ===
               0 ? (
               <NoContent
-                icon={
-                  <Bell
-                    variant="regular"
-                    className="size-16 text-muted-foreground"
-                  />
-                }
+                icon={<Bell className="size-14 text-muted-foreground" />}
                 title="No notifications"
                 description="When you have notifications, they'll show up here."
+                className="py-20"
               />
             ) : isLoaderRow ? (
               <NotificationItemSkeleton />

@@ -1,5 +1,5 @@
+import type { SearchFilterParams } from "@/services";
 import { SearchCategory } from "@/constants/client";
-import { SearchFilterParams } from "@/services";
 
 export type MapType = {
   [key in SearchCategory]: {

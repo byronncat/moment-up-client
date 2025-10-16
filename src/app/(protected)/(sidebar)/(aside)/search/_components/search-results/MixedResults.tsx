@@ -4,10 +4,10 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { usePost } from "@/components/providers";
-import { useSearch } from "../../Search.provider";
+import { useSearch } from "../../_providers/Search";
 import { SearchItemType } from "@/constants/server";
 import { ROUTE } from "@/constants/route";
-import { getPostHeight, getMediaHeight } from "@/helpers/ui";
+import { getMediaHeight, getPostHeight } from "@/helpers/ui";
 
 import { cn } from "@/libraries/utils";
 import { ErrorContent, NoContent } from "@/components/common";
@@ -49,7 +49,7 @@ export default function MixedVirtualList() {
         case SearchItemType.QUERY:
           return 72;
         case SearchItemType.POST:
-          return getPostHeight((item as any).post, window.innerWidth);
+          return getPostHeight(item.post, window.innerWidth);
         case SearchItemType.MEDIA:
           return getMediaHeight(window.innerWidth);
         default:
@@ -119,7 +119,7 @@ export default function MixedVirtualList() {
               ) : results === undefined ? null : results.length === 0 ? (
                 <NoContent
                   icon={
-                    <MagnifyingGlass className="size-14 m-1 text-muted-foreground" />
+                    <MagnifyingGlass className="size-14 text-muted-foreground" />
                   }
                   title="No results found"
                   description="Try searching for something else."

@@ -4,7 +4,7 @@ import { __parseUrl } from "@/__mocks__";
 import type { UpdateProfileDto } from "@/services/user";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useProfile } from "../../_providers/ProfileProvider";
+import { useProfile } from "../../_providers/Profile";
 import { useCloudinary } from "@/components/providers";
 import { toast } from "sonner";
 import { MAX_BIO_LENGTH, MAX_NAME_LENGTH } from "@/constants/server";
@@ -110,8 +110,8 @@ export default function EditProfileModal({
     setIsSaving(true);
     const updates: UpdateProfileDto = {};
 
-    updates.displayName = displayName ?? null;
-    updates.bio = bio ?? null;
+    updates.displayName = displayName || null;
+    updates.bio = bio || null;
 
     if (avatarFile) {
       const { success, data } = await uploadImage(avatarFile);

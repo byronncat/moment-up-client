@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, useRefreshApi, useRefreshSWR } from "@/components/providers";
-import { useProfile } from "../../_providers/ProfileProvider";
+import { useProfile } from "../../_providers/Profile";
 import { ApiUrl } from "@/services/api.constant";
 import { SWRInfiniteOptions } from "@/helpers/swr";
 
@@ -139,7 +139,9 @@ export default function FollowList({ type }: FollowListProps) {
 
     if (!success) {
       mutate(prev, { revalidate: false });
-      toast.error(message || "Failed to follow/unfollow user");
+      toast.error(
+        message || `Unable to ${shouldFollow ? "follow" : "unfollow"} user.`
+      );
     }
   }
 
@@ -192,7 +194,7 @@ export default function FollowList({ type }: FollowListProps) {
                     ? "When people follow this user, they will appear here."
                     : "When this user follows people, they will appear here."
                 }
-                className="pt-16 pb-20"
+                className="py-20"
               />
             ) : isLoaderRow ? (
               <UserItemSkeleton />

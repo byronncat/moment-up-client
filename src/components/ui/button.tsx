@@ -12,7 +12,7 @@ const buttonVariants = cva(
     "whitespace-nowrap rounded-md",
     "text-sm font-medium",
     "transition-colors duration-200 ease-in-out",
-    "focus-within-indicator",
+    "focus-indicator",
     "disabled:pointer-events-none disabled:opacity-50",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0"
     // "[&_svg]:size-4",

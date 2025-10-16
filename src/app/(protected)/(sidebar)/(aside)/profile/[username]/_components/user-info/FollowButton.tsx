@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { useHover, useWindowSize } from "usehooks-ts";
 import { useAuth } from "@/components/providers";
-import { useProfile } from "../../_providers/ProfileProvider";
+import { useProfile } from "../../_providers/Profile";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";

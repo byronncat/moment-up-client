@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useContact } from "../_provider/Contact";
 
 import { cn } from "@/libraries/utils";
-import { NavigationBar, type NavItem } from "@/components/common";
+import { type NavItem, NavigationBar } from "@/components/common";
 import { Input } from "@/components/ui/input";
 import UserStatus from "./UserStatus";
 import ChatItem from "./ChatItem";
@@ -103,7 +103,7 @@ function SearchBar({ query, setQuery }: SearchBarProps) {
         onChange={(event) => setQuery(event.target.value)}
         className={cn("h-10 bg-input pl-9", query && "pr-9")}
       />
-      {query && (
+      {query ? (
         <button
           onClick={() => setQuery("")}
           className={cn(
@@ -116,7 +116,7 @@ function SearchBar({ query, setQuery }: SearchBarProps) {
         >
           <X className="size-4 text-muted-foreground group-hover:text-foreground" />
         </button>
-      )}
+      ) : null}
     </div>
   );
 }

@@ -147,9 +147,7 @@ export default function BookmarkPage() {
                 />
               ) : posts === undefined ? null : posts.length === 0 ? (
                 <NoContent
-                  icon={
-                    <Bookmark className="size-14 m-1 text-muted-foreground" />
-                  }
+                  icon={<Bookmark className="size-14 text-muted-foreground" />}
                   title="No bookmarks yet"
                   description="Posts you bookmark will appear here."
                   className="pt-16 pb-20"
@@ -169,7 +167,7 @@ export default function BookmarkPage() {
                     actions={{
                       like,
                       bookmark: async (postId) => {
-                        bookmark(postId);
+                        await bookmark(postId);
                         mutate();
                       },
                       share,

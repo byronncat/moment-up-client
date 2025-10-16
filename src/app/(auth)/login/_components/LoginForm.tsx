@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import zodSchema from "@/libraries/zodSchema";
 import { toast } from "sonner";
 import { ROUTE, SocialAuthError } from "@/constants/route";
+import { ErrorCode } from "@/constants/server";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -47,19 +48,18 @@ export default function LoginForm() {
   const form = useForm<z.infer<typeof zodSchema.auth.login>>({
     resolver: zodResolver(zodSchema.auth.login),
     defaultValues: {
-      identity: emailParam ?? "ByronAT445@gmail.com",
-      password: "1",
+      // identity: emailParam ?? "",
+      // password: "",
+      identity: emailParam ?? "byron",
+      password: "T1234567t!",
     },
   });
 
   const { login } = useAuth();
   async function handleLogin(values: z.infer<typeof zodSchema.auth.login>) {
-    const { success, message } = await login(values);
+    const { success, message, code } = await login(values);
     if (!success) {
-      if (
-        message.includes("Email not verified") ||
-        message.includes("verification email has been sent")
-      )
+      if (code === ErrorCode.EMAIL_NOT_VERIFIED)
         toast("🎉 You're almost there!", {
           duration: 12000,
           description:

@@ -37,7 +37,8 @@ export default function HorizontalNavigationBar({
             <Link
               href={item.href}
               key={item.id}
-              className="flex-1 focus-within-indicator"
+              className={cn("flex-1", "group outline-none")}
+              tabIndex={activeTab === item.id ? -1 : 0}
             >
               <Item data={item} active={activeTab === item.id} />
             </Link>
@@ -51,7 +52,8 @@ export default function HorizontalNavigationBar({
               item.onSelect?.();
               setActiveTab(item.id);
             }}
-            className="flex-1 cursor-pointer focus-within-indicator"
+            className={cn("flex-1 cursor-pointer", "group outline-none")}
+            tabIndex={activeTab === item.id ? -1 : 0}
           >
             <Item data={item} active={activeTab === item.id} />
           </button>
@@ -76,7 +78,7 @@ function Item({ data, active }: ItemProps) {
         "transition-colors duration-200 ease-in-out",
         active
           ? "text-primary bg-primary/20"
-          : "text-muted-foreground hover:bg-muted-foreground/10"
+          : "text-muted-foreground hover:bg-muted-foreground/10 group-focus:bg-muted-foreground/10"
       )}
     >
       <div className={cn("flex justify-center items-center gap-2", "w-full")}>

@@ -67,9 +67,9 @@ function CreateSection({ className }: Readonly<{ className?: string }>) {
             </div>
           </div>
         </Link>
-        {myStory && (
+        {myStory ? (
           <StoryItem data={myStory} isCurrent={myStory.username === username} />
-        )}
+        ) : null}
       </div>
     </div>
   );
@@ -78,16 +78,6 @@ function CreateSection({ className }: Readonly<{ className?: string }>) {
 // @deprecated
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function RightNavSkeleton() {
-  const StoryItemSkeleton = () => (
-    <div className={cn("flex items-center gap-3", "py-2")}>
-      <DarkSkeleton className="size-14 rounded-full" />
-      <div className="flex-1">
-        <DarkSkeleton className="w-24 h-4 my-1" />
-        <DarkSkeleton className="w-20 h-3 mt-1.5" />
-      </div>
-    </div>
-  );
-
   return (
     <>
       <div className="px-4 mt-6">
@@ -99,6 +89,7 @@ function RightNavSkeleton() {
         <DarkSkeleton className="h-4 w-20 mt-1 mb-3" />
         <div>
           {Array.from({ length: 5 }).map((_, index) => (
+            // eslint-disable-next-line react/no-array-index-key
             <StoryItemSkeleton key={index} />
           ))}
         </div>
@@ -106,6 +97,16 @@ function RightNavSkeleton() {
     </>
   );
 }
+
+const StoryItemSkeleton = () => (
+  <div className={cn("flex items-center gap-3", "py-2")}>
+    <DarkSkeleton className="size-14 rounded-full" />
+    <div className="flex-1">
+      <DarkSkeleton className="w-24 h-4 my-1" />
+      <DarkSkeleton className="w-20 h-3 mt-1.5" />
+    </div>
+  </div>
+);
 
 function DarkSkeleton({
   className,

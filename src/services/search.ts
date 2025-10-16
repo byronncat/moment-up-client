@@ -3,16 +3,11 @@ import type { API, ErrorDto, PaginationDto, SearchItem } from "api";
 import type { Token } from "@/components/providers/Auth";
 import type zodSchema from "@/libraries/zodSchema";
 
-import {
-  ApiUrl,
-  type SearchSortParams,
-  type SearchFilterParams,
-} from "./api.constant";
+import { ApiUrl, type SearchFilterParams } from "./api.constant";
 import { parseErrorMessage } from "./helper";
 
 interface SearchData extends z.infer<typeof zodSchema.core.search> {
   filter: SearchFilterParams;
-  order?: SearchSortParams;
   page?: number;
   limit?: number;
 }
@@ -22,13 +17,7 @@ export async function search(
   token: Omit<Token, "csrfToken">
 ): API<PaginationDto<SearchItem>> {
   return fetch(
-    ApiUrl.search.search(
-      data.query,
-      data.filter,
-      data.order,
-      data.page,
-      data.limit
-    ),
+    ApiUrl.search.search(data.query, data.filter, data.page, data.limit),
     {
       method: "GET",
       headers: {

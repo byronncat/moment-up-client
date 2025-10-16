@@ -50,12 +50,15 @@ export default function SuggestedUsers() {
 
     const { success, message } = await follow({
       targetId: userId,
-      shouldFollow,
+      shouldFollow, 
     });
 
     if (!success) {
       mutate(prev, { revalidate: false });
-      toast.error(message || "Failed to follow/unfollow user");
+      toast.error(
+        message ||
+          `Unable to ${shouldFollow ? "follow" : "unfollow"} user. Try again later.`
+      );
     }
   }
 

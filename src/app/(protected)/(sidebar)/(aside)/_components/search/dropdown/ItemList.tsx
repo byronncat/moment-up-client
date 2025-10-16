@@ -35,7 +35,7 @@ export default function ItemList({
         <span className="text-sm font-semibold h-6">
           {query ? "Results" : "Recent"}
         </span>
-        {showActionButtons && <ClearButton onClear={onClearAllItems} />}
+        {showActionButtons ? <ClearButton onClear={onClearAllItems} /> : null}
       </div>
       <div className="space-y-1">
         {items.map((item) => (
@@ -47,7 +47,7 @@ export default function ItemList({
             showActionButtons={showActionButtons}
           />
         ))}
-        {query && <QueryButton query={query} onClickItem={onClickItem} />}
+        {query ? <QueryButton query={query} onClickItem={onClickItem} /> : null}
       </div>
     </ScrollArea>
   );
@@ -77,7 +77,7 @@ function ItemButton({
       aria-label={`Search for ${item.type === SearchItemType.USER ? `@${item.username}` : item.query}`}
     >
       <Item data={item} className="select-none cursor-pointer size-full" />
-      {showActionButtons && (
+      {showActionButtons ? (
         <button
           onClick={(event) => {
             event.stopPropagation();
@@ -95,7 +95,7 @@ function ItemButton({
         >
           <X className="size-4 fill-muted-foreground" />
         </button>
-      )}
+      ) : null}
     </div>
   );
 }

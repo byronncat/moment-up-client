@@ -10,7 +10,7 @@ type CommentContextType = {
   hasNextPage: boolean;
 
   createComment: (text: string) => Promise<boolean>;
-  deleteComment: (commentId: string) => Promise<void>;
+  deleteComment: (commentId: string) => void;
   likeComment: (commentId: string, isLiked: boolean) => Promise<void>;
   sortBy: (value: SortBy) => void;
   isExpanded: (commentId: CommentDto["id"]) => boolean;
@@ -19,13 +19,13 @@ type CommentContextType = {
 };
 
 // === Provider ===
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import {
   useAuth,
+  usePost,
   useRefreshApi,
   useRefreshSWR,
-  usePost,
 } from "@/components/providers";
 import { ApiUrl, CoreApi } from "@/services";
 import { toast } from "sonner";
@@ -39,7 +39,20 @@ import CommentZoneSkeleton from "../post/comment/Skeleton";
 import { Circle, Message } from "@/components/icons";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 
-const CommentContext = createContext<CommentContextType>({} as any);
+const CommentContext = createContext<CommentContextType>({
+  comments: undefined,
+  loading: false,
+  sort: SortBy.MOST_LIKED,
+  hasNextPage: false,
+
+  createComment: () => Promise.resolve(false),
+  deleteComment: () => {},
+  likeComment: () => Promise.resolve(),
+  sortBy: () => {},
+  isExpanded: () => false,
+  toggleExpansion: () => {},
+  loadNextPage: () => {},
+});
 
 export const useComment = () => useContext(CommentContext);
 const COMMENTS_PER_PAGE = 12;
@@ -123,7 +136,7 @@ export default function CommentProvider({
   }
 
   const deleteCommentApi = useRefreshApi(CoreApi.deleteComment);
-  async function deleteComment(commentId: string) {
+  function deleteComment(commentId: string) {
     toast.promise(deleteCommentApi(commentId), {
       loading: "Deleting comment...",
       success: ({ success, message }) => {

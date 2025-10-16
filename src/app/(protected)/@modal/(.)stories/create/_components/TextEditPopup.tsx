@@ -1,10 +1,10 @@
 "use client";
 
 import type { TextStyleUpdate } from "../_providers/Canvas";
+import type * as fabric from "fabric";
 
-import { useEffect, useState } from "react";
-import * as fabric from "fabric";
-import { Font, TextColors, FontSize } from "../_constants";
+import { useMemo, useState } from "react";
+import { Font, FontSize, TextColors } from "../_constants";
 
 import { cn } from "@/libraries/utils";
 import { Input } from "@/components/ui/input";
@@ -25,9 +25,30 @@ export default function TextEditPopup({
   selectedObject,
   onUpdateText,
 }: TextEditPopupProps) {
-  const [selectedFontFamily, setSelectedFontFamily] = useState(Font[0]);
-  const [selectedFontSize, setSelectedFontSize] = useState(24);
-  const [selectedColor, setSelectedColor] = useState(TextColors[0]);
+  // Derive initial values from selectedObject, memoized by object identity
+  const initialValues = useMemo(() => {
+    if (!selectedObject) {
+      return {
+        font: Font[0],
+        color: TextColors[0],
+        fontSize: 24,
+      };
+    }
+    return {
+      font:
+        Font.find((f) => f.family === selectedObject.fontFamily) ?? Font[0],
+      color: (selectedObject.fill as string) || TextColors[0],
+      fontSize: selectedObject.fontSize || 24,
+    };
+  }, [selectedObject]);
+
+  const [selectedFontFamily, setSelectedFontFamily] = useState(
+    initialValues.font
+  );
+  const [selectedFontSize, setSelectedFontSize] = useState(
+    initialValues.fontSize
+  );
+  const [selectedColor, setSelectedColor] = useState(initialValues.color);
 
   const handleFontChange = (fontLabel: string) => {
     const font = Font.find((f) => f.label === fontLabel);
@@ -42,15 +63,15 @@ export default function TextEditPopup({
     onUpdateText({ fill: color });
   };
 
-  useEffect(() => {
-    if (selectedObject) {
-      const currentFont =
-        Font.find((f) => f.family === selectedObject.fontFamily) || Font[0];
-      setSelectedFontFamily(currentFont);
-      setSelectedColor((selectedObject.fill as string) || TextColors[0]);
-      setSelectedFontSize(selectedObject.fontSize || 24);
-    }
-  }, [selectedObject]);
+  // useEffect(() => {
+  //   if (selectedObject) {
+  //     const currentFont =
+  //       Font.find((f) => f.family === selectedObject.fontFamily) || Font[0];
+  //     setSelectedFontFamily(currentFont);
+  //     setSelectedColor((selectedObject.fill as string) || TextColors[0]);
+  //     setSelectedFontSize(selectedObject.fontSize || 24);
+  //   }
+  // }, [selectedObject]);
 
   if (!selectedObject) return null;
   return (

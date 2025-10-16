@@ -19,6 +19,7 @@ export default function ProgressBar({
     <div className={cn("flex gap-1", className)}>
       {Array.from({ length: total }).map((_, index) => (
         <div
+          // eslint-disable-next-line react/no-array-index-key
           key={index}
           className={cn(
             "bg-white/40",

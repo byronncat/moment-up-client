@@ -1,5 +1,5 @@
 import { useAuth } from "@/components/providers/Auth";
-import { useProfile } from "../_providers/ProfileProvider";
+import { useProfile } from "../_providers/Profile";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -29,12 +29,6 @@ export default function ProfileZone({
       icon: <ImageIcon className="size-4" />,
       href: user ? ROUTE.PROFILE(profile.username, "media") : ROUTE.LOGIN,
     },
-    // {
-    //   id: "tagged",
-    //   label: "Tagged",
-    //   icon: <Tag className="size-4" />,
-    //   href: user ? ROUTE.PROFILE(profile.username, "tagged") : ROUTE.LOGIN,
-    // },
   ];
 
   return (
@@ -62,11 +56,6 @@ export function ProfileZoneSkeleton() {
       label: "Media",
       icon: <ImageIcon className="size-4" />,
     },
-    // {
-    //   id: "tagged",
-    //   label: "Tagged",
-    //   icon: <Tag className="size-4" />,
-    // },
   ];
 
   return (

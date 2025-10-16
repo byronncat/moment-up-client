@@ -74,8 +74,9 @@ export default function PostPage() {
   const virtualItems = virtualizer.getVirtualItems();
 
   const loadNextPage = useCallback(async () => {
+    if (!user) return;
     if (hasNextPage && !isValidating) await setSize(size + 1);
-  }, [hasNextPage, isValidating, setSize, size]);
+  }, [hasNextPage, isValidating, setSize, size, user]);
 
   useEffect(() => {
     const _posts = data?.flatMap((page) => page.items);
@@ -100,7 +101,7 @@ export default function PostPage() {
   }, [user, posts, virtualItems, hasNextPage, isValidating, loadNextPage]);
 
   return (
-    <div className="max-w-[600px] size-full mx-auto">
+    <div className="size-full mx-auto">
       <div
         style={{
           height: `${virtualizer.getTotalSize()}px`,
@@ -142,16 +143,14 @@ export default function PostPage() {
               ) : error ? (
                 <ErrorContent
                   onRefresh={() => mutate()}
-                  className="pt-12 pb-20"
+                  className="pt-16 pb-20"
                 />
               ) : posts === undefined ? null : posts.length === 0 ? (
                 <NoContent
-                  icon={
-                    <FileText className="size-14 m-1 text-muted-foreground" />
-                  }
+                  icon={<FileText className="size-14 text-muted-foreground" />}
                   title="No posts yet"
                   description="No posts have been shared yet."
-                  className="pt-12 pb-20"
+                  className="pt-16 pb-20"
                 />
               ) : isLoaderRow ? (
                 <div className="max-w-[calc(600px+16px)] px-2 mx-auto">

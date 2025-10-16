@@ -3,6 +3,20 @@ import type { ContactDto, MessageDto, UserStatusDto } from "api";
 const avatar = [
   "https://pbs.twimg.com/media/G2Qcoh3WIAAzwD6?format=jpg&name=large",
   "https://pbs.twimg.com/media/G2o8WN2XAAAr8D2?format=jpg&name=medium",
+  "https://pbs.twimg.com/media/G2-kHCtbwAE1l9W?format=jpg&name=large",
+  "https://pbs.twimg.com/media/G2_EoUfXAAA6jiS?format=jpg&name=4096x4096",
+  "https://pbs.twimg.com/media/G2qu9EWXcAI3h6L?format=jpg&name=large",
+  "https://pbs.twimg.com/media/G2qBQegW4AAnMHE?format=jpg&name=medium",
+  "https://pbs.twimg.com/media/G2qIwM8XoAAvSYd?format=jpg&name=large",
+  "https://pbs.twimg.com/media/G26TwQlXsAELa1s?format=jpg&name=large",
+  "https://pbs.twimg.com/media/G2ujwC8bIAAauyp?format=jpg&name=4096x4096",
+  "https://pbs.twimg.com/media/G2ajBpgXAAEqXxi?format=jpg&name=large",
+  "https://pbs.twimg.com/media/G3BL6oJbwAUB4Ui?format=jpg&name=4096x4096",
+
+  "https://pbs.twimg.com/media/G2-iEGNXUAAuQ2s?format=jpg&name=large",
+  "https://pbs.twimg.com/media/Fmx622sXEA4veyG?format=jpg&name=4096x4096",
+  "https://pbs.twimg.com/media/Fmx622pWIAAKJ23?format=jpg&name=4096x4096",
+  "https://pbs.twimg.com/media/Fmx622oXEAwuCFT?format=jpg&name=4096x4096",
 ];
 
 const video = [

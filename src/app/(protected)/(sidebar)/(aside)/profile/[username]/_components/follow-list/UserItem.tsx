@@ -80,7 +80,7 @@ export default function UserItem({ data, onFollow }: UserItemProps) {
           <FollowButton
             isFollowing={!!data.isFollowing}
             onFollow={handleFollow}
-            className="flex-shrink-0"
+            className="flex-shrink-0 my-1"
           />
         </div>
 
@@ -133,7 +133,7 @@ export function FollowButton({
     <Button
       ref={hoverRef}
       size="sm"
-      variant={isFollowing ? (isHover ? "destructive" : "outline") : "accent"}
+      variant={isFollowing ? (isHover ? "destructive" : "outline") : "default"}
       onClick={onFollow}
       className={cn("w-[88px] cursor-pointer", className)}
     >

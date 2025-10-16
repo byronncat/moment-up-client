@@ -17,112 +17,106 @@ const MAX = 5;
 
 export default function MediaGrid() {
   const { files } = usePostData();
-  if (!files || files.length === 0) return null;
+  if (!files?.length) return null;
 
   const firstImageHorizontal = files[FIRST].aspectRatio === "landscape";
 
-
-  const Grid = () => {
-    const fileCount = files.length;
-    switch (fileCount) {
-      case 1:
-        return (
-          <AspectRatio
-            ratio={getRatioValue(files[FIRST].aspectRatio)}
-            className="relative"
-          >
-            <MediaItem file={files[FIRST]} index={FIRST} />
-          </AspectRatio>
-        );
-      case 2:
-        return (
-          <AspectRatio
-            ratio={1}
+  let grid = null;
+  const fileCount = files.length;
+  switch (fileCount) {
+    case 1:
+      grid = (
+        <AspectRatio
+          ratio={getRatioValue(files[FIRST].aspectRatio)}
+          className="relative"
+        >
+          <MediaItem file={files[FIRST]} index={FIRST} />
+        </AspectRatio>
+      );
+    case 2:
+      grid = (
+        <AspectRatio
+          ratio={1}
+          className={cn(
+            "grid gap-1",
+            firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+          )}
+        >
+          <MediaItem file={files[FIRST]} index={FIRST} />
+          <MediaItem file={files[SECOND]} index={SECOND} />
+        </AspectRatio>
+      );
+    case 3:
+      grid = (
+        <AspectRatio
+          ratio={1}
+          className={cn(
+            "grid gap-1",
+            firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+          )}
+        >
+          <MediaItem file={files[FIRST]} index={FIRST} />
+          <div
             className={cn(
               "grid gap-1",
-              firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+              firstImageHorizontal ? "grid-cols-2" : "grid-rows-2"
             )}
           >
-            <MediaItem file={files[FIRST]} index={FIRST} />
             <MediaItem file={files[SECOND]} index={SECOND} />
-          </AspectRatio>
-        );
-      case 3:
-        return (
-          <AspectRatio
-            ratio={1}
+            <MediaItem file={files[THIRD]} index={THIRD} />
+          </div>
+        </AspectRatio>
+      );
+    case 4:
+      grid = (
+        <AspectRatio ratio={1} className="grid gap-1 grid-cols-2 grid-rows-2">
+          {files.map((file, index) => (
+            <MediaItem key={file.id} file={file} index={index} />
+          ))}
+        </AspectRatio>
+      );
+    default:
+      grid = (
+        <AspectRatio
+          ratio={1}
+          className={cn(
+            "grid gap-1",
+            firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+          )}
+        >
+          <div
             className={cn(
               "grid gap-1",
-              firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+              firstImageHorizontal ? "grid-cols-2" : "grid-rows-2"
             )}
           >
-            <MediaItem file={files[FIRST]} index={FIRST} />
-            <div
-              className={cn(
-                "grid gap-1",
-                firstImageHorizontal ? "grid-cols-2" : "grid-rows-2"
-              )}
-            >
+            <div className="relative">
+              <MediaItem file={files[FIRST]} index={FIRST} />
+            </div>
+            <div className="relative">
               <MediaItem file={files[SECOND]} index={SECOND} />
-              <MediaItem file={files[THIRD]} index={THIRD} />
             </div>
-          </AspectRatio>
-        );
-      case 4:
-        return (
-          <AspectRatio ratio={1} className="grid gap-1 grid-cols-2 grid-rows-2">
-            {files.map((file, index) => (
-              <MediaItem key={file.id} file={file} index={index} />
-            ))}
-          </AspectRatio>
-        );
-      default:
-        return (
-          <AspectRatio
-            ratio={1}
+          </div>
+          <div
             className={cn(
               "grid gap-1",
-              firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+              firstImageHorizontal ? "grid-cols-3" : "grid-rows-3"
             )}
           >
-            <div
-              className={cn(
-                "grid gap-1",
-                firstImageHorizontal ? "grid-cols-2" : "grid-rows-2"
-              )}
-            >
-              <div className="relative">
-                <MediaItem file={files[FIRST]} index={FIRST} />
+            {files.slice(THIRD, MAX).map((file, index) => (
+              <div key={file.id} className="relative">
+                <MediaItem file={file} index={index + THIRD} />
+                {index === 0 && files.length > MAX && (
+                  <MoreItemsOverlay count={files.length - MAX} />
+                )}
               </div>
-              <div className="relative">
-                <MediaItem file={files[SECOND]} index={SECOND} />
-              </div>
-            </div>
-            <div
-              className={cn(
-                "grid gap-1",
-                firstImageHorizontal ? "grid-cols-3" : "grid-rows-3"
-              )}
-            >
-              {files.slice(THIRD, MAX).map((file, index) => (
-                <div key={file.id} className="relative">
-                  <MediaItem file={file} index={index + THIRD} />
-                  {index === 0 && files.length > MAX && (
-                    <MoreItemsOverlay count={files.length - MAX} />
-                  )}
-                </div>
-              ))}
-            </div>
-          </AspectRatio>
-        );
-    }
-  };
+            ))}
+          </div>
+        </AspectRatio>
+      );
+  }
 
-  return (
-    <CardContent className="p-0">
-      <Grid />
-    </CardContent>
-  );
+  return <CardContent className="p-0">{grid}</CardContent>;
 }
 
 function MoreItemsOverlay({ count }: Readonly<{ count: number }>) {

@@ -1,7 +1,6 @@
 "use client";
 
 import type { ErrorDto, NotificationDto, PaginationDto } from "api";
-import type { NotificationFilter } from "@/constants/server";
 
 type NotificationContextType = {
   notifications: NotificationDto[] | undefined;
@@ -12,16 +11,7 @@ type NotificationContextType = {
   mutate: () => void;
 };
 
-const getNotificationFilter = (
-  _pathname: string
-): NotificationFilter | undefined => {
-  // const segments = pathname.split("/");
-  // const filterSegment = segments[segments.length - 1];
-  return undefined;
-};
-
 // === Provider ===
-import { usePathname } from "next/navigation";
 import { createContext, useContext } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
@@ -48,8 +38,6 @@ export default function NotificationStorageProvider({
 }: NotificationStorageProviderProps) {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
-  const pathname = usePathname();
-  const filter = getNotificationFilter(pathname);
 
   const getKey = (
     pageIndex: number,
@@ -57,7 +45,7 @@ export default function NotificationStorageProvider({
   ) => {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
-    const url = ApiUrl.notification.get(filter, pageIndex + 1);
+    const url = ApiUrl.notification.get(pageIndex + 1);
     return [url, token.accessToken];
   };
 

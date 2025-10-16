@@ -18,112 +18,105 @@ export default function MediaGrid({ files, postId }: MediaGridProps) {
   if (!files || files.length === 0) return null;
   const firstImageHorizontal = files[0].aspectRatio === "landscape";
 
-  const Grid = () => {
-    const fileCount = files.length;
-    switch (fileCount) {
-      case 1:
-        return (
-          <AspectRatio
-            ratio={getRatioValue(files[0].aspectRatio)}
-            className="relative"
-          >
-            <MediaItem file={files[0]} index={0} postId={postId} />
-          </AspectRatio>
-        );
-      case 2:
-        return (
-          <AspectRatio
-            ratio={1}
+  let grid = null;
+  switch (files.length) {
+    case 1:
+      grid = (
+        <AspectRatio
+          ratio={getRatioValue(files[0].aspectRatio)}
+          className="relative"
+        >
+          <MediaItem file={files[0]} index={0} postId={postId} />
+        </AspectRatio>
+      );
+      break;
+    case 2:
+      grid = (
+        <AspectRatio
+          ratio={1}
+          className={cn(
+            "grid gap-1",
+            firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+          )}
+        >
+          <MediaItem file={files[0]} index={0} postId={postId} />
+          <MediaItem file={files[1]} index={1} postId={postId} />
+        </AspectRatio>
+      );
+      break;
+    case 3:
+      grid = (
+        <AspectRatio
+          ratio={1}
+          className={cn(
+            "grid gap-1",
+            firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+          )}
+        >
+          <MediaItem file={files[0]} index={0} postId={postId} />
+          <div
             className={cn(
               "grid gap-1",
-              firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+              firstImageHorizontal ? "grid-cols-2" : "grid-rows-2"
             )}
           >
-            <MediaItem file={files[0]} index={0} postId={postId} />
             <MediaItem file={files[1]} index={1} postId={postId} />
-          </AspectRatio>
-        );
-      case 3:
-        return (
-          <AspectRatio
-            ratio={1}
+            <MediaItem file={files[2]} index={2} postId={postId} />
+          </div>
+        </AspectRatio>
+      );
+      break;
+    case 4:
+      grid = (
+        <AspectRatio ratio={1} className="grid gap-1 grid-cols-2 grid-rows-2">
+          {files.map((file, index) => (
+            <MediaItem key={index} file={file} index={index} postId={postId} />
+          ))}
+        </AspectRatio>
+      );
+      break;
+    default:
+      grid = (
+        <AspectRatio
+          ratio={1}
+          className={cn(
+            "grid gap-1",
+            firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+          )}
+        >
+          <div
             className={cn(
               "grid gap-1",
-              firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+              firstImageHorizontal ? "grid-cols-2" : "grid-rows-2"
             )}
           >
-            <MediaItem file={files[0]} index={0} postId={postId} />
-            <div
-              className={cn(
-                "grid gap-1",
-                firstImageHorizontal ? "grid-cols-2" : "grid-rows-2"
-              )}
-            >
+            <div className="relative">
+              <MediaItem file={files[0]} index={0} postId={postId} />
+            </div>
+            <div className="relative">
               <MediaItem file={files[1]} index={1} postId={postId} />
-              <MediaItem file={files[2]} index={2} postId={postId} />
             </div>
-          </AspectRatio>
-        );
-      case 4:
-        return (
-          <AspectRatio ratio={1} className="grid gap-1 grid-cols-2 grid-rows-2">
-            {files.map((file, index) => (
-              <MediaItem
-                key={index}
-                file={file}
-                index={index}
-                postId={postId}
-              />
-            ))}
-          </AspectRatio>
-        );
-      default:
-        return (
-          <AspectRatio
-            ratio={1}
+          </div>
+          <div
             className={cn(
               "grid gap-1",
-              firstImageHorizontal ? "grid-rows-2" : "grid-cols-2"
+              firstImageHorizontal ? "grid-cols-3" : "grid-rows-3"
             )}
           >
-            <div
-              className={cn(
-                "grid gap-1",
-                firstImageHorizontal ? "grid-cols-2" : "grid-rows-2"
-              )}
-            >
-              <div className="relative">
-                <MediaItem file={files[0]} index={0} postId={postId} />
+            {files.slice(2, MAX_LENGTH).map((file, index) => (
+              <div key={index + 2} className="relative">
+                <MediaItem file={file} index={index + 2} postId={postId} />
+                {index === 2 && files.length > MAX_LENGTH && (
+                  <MoreItemsOverlay count={files.length - MAX_LENGTH} />
+                )}
               </div>
-              <div className="relative">
-                <MediaItem file={files[1]} index={1} postId={postId} />
-              </div>
-            </div>
-            <div
-              className={cn(
-                "grid gap-1",
-                firstImageHorizontal ? "grid-cols-3" : "grid-rows-3"
-              )}
-            >
-              {files.slice(2, MAX_LENGTH).map((file, index) => (
-                <div key={index + 2} className="relative">
-                  <MediaItem file={file} index={index + 2} postId={postId} />
-                  {index === 2 && files.length > MAX_LENGTH && (
-                    <MoreItemsOverlay count={files.length - MAX_LENGTH} />
-                  )}
-                </div>
-              ))}
-            </div>
-          </AspectRatio>
-        );
-    }
-  };
+            ))}
+          </div>
+        </AspectRatio>
+      );
+  }
 
-  return (
-    <CardContent className="p-0">
-      <Grid />
-    </CardContent>
-  );
+  return <CardContent className="p-0">{grid}</CardContent>;
 }
 
 function MoreItemsOverlay({ count }: Readonly<{ count: number }>) {

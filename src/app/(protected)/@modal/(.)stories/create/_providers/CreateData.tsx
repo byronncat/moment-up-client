@@ -2,10 +2,10 @@
 
 import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
   useCallback,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
 import { StoryBackground } from "@/constants/server";
 import { Font } from "../_constants";
@@ -103,7 +103,7 @@ export default function CreateDataProvider({
     const audio = new Audio(url);
 
     audio.addEventListener("loadedmetadata", () => {
-      const duration = audio.duration;
+      const { duration } = audio;
       setUploadedAudio({
         file,
         preview: url,

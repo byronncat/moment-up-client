@@ -1,5 +1,5 @@
 import type { SortBy } from "@/constants/client";
-import { type NotificationFilter, SERVER_HOST_URL } from "@/constants/server";
+import { SERVER_HOST_URL } from "@/constants/server";
 import { buildUrl } from "@/utilities";
 
 export const ApiUrl = {
@@ -199,9 +199,9 @@ export const ApiUrl = {
 
   // === Notification ===
   notification: {
-    get: (filter?: NotificationFilter, page?: number, limit?: number) =>
+    get: (page?: number, limit?: number) =>
       buildUrl(`${SERVER_HOST_URL}/v1/notifications`, {
-        queryParams: { filter, page, limit },
+        queryParams: { page, limit },
       }),
   },
 } as const;

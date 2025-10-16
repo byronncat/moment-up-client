@@ -1,5 +1,5 @@
 import { useAuth } from "@/components/providers";
-import { useCreateData, useCanvas } from "../../_providers";
+import { useCanvas, useCreateData } from "../../_providers";
 
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
@@ -12,7 +12,7 @@ import SoundSelector from "./sound-selector";
 import FontSelector from "./FontSelector";
 import BackgroundSelector from "./BackgroundSelector";
 import MediaControls from "./MediaControls";
-import { Settings, Folder } from "@/components/icons";
+import { Folder, Settings } from "@/components/icons";
 import { Save } from "lucide-react";
 
 export default function RightNav() {
@@ -21,7 +21,7 @@ export default function RightNav() {
   const { canvas } = useCanvas();
 
   function handleShare() {
-    console.log("share");
+    // console.log("share");
   }
 
   return (
@@ -38,7 +38,7 @@ export default function RightNav() {
         <div className="flex items-center gap-3 px-4 mt-5">
           <Avatar
             src={user?.avatar}
-            alt={user?.displayName || user?.username}
+            alt={user?.displayName ?? user?.username}
             size="14"
           />
           <span className="text-white text-lg font-semibold">
@@ -66,7 +66,7 @@ export default function RightNav() {
         <Separator className="mt-4 bg-border-dark" />
 
         <div className="mt-4 space-y-5">
-          {type === "image" && uploadedMedia && (
+          {type === "image" && uploadedMedia ? (
             <div>
               <div className={cn("flex items-center gap-1.5", "px-4")}>
                 <h3 className="text-muted-foreground-dark">File controls</h3>
@@ -94,7 +94,7 @@ export default function RightNav() {
 
               <MediaControls className="px-4 mt-5" />
             </div>
-          )}
+          ) : null}
 
           {type === "text" && (
             <>
@@ -133,7 +133,7 @@ export default function RightNav() {
           <div className={cn("grow mt-12", "flex flex-col")}>
             <ActionButtons
               onShare={handleShare}
-              canvasRef={{ current: canvas }}
+              canvasRef={{ current: canvas as HTMLCanvasElement | null }}
               className="mt-auto"
             />
           </div>

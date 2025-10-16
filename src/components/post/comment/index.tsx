@@ -19,14 +19,14 @@ export default function CommentZone({ className }: CommentZoneProps) {
       <SortButton className="mb-4" />
       <div className="flex flex-col gap-4">
         <CommentList />
-        {loading && (
+        {loading ? (
           <>
             <CommentSkeleton />
             <CommentSkeleton />
           </>
-        )}
+        ) : null}
       </div>
-      {!loading && hasNextPage && (
+      {!loading && hasNextPage ? (
         <button
           onClick={loadNextPage}
           className={cn(
@@ -37,7 +37,7 @@ export default function CommentZone({ className }: CommentZoneProps) {
         >
           Load more...
         </button>
-      )}
+      ) : null}
     </div>
   );
 }

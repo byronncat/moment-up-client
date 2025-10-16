@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import {
-  CreateDataProvider,
   CanvasProvider,
+  CreateDataProvider,
   useCreateData,
 } from "./_providers";
 import { ROUTE } from "@/constants/route";
@@ -11,10 +11,10 @@ import { ROUTE } from "@/constants/route";
 import { Modal } from "@/components/common";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import {
-  ContentSection,
-  RightNav,
-  DiscardDialog,
   CloseButton,
+  ContentSection,
+  DiscardDialog,
+  RightNav,
 } from "./_components";
 
 function CreateStoryModal() {

@@ -7,7 +7,6 @@ import { parseErrorMessage } from "./helper";
 
 const SuccessMessage = {
   getProfile: "Profile loaded",
-  updateProfile: "Profile updated",
   follow: "You're now following this user",
   unfollow: "Unfollowed",
   removeFollower: "Follower removed",
@@ -16,8 +15,6 @@ const SuccessMessage = {
   mute: "User muted",
   unmute: "User unmuted",
   reportUser: "User reported successfully",
-  acceptFollowRequest: "Follow request accepted",
-  declineFollowRequest: "Follow request declined",
 };
 
 export async function getProfile(username: string): API<{
@@ -76,7 +73,7 @@ export async function updateProfile(
       if (!response.ok) throw responseData;
       return {
         success: true,
-        message: SuccessMessage.updateProfile,
+        message: "Profile updated.",
         statusCode: response.status,
         data: responseData,
       };
@@ -144,7 +141,7 @@ export async function acceptFollowRequest(userId: string, token: Token): API {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: SuccessMessage.acceptFollowRequest,
+        message: "Follow request accepted.",
         statusCode: response.status,
       };
     })
@@ -171,7 +168,7 @@ export async function declineFollowRequest(userId: string, token: Token): API {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: SuccessMessage.declineFollowRequest,
+        message: "Follow request declined.",
         statusCode: response.status,
       };
     })

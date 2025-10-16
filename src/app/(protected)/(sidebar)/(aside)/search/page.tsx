@@ -4,10 +4,10 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { SearchCategory } from "@/constants/client";
 import { ROUTE, SearchParamName } from "@/constants/route";
-import SearchProvider, { useSearch } from "./Search.provider";
+import SearchProvider, { useSearch } from "./_providers/Search";
 
 import { cn } from "@/libraries/utils";
-import { NavigationBar, type NavItem } from "@/components/common";
+import { type NavItem, NavigationBar } from "@/components/common";
 import { PageHeader, SearchInput } from "../_components";
 import { EmptySearchView, SearchResults } from "./_components";
 
@@ -20,9 +20,9 @@ function getInitialCategory(param: string): SearchCategory {
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
-  const initialQuery = searchParams.get(SearchParamName.QUERY) || "";
+  const initialQuery = searchParams.get(SearchParamName.QUERY) ?? "";
   const initialCategory = getInitialCategory(
-    searchParams.get(SearchParamName.FILTER) || ""
+    searchParams.get(SearchParamName.FILTER) ?? ""
   );
 
   return (

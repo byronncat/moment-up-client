@@ -1,6 +1,6 @@
 import { formatTime } from "./utilities";
 import { cn } from "@/libraries/utils";
-import { Play, Pause } from "@/components/icons";
+import { Pause, Play } from "@/components/icons";
 import { Slider } from "@/components/ui/slider";
 
 type PlayControlsProps = Readonly<{

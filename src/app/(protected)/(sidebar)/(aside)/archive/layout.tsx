@@ -4,7 +4,7 @@ export const metadata = Metadata.archive;
 import { ROUTE } from "@/constants/route";
 import { cn } from "@/libraries/utils";
 import { PageHeader } from "../_components";
-import { NavigationBar, type NavItem } from "@/components/common";
+import { type NavItem, NavigationBar } from "@/components/common";
 import { Bookmark, Heart } from "@/components/icons";
 
 const tabs: NavItem[] = [

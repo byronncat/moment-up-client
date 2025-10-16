@@ -11,7 +11,7 @@ import { cn } from "@/libraries/utils";
 import { ErrorContent, NoContent } from "@/components/common";
 import { FeedCard, PostSkeleton } from "@/components/post";
 import Stories from "./stories";
-import { Camera } from "@/components/icons";
+import { FileText } from "lucide-react";
 
 const STORIES_HEIGHT = 121;
 
@@ -102,13 +102,13 @@ export default function VirtualizedFeed() {
                 <PostSkeleton media="square" className="w-full" />
               </div>
             ) : isError ? (
-              <ErrorContent onRefresh={reloadPost} className="pt-24 pb-20" />
+              <ErrorContent onRefresh={reloadPost} className="pt-16 pb-20" />
             ) : !posts ? null : posts.length === 0 ? (
               <NoContent
-                icon={<Camera className="size-16 text-muted-foreground" />}
-                title="No moments yet"
+                icon={<FileText className="size-14 text-muted-foreground" />}
+                title="No posts yet"
                 description="When anyone you follow posts, they'll show up here."
-                className="pt-24 pb-20"
+                className="pt-16 pb-20"
               />
             ) : isLoaderRow ? (
               <div className="max-w-[calc(600px+16px)] px-2 mx-auto">

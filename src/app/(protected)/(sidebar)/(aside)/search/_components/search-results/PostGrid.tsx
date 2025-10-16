@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { usePost } from "@/components/providers";
-import { useSearch } from "../../Search.provider";
+import { useSearch } from "../../_providers/Search";
 import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
 import { getMediaHeight } from "@/helpers/ui";
 
@@ -95,7 +95,7 @@ export default function MediaGrid() {
             ) : posts === undefined ? null : posts.length === 0 ? (
               <NoContent
                 icon={
-                  <MagnifyingGlass className="size-14 m-1 text-muted-foreground" />
+                  <MagnifyingGlass className="size-14 mb-1 text-muted-foreground" />
                 }
                 title="No media found"
                 description="Try searching for something else."

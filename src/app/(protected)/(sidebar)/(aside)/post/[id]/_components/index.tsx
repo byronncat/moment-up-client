@@ -4,7 +4,7 @@ import type { FeedItemDto } from "api";
 
 import { notFound, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { CommentProvider, usePost, useAuth } from "@/components/providers";
+import { CommentProvider, useAuth, usePost } from "@/components/providers";
 import useSWR from "swr";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
@@ -14,7 +14,7 @@ import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CommentZone, PostHeader, PostButtonGroup } from "@/components/post";
+import { CommentZone, PostButtonGroup, PostHeader } from "@/components/post";
 import { ErrorContent } from "@/components/common";
 import TextContent from "./TextContent";
 import MediaCarousel from "./MediaCarousel";

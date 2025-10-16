@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { usePost } from "@/components/providers";
-import { useSearch } from "../../Search.provider";
+import { useSearch } from "../../_providers/Search";
 import { getPostHeight } from "@/helpers/ui";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
 
@@ -86,11 +86,14 @@ export default function PostsList() {
                   <PostSkeleton media="square" className="w-full" />
                 </div>
               ) : error ? (
-                <ErrorContent onRefresh={() => refresh()} className="pt-12 pb-20" />
+                <ErrorContent
+                  onRefresh={() => refresh()}
+                  className="pt-12 pb-20"
+                />
               ) : posts === undefined ? null : posts.length === 0 ? (
                 <NoContent
                   icon={
-                    <MagnifyingGlass className="size-14 m-1 text-muted-foreground" />
+                    <MagnifyingGlass className="size-14 mb-1 text-muted-foreground" />
                   }
                   title="No posts found"
                   description="Try searching for something else."

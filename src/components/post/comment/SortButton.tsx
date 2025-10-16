@@ -4,10 +4,10 @@ import { SortBy } from "@/constants/client";
 import { cn } from "@/libraries/utils";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Chevron } from "@/components/icons";
 

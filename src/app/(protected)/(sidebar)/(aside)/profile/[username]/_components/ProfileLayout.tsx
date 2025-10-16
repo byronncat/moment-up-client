@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useHover } from "usehooks-ts";
 import { useAuth } from "@/components/providers";
-import { useProfile } from "../_providers/ProfileProvider";
+import { useProfile } from "../_providers/Profile";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";

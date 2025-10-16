@@ -96,11 +96,11 @@ function PreviewContent() {
             </div>
           )}
 
-          {type === "image" && uploadedMedia && (
+          {type === "image" && uploadedMedia ? (
             <FabricCanvas className="size-full bg-white" />
-          )}
+          ) : null}
 
-          {type === "video" && uploadedMedia && (
+          {type === "video" && uploadedMedia ? (
             <video
               src={uploadedMedia.preview}
               className="size-full object-contain bg-black"
@@ -111,7 +111,7 @@ function PreviewContent() {
                 if (ref) videoRef.current = ref;
               }}
             />
-          )}
+          ) : null}
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/libraries/utils";
 import { Input } from "@/components/ui/input";
 import { Loader, MagnifyingGlass, X } from "@/components/icons";
@@ -60,7 +60,7 @@ export default function SearchInput({
         onChange={changeQuery}
         autoComplete="off"
       />
-      {query && <ClearButton onClear={clearQuery} />}
+      {query ? <ClearButton onClear={clearQuery} /> : null}
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import type { StoryInfo } from "api";
 
-import { useRouter, useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuth, useStory } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";

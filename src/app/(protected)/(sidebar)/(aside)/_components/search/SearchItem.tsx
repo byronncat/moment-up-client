@@ -6,7 +6,7 @@ import type {
 } from "api";
 import type { Actions } from "@/components/providers/PostStorage";
 
-import { SearchItemType, ContentReportType } from "@/constants/server";
+import { SearchItemType } from "@/constants/server";
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
 import { FeedCard, MediaCell } from "@/components/post";
@@ -28,14 +28,14 @@ export default function SearchItem({
   const variant = data.type;
 
   if (variant === SearchItemType.POST)
-    return (
+    return actions ? (
       <FeedCard
         data={data as FeedItemDto}
-        actions={actions || ({} as any)}
+        actions={actions}
         onClick={onClick}
         className={cn("w-full", className)}
       />
-    );
+    ) : null;
 
   if (variant === SearchItemType.MEDIA)
     return (

@@ -3,10 +3,9 @@ import type { UserSearchItem } from "api";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useSearch } from "../../_providers/Search.provider";
+import { useSearch } from "../../_providers/Search";
 import { SearchItemType } from "@/constants/server";
 import { ROUTE } from "@/constants/route";
-import { getMediaHeight, getPostHeight } from "@/helpers/ui";
 
 import { cn } from "@/libraries/utils";
 import { ErrorContent, NoContent } from "@/components/common";
@@ -38,22 +37,7 @@ export default function MixedVirtualList() {
   const virtualizer = useWindowVirtualizer({
     count: itemCount,
     overscan: 5,
-    estimateSize: (index) => {
-      const item = results?.[index];
-      if (!item) return 80;
-
-      switch (item.type) {
-        case SearchItemType.USER:
-        case SearchItemType.QUERY:
-          return 72;
-        case SearchItemType.POST:
-          return getPostHeight((item as any).post, window.innerWidth);
-        case SearchItemType.MEDIA:
-          return getMediaHeight(window.innerWidth);
-        default:
-          return 80;
-      }
-    },
+    estimateSize: () => 72,
   });
   const virtualItems = virtualizer.getVirtualItems();
 
@@ -107,7 +91,7 @@ export default function MixedVirtualList() {
               ) : results === undefined ? null : results.length === 0 ? (
                 <NoContent
                   icon={
-                    <MagnifyingGlass className="size-14 m-1 text-muted-foreground" />
+                    <MagnifyingGlass className="size-14 mb-1 text-muted-foreground" />
                   }
                   title="No results found"
                   description="Try searching for something else."

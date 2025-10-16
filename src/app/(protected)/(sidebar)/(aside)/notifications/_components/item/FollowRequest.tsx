@@ -31,14 +31,14 @@ export default function FollowRequestContent({
   async function handleAccept() {
     const { success, message } = await acceptFollowRequestApi(user.id);
     if (success) onClick();
-    else toast.error(message || "Failed to accept follow request");
+    else toast.error(message || "Unable to accept follow request.");
   }
 
   const declineFollowRequestApi = useRefreshApi(UserApi.declineFollowRequest);
   async function handleDecline() {
     const { success, message } = await declineFollowRequestApi(user.id);
     if (success) onClick();
-    else toast.error(message || "Failed to decline follow request");
+    else toast.error(message || "Unable to decline follow request.");
   }
 
   return (
@@ -53,14 +53,7 @@ export default function FollowRequestContent({
         <div className={cn("min-w-0 flex", "text-sm")}>
           <UserHoverCard user={user}>
             <span className="font-semibold truncate">
-              {user.displayName ?? user.username} Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-              labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-              nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-              consequat. Duis aute irure dolor in reprehenderit in voluptate
-              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-              occaecat cupidatat non proident, sunt in culpa qui officia
-              deserunt mollit anim id est laborum.
+              {user.displayName ?? user.username}
             </span>
           </UserHoverCard>
           <span className="inline-block min-w-fit ml-1">
@@ -93,7 +86,7 @@ type UserHoverCardProps = Readonly<{
 
 function UserHoverCard({ children, user, className }: UserHoverCardProps) {
   function handleFollow() {
-    console.log("follow");
+    // console.log("follow");
   }
 
   return (

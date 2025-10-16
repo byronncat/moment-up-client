@@ -12,7 +12,11 @@ type ChatItemProps = Readonly<{
   onSelectContact: (contactId: string) => void;
 }>;
 
-export default function ChatItem({ isActive, contact, onSelectContact }: ChatItemProps) {
+export default function ChatItem({
+  isActive,
+  contact,
+  onSelectContact,
+}: ChatItemProps) {
   return (
     <Link
       href={ROUTE.MESSAGE(contact.id)}
@@ -31,15 +35,15 @@ export default function ChatItem({ isActive, contact, onSelectContact }: ChatIte
             avatar2={contact.members?.[1].avatar}
           />
         )}
-        {contact.isActive && (
+        {contact.isActive ? (
           <span
             className={cn(
               "absolute bottom-0 right-0",
               "size-3 bg-green-500 rounded-full",
               "border-2 border-background"
             )}
-          ></span>
-        )}
+          />
+        ) : null}
       </div>
       <div className="grow min-w-0">
         <div className="flex justify-between">
@@ -61,7 +65,7 @@ function GroupAvatar({
   avatar2,
 }: Readonly<{ avatar1?: string; avatar2?: string }>) {
   if (!avatar1 || !avatar2)
-    return <Avatar src={avatar1 || avatar2} alt="" size="12" />;
+    return <Avatar src={avatar1 ?? avatar2} alt="" size="12" />;
 
   return (
     <div className="relative size-12">

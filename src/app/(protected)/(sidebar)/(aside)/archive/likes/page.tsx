@@ -147,7 +147,7 @@ export default function LikePage() {
                 />
               ) : posts === undefined ? null : posts.length === 0 ? (
                 <NoContent
-                  icon={<Heart className="size-14 m-1 text-muted-foreground" />}
+                  icon={<Heart className="size-14 text-muted-foreground" />}
                   title="No likes yet"
                   description="Posts you like will appear here."
                   className="pt-16 pb-20"
@@ -166,7 +166,7 @@ export default function LikePage() {
                     data={post}
                     actions={{
                       like: async (postId) => {
-                        like(postId);
+                        await like(postId);
                         mutate();
                       },
                       bookmark,

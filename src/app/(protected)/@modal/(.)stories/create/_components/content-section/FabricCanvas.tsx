@@ -1,14 +1,26 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as fabric from "fabric";
 import { cn } from "@/libraries/utils";
-import { useCreateData, useCanvas } from "../../_providers";
+import { useCanvas, useCreateData } from "../../_providers";
 import { ControlStyles, CursorStyles, PositionStyles } from "../../_constants";
 import TextEditPopup from "../TextEditPopup";
 
 interface FabricCanvasProps {
   className?: string;
+}
+
+// WeakMap to generate stable unique IDs for text objects
+const textObjectIdMap = new WeakMap<fabric.FabricObject, number>();
+let nextObjectId = 0;
+
+function getTextObjectId(obj: fabric.FabricObject): number {
+  if (!textObjectIdMap.has(obj)) {
+    textObjectIdMap.set(obj, nextObjectId++);
+  }
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return textObjectIdMap.get(obj)!;
 }
 
 export default function FabricCanvas({ className }: FabricCanvasProps) {
@@ -19,7 +31,7 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
   // Separate refs for canvas and fabric canvas
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
-  const [isCanvasReady, setIsCanvasReady] = useState(false);
+  const isCanvasReadyRef = useRef(false);
 
   // Initialize FabricJS canvas
   useEffect(() => {
@@ -53,15 +65,15 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
 
     // Handle text content changes
     canvas.on("text:changed", (event: { target: fabric.IText }) => {
-      const target = event.target;
-      if (target && target.text) setTextContent(target.text);
+      const { target } = event;
+      if (target?.text) setTextContent(target.text);
     });
 
     // Handle object selection
     canvas.on(
       "selection:created",
       (event: { selected: fabric.FabricObject[] }) => {
-        if (event.selected && event.selected.length === 1)
+        if (event.selected?.length === 1)
           setSelectedObject(event.selected[0]);
       }
     );
@@ -69,7 +81,7 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
     canvas.on(
       "selection:updated",
       (event: { selected: fabric.FabricObject[] }) => {
-        if (event.selected && event.selected.length === 1)
+        if (event.selected?.length === 1)
           setSelectedObject(event.selected[0]);
         else setSelectedObject(null);
       }
@@ -82,7 +94,7 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
     fabricCanvasRef.current = canvas;
 
     // Notify parent component that canvas is ready
-    setIsCanvasReady(true);
+    isCanvasReadyRef.current = true;
     setCanvas(canvas);
 
     const handleResize = () => {
@@ -105,13 +117,13 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
       window.removeEventListener("resize", handleResize);
       fabricCanvasRef.current?.dispose();
       fabricCanvasRef.current = null;
-      setIsCanvasReady(false);
+      isCanvasReadyRef.current = false;
     };
   }, [setTextContent, setCanvas, setSelectedObject]);
 
   // Handle media uploads
   useEffect(() => {
-    if (!fabricCanvasRef.current || !isCanvasReady || !uploadedMedia) return;
+    if (!fabricCanvasRef.current || !isCanvasReadyRef.current || !uploadedMedia) return;
 
     const canvas = fabricCanvasRef.current;
     canvas.clear();
@@ -120,8 +132,8 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
       fabric.FabricImage.fromURL(uploadedMedia.preview).then(
         (image: fabric.FabricImage) => {
           // Scale image to fit canvas while maintaining aspect ratio
-          const scaleX = canvas.width! / image.width!;
-          const scaleY = canvas.height! / image.height!;
+          const scaleX = canvas.width / image.width;
+          const scaleY = canvas.height / image.height;
           const scale = Math.min(scaleX, scaleY);
 
           image.set({
@@ -231,17 +243,18 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
     //   videoElement.addEventListener("canplay", handleVideoLoad, { once: true });
     //   videoElement.load();
     // }
-  }, [uploadedMedia, type, isCanvasReady]);
+  }, [uploadedMedia, type]);
 
   return (
     <div className={cn("flex items-center justify-center", className)}>
       <canvas ref={canvasRef} className="max-w-full max-h-full" />
-      {selectedObject && selectedObject instanceof fabric.IText && (
+      {selectedObject && selectedObject instanceof fabric.IText ? (
         <TextEditPopup
+          key={`text-popup-${getTextObjectId(selectedObject)}`}
           selectedObject={selectedObject as fabric.IText}
           onUpdateText={updateSelectedText}
         />
-      )}
+      ) : null}
     </div>
   );
 }

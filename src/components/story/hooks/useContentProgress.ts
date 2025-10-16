@@ -1,5 +1,5 @@
 import type { StoryInfo } from "api";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const DEFAULT_DURATION = 7000;
 const UPDATE_INTERVAL = 50;

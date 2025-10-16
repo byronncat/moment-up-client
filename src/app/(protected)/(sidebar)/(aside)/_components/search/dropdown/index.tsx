@@ -10,7 +10,7 @@ type DropdownProps = {
   items: SearchItem[] | null;
   onRemoveItem: (itemId: string) => void;
   onClearAllItems: () => void;
-  onClickItem: (item: any) => void;
+  onClickItem: (item: SearchItem) => void;
 };
 
 export default function Dropdown({

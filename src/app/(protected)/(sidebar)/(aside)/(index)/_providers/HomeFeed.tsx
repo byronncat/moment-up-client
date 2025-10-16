@@ -15,13 +15,7 @@ type HomeFeedContextType = Readonly<{
 }>;
 
 // === Provider ===
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-} from "react";
+import { createContext, use, useCallback, useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import useSWRImmutable from "swr/immutable";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
@@ -43,7 +37,7 @@ const HomeFeedContext = createContext<HomeFeedContextType>({
   loadNextPage: () => {},
 });
 
-export const useHomeFeed = () => useContext(HomeFeedContext);
+export const useHomeFeed = () => use(HomeFeedContext);
 
 export function HomeFeedProvider({
   children,
@@ -116,9 +110,5 @@ export function HomeFeedProvider({
     isStoriesError: !isStoriesLoading && (!!storiesError || !storiesData),
   };
 
-  return (
-    <HomeFeedContext.Provider value={value}>
-      {children}
-    </HomeFeedContext.Provider>
-  );
+  return <HomeFeedContext value={value}>{children}</HomeFeedContext>;
 }

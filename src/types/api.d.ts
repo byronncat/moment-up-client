@@ -15,12 +15,14 @@ declare module "api" {
     message: string;
     statusCode: number;
     data?: T;
+    code?: string;
   }>;
 
   interface ErrorDto {
     error: string;
     message: string | string[];
     statusCode: number;
+    code?: string;
   }
 
   interface PaginationDto<T> {

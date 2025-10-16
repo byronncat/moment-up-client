@@ -1,6 +1,6 @@
 "use client";
 
-import { useProfile } from "../_providers/ProfileProvider";
+import { useProfile } from "../_providers/Profile";
 import { ROUTE } from "@/constants/route";
 
 import { type NavItem, NavigationBar } from "@/components/common";

@@ -24,7 +24,7 @@ export default function SearchHistory({
     SearchHistoryUtil.get(HISTORY_LIMIT)
   );
 
-  async function handleClick(item: TSearchItem) {
+  function handleClick(item: TSearchItem) {
     switch (item.type) {
       case SearchItemType.USER:
         router.push(ROUTE.PROFILE(item.username));
@@ -35,12 +35,12 @@ export default function SearchHistory({
     }
   }
 
-  async function handleRemove(item: TSearchItem) {
+  function handleRemove(item: TSearchItem) {
     const id = item.type === SearchItemType.USER ? item.id : item.query;
     setHistoryItems(SearchHistoryUtil.remove(id));
   }
 
-  async function handleClear() {
+  function handleClear() {
     SearchHistoryUtil.clear();
     setHistoryItems([]);
   }

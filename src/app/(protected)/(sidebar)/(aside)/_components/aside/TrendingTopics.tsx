@@ -135,7 +135,7 @@ function ReportButton({
         if (success) return message || "Report submitted.";
         throw new Error(message);
       },
-      error: (error) => error.message || "Failed to submit report.",
+      error: (error) => error.message ?? "Failed to submit report.",
     });
   }
 

@@ -3,9 +3,8 @@
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/providers";
 import { useResponsiveSidebar } from "./hooks/useResponsiveSidebar";
-import { getNavigationItems } from "./config/navigationItems";
+import { ItemIndex, getNavigationItems } from "./config/navigationItems";
 import { ROUTE } from "@/constants/route";
-import { ItemIndex } from "./config/navigationItems";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";

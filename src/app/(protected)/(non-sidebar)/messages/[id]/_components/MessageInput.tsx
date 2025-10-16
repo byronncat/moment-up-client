@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
-import { Circle, FaceSmile, PaperPlane } from "@/components/icons";
+import { Circle, PaperPlane } from "@/components/icons";
 
 type MessageInputProps = {
   onSendMessage: (message: string) => void;

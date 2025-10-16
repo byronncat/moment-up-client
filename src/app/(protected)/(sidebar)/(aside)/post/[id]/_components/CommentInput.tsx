@@ -5,7 +5,7 @@ import { isEmpty } from "lodash";
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { PaperPlane, Loader } from "@/components/icons";
+import { Loader, PaperPlane } from "@/components/icons";
 
 type CommentInputProps = Readonly<{
   ref: React.RefObject<HTMLTextAreaElement | null>;

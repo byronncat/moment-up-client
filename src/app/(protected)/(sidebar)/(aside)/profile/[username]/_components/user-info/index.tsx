@@ -4,7 +4,7 @@ import { __parseUrl } from "@/__mocks__";
 
 import { useState } from "react";
 import { useAuth } from "@/components/providers";
-import { useProfile } from "../../_providers/ProfileProvider";
+import { useProfile } from "../../_providers/Profile";
 import Format from "@/utilities/format";
 import { ROUTE } from "@/constants/route";
 

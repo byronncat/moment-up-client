@@ -1,11 +1,11 @@
 "use client";
 
-import { mockContacts, mockInitialMessages, getRandomFile } from "@/__mocks__";
+import { getRandomFile, mockContacts, mockInitialMessages } from "@/__mocks__";
 import type { MessageDto } from "api";
 
 import { useState } from "react";
 import { cn } from "@/libraries/utils";
-import { Header, Message as ChatMessage, MessageInput } from "./_components";
+import { Message as ChatMessage, Header, MessageInput } from "./_components";
 import { useParams } from "next/navigation";
 export default function Message() {
   const contactId = useParams().id;

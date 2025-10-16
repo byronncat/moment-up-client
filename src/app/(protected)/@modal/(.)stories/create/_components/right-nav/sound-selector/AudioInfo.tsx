@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useTextTruncate, useScrollAnimation } from "@/hooks";
+import { useScrollAnimation, useTextTruncate } from "@/hooks";
 
 import { cn } from "@/libraries/utils";
 import { Badge } from "@/components/ui/badge";
-import { Volume, Trash } from "@/components/icons";
+import { Trash, Volume } from "@/components/icons";
 import { Save } from "lucide-react";
 
 type AudioInfoProps = Readonly<{

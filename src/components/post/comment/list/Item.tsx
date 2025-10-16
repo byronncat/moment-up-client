@@ -14,9 +14,9 @@ import { Separator } from "@/components/ui/separator";
 import {
   Dialog,
   DialogContent,
-  DialogTrigger,
-  DialogTitle,
   DialogDescription,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import HoverCard from "./HoverCard";
 import { Heart, MoreHorizontal } from "@/components/icons";
@@ -77,7 +77,7 @@ export default function Item({
           {comment.text}
         </p>
 
-        {canExpand && (
+        {canExpand ? (
           <button
             onClick={onToggleExpand}
             className={cn(
@@ -91,7 +91,7 @@ export default function Item({
           >
             {isExpanded ? "Show less" : "Show more"}
           </button>
-        )}
+        ) : null}
 
         <div className={cn("pt-2", "flex items-center gap-2")}>
           <button
@@ -120,13 +120,13 @@ export default function Item({
               <span className="text-5">{Format.number(comment.likes)}</span>
             )}
           </button>
-          {isOwnComment && (
+          {isOwnComment ? (
             <MoreMenu
               isDialogOpen={isDialogOpen}
               setIsDialogOpen={setIsDialogOpen}
               onDelete={handleDelete}
             />
-          )}
+          ) : null}
         </div>
       </div>
     </div>

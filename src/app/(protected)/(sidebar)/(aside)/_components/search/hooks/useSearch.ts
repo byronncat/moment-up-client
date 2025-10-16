@@ -22,14 +22,14 @@ interface UseSearchActions {
 type UseSearchReturn = UseSearchState & UseSearchActions;
 
 // === Hook ===
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { useRefreshApi } from "@/components/providers";
 import { toast } from "sonner";
 import { SearchApi } from "@/services";
 import { SearchHistory } from "@/utilities";
 import { SEARCH_DEBOUNCE_TIME } from "@/constants/client";
-import { SearchItemType, INITIAL_PAGE } from "@/constants/server";
+import { INITIAL_PAGE, type SearchItemType } from "@/constants/server";
 
 const MAX_ITEMS = 11;
 
@@ -45,40 +45,40 @@ export function useSearch(): UseSearchReturn {
   }
 
   const callSearchApi = useRefreshApi(SearchApi.search);
-  const search = useCallback(async (query: string) => {
-    if (!query.trim()) return;
-    setIsLoading(true);
+  const search = useCallback(
+    async (query: string) => {
+      if (!query.trim()) return;
+      setIsLoading(true);
 
-    const { success, data } = await callSearchApi({
-      query,
-      filter: "user",
-      page: INITIAL_PAGE,
-      limit: MAX_ITEMS,
-    });
-    if (success) setItems((data?.items as SearchItem[]) ?? []);
-    else toast.error("Failed to perform search");
-    setIsLoading(false);
-  }, []);
-
-  const getHistory = useCallback(async () => {
-    const history = SearchHistory.get(MAX_ITEMS);
-    setItems(history);
-  }, []);
-
-  const addHistory = useCallback(
-    async (item: SearchItem, type: SearchItemType) => {
-      const next = SearchHistory.add(item as any, type, MAX_ITEMS);
-      setItems(next);
+      const { success, data } = await callSearchApi({
+        query,
+        filter: "user",
+        page: INITIAL_PAGE,
+        limit: MAX_ITEMS,
+      });
+      if (success) setItems((data?.items as SearchItem[]) ?? []);
+      else toast.error("Failed to perform search");
+      setIsLoading(false);
     },
-    []
+    [callSearchApi]
   );
 
-  const removeHistory = useCallback(async (itemId: string) => {
+  const getHistory = useCallback(() => {
+    const history = SearchHistory.get(MAX_ITEMS);
+    setItems(history);
+  }, [setItems]);
+
+  const addHistory = useCallback((item: SearchItem, type: SearchItemType) => {
+    const next = SearchHistory.add(item, type, MAX_ITEMS);
+    setItems(next);
+  }, []);
+
+  const removeHistory = useCallback((itemId: string) => {
     const next = SearchHistory.remove(itemId);
     setItems(next);
   }, []);
 
-  const clearHistory = useCallback(async () => {
+  const clearHistory = useCallback(() => {
     SearchHistory.clear();
     setItems([]);
   }, []);
