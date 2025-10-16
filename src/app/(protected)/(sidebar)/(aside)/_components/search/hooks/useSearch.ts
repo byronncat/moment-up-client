@@ -22,7 +22,7 @@ interface UseSearchActions {
 type UseSearchReturn = UseSearchState & UseSearchActions;
 
 // === Hook ===
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { useRefreshApi } from "@/components/providers";
 import { toast } from "sonner";
@@ -36,62 +36,70 @@ const MAX_ITEMS = 11;
 export function useSearch(): UseSearchReturn {
   const [query, setQuery] = useDebounceValue("", SEARCH_DEBOUNCE_TIME);
   const [items, setItems] = useState<SearchItem[] | null>(null);
-  const [isSearching, setSearching] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  function reset() {
-    setItems(null);
-    setSearching(false);
-  }
+  const [history, setHistory] = useState<SearchItem[] | null>(null);
+  const [isSearching, setSearchingState] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const callSearchApi = useRefreshApi(SearchApi.search);
-  const search = useCallback(
-    async (query: string) => {
-      if (!query.trim()) return;
-      setIsLoading(true);
 
-      const { success, data } = await callSearchApi({
-        query,
-        filter: "user",
-        page: INITIAL_PAGE,
-        limit: MAX_ITEMS,
-      });
-      if (success) setItems((data?.items as SearchItem[]) ?? []);
-      else toast.error("Failed to perform search");
-      setIsLoading(false);
+  const reset = useCallback(() => {
+    setItems(null);
+    setHistory(null);
+    setSearchingState(false);
+  }, []);
+
+  const setSearching = useCallback(
+    (searching: boolean) => {
+      setSearchingState(searching);
+      if (searching && !query.trim()) setHistory(SearchHistory.get(MAX_ITEMS));
     },
-    [callSearchApi]
+    [query]
   );
-
-  const getHistory = useCallback(() => {
-    const history = SearchHistory.get(MAX_ITEMS);
-    setItems(history);
-  }, [setItems]);
 
   const addHistory = useCallback((item: SearchItem, type: SearchItemType) => {
     const next = SearchHistory.add(item, type, MAX_ITEMS);
-    setItems(next);
+    setHistory(next);
   }, []);
 
   const removeHistory = useCallback((itemId: string) => {
     const next = SearchHistory.remove(itemId);
-    setItems(next);
+    setHistory(next);
   }, []);
 
   const clearHistory = useCallback(() => {
     SearchHistory.clear();
-    setItems([]);
+    setHistory([]);
   }, []);
 
   useEffect(() => {
-    if (query) search(query);
-    else if (isSearching) getHistory();
-  }, [query, isSearching, getHistory, search]);
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) return;
+
+    let cancelled = false;
+
+    startTransition(async () => {
+      await callSearchApi({
+        query: trimmedQuery,
+        filter: "user",
+        page: INITIAL_PAGE,
+        limit: MAX_ITEMS,
+      }).then(({ success, data, message }) => {
+        if (cancelled) return;
+
+        if (success) setItems((data?.items as SearchItem[]) ?? []);
+        else toast.error(message ?? "Failed to perform search.");
+      });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [query, callSearchApi]);
 
   return {
     query,
-    items,
-    isLoading,
+    items: query ? items : history,
+    isLoading: isPending,
     isSearching,
     setQuery,
     setSearching,
