@@ -2,11 +2,11 @@
 
 import type { FeedItemDto, PaginationDto } from "api";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
-import { useProfile } from "../_providers/ProfileProvider";
+import { useProfile } from "../_providers/Profile";
 import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { ROUTE } from "@/constants/route";
@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { FeedCard, PostSkeleton } from "@/components/post";
 import { ErrorContent, NoContent } from "@/components/common";
 import ProfileZone, { PROFILE_ZONE_HEIGHT } from "./ProfileZone";
-import { Camera } from "@/components/icons";
+import { FileText } from "lucide-react";
 
 type PostListProps = Readonly<{
   filter?: "media" | "tagged";
@@ -31,8 +31,7 @@ const ITEMS_EACH_PAGE = 20;
 export default function PostList({ filter }: PostListProps) {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token, user } = useAuth();
-  const { profile, isSelf } = useProfile();
-
+  const { profile, isSelf, registerPostsRefresh } = useProfile();
   const getKey = (
     pageIndex: number,
     previousPageData: PaginationDto<FeedItemDto> | null
@@ -117,20 +116,9 @@ export default function PostList({ filter }: PostListProps) {
       loadNextPage();
   }, [user, posts, virtualItems, hasNextPage, isValidating, loadNextPage]);
 
-  const prevIsFollowingRef = useRef<boolean | undefined>(undefined);
-
   useEffect(() => {
-    if (
-      prevIsFollowingRef.current !== undefined &&
-      prevIsFollowingRef.current !== profile.isFollowing &&
-      !profile.isProtected
-    ) {
-      console.log("mutate");
-      mutate();
-    }
-
-    prevIsFollowingRef.current = profile.isFollowing;
-  }, [profile.isFollowing, profile.isProtected, mutate]);
+    registerPostsRefresh(mutate);
+  }, [registerPostsRefresh, mutate]);
 
   return (
     <div
@@ -182,22 +170,17 @@ export default function PostList({ filter }: PostListProps) {
             ) : posts === undefined ? null : posts.length === 0 ? (
               <div className={cn("pt-16 pb-20", "flex flex-col items-center")}>
                 <NoContent
-                  icon={
-                    <Camera
-                      variant="regular"
-                      className="size-16 text-muted-foreground"
-                    />
-                  }
+                  icon={<FileText className="size-14 text-muted-foreground" />}
                   title="No posts yet"
                   description={
                     isSelf
-                      ? "When you share posts, they will appear on your profile."
+                      ? "When you share posts, they will appear here."
                       : "This user has not posted any posts yet."
                   }
                 />
                 {isSelf ? (
-                  <Link href={ROUTE.POST_CREATE}>
-                    <Button variant="outline" size="sm" className="mt-5">
+                  <Link href={ROUTE.POST_CREATE} tabIndex={-1} className="mt-5">
+                    <Button variant="outline" size="sm">
                       Create post
                     </Button>
                   </Link>

@@ -2,11 +2,11 @@
 
 import type { FeedItemDto, PaginationDto } from "api";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
-import { useProfile } from "../_providers/ProfileProvider";
+import { useProfile } from "../_providers/Profile";
 import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { ROUTE } from "@/constants/route";
@@ -28,8 +28,7 @@ const ITEMS_EACH_PAGE = 21;
 export default function PostGrid() {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
-  const { profile, isSelf } = useProfile();
-
+  const { profile, isSelf, registerPostsRefresh } = useProfile();
   const getKey = (
     pageIndex: number,
     previousPageData: PaginationDto<FeedItemDto> | null
@@ -111,18 +110,9 @@ export default function PostGrid() {
     loadNextPage,
   ]);
 
-  const prevIsFollowingRef = useRef<boolean | undefined>(undefined);
-
   useEffect(() => {
-    if (
-      prevIsFollowingRef.current !== undefined &&
-      prevIsFollowingRef.current !== profile.isFollowing &&
-      !profile.isProtected
-    )
-      mutate();
-
-    prevIsFollowingRef.current = profile.isFollowing;
-  }, [profile.isFollowing, profile.isProtected, mutate]);
+    registerPostsRefresh(mutate);
+  }, [registerPostsRefresh, mutate]);
 
   return (
     <div
@@ -169,19 +159,17 @@ export default function PostGrid() {
             ) : posts === undefined ? null : posts.length === 0 ? (
               <div className={cn("pt-19 pb-20", "flex flex-col items-center")}>
                 <NoContent
-                  icon={
-                    <ImageIcon className="size-14 m-1 text-muted-foreground" />
-                  }
+                  icon={<ImageIcon className="size-14 text-muted-foreground" />}
                   title="No media yet"
                   description={
                     isSelf
-                      ? "When you share media, they will appear on your profile."
+                      ? "When you share media, they will appear here."
                       : "This user has not posted any media yet."
                   }
                 />
                 {isSelf ? (
-                  <Link href={ROUTE.POST_CREATE}>
-                    <Button variant="outline" size="sm" className="mt-5">
+                  <Link href={ROUTE.POST_CREATE} tabIndex={-1} className="mt-5">
+                    <Button variant="outline" size="sm">
                       Upload media
                     </Button>
                   </Link>
