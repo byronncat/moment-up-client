@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { useTextClamp } from "@/hooks";
+import { useState } from "react";
 import { usePostData } from "../../_provider/PostData";
 import { parseText } from "@/helpers/parser";
 
@@ -11,9 +10,7 @@ type TextContentProps = Readonly<{
 
 export default function TextContent({ className }: TextContentProps) {
   const { files, text } = usePostData();
-  const textRef = useRef<HTMLParagraphElement>(null);
-
-  const isTextClamped = useTextClamp(textRef);
+  const [isTextClamped, setIsTextClamped] = useState<boolean>();
   const hasFiles = !!files.length;
 
   if (!text) return null;
@@ -28,7 +25,12 @@ export default function TextContent({ className }: TextContentProps) {
       )}
     >
       <div
-        ref={textRef}
+        ref={(element) => {
+          if (element && isTextClamped === undefined) {
+            const isClamped = element.scrollHeight > element.clientHeight;
+            setIsTextClamped(isClamped);
+          }
+        }}
         className={cn(
           "wrap-break-word",
           hasFiles ? "line-clamp-1" : "line-clamp-2"
@@ -39,7 +41,8 @@ export default function TextContent({ className }: TextContentProps) {
       <span
         className={cn(
           "font-semibold text-sm text-muted-foreground",
-          "shrink-0 pl-1",
+          "shrink-0",
+          hasFiles && "pl-1",
           isTextClamped ? "block" : "hidden"
         )}
       >

@@ -1,34 +1,28 @@
 import type { FeedItemDto } from "api";
-import { useEffect, useRef, useState } from "react";
-import { useTextClamp } from "@/hooks";
+import { useState } from "react";
 import { parseText } from "@/helpers/parser";
 import { cn } from "@/libraries/utils";
 
 export default function TextContent({
   data,
 }: Readonly<{ data: FeedItemDto["post"]["text"] }>) {
-  const textRef = useRef<HTMLDivElement>(null);
-  const isTextClamped = useTextClamp(textRef);
   const [isExpanded, setIsExpanded] = useState(false);
   const [canExpand, setCanExpand] = useState(false);
-  const isFirstRender = useRef(true);
 
   function handleToggleExpand() {
     setIsExpanded(!isExpanded);
   }
 
-  useEffect(() => {
-    if (isFirstRender.current && isTextClamped) {
-      setCanExpand(isTextClamped);
-      isFirstRender.current = false;
-    }
-  }, [isTextClamped]);
-
   if (!data) return <div className="h-2" />;
   return (
     <div className={cn("pl-4 pr-5 pb-3", "text-sm")}>
       <div
-        ref={textRef}
+        ref={(element) => {
+          if (element && canExpand === undefined) {
+            const isTextClamped = element.scrollHeight > element.clientHeight;
+            setCanExpand(isTextClamped);
+          }
+        }}
         className={cn(!isExpanded && "line-clamp-5", "space-y-2")}
       >
         {parseText(data)}

@@ -1,7 +1,6 @@
 import type { CommentDto } from "api";
 
-import { useEffect, useRef, useState } from "react";
-import { useTextClamp } from "@/hooks";
+import { useState } from "react";
 import { useAuth, useComment } from "@/components/providers";
 import dayjs from "dayjs";
 import Format from "@/utilities/format";
@@ -36,11 +35,8 @@ export default function Item({
   const { likeComment, deleteComment } = useComment();
   const isOwnComment = user?.id === comment.user.id;
 
-  const textRef = useRef<HTMLParagraphElement>(null);
-  const isTextClamped = useTextClamp(textRef);
-  const [canExpand, setCanExpand] = useState(false);
+  const [canExpand, setCanExpand] = useState<boolean>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const isFirstRender = useRef(true);
 
   function handleLike() {
     likeComment(comment.id, !comment.isLiked);
@@ -49,13 +45,6 @@ export default function Item({
   function handleDelete() {
     deleteComment(comment.id);
   }
-
-  useEffect(() => {
-    if (isFirstRender.current && isTextClamped) {
-      isFirstRender.current = false;
-      setCanExpand(isTextClamped);
-    }
-  }, [isTextClamped]);
 
   return (
     <div className="flex items-start gap-2.5">
@@ -71,7 +60,12 @@ export default function Item({
         <Header user={comment.user} lastModified={comment.lastModified} />
 
         <p
-          ref={textRef}
+          ref={(element) => {
+            if (element && canExpand === undefined) {
+              const isTextClamped = element.scrollHeight > element.clientHeight;
+              setCanExpand(isTextClamped);
+            }
+          }}
           className={cn("text-sm", !isExpanded && "line-clamp-3")}
         >
           {comment.text}
