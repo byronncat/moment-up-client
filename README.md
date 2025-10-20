@@ -10,7 +10,7 @@
   <h3 align="center">MomentUp</h3>
 
   <p align="center">
-    A modern full-stack social media platform to share posts and connect with the world!
+    A modern full-stack social platform to share posts and connect with the world!
     <br />
     <a href="https://youtu.be/0YJ7lPvjlAo"><strong>Watch Demo »</strong></a>
     <br />
@@ -53,7 +53,7 @@
 
 ![Product Name Screen Shot](doc/review.png)
 
-**MomentUp** is a comprehensive full-stack social media platform that enables users to share posts through images and videos, connect with others, and engage with content in real-time. Built with modern web technologies, MomentUp emphasizes clean architecture, responsive design, type safety, and an intuitive user experience. From posting content to following friends, exploring trending topics, and managing your profile, MomentUp delivers a complete social experience.
+**MomentUp** is a comprehensive full-stack social platform that enables users to share posts through images and videos, connect with others, and engage with content in real-time. Built with modern web technologies, MomentUp emphasizes clean architecture, responsive design, type safety, and an intuitive user experience. From posting content to following friends, exploring trending topics, and managing your profile, MomentUp delivers a complete social experience.
 
 ### Key Features
 
