@@ -55,7 +55,7 @@ export default function SearchHistory({
             key={item.type === SearchItemType.USER ? item.id : item.query}
             onClick={() => handleClick(item)}
             className={cn(
-              "flex items-center justify-between",
+              "flex items-center justify-between gap-1",
               "group",
               "px-4 py-3",
               "cursor-pointer hover:bg-accent/5"
@@ -65,7 +65,7 @@ export default function SearchHistory({
             <Button
               variant="ghost"
               size="icon"
-              className="size-7 rounded-full"
+              className="size-7 rounded-full shrink-0"
               onClick={(event) => {
                 event.stopPropagation();
                 handleRemove(item);

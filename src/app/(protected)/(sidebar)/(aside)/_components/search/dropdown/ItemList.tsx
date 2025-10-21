@@ -37,7 +37,8 @@ export default function ItemList({
         </span>
         {showActionButtons ? <ClearButton onClear={onClearAllItems} /> : null}
       </div>
-      <div className="space-y-1">
+      {/* w-[318px] for truncating text */}
+      <div className="space-y-1 w-[calc(320px-2px)]">
         {items.map((item) => (
           <ItemButton
             key={item.type === SearchItemType.USER ? item.id : item.query}
@@ -67,16 +68,17 @@ function ItemButton({
   return (
     <div
       className={cn(
-        "flex items-center justify-between",
+        "flex items-center justify-between gap-1",
         "group",
-        "pl-4 pr-5 py-2",
+        "pl-4 py-2",
+        showActionButtons ? "pr-3" : "pr-5",
         "cursor-pointer hover:bg-accent/5",
         "transition-colors duration-150 ease-in-out"
       )}
       onClick={() => onClickItem(item)}
       aria-label={`Search for ${item.type === SearchItemType.USER ? `@${item.username}` : item.query}`}
     >
-      <Item data={item} className="select-none cursor-pointer size-full" />
+      <Item data={item} className="select-none cursor-pointer" />
       {showActionButtons ? (
         <button
           onClick={(event) => {
@@ -87,10 +89,9 @@ function ItemButton({
           }}
           className={cn(
             "p-1.5 rounded-full",
-            "hidden group-hover:block",
-            "cursor-pointer",
-            "hover:bg-accent/7",
-            "transition-all duration-150 ease-in-out"
+            "opacity-0 group-hover:opacity-100",
+            "cursor-pointer transition-opacity duration-150 ease-in-out",
+            "hover:bg-accent/7"
           )}
         >
           <X className="size-4 fill-muted-foreground" />

@@ -54,12 +54,14 @@ export default function SearchItem({
           alt={(data as UserSearchItem).username}
           size="12"
         />
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col min-w-0">
           <div className={cn("text-sm font-semibold", "truncate")}>
             {(data as UserSearchItem).displayName ??
               (data as UserSearchItem).username}
           </div>
-          <span className={cn("text-sm text-muted-foreground", "truncate")}>
+          <span
+            className={cn("text-sm text-muted-foreground", "truncate min-w-0")}
+          >
             @{(data as UserSearchItem).username}
           </span>
         </div>
@@ -67,10 +69,10 @@ export default function SearchItem({
     ),
     [SearchItemType.QUERY]: () => (
       <>
-        <IconContainer>
+        <IconContainer className="shrink-0">
           <MagnifyingGlass className="size-5 fill-muted-foreground" />
         </IconContainer>
-        <span className={cn("text-sm", "max-w-[180px] truncate")}>
+        <span className={cn("text-sm", "truncate")}>
           {(data as QuerySearchItem).query}
         </span>
       </>
@@ -78,19 +80,26 @@ export default function SearchItem({
   };
 
   return (
-    <div className={cn("flex items-center gap-3", className)} onClick={onClick}>
+    <div
+      className={cn("flex items-center gap-3", "min-w-0", className)}
+      onClick={onClick}
+    >
       {Variant[variant]()}
     </div>
   );
 }
 
-function IconContainer({ children }: Readonly<{ children: React.ReactNode }>) {
+function IconContainer({
+  children,
+  className,
+}: Readonly<{ children: React.ReactNode; className?: string }>) {
   return (
     <div
       className={cn(
         "size-12 rounded-full",
         "flex items-center justify-center",
-        "bg-accent/5"
+        "bg-accent/5",
+        className
       )}
     >
       {children}

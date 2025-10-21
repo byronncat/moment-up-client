@@ -4,6 +4,8 @@ import { MagnifyingGlass, User } from "@/components/icons";
 import { ROUTE } from "@/constants/route";
 import { SearchCategory } from "@/constants/client";
 
+const USERNAME_REGEX = /^@?(?!\.)(?!.*\.\.)([a-zA-Z0-9._]+)(?<!\.)$/;
+
 export default function EmptyState({ query }: Readonly<{ query: string }>) {
   if (!query)
     return (
@@ -19,6 +21,8 @@ export default function EmptyState({ query }: Readonly<{ query: string }>) {
       </div>
     );
 
+  const isValidUsername = USERNAME_REGEX.test(query);
+  const username = query.startsWith("@") ? query.slice(1) : query;
   return (
     <div>
       <Link
@@ -41,12 +45,13 @@ export default function EmptyState({ query }: Readonly<{ query: string }>) {
         </div>
       </Link>
       <Link
-        href={ROUTE.SEARCH(`@${query}`, SearchCategory.PEOPLE)}
+        href={ROUTE.SEARCH(username, SearchCategory.PEOPLE)}
         className={cn(
           "pl-5 py-3 block",
           "cursor-pointer hover:bg-accent/5",
           "outline-none focus:bg-accent/5",
-          "transition-colors duration-150 ease-in-out"
+          "transition-colors duration-150 ease-in-out",
+          !isValidUsername && "opacity-0 cursor-default pointer-events-none"
         )}
       >
         <div
@@ -55,7 +60,7 @@ export default function EmptyState({ query }: Readonly<{ query: string }>) {
             "flex items-center gap-3"
           )}
         >
-          <User className="size-4" type="solid" /> Find user @{query}
+          <User className="size-4" type="solid" /> Find user @{username}
         </div>
       </Link>
     </div>

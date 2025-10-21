@@ -37,7 +37,7 @@ export function useSearch(): UseSearchReturn {
   const [query, setQuery] = useDebounceValue("", SEARCH_DEBOUNCE_TIME);
   const [items, setItems] = useState<SearchItem[] | null>(null);
   const [history, setHistory] = useState<SearchItem[] | null>(null);
-  const [isSearching, setSearchingState] = useState(false);
+  const [isSearching, setSearching] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const callSearchApi = useRefreshApi(SearchApi.search);
@@ -45,16 +45,8 @@ export function useSearch(): UseSearchReturn {
   const reset = useCallback(() => {
     setItems(null);
     setHistory(null);
-    setSearchingState(false);
+    setSearching(false);
   }, []);
-
-  const setSearching = useCallback(
-    (searching: boolean) => {
-      setSearchingState(searching);
-      if (searching && !query.trim()) setHistory(SearchHistory.get(MAX_ITEMS));
-    },
-    [query]
-  );
 
   const addHistory = useCallback((item: SearchItem, type: SearchItemType) => {
     const next = SearchHistory.add(item, type, MAX_ITEMS);
@@ -73,9 +65,14 @@ export function useSearch(): UseSearchReturn {
 
   useEffect(() => {
     const trimmedQuery = query.trim();
-    if (!trimmedQuery) return;
-
     let cancelled = false;
+    if (!trimmedQuery) {
+      startTransition(() => {
+        if (cancelled) return;
+        setHistory(SearchHistory.get(MAX_ITEMS));
+      });
+      return;
+    }
 
     startTransition(async () => {
       await callSearchApi({
@@ -94,7 +91,7 @@ export function useSearch(): UseSearchReturn {
     return () => {
       cancelled = true;
     };
-  }, [query, callSearchApi]);
+  }, [isSearching, query, callSearchApi]);
 
   return {
     query,
