@@ -33,7 +33,7 @@ export default function UserItem({ data, onFollow }: UserItemProps) {
       href={ROUTE.PROFILE(data.username)}
       className={cn(
         "flex px-4 py-3",
-        "hover:bg-accent/[.05] cursor-pointer",
+        "hover:bg-accent/5 cursor-pointer",
         "transition-colors duration-150 ease-in-out"
       )}
       tabIndex={-1}

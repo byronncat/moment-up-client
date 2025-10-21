@@ -106,7 +106,7 @@ export default function ThemeSelection({
             onClick={option.onClick}
             className={cn(
               "cursor-pointer",
-              option.selected && "animate-pulse bg-accent/[.1]"
+              option.selected && "animate-pulse bg-accent/10"
             )}
           >
             {option.icon}

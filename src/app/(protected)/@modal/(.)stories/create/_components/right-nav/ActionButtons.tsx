@@ -31,8 +31,8 @@ export default function ActionButtons({
           className={cn(
             "flex-1 h-10",
             "text-sm text-card-foreground-dark font-semibold",
-            "bg-accent-dark/[.12] rounded-lg",
-            "hover:bg-accent-dark/[.20] transition-colors ease-in-out",
+            "bg-accent-dark/12 rounded-lg",
+            "hover:bg-accent-dark/20 transition-colors ease-in-out",
             "cursor-pointer"
           )}
         >

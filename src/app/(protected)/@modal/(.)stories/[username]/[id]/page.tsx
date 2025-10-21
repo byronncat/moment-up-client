@@ -50,7 +50,7 @@ export default function StoryModal() {
         className={cn(
           "absolute top-2 left-2",
           "rounded-full",
-          "hover:bg-accent-dark/[.2]",
+          "hover:bg-accent-dark/20",
           "text-muted-foreground-dark hover:text-accent-foreground-dark"
         )}
       >

@@ -90,7 +90,7 @@ function IconContainer({ children }: Readonly<{ children: React.ReactNode }>) {
       className={cn(
         "size-12 rounded-full",
         "flex items-center justify-center",
-        "bg-accent/[.05]"
+        "bg-accent/5"
       )}
     >
       {children}

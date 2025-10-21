@@ -96,7 +96,7 @@ function NavigationButton({
         direction === "left"
           ? "border-r border-border"
           : "border-l border-border",
-        !disabled && "hover:bg-accent/[.05] cursor-pointer",
+        !disabled && "hover:bg-accent/5 cursor-pointer",
         className
       )}
       aria-label={`Scroll ${direction}`}

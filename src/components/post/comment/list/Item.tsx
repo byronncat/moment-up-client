@@ -205,7 +205,7 @@ function MoreMenu({ isDialogOpen, setIsDialogOpen, onDelete }: MoreMenuProps) {
             className={cn(
               "py-3",
               "flex items-center justify-center",
-              "font-bold text-destructive hover:bg-destructive/[.12]",
+              "font-bold text-destructive hover:bg-destructive/12",
               "cursor-pointer"
             )}
           >
@@ -217,7 +217,7 @@ function MoreMenu({ isDialogOpen, setIsDialogOpen, onDelete }: MoreMenuProps) {
             className={cn(
               "py-3",
               "flex items-center justify-center",
-              "hover:bg-accent/[.07]",
+              "hover:bg-accent/7",
               "cursor-pointer"
             )}
           >

@@ -21,8 +21,8 @@ export default function ChatItem({
     <Link
       href={ROUTE.MESSAGE(contact.id)}
       className={cn(
-        "flex items-center p-3 hover:bg-accent/[.05] cursor-pointer",
-        isActive && "bg-accent/[.05]"
+        "flex items-center p-3 hover:bg-accent/5 cursor-pointer",
+        isActive && "bg-accent/5"
       )}
       onClick={() => onSelectContact(contact.id)}
     >

@@ -207,7 +207,7 @@ function ThemeSubmenu() {
           onClick={option.onClick}
           className={cn(
             "cursor-pointer",
-            option.selected && "animate-pulse bg-accent/[.1]"
+            option.selected && "animate-pulse bg-accent/10"
           )}
         >
           <div className="flex items-center gap-2">

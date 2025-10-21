@@ -58,7 +58,7 @@ export default function SearchHistory({
               "flex items-center justify-between",
               "group",
               "px-4 py-3",
-              "cursor-pointer hover:bg-accent/[.05]"
+              "cursor-pointer hover:bg-accent/5"
             )}
           >
             <SearchItem data={item} />

@@ -27,7 +27,7 @@ const buttonVariants = cva(
         outline: clsx(
           "border border-border",
           "bg-background shadow-xs",
-          "hover:bg-accent/[.1] hover:text-accent-foreground"
+          "hover:bg-accent/10 hover:text-accent-foreground"
         ),
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
@@ -37,7 +37,7 @@ const buttonVariants = cva(
           "transition-opacity hover:opacity-80 focus:opacity-80",
           "shadow-xs"
         ),
-        ghost: "hover:bg-accent/[.1] hover:text-accent-foreground",
+        ghost: "hover:bg-accent/10 hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

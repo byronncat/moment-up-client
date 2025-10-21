@@ -35,7 +35,7 @@ export default function UploadZone({ className }: UploadZoneProps) {
           "w-full p-4",
           "flex flex-col items-center",
           "rounded-lg border-2 border-dashed",
-          "bg-card-dark hover:bg-accent-dark/[.08]",
+          "bg-card-dark hover:bg-accent-dark/8",
           "text-muted-foreground-dark hover:text-white",
           "border-border-dark hover:border-accent-dark/50",
           "transition-colors duration-200",

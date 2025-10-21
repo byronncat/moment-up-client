@@ -143,7 +143,7 @@ function AccountItem({
         "flex items-center gap-2 max-w-full",
         isSelf
           ? "cursor-default"
-          : "hover:bg-accent/[.07] transition-colors duration-150 ease-in-out cursor-pointer",
+          : "hover:bg-accent/7 transition-colors duration-150 ease-in-out cursor-pointer",
         "focus-within-indicator"
       )}
     >

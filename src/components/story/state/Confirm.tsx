@@ -25,7 +25,7 @@ export default function ConfirmState({
           className={cn(
             "size-full",
             "flex items-center justify-center",
-            "hover:bg-accent-dark/[.07]",
+            "hover:bg-accent-dark/7",
             "transition-colors duration-75 ease-in-out cursor-pointer"
           )}
           onClick={onConfirm}
@@ -52,7 +52,7 @@ export default function ConfirmState({
               "px-4 py-1.5 mt-5",
               "text-sm font-medium",
               "border border-border-dark rounded-md shadow-xs",
-              "bg-background-dark hover:bg-accent-dark/[.1]",
+              "bg-background-dark hover:bg-accent-dark/10",
               "text-foreground-dark hover:text-accent-foreground-dark",
               "transition-colors duration-75 ease-in-out cursor-pointer"
             )}

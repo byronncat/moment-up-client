@@ -53,7 +53,7 @@ function CreateSection({ className }: Readonly<{ className?: string }>) {
             <div
               className={cn(
                 "size-14 shrink-0",
-                "bg-accent-dark/[.12] rounded-full",
+                "bg-accent-dark/12 rounded-full",
                 "flex items-center justify-center"
               )}
             >

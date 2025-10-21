@@ -49,9 +49,9 @@ export function StoryItem({ data, isCurrent }: StoryItemProps) {
       className={cn(
         "flex items-center gap-3",
         "px-4 py-2",
-        "hover:bg-accent-dark/[.12]",
+        "hover:bg-accent-dark/12",
         "transition-colors duration-150 ease-in-out",
-        isCurrent && "bg-accent-dark/[.12] cursor-default"
+        isCurrent && "bg-accent-dark/12 cursor-default"
       )}
     >
       <div className="size-[56px] flex items-center justify-center">

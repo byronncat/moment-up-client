@@ -4,8 +4,8 @@ import { cn } from "@/libraries/utils";
 const ButtonStyles = cn(
   "flex-1 h-8",
   "text-sm text-white font-medium",
-  "bg-accent-dark/[.12] rounded-lg",
-  "hover:bg-accent-dark/[.20]",
+  "bg-accent-dark/12 rounded-lg",
+  "hover:bg-accent-dark/20",
   "border border-border-dark",
   "cursor-pointer",
   "transition-colors ease-in-out"

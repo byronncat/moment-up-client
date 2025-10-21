@@ -36,7 +36,7 @@ export default function NavigateButtons({ onNavigate }: NavigateButtonsProps) {
         className={cn(
           "absolute top-1/2 -translate-y-1/2 -left-12",
           "size-10 rounded-full",
-          "bg-foreground-dark/[.1] hover:bg-accent-dark/[.2]",
+          "bg-foreground-dark/10 hover:bg-accent-dark/20",
           "text-foreground-dark hover:text-accent-foreground-dark"
         )}
         onClick={() => onNavigate("prev")}
@@ -48,7 +48,7 @@ export default function NavigateButtons({ onNavigate }: NavigateButtonsProps) {
         className={cn(
           "absolute top-1/2 -translate-y-1/2 -right-12",
           "size-10 rounded-full",
-          "bg-foreground-dark/[.1] hover:bg-accent-dark/[.2]",
+          "bg-foreground-dark/10 hover:bg-accent-dark/20",
           "text-foreground-dark hover:text-accent-foreground-dark"
         )}
         onClick={() => onNavigate("next")}

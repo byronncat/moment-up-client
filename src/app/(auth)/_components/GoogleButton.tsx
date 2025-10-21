@@ -24,8 +24,8 @@ export default async function GoogleButton() {
           "size-full h-10 rounded-lg",
           "flex justify-center items-center gap-x-2",
           "text-sm font-semibold",
-          "bg-white text-black/[.8]",
-          "dark:hover:bg-white/[.7] hover:bg-black/[.08]",
+          "bg-white text-black/80",
+          "dark:hover:bg-white/70 hover:bg-black/8",
           "transition-colors duration-200 ease-in-out",
           "focus-within-indicator"
         )}

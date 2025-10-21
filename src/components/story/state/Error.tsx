@@ -26,7 +26,7 @@ export default function ErrorState({ onClose, className }: ErrorStateProps) {
             "px-4 py-1.5 mt-5",
             "text-sm font-medium",
             "border border-border-dark rounded-md shadow-xs",
-            "bg-background-dark hover:bg-accent-dark/[.1]",
+            "bg-background-dark hover:bg-accent-dark/10",
             "text-foreground-dark hover:text-accent-foreground-dark",
             "transition-colors duration-75 ease-in-out cursor-pointer"
           )}

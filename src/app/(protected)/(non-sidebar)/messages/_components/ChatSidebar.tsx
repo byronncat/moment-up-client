@@ -110,7 +110,7 @@ function SearchBar({ query, setQuery }: SearchBarProps) {
             "cursor-pointer group",
             "p-1 rounded-full",
             "absolute right-5 top-1/2 -translate-y-1/2 z-10",
-            "hover:bg-accent/[.07]",
+            "hover:bg-accent/7",
             "transition-colors duration-150 ease-in-out"
           )}
         >

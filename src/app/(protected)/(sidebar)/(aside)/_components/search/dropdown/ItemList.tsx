@@ -70,7 +70,7 @@ function ItemButton({
         "flex items-center justify-between",
         "group",
         "pl-4 pr-5 py-2",
-        "cursor-pointer hover:bg-accent/[.05]",
+        "cursor-pointer hover:bg-accent/5",
         "transition-colors duration-150 ease-in-out"
       )}
       onClick={() => onClickItem(item)}
@@ -89,7 +89,7 @@ function ItemButton({
             "p-1.5 rounded-full",
             "hidden group-hover:block",
             "cursor-pointer",
-            "hover:bg-accent/[.07]",
+            "hover:bg-accent/7",
             "transition-all duration-150 ease-in-out"
           )}
         >
@@ -112,7 +112,7 @@ function QueryButton({
       }}
       className={cn(
         "pl-4 pr-5 py-2 w-full",
-        "cursor-pointer hover:bg-accent/[.05]",
+        "cursor-pointer hover:bg-accent/5",
         "transition-colors duration-150 ease-in-out",
         "cursor-pointer"
       )}

@@ -25,8 +25,8 @@ export default function EmptyState({ query }: Readonly<{ query: string }>) {
         href={ROUTE.SEARCH(query, SearchCategory.POSTS)}
         className={cn(
           "pl-5 py-3 block",
-          "cursor-pointer hover:bg-accent/[.05]",
-          "outline-none focus:bg-accent/[.05]",
+          "cursor-pointer hover:bg-accent/5",
+          "outline-none focus:bg-accent/5",
           "transition-colors duration-150 ease-in-out"
         )}
       >
@@ -44,8 +44,8 @@ export default function EmptyState({ query }: Readonly<{ query: string }>) {
         href={ROUTE.SEARCH(`@${query}`, SearchCategory.PEOPLE)}
         className={cn(
           "pl-5 py-3 block",
-          "cursor-pointer hover:bg-accent/[.05]",
-          "outline-none focus:bg-accent/[.05]",
+          "cursor-pointer hover:bg-accent/5",
+          "outline-none focus:bg-accent/5",
           "transition-colors duration-150 ease-in-out"
         )}
       >

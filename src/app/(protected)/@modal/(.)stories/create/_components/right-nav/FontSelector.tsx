@@ -35,7 +35,7 @@ export default function FontSelector({
             className={cn(
               "w-full justify-between",
               "text-white/90 hover:text-white",
-              "bg-transparent hover:bg-accent-dark/[.07]",
+              "bg-transparent hover:bg-accent-dark/7",
               "border-accent-dark/20 hover:border-accent-dark/30",
               "focus:ring-1 focus:ring-accent-dark/50",
               "transition-colors duration-100"
@@ -85,7 +85,7 @@ export default function FontSelector({
                         "p-3 rounded-lg cursor-pointer",
                         "text-white",
                         "transition-colors duration-75",
-                        "data-[selected=true]:text-white data-[selected=true]:bg-accent-dark/[.07]"
+                        "data-[selected=true]:text-white data-[selected=true]:bg-accent-dark/7"
                       )}
                     >
                       <CheckIcon

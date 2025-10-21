@@ -28,7 +28,7 @@ export default function DiscardDialog({ onClose }: DiscardDialogProps) {
       <AlertDialogFooter>
         <AlertDialogCancel
           className={cn(
-            "bg-accent-dark/[.12] hover:bg-accent-dark/[.2]",
+            "bg-accent-dark/12 hover:bg-accent-dark/20",
             "text-card-foreground-dark hover:text-card-foreground-dark",
             "border-border-dark "
           )}

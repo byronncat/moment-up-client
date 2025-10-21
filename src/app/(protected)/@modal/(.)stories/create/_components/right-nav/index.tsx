@@ -49,7 +49,7 @@ export default function RightNav() {
             className={cn(
               "group ml-auto",
               "p-2 rounded-full",
-              "bg-accent-dark/[.12] hover:bg-accent-dark/[.2]",
+              "bg-accent-dark/12 hover:bg-accent-dark/20",
               "transition-colors duration-75",
               "cursor-pointer"
             )}

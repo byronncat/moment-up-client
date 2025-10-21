@@ -83,7 +83,7 @@ function PreviewContent() {
               <textarea
                 className={cn(
                   "px-5 h-auto w-full",
-                  "text-white caret-white placeholder:text-white/[.7]",
+                  "text-white caret-white placeholder:text-white/70",
                   "focus:outline-none text-center",
                   "resize-none bg-transparent",
                   font.className

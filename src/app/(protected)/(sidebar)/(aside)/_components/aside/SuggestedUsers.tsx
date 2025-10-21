@@ -111,7 +111,7 @@ function SuggestedUserItem({
       className={cn(
         "flex items-center justify-between",
         "p-2 rounded-md",
-        "hover:bg-accent/[.05] cursor-pointer",
+        "hover:bg-accent/5 cursor-pointer",
         "transition-colors duration-150 ease-in-out"
       )}
       onClick={handleClick}

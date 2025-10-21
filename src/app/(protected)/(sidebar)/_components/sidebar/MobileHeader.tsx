@@ -36,7 +36,7 @@ export default function MobileHeader({ items, className }: MobileHeaderProps) {
           className={cn(
             "flex items-center justify-center",
             "p-2",
-            "hover:bg-accent/[.1] focus-within-indicator rounded-sm",
+            "hover:bg-accent/10 focus-within-indicator rounded-sm",
             "transition-colors duration-150 ease-in-out"
           )}
         >
@@ -49,7 +49,7 @@ export default function MobileHeader({ items, className }: MobileHeaderProps) {
           className={cn(
             "flex items-center justify-center",
             "p-2 ml-2",
-            "hover:bg-accent/[.1] focus-within-indicator rounded-sm",
+            "hover:bg-accent/10 focus-within-indicator rounded-sm",
             "transition-colors duration-150 ease-in-out"
           )}
         >
