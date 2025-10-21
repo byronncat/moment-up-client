@@ -69,7 +69,7 @@ export default function RepostForm({
           />
           <div className={cn("flex flex-col gap-2", "pt-0.5")}>
             <span className="font-semibold leading-tight">
-              {userData.displayName}
+              {userData.displayName ?? userData.username}
             </span>
             <PrivacySelector
               selectedPrivacy={selectedPrivacy}

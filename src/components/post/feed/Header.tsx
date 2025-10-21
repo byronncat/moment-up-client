@@ -59,7 +59,7 @@ export default function Header({ data, actions, className }: HeaderProps) {
       >
         <Avatar
           src={user.avatar}
-          alt={`${user.displayName}'s avatar`}
+          alt={`${user.displayName ?? user.username}'s avatar`}
           size="12"
         />
       </HoverableComponent>
@@ -78,7 +78,7 @@ export default function Header({ data, actions, className }: HeaderProps) {
             className={cn("min-w-0", "focus:underline outline-none")}
           >
             <div className={cn("font-semibold text-base/tight", "truncate")}>
-              {user.displayName}
+              {user.displayName ?? user.username}
             </div>
           </HoverableComponent>
 

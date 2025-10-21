@@ -55,18 +55,12 @@ export default function SearchItem({
           size="12"
         />
         <div className="flex flex-col items-start">
-          <div
-            className={cn("text-sm font-semibold", "max-w-[180px] truncate")}
-          >
-            {(data as UserSearchItem).username}
+          <div className={cn("text-sm font-semibold", "truncate")}>
+            {(data as UserSearchItem).displayName ??
+              (data as UserSearchItem).username}
           </div>
-          <span
-            className={cn(
-              "text-sm text-muted-foreground",
-              "max-w-[180px] truncate"
-            )}
-          >
-            @{(data as UserSearchItem).displayName}
+          <span className={cn("text-sm text-muted-foreground", "truncate")}>
+            @{(data as UserSearchItem).username}
           </span>
         </div>
       </>

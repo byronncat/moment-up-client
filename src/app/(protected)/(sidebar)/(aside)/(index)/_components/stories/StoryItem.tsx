@@ -21,13 +21,13 @@ export default function StoryItem({
           "cursor-pointer focus-within-indicator rounded-sm",
           "flex flex-col items-center"
         )}
-        aria-label={`View story from ${data.displayName}${!data.viewed ? " (unread)" : ""}`}
+        aria-label={`View story from ${data.displayName ?? data.username}${!data.viewed ? " (unread)" : ""}`}
         aria-describedby={`story-${data.id}-status`}
       >
         <div className={cn("flex items-center justify-center", "size-18")}>
           <Avatar
             src={data.avatar}
-            alt={`${data.displayName}'s avatar`}
+            alt={`${data.displayName ?? data.username}'s avatar`}
             size="14"
             ring={data.viewed}
             className={cn(
@@ -44,7 +44,7 @@ export default function StoryItem({
             "transition-colors group-hover:text-primary"
           )}
         >
-          {data.displayName}
+          {data.displayName ?? data.username}
         </span>
         <span id={`story-${data.id}-status`} className="sr-only">
           {data.viewed ? "Read" : "Unread"} story
