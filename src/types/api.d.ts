@@ -1,5 +1,6 @@
 declare module "api" {
   import type {
+    ContentPrivacy,
     NotificationType,
     SearchItemType,
     StoryBackground,
@@ -74,6 +75,7 @@ declare module "api" {
   interface PostDto {
     text: string | null;
     files: FileInfo[] | null;
+    privacy: ContentPrivacy;
     likes: number;
     comments: number;
     reposts: number;

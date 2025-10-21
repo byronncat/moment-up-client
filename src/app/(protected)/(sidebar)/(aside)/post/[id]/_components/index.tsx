@@ -2,7 +2,7 @@
 
 import type { FeedItemDto } from "api";
 
-import { notFound, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CommentProvider, useAuth, usePost } from "@/components/providers";
 import useSWR from "swr";
@@ -20,6 +20,7 @@ import TextContent from "./TextContent";
 import MediaCarousel from "./MediaCarousel";
 import CommentInput from "./CommentInput";
 import { MagnifyingGlass } from "@/components/icons";
+import { Wrench } from "lucide-react";
 
 type PostDetailsProps = Readonly<{
   postId: string;
@@ -60,18 +61,22 @@ export default function PostDetails({ postId }: PostDetailsProps) {
 
   if (isLoading) return <PostSkeleton />;
   if (error?.statusCode === 404 || error?.statusCode === 403) {
-    if (!user) return notFound();
     return (
       <div className={cn("pt-40 px-4", "flex flex-col items-center gap-4")}>
+        <Wrench className="size-14 text-muted-foreground" />
         <p className="text-center text-muted-foreground">
-          Hmm...this page doesn&apos;t exist. Try searching for something else.
+          {user
+            ? "Hmm...this page doesn't exist. Try searching for something else."
+            : "Sorry, this content is not available at this time."}
         </p>
-        <Link href={ROUTE.SEARCH()}>
-          <Button variant="outline">
-            <MagnifyingGlass className="size-3.5" />
-            Search
-          </Button>
-        </Link>
+        {user ? (
+          <Link href={ROUTE.SEARCH()}>
+            <Button variant="outline" size="sm">
+              <MagnifyingGlass className="size-3.5" />
+              Search
+            </Button>
+          </Link>
+        ) : null}
       </div>
     );
   }
