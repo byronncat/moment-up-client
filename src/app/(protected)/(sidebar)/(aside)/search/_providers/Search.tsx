@@ -164,12 +164,12 @@ export default function SearchProvider({
         setQuery: setRawQuery,
         setCategory: setActiveCategory,
         loadNextPage,
-        refresh: () => mutate(),
+        refresh: mutate,
 
         popularUsers: popularData?.users ?? [],
         isLoadingPopular,
         errorPopular,
-        refreshPopular: () => mutatePopular(),
+        refreshPopular: mutatePopular,
       }}
     >
       {children}

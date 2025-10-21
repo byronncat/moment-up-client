@@ -58,6 +58,7 @@
 ### Key Features
 
 #### 🔐 Authentication & Security
+
 - **Multiple Authentication Methods**: Email/password authentication and Google OAuth 2.0 integration
 - **Secure Session Management**: Redis-backed session store with JWT tokens
 - **Password Security**: Bcrypt hashing with configurable salt rounds
@@ -66,6 +67,7 @@
 - **CSRF Protection**: Built-in CSRF token validation for all state-changing operations
 
 #### 📝 Posts & Content
+
 - **Create & Share**: Post images and videos with captions and descriptions
 - **Engage with Content**: Like, unlike, bookmark, and comment on posts
 - **Repost Functionality**: Share posts to your own feed with optional commentary
@@ -75,11 +77,13 @@
 - **Report System**: Flag inappropriate posts and content
 
 #### 📖 Stories
+
 - **24-Hour Stories**: Share temporary moments that disappear after 24 hours
 - **Story Feed**: View stories from people you follow
 - **Story Management**: Create and delete your own stories
 
 #### 👥 Social Features
+
 - **User Profiles**: Customizable profiles with avatar, background image, and bio
 - **Follow System**: Follow and unfollow users with follow request support
 - **Followers Management**: View followers, following lists with search
@@ -89,12 +93,14 @@
 - **Follow Requests**: Accept or decline follow requests for private accounts
 
 #### 🔍 Discovery
+
 - **Global Search**: Search for users, posts, and hashtags
 - **Search History**: Track your recent searches with local storage
 - **Trending Topics**: Discover what's trending with hashtag analytics
 - **Explore Page**: Browse popular and recommended content
 
 #### 📱 User Experience
+
 - **Responsive Design**: Fully responsive layout for mobile, tablet, and desktop
 - **Dark Mode Support**: System-based and manual dark mode toggle
 - **Real-time Updates**: Live feed updates using SWR for data fetching
@@ -104,12 +110,14 @@
 - **Toast Notifications**: Non-intrusive feedback for user actions
 
 #### 📚 Content Management
+
 - **Archive System**: Save liked posts and bookmarks for later viewing
 - **Profile Views**: Multiple profile layouts (grid/list view for posts)
 - **Media Gallery**: Dedicated view for media content only
 - **Tagged Posts**: View posts you're tagged in
 
 #### 🛡️ Additional Features
+
 - **Rate Limiting**: Throttle protection against API abuse
 - **Input Validation**: Comprehensive validation using class-validator and Zod
 - **Error Handling**: Global error handling with user-friendly messages
@@ -123,6 +131,7 @@
 MomentUp leverages a powerful stack of modern technologies to deliver a robust, scalable, and type-safe platform:
 
 #### Frontend
+
 - [![Next.js][Next.js]][Next-url] - React framework with App Router and Server Components
 - [![React][React.js]][React-url] - UI library (React 19)
 - [![TypeScript][TypeScript]][TypeScript-url] - Type safety across the entire codebase
@@ -134,6 +143,7 @@ MomentUp leverages a powerful stack of modern technologies to deliver a robust, 
 - **Fabric.js** - Canvas manipulation for image editing
 
 #### Backend
+
 - [![NestJS][NestJS]][NestJS-url] - Progressive Node.js framework
 - [![TypeScript][TypeScript]][TypeScript-url] - Type-safe backend development
 - [![Supabase][Supabase]][Supabase-url] - PostgreSQL database platform
@@ -167,17 +177,19 @@ Ensure you have the following installed and configured:
 ### Installation
 
 1. **Clone the repository**:
+
    ```sh
    git clone https://github.com/byronncat/moment-up.git
    cd moment-up
    ```
 
 2. **Install dependencies for both frontend and backend**:
+
    ```sh
    # Install backend dependencies
    cd backend
    pnpm install
-   
+
    # Install frontend dependencies
    cd ../frontend
    pnpm install
@@ -186,53 +198,56 @@ Ensure you have the following installed and configured:
 3. **Set up environment variables**:
 
    **Backend** (`backend/.env`):
+
    ```env
    NODE_ENV=development
    BASE_URL=http://localhost:4000
    PORT=4000
    PREFIX=/v1
    ALLOWED_ORIGIN=http://localhost:3000
-   
+
    # Security
    JWT_SECRET=your_jwt_secret_key
    SESSION_SECRET=your_session_secret
    CSRF_SECRET=your_csrf_secret
    HASH_SALT_ROUNDS=10
-   
+
    # Supabase
    SUPABASE_URL=your_supabase_url
    SUPABASE_KEY=your_supabase_anon_key
-   
+
    # Redis
    REDIS_USERNAME=default
    REDIS_PASSWORD=your_redis_password
    REDIS_HOST=localhost
    REDIS_PORT=6379
-   
+
    # Cloudinary
    CLOUDINARY_CLOUD_NAME=your_cloud_name
    CLOUDINARY_API_KEY=your_api_key
    CLOUDINARY_API_SECRET=your_api_secret
-   
+
    # Email (SMTP)
    EMAIL_HOST=smtp.gmail.com
    EMAIL_PORT=587
    EMAIL_SECURE=false
    EMAIL_USERNAME=your_email@gmail.com
    EMAIL_PASSWORD=your_app_password
-   
+
    # Google OAuth
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
    ```
 
    **Frontend** (`frontend/.env.local`):
+
    ```env
    NEXT_PUBLIC_API_URL=http://localhost:4000/v1
    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
    ```
 
 4. **Set up the database**:
+
    ```sh
    cd backend
    # Run database migrations (if available in backend/src/modules/database)
@@ -242,12 +257,14 @@ Ensure you have the following installed and configured:
 5. **Start the development servers**:
 
    **Backend**:
+
    ```sh
    cd backend
    pnpm run dev
    ```
 
    **Frontend** (in a new terminal):
+
    ```sh
    cd frontend
    pnpm run dev
@@ -281,12 +298,13 @@ Ensure you have the following installed and configured:
 - **API Documentation**: Check `backend/src/API.md` for detailed endpoint documentation
 - **Code Quality**: Run `pnpm run check` to run type-checking, linting, and formatting
 - **Development Mode**: Use hot-reload for both frontend (`pnpm run dev`) and backend (`pnpm run dev`)
-- **Build Production**: 
+- **Build Production**:
+
   ```sh
   # Backend
   cd backend && pnpm run build && pnpm run start
-  
-  # Frontend  
+
+  # Frontend
   cd frontend && pnpm run build && pnpm run start
   ```
 

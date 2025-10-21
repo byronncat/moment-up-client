@@ -140,10 +140,7 @@ export default function MediaPage() {
                 ))}
               </div>
             ) : error ? (
-              <ErrorContent
-                onRefresh={() => mutate()}
-                className="pt-19 pb-20"
-              />
+              <ErrorContent onRefresh={mutate} className="pt-19 pb-20" />
             ) : posts === undefined ? null : posts.length === 0 ? (
               <NoContent
                 icon={<ImageIcon className="size-14 text-muted-foreground" />}

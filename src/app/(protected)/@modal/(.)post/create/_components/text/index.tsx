@@ -39,7 +39,9 @@ export default function TextContent() {
           size="12"
         />
         <div className="flex flex-col gap-1">
-          <span className="font-semibold">{user.displayName ?? user.username}</span>
+          <span className="font-semibold">
+            {user.displayName ?? user.username}
+          </span>
           <PrivacySelector />
         </div>
       </div>

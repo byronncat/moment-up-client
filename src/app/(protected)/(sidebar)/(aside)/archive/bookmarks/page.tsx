@@ -141,10 +141,7 @@ export default function BookmarkPage() {
                   <PostSkeleton media="square" className="w-full" />
                 </div>
               ) : error ? (
-                <ErrorContent
-                  onRefresh={() => mutate()}
-                  className="pt-16 pb-20"
-                />
+                <ErrorContent onRefresh={mutate} className="pt-16 pb-20" />
               ) : posts === undefined ? null : posts.length === 0 ? (
                 <NoContent
                   icon={<Bookmark className="size-14 text-muted-foreground" />}

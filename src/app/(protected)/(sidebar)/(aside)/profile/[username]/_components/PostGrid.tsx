@@ -152,10 +152,7 @@ export default function PostGrid() {
                 ))}
               </div>
             ) : error ? (
-              <ErrorContent
-                onRefresh={() => mutate()}
-                className="pt-19 pb-20"
-              />
+              <ErrorContent onRefresh={mutate} className="pt-19 pb-20" />
             ) : posts === undefined ? null : posts.length === 0 ? (
               <div className={cn("pt-19 pb-20", "flex flex-col items-center")}>
                 <NoContent

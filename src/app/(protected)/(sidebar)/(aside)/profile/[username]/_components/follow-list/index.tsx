@@ -176,10 +176,7 @@ export default function FollowList({ type }: FollowListProps) {
                 <UserItemSkeleton key={index} />
               ))
             ) : error ? (
-              <ErrorContent
-                onRefresh={() => mutate()}
-                className="pt-16 pb-20"
-              />
+              <ErrorContent onRefresh={mutate} className="pt-16 pb-20" />
             ) : allUsers === undefined ? null : allUsers.length === 0 ? (
               <NoContent
                 icon={

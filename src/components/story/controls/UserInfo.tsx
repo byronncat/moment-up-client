@@ -20,7 +20,9 @@ export default function UserInfo({ data, timestamp }: UserInfoProps) {
       <div className="flex flex-col">
         <div className="flex items-center gap-2">
           <Link href={ROUTE.PROFILE(data.username)}>
-            <h2 className="text-sm font-semibold">{data.displayName ?? data.username}</h2>
+            <h2 className="text-sm font-semibold">
+              {data.displayName ?? data.username}
+            </h2>
           </Link>
           <span className="text-sm text-white/70">
             {Format.relativeTime(timestamp)}
