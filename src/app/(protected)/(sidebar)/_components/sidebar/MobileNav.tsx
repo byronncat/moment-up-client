@@ -30,7 +30,6 @@ export default function MobileNav({ items }: MobileNavProps) {
               "flex items-center justify-center size-10",
               "hover:bg-accent/10 focus-within-indicator rounded-sm",
               "transition-colors duration-150 ease-in-out",
-              isActive && "pointer-events-none"
             )}
           >
             {item.icon(isActive)}

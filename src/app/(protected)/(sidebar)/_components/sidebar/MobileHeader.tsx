@@ -9,6 +9,9 @@ type MobileHeaderProps = Readonly<{
 }>;
 
 export default function MobileHeader({ items, className }: MobileHeaderProps) {
+  const isNotificationActive = items[0].matchPath?.() ?? false;
+  const isActive2 = items[1].matchPath?.() ?? false;
+
   return (
     <div
       className={cn(
@@ -41,7 +44,7 @@ export default function MobileHeader({ items, className }: MobileHeaderProps) {
           )}
         >
           <span className="flex items-center justify-center size-5">
-            {items[0].icon(false)}
+            {items[0].icon(isNotificationActive)}
           </span>
         </Link>
         <Link
@@ -54,7 +57,7 @@ export default function MobileHeader({ items, className }: MobileHeaderProps) {
           )}
         >
           <span className="flex items-center justify-center size-5">
-            {items[1].icon(false)}
+            {items[1].icon(isActive2)}
           </span>
         </Link>
       </div>

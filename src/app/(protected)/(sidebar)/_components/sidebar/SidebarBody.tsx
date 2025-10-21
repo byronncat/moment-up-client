@@ -36,7 +36,7 @@ export default function SidebarBody({ items }: SidebarBodyProps) {
                       className={cn(
                         "px-2",
                         isActive
-                          ? "font-bold bg-sidebar-accent text-sidebar-accent-foreground pointer-events-none"
+                          ? "font-bold bg-sidebar-accent text-sidebar-accent-foreground"
                           : "text-foreground dark:text-foreground/90"
                       )}
                     >
@@ -58,7 +58,7 @@ export default function SidebarBody({ items }: SidebarBodyProps) {
                         asChild
                         className={cn(
                           isActive
-                            ? "font-bold bg-sidebar-accent text-sidebar-accent-foreground pointer-events-none"
+                            ? "font-bold bg-sidebar-accent text-sidebar-accent-foreground"
                             : "text-foreground dark:text-foreground/90"
                         )}
                       >

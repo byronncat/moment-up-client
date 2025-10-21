@@ -157,10 +157,7 @@ export default function TextEditPopup({
         </div>
 
         <div
-          className={cn(
-            "p-2 mt-3",
-            "rounded-md border border-accent-dark/16"
-          )}
+          className={cn("p-2 mt-3", "rounded-md border border-accent-dark/16")}
         >
           <div className="grid grid-cols-7 gap-2">
             {TextColors.map((color) => (
