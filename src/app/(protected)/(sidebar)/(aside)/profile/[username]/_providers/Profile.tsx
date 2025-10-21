@@ -21,7 +21,7 @@ type ProfileContextType = {
 };
 
 // === Provider ===
-import { createContext, useCallback, useContext, useRef } from "react";
+import { createContext, use, useCallback, useRef } from "react";
 import { useAuth, useRefreshApi } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcherWithToken } from "@/libraries/swr";
@@ -62,7 +62,7 @@ const ProfileContext = createContext<ProfileContextType>({
   registerPostsRefresh: () => {},
 });
 
-export const useProfile = () => useContext(ProfileContext);
+export const useProfile = () => use(ProfileContext);
 
 type ProfileProviderProps = {
   username: string;

@@ -27,8 +27,8 @@ import {
   type Dispatch,
   type SetStateAction,
   createContext,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -59,7 +59,7 @@ const PostDataContext = createContext<PostState & PostAction>({
   upload: () => Promise.resolve(false),
 });
 
-export const usePostData = () => useContext(PostDataContext);
+export const usePostData = () => use(PostDataContext);
 
 type CreateDataProviderProps = Readonly<{
   children: React.ReactNode;

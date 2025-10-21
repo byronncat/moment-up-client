@@ -36,13 +36,7 @@ type PostContextType = {
 };
 
 // === Provider ===
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useReducer,
-  useState,
-} from "react";
+import { createContext, use, useCallback, useReducer, useState } from "react";
 import { toast } from "sonner";
 import { CoreApi, UserApi } from "@/services";
 import { Link } from "@/components/icons";
@@ -179,7 +173,7 @@ const MomentDataContext = createContext<PostContextType>({
   updateCommentCount: async () => {},
 });
 
-export const usePost = () => useContext(MomentDataContext);
+export const usePost = () => use(MomentDataContext);
 
 type MomentDataProviderProps = Readonly<{
   children: React.ReactNode;

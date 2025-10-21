@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, use, useCallback, useEffect, useState } from "react";
 import { StoryBackground } from "@/constants/server";
 import { Font } from "../_constants";
 
@@ -65,7 +59,7 @@ const CreateDataContext = createContext<CreateDataContextType>({
   reset: () => {},
 });
 
-export const useCreateData = () => useContext(CreateDataContext);
+export const useCreateData = () => use(CreateDataContext);
 
 type CreateDataProviderProps = Readonly<{
   children: React.ReactNode;

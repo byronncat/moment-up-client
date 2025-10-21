@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, use, useCallback, useState } from "react";
 import * as fabric from "fabric";
 import { useCreateData } from "./CreateData";
 import { ControlStyles, PositionStyles, TextColors } from "../_constants";
@@ -43,7 +43,7 @@ const CanvasContext = createContext<CanvasContextType>({
   setSelectedObject: () => {},
 });
 
-export const useCanvas = () => useContext(CanvasContext);
+export const useCanvas = () => use(CanvasContext);
 
 type CanvasProviderProps = {
   children: React.ReactNode;

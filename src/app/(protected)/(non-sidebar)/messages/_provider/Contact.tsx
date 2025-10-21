@@ -3,7 +3,7 @@
 import { mockContacts, mockUserStatuses } from "@/__mocks__";
 import type { ContactDto, UserStatusDto } from "api";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, use, useState } from "react";
 
 type ContactContextType = {
   contacts: ContactDto[];
@@ -21,7 +21,7 @@ const ContactContext = createContext<ContactContextType>({
   setCurrentContactId: () => {},
 });
 
-export const useContact = () => useContext(ContactContext);
+export const useContact = () => use(ContactContext);
 
 export default function ContactProvider({
   children,

@@ -8,13 +8,7 @@ import type {
   SearchItem,
 } from "api";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, use, useCallback, useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import useSWRInfinite from "swr/infinite";
 import useSWRImmutable from "swr/immutable";
@@ -177,4 +171,4 @@ export default function SearchProvider({
   );
 }
 
-export const useSearch = () => useContext(SearchContext);
+export const useSearch = () => use(SearchContext);

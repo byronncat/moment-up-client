@@ -19,7 +19,7 @@ type CommentContextType = {
 };
 
 // === Provider ===
-import { createContext, useContext, useState } from "react";
+import { createContext, use, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import {
   useAuth,
@@ -54,7 +54,7 @@ const CommentContext = createContext<CommentContextType>({
   loadNextPage: () => {},
 });
 
-export const useComment = () => useContext(CommentContext);
+export const useComment = () => use(CommentContext);
 const COMMENTS_PER_PAGE = 12;
 
 type CommentProviderProps = Readonly<{

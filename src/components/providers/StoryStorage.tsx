@@ -23,13 +23,7 @@ interface StoryAction {
 
 // === Provider ====
 import { usePathname, useRouter } from "next/navigation";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, use, useCallback, useMemo, useState } from "react";
 import { useAuth } from "@/components/providers";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
@@ -48,7 +42,7 @@ const StoryDataContext = createContext<StoryState & StoryAction>({
   muteStory: () => {},
 });
 
-export const useStory = () => useContext(StoryDataContext);
+export const useStory = () => use(StoryDataContext);
 const LAST = -1;
 
 type StoryDataProviderProps = Readonly<{

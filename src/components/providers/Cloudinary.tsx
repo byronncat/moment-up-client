@@ -22,7 +22,7 @@ interface CloudinaryAction {
 }
 
 // === Provider ===
-import { createContext, useCallback, useContext } from "react";
+import { createContext, use, useCallback } from "react";
 
 /* eslint-disable require-await */
 const CloudinaryContext = createContext<CloudinaryAction>({
@@ -30,7 +30,7 @@ const CloudinaryContext = createContext<CloudinaryAction>({
   uploadMultipleImages: async () => ({ success: false }),
 });
 
-export const useCloudinary = () => useContext(CloudinaryContext);
+export const useCloudinary = () => use(CloudinaryContext);
 
 export default function CloudinaryProvider({
   children,

@@ -12,7 +12,7 @@ type NotificationContextType = {
 };
 
 // === Provider ===
-import { createContext, useContext } from "react";
+import { createContext, use } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
 import { SWRInfiniteOptions } from "@/helpers/swr";
@@ -27,7 +27,7 @@ const NotificationContext = createContext<NotificationContextType>({
   mutate: () => {},
 });
 
-export const useNotification = () => useContext(NotificationContext);
+export const useNotification = () => use(NotificationContext);
 
 type NotificationStorageProviderProps = Readonly<{
   children: React.ReactNode;
