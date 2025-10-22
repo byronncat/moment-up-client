@@ -14,7 +14,7 @@ export default function Messages() {
   const router = useRouter();
 
   useEffect(() => {
-    if (currentContactId) router.push(ROUTE.MESSAGE(currentContactId));
+    if (currentContactId) router.replace(ROUTE.MESSAGE(currentContactId));
   }, [currentContactId, router]);
 
   if (currentContactId) return null;

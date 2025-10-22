@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useContact } from "../_provider/Contact";
 
@@ -9,10 +10,12 @@ import { Input } from "@/components/ui/input";
 import UserStatus from "./UserStatus";
 import ChatItem from "./ChatItem";
 import { MagnifyingGlass, X } from "@/components/icons";
+import { ArrowLeft } from "lucide-react";
 
 export default function ChatSidebar({
   className,
 }: Readonly<{ className?: string }>) {
+  const router = useRouter();
   const { contacts, currentContactId, setCurrentContactId, userStatuses } =
     useContact();
   const [selectedFilter, setSelectedFilter] = useState<
@@ -51,6 +54,12 @@ export default function ChatSidebar({
     <div className={cn("border-r border-border", "flex flex-col", className)}>
       <div className="pt-5 px-4 flex items-center">
         <h1 className="text-2xl font-bold">Chats</h1>
+        <button
+          onClick={() => router.back()}
+          className={cn("ml-auto", "text-sm", "hover:underline cursor-pointer")}
+        >
+          Back
+        </button>
       </div>
 
       <SearchBar query={query} setQuery={setQuery} />

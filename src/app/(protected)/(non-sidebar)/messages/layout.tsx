@@ -10,7 +10,7 @@ export default function Layout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ContactProvider>
-      <_beta className="w-full" />
+      <_beta className="absolute top-0 right-0" />
       <div className="flex size-full">
         <ChatSidebar className="w-full mobile:w-[320px]" />
         <div className="grow mobile:block hidden">{children}</div>
@@ -24,9 +24,9 @@ function _beta({ className }: Readonly<{ className?: string }>) {
     <p
       className={cn(
         className,
-        "py-1 backdrop-blur-md",
+        "py-1 px-2 backdrop-blur-md",
         "text-center text-sm text-muted-foreground italic",
-        "border-b border-border"
+        "border border-border"
       )}
     >
       This is a beta feature. Please wait for the official release.
