@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import UserStatus from "./UserStatus";
 import ChatItem from "./ChatItem";
 import { MagnifyingGlass, X } from "@/components/icons";
-import { ArrowLeft } from "lucide-react";
 
 export default function ChatSidebar({
   className,

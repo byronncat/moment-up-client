@@ -14,6 +14,7 @@ const getAllowedOrigins = () => {
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: getAllowedOrigins(),
+  reactCompiler: true,
   images: {
     qualities: [25, 50, 75, 100],
     remotePatterns: [

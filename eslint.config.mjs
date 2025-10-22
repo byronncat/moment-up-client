@@ -1,15 +1,15 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
 import eslintConfigPrettier from "eslint-config-prettier";
 import typescriptParser from "@typescript-eslint/parser";
+import typescriptPlugin from "@typescript-eslint/eslint-plugin";
+import reactPlugin from "eslint-plugin-react";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
+import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
+import nextPlugin from "@next/eslint-plugin-next";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
 
 const eslintConfig = [
   {
@@ -21,8 +21,6 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  eslintConfigPrettier,
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
@@ -30,11 +28,30 @@ const eslintConfig = [
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
+        ecmaFeatures: {
+          jsx: true,
+        },
         project: "./tsconfig.json",
         tsconfigRootDir: __dirname,
       },
     },
+    plugins: {
+      "@typescript-eslint": typescriptPlugin,
+      react: reactPlugin,
+      "react-hooks": reactHooksPlugin,
+      "jsx-a11y": jsxA11yPlugin,
+      "@next/next": nextPlugin,
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
     rules: {
+      // === React Hooks ===
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+
       // === TypeScript ===
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": [
@@ -148,6 +165,7 @@ const eslintConfig = [
       "require-await": "off",
     },
   },
+  eslintConfigPrettier,
 ];
 
 export default eslintConfig;
