@@ -5,6 +5,7 @@ import type { PaginationDto, UserSummaryDto } from "api";
 import { useCallback, useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useNoMemo } from "@/hooks";
 import { useAuth, useRefreshApi, useRefreshSWR } from "@/components/providers";
 import { useProfile } from "../../_providers/Profile";
 import { ApiUrl } from "@/services/api.constant";
@@ -73,7 +74,7 @@ export default function FollowList({ type }: FollowListProps) {
     estimateSize: () => 120, // Approximate height for user card
     measureElement: (element) => element.getBoundingClientRect().height,
   });
-  const virtualItems = virtualizer.getVirtualItems();
+  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
 
   const loadNextPage = useCallback(async () => {
     if (hasNextPage && !isValidating) await setSize(size + 1);
@@ -90,7 +91,7 @@ export default function FollowList({ type }: FollowListProps) {
       !isValidating
     )
       loadNextPage();
-  }, [allUsers, virtualItems, hasNextPage, isValidating, loadNextPage]);
+  }, [allUsers, hasNextPage, isValidating, loadNextPage, virtualItems]);
 
   const follow = useRefreshApi(UserApi.follow);
   async function handleFollow(userId: string, shouldFollow: boolean) {

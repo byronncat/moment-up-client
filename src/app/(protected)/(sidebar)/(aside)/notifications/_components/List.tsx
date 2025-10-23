@@ -3,6 +3,7 @@
 import type { NotificationDto } from "api";
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useNoMemo } from "@/hooks";
 import { useNotification } from "../../../../../../components/providers/NotificationStorage";
 import { NotificationType } from "@/constants/server";
 
@@ -29,8 +30,7 @@ export default function NotificationList() {
     estimateSize: () => NOTIFICATION_HEIGHT,
     measureElement: (element) => element.getBoundingClientRect().height,
   });
-
-  const virtualItems = virtualizer.getVirtualItems();
+  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
 
   useEffect(() => {
     if (!notifications?.length) return;
@@ -41,10 +41,10 @@ export default function NotificationList() {
       loadNextPage();
   }, [
     notifications?.length,
-    virtualItems,
     hasNextPage,
     isLoading,
     itemCount,
+    virtualItems,
     loadNextPage,
   ]);
 

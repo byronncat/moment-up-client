@@ -5,6 +5,7 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useNoMemo } from "@/hooks";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
@@ -71,7 +72,7 @@ export default function PostPage() {
       return getPostHeight(posts?.[index]?.post, window.innerWidth);
     },
   });
-  const virtualItems = virtualizer.getVirtualItems();
+  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
 
   const loadNextPage = useCallback(async () => {
     if (!user) return;
@@ -98,7 +99,7 @@ export default function PostPage() {
       user
     )
       loadNextPage();
-  }, [user, posts, virtualItems, hasNextPage, isValidating, loadNextPage]);
+  }, [user, posts, hasNextPage, isValidating, virtualItems, loadNextPage]);
 
   return (
     <div className="size-full mx-auto">

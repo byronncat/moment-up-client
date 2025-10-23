@@ -5,6 +5,7 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useNoMemo } from "@/hooks";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { useProfile } from "../_providers/Profile";
 import { getPostHeight } from "@/helpers/ui";
@@ -87,7 +88,7 @@ export default function PostList({ filter }: PostListProps) {
       return getPostHeight(posts?.[index - 1]?.post, window.innerWidth);
     },
   });
-  const virtualItems = virtualizer.getVirtualItems();
+  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
 
   const loadNextPage = useCallback(async () => {
     if (hasNextPage && !isValidating) await setSize(size + 1);
@@ -114,7 +115,7 @@ export default function PostList({ filter }: PostListProps) {
       user
     )
       loadNextPage();
-  }, [user, posts, virtualItems, hasNextPage, isValidating, loadNextPage]);
+  }, [user, posts, hasNextPage, isValidating, virtualItems, loadNextPage]);
 
   useEffect(() => {
     registerPostsRefresh(mutate);

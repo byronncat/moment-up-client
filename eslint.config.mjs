@@ -1,26 +1,21 @@
+import { defineConfig, globalIgnores } from "eslint/config";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import eslintConfigPrettier from "eslint-config-prettier";
 import typescriptParser from "@typescript-eslint/parser";
-import typescriptPlugin from "@typescript-eslint/eslint-plugin";
-import reactPlugin from "eslint-plugin-react";
-import reactHooksPlugin from "eslint-plugin-react-hooks";
-import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
-import nextPlugin from "@next/eslint-plugin-next";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+import prettier from "eslint-config-prettier/flat";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const eslintConfig = [
-  {
-    ignores: [
-      "node_modules/**",
-      ".next/**",
-      "out/**",
-      "build/**",
-      "next-env.d.ts",
-    ],
-  },
+const eslintConfig = defineConfig([
+  // === Next.js Core Web Vitals + TypeScript + Prettier ===
+  ...nextVitals,
+  ...nextTs,
+  prettier,
+
+  // === Custom overrides and additional rules ===
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
@@ -35,24 +30,8 @@ const eslintConfig = [
         tsconfigRootDir: __dirname,
       },
     },
-    plugins: {
-      "@typescript-eslint": typescriptPlugin,
-      react: reactPlugin,
-      "react-hooks": reactHooksPlugin,
-      "jsx-a11y": jsxA11yPlugin,
-      "@next/next": nextPlugin,
-    },
-    settings: {
-      react: {
-        version: "detect",
-      },
-    },
     rules: {
-      // === React Hooks ===
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
-
-      // === TypeScript ===
+      // === TypeScript overrides ===
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": [
         "warn",
@@ -66,7 +45,6 @@ const eslintConfig = [
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/prefer-optional-chain": "error",
       "@typescript-eslint/no-unnecessary-type-assertion": "error",
-      "@typescript-eslint/no-inferrable-types": "error",
       "@typescript-eslint/consistent-type-imports": [
         "error",
         {
@@ -75,14 +53,10 @@ const eslintConfig = [
         },
       ],
       "@typescript-eslint/array-type": ["error", { default: "array-simple" }],
-      "@typescript-eslint/prefer-as-const": "error",
 
       // === JavaScript/General ===
       "no-console": ["warn", { allow: ["warn", "error"] }],
-      "no-debugger": "error",
       "no-alert": "error",
-      "no-var": "error",
-      "prefer-const": "error",
       "prefer-template": "error",
       "object-shorthand": "error",
       "prefer-destructuring": [
@@ -104,9 +78,7 @@ const eslintConfig = [
         },
       ],
 
-      // === React / Next.js ===
-      "react/jsx-no-useless-fragment": ["warn", { allowExpressions: true }],
-      "react/self-closing-comp": "warn",
+      // === React overrides ===
       "react/jsx-boolean-value": ["error", "never"],
       "react/jsx-curly-brace-presence": [
         "error",
@@ -114,26 +86,9 @@ const eslintConfig = [
       ],
       "react/jsx-fragments": ["error", "syntax"],
       "react/jsx-no-leaked-render": "error",
-      "react/jsx-no-useless-fragment": "warn",
       "react/no-array-index-key": "warn",
       "react/no-unknown-property": ["error", { ignore: ["css"] }],
       "react/prefer-stateless-function": "warn",
-      "react/display-name": "warn",
-      "react/jsx-key": "error",
-
-      // === Next.js ===
-      "@next/next/no-page-custom-font": "error",
-      "@next/next/no-unwanted-polyfillio": "error",
-      "@next/next/google-font-display": "error",
-      "@next/next/google-font-preconnect": "error",
-      "@next/next/next-script-for-ga": "error",
-      "@next/next/no-before-interactive-script-outside-document": "error",
-      "@next/next/no-css-tags": "error",
-      "@next/next/no-head-element": "error",
-      "@next/next/no-html-link-for-pages": "error",
-      "@next/next/no-styled-jsx-in-document": "error",
-      "@next/next/no-sync-scripts": "error",
-      "@next/next/no-title-in-document-head": "error",
 
       // === Code quality ===
       eqeqeq: ["error", "always", { null: "ignore" }],
@@ -145,18 +100,6 @@ const eslintConfig = [
       "require-await": "error",
       "no-return-await": "error",
       "no-promise-executor-return": "error",
-
-      // === Accessibility ===
-      "jsx-a11y/alt-text": "error",
-      "jsx-a11y/anchor-has-content": "error",
-      "jsx-a11y/anchor-is-valid": "error",
-      "jsx-a11y/aria-props": "error",
-      "jsx-a11y/aria-proptypes": "error",
-      "jsx-a11y/aria-unsupported-elements": "error",
-      "jsx-a11y/role-has-required-aria-props": "error",
-      "jsx-a11y/role-supports-aria-props": "error",
-      "jsx-a11y/img-redundant-alt": "error",
-      "jsx-a11y/no-access-key": "error",
     },
   },
   {
@@ -165,7 +108,15 @@ const eslintConfig = [
       "require-await": "off",
     },
   },
-  eslintConfigPrettier,
-];
+
+  // === Override default ignores ===
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);
 
 export default eslintConfig;

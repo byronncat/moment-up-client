@@ -118,7 +118,7 @@ function TopicItem({ topic }: Readonly<{ topic: HashtagDto }>) {
           </span>
         </NumberTooltip>
       </div>
-      <ReportButton topic={topic.name} className="flex-shrink-0" />
+      <ReportButton topic={topic.name} className="shrink-0" />
     </Link>
   );
 }

@@ -12,6 +12,7 @@ import { ErrorContent, NoContent } from "@/components/common";
 import { FeedCard, PostSkeleton } from "@/components/post";
 import Stories from "./stories";
 import { FileText } from "lucide-react";
+import { useNoMemo } from "@/hooks";
 
 const STORIES_HEIGHT = 121;
 
@@ -46,7 +47,7 @@ export default function VirtualizedFeed() {
       );
     },
   });
-  const virtualItems = virtualizer.getVirtualItems();
+  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
 
   useEffect(() => {
     if (!posts) return;
@@ -59,7 +60,7 @@ export default function VirtualizedFeed() {
       !isNextPageLoading
     )
       loadNextPage();
-  }, [posts, virtualItems, hasNextPage, isNextPageLoading, loadNextPage]);
+  }, [posts, hasNextPage, isNextPageLoading, virtualItems, loadNextPage]);
 
   return (
     <div

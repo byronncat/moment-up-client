@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useNoMemo } from "@/hooks";
 import { usePost } from "@/components/providers";
 import { useSearch } from "../../_providers/Search";
 import { getPostHeight } from "@/helpers/ui";
@@ -34,7 +35,7 @@ export default function PostsList() {
       return getPostHeight(posts?.[index]?.post, window.innerWidth);
     },
   });
-  const virtualItems = virtualizer.getVirtualItems();
+  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
 
   useEffect(() => {
     if (!posts) return;
@@ -43,7 +44,7 @@ export default function PostsList() {
 
     if (lastItem.index >= posts.length - 1 && hasNextPage && !isValidating)
       loadNextPage();
-  }, [posts, virtualItems, hasNextPage, isValidating, loadNextPage]);
+  }, [posts, hasNextPage, isValidating, virtualItems, loadNextPage]);
 
   return (
     <div className="max-w-[600px] size-full mx-auto">

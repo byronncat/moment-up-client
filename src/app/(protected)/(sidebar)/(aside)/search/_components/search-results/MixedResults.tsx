@@ -3,6 +3,7 @@ import type { SearchItem as TSearchItem } from "api";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useNoMemo } from "@/hooks";
 import { usePost } from "@/components/providers";
 import { useSearch } from "../../_providers/Search";
 import { SearchItemType } from "@/constants/server";
@@ -57,7 +58,7 @@ export default function MixedVirtualList() {
       }
     },
   });
-  const virtualItems = virtualizer.getVirtualItems();
+  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
 
   function handleClick(item: TSearchItem) {
     switch (item.type) {
@@ -80,7 +81,7 @@ export default function MixedVirtualList() {
 
     if (lastItem.index >= results.length - 1 && hasNextPage && !isValidating)
       loadNextPage();
-  }, [results, virtualItems, hasNextPage, isValidating, loadNextPage]);
+  }, [results, hasNextPage, isValidating, virtualItems, loadNextPage]);
 
   if (isQueryEmpty) return null;
   return (

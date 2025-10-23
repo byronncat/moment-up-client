@@ -156,7 +156,7 @@ function SuggestedUserItem({
       <FollowButton
         isFollowing={!!user.isFollowing}
         onFollow={handleFollow}
-        className="flex-shrink-0"
+        className="shrink-0"
       />
     </div>
   );

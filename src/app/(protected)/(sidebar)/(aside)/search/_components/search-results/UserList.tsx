@@ -3,6 +3,7 @@ import type { UserSearchItem } from "api";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useNoMemo } from "@/hooks";
 import { useSearch } from "../../_providers/Search";
 import { SearchItemType } from "@/constants/server";
 import { ROUTE } from "@/constants/route";
@@ -39,7 +40,7 @@ export default function MixedVirtualList() {
     overscan: 5,
     estimateSize: () => 72,
   });
-  const virtualItems = virtualizer.getVirtualItems();
+  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
 
   function handleClick(item: UserSearchItem) {
     router.push(ROUTE.PROFILE(item.username));
@@ -52,7 +53,7 @@ export default function MixedVirtualList() {
 
     if (lastItem.index >= results.length - 1 && hasNextPage && !isValidating)
       loadNextPage();
-  }, [results, virtualItems, hasNextPage, isValidating, loadNextPage]);
+  }, [results, hasNextPage, isValidating, virtualItems, loadNextPage]);
 
   if (isQueryEmpty) return null;
   return (

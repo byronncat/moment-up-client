@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useNoMemo } from "@/hooks";
 import { usePost } from "@/components/providers";
 import { useSearch } from "../../_providers/Search";
 import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
@@ -37,7 +38,7 @@ export default function MediaGrid() {
     paddingEnd: 16,
     estimateSize: () => getMediaHeight(window.innerWidth),
   });
-  const virtualItems = virtualizer.getVirtualItems();
+  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
 
   useEffect(() => {
     if (!posts) return;
@@ -48,11 +49,11 @@ export default function MediaGrid() {
       loadNextPage();
   }, [
     posts,
-    virtualItems,
     hasNextPage,
     isValidating,
-    loadNextPage,
     dataRowCount,
+    virtualItems,
+    loadNextPage,
   ]);
 
   return (

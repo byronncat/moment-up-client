@@ -28,7 +28,7 @@ export default function AudioInfo({
             "max-w-[272px] min-w-0 flex-1"
           )}
         >
-          <Volume className="size-5 text-accent-dark flex-shrink-0" />
+          <Volume className="size-5 text-accent-dark shrink-0" />
           <ScrollingText
             text={name}
             className="text-sm font-medium text-white flex-1"
@@ -37,7 +37,7 @@ export default function AudioInfo({
         <button
           onClick={handleRemoveAudio}
           className={cn(
-            "p-1.5 -mr-2 flex-shrink-0",
+            "p-1.5 -mr-2 shrink-0",
             "rounded hover:bg-destructive/20",
             "text-muted-foreground-dark hover:text-destructive",
             "transition-colors",

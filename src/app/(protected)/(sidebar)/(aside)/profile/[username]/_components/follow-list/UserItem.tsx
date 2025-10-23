@@ -80,7 +80,7 @@ export default function UserItem({ data, onFollow }: UserItemProps) {
           <FollowButton
             isFollowing={!!data.isFollowing}
             onFollow={handleFollow}
-            className="flex-shrink-0 my-1"
+            className="shrink-0 my-1"
           />
         </div>
 
