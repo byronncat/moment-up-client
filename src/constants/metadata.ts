@@ -19,6 +19,7 @@ export interface MetadataMap {
   archive: NextMetadata;
   messages: NextMetadata;
   notifications: NextMetadata;
+  settings: NextMetadata;
 
   // === Error ===
   notFound: NextMetadata;
@@ -88,7 +89,11 @@ export const Metadata: MetadataMap = {
   },
   notifications: {
     title: "Notifications",
-    description: "Notifications page",
+    description: "View and manage your notifications.",
+  },
+  settings: {
+    title: "Settings",
+    description: "Manage your account and preferences.",
   },
 
   // === Error ===
