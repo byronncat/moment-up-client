@@ -3,7 +3,6 @@ import type { SearchItem as TSearchItem } from "api";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useNoMemo } from "@/hooks";
 import { usePost } from "@/components/providers";
 import { useSearch } from "../../_providers/Search";
 import { SearchItemType } from "@/constants/server";
@@ -17,6 +16,7 @@ import SearchItem from "../../../_components/search/SearchItem";
 import LoadingIndicator from "../LoadingIndicator";
 
 export default function MixedVirtualList() {
+  "use no memo";
   const router = useRouter();
   const { setCurrentPost, like, bookmark, share, report, follow } = usePost();
   const {
@@ -58,7 +58,7 @@ export default function MixedVirtualList() {
       }
     },
   });
-  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
+  const virtualItems = virtualizer.getVirtualItems();
 
   function handleClick(item: TSearchItem) {
     switch (item.type) {

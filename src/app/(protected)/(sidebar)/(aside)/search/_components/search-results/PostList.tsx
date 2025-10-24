@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useNoMemo } from "@/hooks";
 import { usePost } from "@/components/providers";
 import { useSearch } from "../../_providers/Search";
 import { getPostHeight } from "@/helpers/ui";
@@ -12,6 +11,7 @@ import { ErrorContent, NoContent } from "@/components/common";
 import { MagnifyingGlass } from "@/components/icons";
 
 export default function PostsList() {
+  "use no memo";
   const { posts, setCurrentPost, like, bookmark, share, report, follow } =
     usePost();
   const { isLoading, isValidating, error, hasNextPage, loadNextPage, refresh } =
@@ -35,7 +35,7 @@ export default function PostsList() {
       return getPostHeight(posts?.[index]?.post, window.innerWidth);
     },
   });
-  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
+  const virtualItems = virtualizer.getVirtualItems();
 
   useEffect(() => {
     if (!posts) return;

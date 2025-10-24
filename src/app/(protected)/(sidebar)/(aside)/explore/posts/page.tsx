@@ -5,7 +5,6 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useNoMemo } from "@/hooks";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
@@ -19,6 +18,7 @@ import { ErrorContent, NoContent } from "@/components/common";
 import { FileText } from "lucide-react";
 
 export default function PostPage() {
+  "use no memo";
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token, user } = useAuth();
 
@@ -72,7 +72,7 @@ export default function PostPage() {
       return getPostHeight(posts?.[index]?.post, window.innerWidth);
     },
   });
-  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
+  const virtualItems = virtualizer.getVirtualItems();
 
   const loadNextPage = useCallback(async () => {
     if (!user) return;

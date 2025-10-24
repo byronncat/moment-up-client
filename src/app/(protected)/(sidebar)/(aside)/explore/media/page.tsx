@@ -5,7 +5,6 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useNoMemo } from "@/hooks";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
@@ -21,6 +20,7 @@ import { Image as ImageIcon } from "@/components/icons";
 const EXPLORER_LIMIT = 50;
 
 export default function MediaPage() {
+  "use no memo";
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token, user } = useAuth();
 
@@ -68,7 +68,7 @@ export default function MediaPage() {
     paddingEnd: 16,
     estimateSize: () => getMediaHeight(window.innerWidth),
   });
-  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
+  const virtualItems = virtualizer.getVirtualItems();
 
   const loadNextPage = useCallback(async () => {
     if (!user) return;

@@ -3,7 +3,6 @@ import type { UserSearchItem } from "api";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useNoMemo } from "@/hooks";
 import { useSearch } from "../../_providers/Search";
 import { SearchItemType } from "@/constants/server";
 import { ROUTE } from "@/constants/route";
@@ -15,6 +14,7 @@ import SearchItem from "../../../_components/search/SearchItem";
 import LoadingIndicator from "../LoadingIndicator";
 
 export default function MixedVirtualList() {
+  "use no memo";
   const router = useRouter();
   const {
     results,
@@ -40,7 +40,7 @@ export default function MixedVirtualList() {
     overscan: 5,
     estimateSize: () => 72,
   });
-  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
+  const virtualItems = virtualizer.getVirtualItems();
 
   function handleClick(item: UserSearchItem) {
     router.push(ROUTE.PROFILE(item.username));

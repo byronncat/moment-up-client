@@ -3,7 +3,6 @@
 import type { NotificationDto } from "api";
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useNoMemo } from "@/hooks";
 import { useNotification } from "../../../../../../components/providers/NotificationStorage";
 import { NotificationType } from "@/constants/server";
 
@@ -15,6 +14,7 @@ import { Bell } from "lucide-react";
 const NOTIFICATION_HEIGHT = 80;
 
 export default function NotificationList() {
+  "use no memo";
   const { notifications, error, hasNextPage, isLoading, loadNextPage, mutate } =
     useNotification();
 
@@ -30,7 +30,7 @@ export default function NotificationList() {
     estimateSize: () => NOTIFICATION_HEIGHT,
     measureElement: (element) => element.getBoundingClientRect().height,
   });
-  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
+  const virtualItems = virtualizer.getVirtualItems();
 
   useEffect(() => {
     if (!notifications?.length) return;

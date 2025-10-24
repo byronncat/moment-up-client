@@ -25,7 +25,7 @@ export default function UserInfo() {
 
   return (
     <div className={cn("w-full relative", "flex flex-col items-center")}>
-      <div className={cn("relative", "-mb-15", "w-full aspect-[3/1]")}>
+      <div className={cn("relative", "-mb-15", "w-full aspect-3/1")}>
         <div
           className={cn("size-full", "bg-muted")}
           style={{

@@ -5,7 +5,6 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useNoMemo } from "@/hooks";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { useProfile } from "../_providers/Profile";
 import { getMediaHeight } from "@/helpers/ui";
@@ -27,6 +26,7 @@ import { Image as ImageIcon } from "@/components/icons";
 const ITEMS_EACH_PAGE = 21;
 
 export default function PostGrid() {
+  "use no memo";
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
   const { profile, isSelf, registerPostsRefresh } = useProfile();
@@ -81,7 +81,7 @@ export default function PostGrid() {
       return getMediaHeight(window.innerWidth);
     },
   });
-  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
+  const virtualItems = virtualizer.getVirtualItems();
 
   const loadNextPage = useCallback(async () => {
     if (hasNextPage && !isValidating) await setSize(size + 1);

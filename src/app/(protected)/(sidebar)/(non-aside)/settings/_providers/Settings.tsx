@@ -20,9 +20,7 @@ type SettingsProviderProps = {
   children: React.ReactNode;
 };
 
-export default function SettingsProvider({
-  children,
-}: SettingsProviderProps) {
+export default function SettingsProvider({ children }: SettingsProviderProps) {
   const [currentTitle, setCurrentTitle] = useState("Your profile");
 
   return (
@@ -36,4 +34,3 @@ export default function SettingsProvider({
     </SettingsContext.Provider>
   );
 }
-

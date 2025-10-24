@@ -5,7 +5,6 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useNoMemo } from "@/hooks";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { useProfile } from "../_providers/Profile";
 import { getPostHeight } from "@/helpers/ui";
@@ -30,6 +29,7 @@ type PostListProps = Readonly<{
 const ITEMS_EACH_PAGE = 20;
 
 export default function PostList({ filter }: PostListProps) {
+  "use no memo";
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token, user } = useAuth();
   const { profile, isSelf, registerPostsRefresh } = useProfile();
@@ -88,7 +88,7 @@ export default function PostList({ filter }: PostListProps) {
       return getPostHeight(posts?.[index - 1]?.post, window.innerWidth);
     },
   });
-  const virtualItems = useNoMemo(() => virtualizer.getVirtualItems());
+  const virtualItems = virtualizer.getVirtualItems();
 
   const loadNextPage = useCallback(async () => {
     if (hasNextPage && !isValidating) await setSize(size + 1);
