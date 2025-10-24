@@ -35,10 +35,10 @@ import {
   useState,
 } from "react";
 import { nanoid } from "nanoid";
-import { ContentPrivacy } from "@/constants/server";
 import { useCloudinary, useRefreshApi } from "@/components/providers";
 import { CoreApi } from "@/services";
 import { toast } from "sonner";
+import { ContentPrivacy } from "@/constants/server";
 
 export const MAX_FILES_LIMIT = 12;
 
@@ -82,7 +82,7 @@ export default function PostDataProvider({
     return text.length > 0 || files.length > 0;
   }, [text, files]);
 
-  const uploadApi = useRefreshApi(CoreApi.create);
+  const uploadApi = useRefreshApi(CoreApi.createPost);
   const upload = useCallback(async () => {
     setIsUploading(true);
 

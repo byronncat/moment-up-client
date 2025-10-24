@@ -18,7 +18,8 @@ import LoadingIndicator from "../LoadingIndicator";
 export default function MixedVirtualList() {
   "use no memo";
   const router = useRouter();
-  const { setCurrentPost, like, bookmark, share, report, follow } = usePost();
+  const { setCurrentPost, deletePost, like, bookmark, share, report, follow } =
+    usePost();
   const {
     results,
     error,
@@ -132,7 +133,14 @@ export default function MixedVirtualList() {
                 <SearchItem
                   data={item}
                   onClick={() => handleClick(item)}
-                  actions={{ like, bookmark, share, report, follow }}
+                  actions={{
+                    delete: deletePost,
+                    like,
+                    bookmark,
+                    share,
+                    report,
+                    follow,
+                  }}
                   className={cn(
                     item.type === SearchItemType.USER
                       ? "cursor-pointer hover:bg-accent/5 px-4 py-3 transition-colors"

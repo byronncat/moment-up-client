@@ -6,26 +6,13 @@ import type { ContentPrivacy, ContentReportType } from "@/constants/server";
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
 
-const SuccessMessage = {
-  createPost: "Post created",
-  toggleLike: (isLiked: boolean) => (isLiked ? "Liked" : "Unliked"),
-  toggleBookmark: (shouldBookmark: boolean) =>
-    shouldBookmark ? "Bookmarked" : "Unbookmarked",
-  reportPost: "Reported successfully",
-  repost: "Reposted successfully",
-  deleteStory: "Story deleted successfully",
-  getPost: "Post fetched successfully",
-  getPostMetadata: "Post metadata fetched successfully",
-  createComment: "Comment added successfully",
-};
-
 interface CreatePostDto {
   text?: string | null;
   privacy?: ContentPrivacy | null;
   attachments?: Array<{ id: PublicId; type: ResourceType }> | null;
 }
 
-export async function create(data: CreatePostDto, token: Token): API {
+export async function createPost(data: CreatePostDto, token: Token): API {
   return fetch(ApiUrl.post.create, {
     method: "POST",
     headers: {
@@ -40,7 +27,66 @@ export async function create(data: CreatePostDto, token: Token): API {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: SuccessMessage.createPost,
+        message: "Post created",
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorDto) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+export async function updatePost(
+  postId: string,
+  data: Omit<CreatePostDto, "attachments">,
+  token: Token
+): API {
+  return fetch(ApiUrl.post.update(postId), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    body: JSON.stringify(data),
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Post updated",
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorDto) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
+export async function deletePost(postId: string, token: Token): API {
+  return fetch(ApiUrl.post.delete(postId), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "The post has been deleted.",
         statusCode: response.status,
       };
     })
@@ -63,7 +109,6 @@ export async function likePost(data: LikeDto, token: Token): API {
     ? ApiUrl.post.like(data.postId)
     : ApiUrl.post.unlike(data.postId);
   const method = data.shouldLike ? "POST" : "DELETE";
-  const successMessage = SuccessMessage.toggleLike(data.shouldLike);
 
   return fetch(endpoint, {
     method,
@@ -78,7 +123,7 @@ export async function likePost(data: LikeDto, token: Token): API {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: successMessage,
+        message: data.shouldLike ? "Liked" : "Unliked",
         statusCode: response.status,
       };
     })
@@ -101,7 +146,6 @@ export async function bookmarkPost(data: BookmarkDto, token: Token): API {
     ? ApiUrl.post.bookmark(data.postId)
     : ApiUrl.post.unbookmark(data.postId);
   const method = data.shouldBookmark ? "POST" : "DELETE";
-  const successMessage = SuccessMessage.toggleBookmark(data.shouldBookmark);
 
   return fetch(endpoint, {
     method,
@@ -116,7 +160,7 @@ export async function bookmarkPost(data: BookmarkDto, token: Token): API {
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: successMessage,
+        message: data.shouldBookmark ? "Bookmarked" : "Unbookmarked",
         statusCode: response.status,
       };
     })
@@ -148,7 +192,7 @@ export async function reportPost(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: SuccessMessage.reportPost,
+        message: "Reported successfully",
         statusCode: response.status,
       };
     })
@@ -177,7 +221,7 @@ export async function getPost(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: SuccessMessage.getPost,
+        message: "Post fetched successfully",
         data: (await response.json()).post,
         statusCode: response.status,
       };
@@ -215,7 +259,7 @@ export async function getPostMetadata(postId: string): API<
       const data = await response.json();
       return {
         success: true,
-        message: SuccessMessage.getPostMetadata,
+        message: "Post metadata fetched successfully",
         data: data.metadata,
         statusCode: response.status,
       };
@@ -318,7 +362,7 @@ export async function createComment(
       if (!response.ok) throw await response.json();
       return {
         success: true,
-        message: SuccessMessage.createComment,
+        message: "Comment added successfully",
         data: (await response.json()).comment,
         statusCode: response.status,
       };

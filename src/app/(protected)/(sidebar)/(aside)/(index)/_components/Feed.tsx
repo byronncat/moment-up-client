@@ -25,8 +25,16 @@ export default function VirtualizedFeed() {
     loadNextPage,
     reloadPost,
   } = useHomeFeed();
-  const { posts, setCurrentPost, like, bookmark, share, report, follow } =
-    usePost();
+  const {
+    posts,
+    setCurrentPost,
+    deletePost,
+    like,
+    bookmark,
+    share,
+    report,
+    follow,
+  } = usePost();
 
   const itemCount =
     isLoading || isError || posts?.length === 0
@@ -119,7 +127,14 @@ export default function VirtualizedFeed() {
               <div className="max-w-[calc(600px+16px)] px-2 mx-auto">
                 <FeedCard
                   data={post}
-                  actions={{ like, bookmark, share, report, follow }}
+                  actions={{
+                    delete: deletePost,
+                    like,
+                    bookmark,
+                    share,
+                    report,
+                    follow,
+                  }}
                   onClick={() => setCurrentPost(post.id)}
                   className="w-full"
                 />

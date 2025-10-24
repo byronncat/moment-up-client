@@ -1,4 +1,3 @@
-import { usePostData } from "../../_provider/PostData";
 import { ContentPrivacy } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
@@ -36,8 +35,16 @@ const PrivacyOptions = [
   },
 ];
 
-export default function PrivacySelector() {
-  const { privacy, setPrivacy } = usePostData();
+type PrivacySelectorProps = Readonly<{
+  privacy: ContentPrivacy;
+  setPrivacy: (privacy: ContentPrivacy) => void;
+  className?: string;
+}>;
+
+export default function PrivacySelector({
+  privacy,
+  setPrivacy,
+}: PrivacySelectorProps) {
   const selectedOption = PrivacyOptions.find((opt) => opt.value === privacy);
 
   const openIncludeDialog = () => {

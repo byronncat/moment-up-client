@@ -78,12 +78,14 @@ function CreatePostPage() {
       <div
         className={cn(
           "flex flex-col",
-          "bg-background sm:rounded-lg overflow-hidden w-full sm:w-fit",
+          "bg-background sm:rounded-lg overflow-hidden",
+          "w-full sm:w-fit",
           isDiscardDialogOpen && "hidden"
         )}
       >
         <Header
-          data={phaseData[phase]}
+          title={phaseData[phase].title}
+          buttons={phaseData[phase].buttons}
           onClose={handleClose}
           className="shrink-0"
         />

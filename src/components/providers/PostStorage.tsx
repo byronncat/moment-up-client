@@ -23,7 +23,7 @@ type PostContextType = {
   posts: FeedItemDto[] | undefined;
   setPosts: (posts: FeedItemDto[] | undefined) => void;
   addPosts: (posts: FeedItemDto[]) => void;
-  removeMoment: (postId: string) => void;
+  deletePost: (postId: string) => void;
   setCurrentPost: (postId: string | null) => void;
   getCurrentPost: () => FeedItemDto | undefined;
 
@@ -150,6 +150,7 @@ function postsReducer(state: PostsState, action: PostsAction): PostsState {
 }
 
 export type Actions = {
+  delete: (postId: FeedItemDto["id"]) => void;
   like: (postId: FeedItemDto["id"]) => Promise<void>;
   bookmark: (postId: FeedItemDto["id"]) => Promise<void>;
   share: (postId: FeedItemDto["id"]) => void;
@@ -161,7 +162,7 @@ const MomentDataContext = createContext<PostContextType>({
   posts: undefined,
   setPosts: () => {},
   addPosts: () => {},
-  removeMoment: () => {},
+  deletePost: () => {},
   setCurrentPost: () => {},
   getCurrentPost: () => undefined,
 
@@ -189,6 +190,7 @@ export default function MomentDataProvider({
   const bookmarkApi = useRefreshApi(CoreApi.bookmarkPost);
   const reportApi = useRefreshApi(CoreApi.reportPost);
   const followApi = useRefreshApi(UserApi.follow);
+  const deleteApi = useRefreshApi(CoreApi.deletePost);
 
   const getCurrentPost = useCallback(() => {
     if (!posts) return undefined;
@@ -204,9 +206,26 @@ export default function MomentDataProvider({
     dispatch({ type: "ADD_POSTS", payload: moments });
   }, []);
 
-  const removeMoment = useCallback((postId: string) => {
+  const removePost = useCallback((postId: string) => {
     dispatch({ type: "REMOVE_POST", payload: postId });
   }, []);
+
+  const deletePost = useCallback(
+    (postId: string) => {
+      toast.promise(deleteApi(postId), {
+        loading: "Deleting post...",
+        success: ({ success, message }) => {
+          if (success) {
+            removePost(postId);
+            return "The post has been deleted.";
+          }
+          throw new Error(message);
+        },
+        error: ({ message }) => message,
+      });
+    },
+    [deleteApi, removePost]
+  );
 
   const like = useCallback(
     async (postId: string) => {
@@ -310,7 +329,7 @@ export default function MomentDataProvider({
         posts: posts ? Array.from(posts.values()) : undefined,
         setPosts,
         addPosts,
-        removeMoment,
+        deletePost,
         getCurrentPost,
         setCurrentPost,
 

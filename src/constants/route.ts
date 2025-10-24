@@ -40,6 +40,8 @@ export const ROUTE = {
       useSetForQuery: true,
     }),
   POST_CREATE: "/post/create",
+  POST_UPDATE: (postId: string) =>
+    buildUrl("/post/update/:postId", { pathParams: { postId } }),
   STORY: (username?: string, storyId?: string) => {
     let path = "/stories";
     if (username)

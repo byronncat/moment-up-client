@@ -118,6 +118,14 @@ export const ApiUrl = {
         pathParams: { postId },
       }),
     create: `${SERVER_HOST_URL}/v1/posts`,
+    update: (postId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId`, {
+        pathParams: { postId },
+      }),
+    delete: (postId: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId`, {
+        pathParams: { postId },
+      }),
     like: (postId: string) =>
       buildUrl(`${SERVER_HOST_URL}/v1/posts/:postId/like`, {
         pathParams: { postId },

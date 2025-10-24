@@ -1,5 +1,6 @@
 import type { FeedItemDto } from "api";
 
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { cn } from "@/libraries/utils";
 import { CommentProvider, usePost } from "@/components/providers";
@@ -17,17 +18,25 @@ type ContentProps = Readonly<{
 
 export default function Content({ data, haveMedia, className }: ContentProps) {
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
-  const { like, bookmark, report, share, follow } = usePost();
+  const router = useRouter();
+  const { deletePost, like, bookmark, report, share, follow } = usePost();
 
   function focusCommentInput() {
     commentInputRef.current?.focus();
   }
 
+  function handleDelete() {
+    deletePost(data.id);
+    router.back();
+  }
+
   const content = (
     <>
       <PostHeader
+        portalDisabled
         data={data}
         actions={{
+          delete: handleDelete,
           follow,
           report,
         }}

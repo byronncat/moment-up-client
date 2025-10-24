@@ -9,12 +9,18 @@ import { Button } from "@/components/ui/button";
 import { PaperPlane, X } from "@/components/icons";
 
 type HeaderProps = Readonly<{
-  data: PhaseData;
+  title: PhaseData["title"];
+  buttons?: PhaseData["buttons"];
   onClose: () => void;
   className?: string;
 }>;
 
-export default function Header({ data, onClose, className }: HeaderProps) {
+export default function Header({
+  title,
+  buttons,
+  onClose,
+  className,
+}: HeaderProps) {
   const router = useRouter();
   const { phase, isUploading, upload } = usePostData();
 
@@ -38,7 +44,7 @@ export default function Header({ data, onClose, className }: HeaderProps) {
       <div className="flex justify-start items-center gap-1">
         {isUploading
           ? null
-          : data.buttons?.map((button) => (
+          : buttons?.map((button) => (
               <Button
                 key={button.id}
                 onClick={button.onClick}
@@ -61,7 +67,7 @@ export default function Header({ data, onClose, className }: HeaderProps) {
           "absolute left-1/2 -translate-x-1/2"
         )}
       >
-        {data.title}
+        {title}
       </h1>
 
       <div className="flex justify-end items-center">

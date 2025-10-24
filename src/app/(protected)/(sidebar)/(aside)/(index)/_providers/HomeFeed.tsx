@@ -23,7 +23,6 @@ import { usePost } from "@/components/providers/PostStorage";
 import { useStory } from "@/components/providers/StoryStorage";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
-import { INITIAL_PAGE } from "@/constants/server";
 import { SWRInfiniteOptions } from "@/helpers/swr";
 
 const HomeFeedContext = createContext<HomeFeedContextType>({
@@ -64,7 +63,7 @@ export function HomeFeedProvider({
       SWRInfiniteOptions
     );
 
-  const { setPosts, addPosts } = usePost();
+  const { setPosts } = usePost();
   const { setStories } = useStory();
 
   const hasNextPage = useMemo(
@@ -77,13 +76,10 @@ export function HomeFeedProvider({
   }, [hasNextPage, isValidating, setSize, size]);
 
   useEffect(() => {
-    const lastPage = data?.[data.length - 1];
-    const _posts = lastPage?.items;
-    if (!error && _posts) {
-      if (size === INITIAL_PAGE) setPosts(_posts);
-      else addPosts(_posts);
-    } else setPosts([]);
-  }, [data, error, size, setPosts, addPosts]);
+    const allPosts = data?.flatMap((page) => page.items);
+    if (!error && allPosts) setPosts(allPosts);
+    else setPosts([]);
+  }, [data, error, setPosts]);
 
   // === Story data ===
   const {

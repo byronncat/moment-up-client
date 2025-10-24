@@ -8,7 +8,6 @@ import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
-import { INITIAL_PAGE } from "@/constants/server";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
 import { SWRInfiniteOptions } from "@/helpers/swr";
 
@@ -43,8 +42,8 @@ export default function PostPage() {
   const {
     posts,
     setPosts,
-    addPosts,
     setCurrentPost,
+    deletePost,
     like,
     bookmark,
     share,
@@ -80,12 +79,10 @@ export default function PostPage() {
   }, [hasNextPage, isValidating, setSize, size, user]);
 
   useEffect(() => {
-    const _posts = data?.flatMap((page) => page.items);
-    if (!error && _posts) {
-      if (size === INITIAL_PAGE) setPosts(_posts);
-      else addPosts(_posts);
-    } else setPosts([]);
-  }, [data, error, size, setPosts, addPosts]);
+    const allPosts = data?.flatMap((page) => page.items);
+    if (!error && allPosts) setPosts(allPosts);
+    else setPosts([]);
+  }, [data, error, setPosts]);
 
   useEffect(() => {
     if (!posts) return;
@@ -162,7 +159,14 @@ export default function PostPage() {
                 <div className="max-w-[calc(600px+16px)] px-2 mx-auto">
                   <FeedCard
                     data={post}
-                    actions={{ like, bookmark, share, report, follow }}
+                    actions={{
+                      delete: deletePost,
+                      like,
+                      bookmark,
+                      share,
+                      report,
+                      follow,
+                    }}
                     onClick={() => setCurrentPost(post.id)}
                     className="w-full"
                   />

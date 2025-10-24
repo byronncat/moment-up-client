@@ -13,11 +13,12 @@ import ControlButtons from "./ControlButtons";
 
 export default function TextContent() {
   const { user } = useAuth();
-  const { hasContent, setPhase } = usePostData();
+  const { privacy, text, hasContent, setPrivacy, setPhase, setText } =
+    usePostData();
 
   function handlePreview() {
     if (!hasContent) {
-      toast.error("Please enter some text or upload media");
+      toast.error("Please enter some text or upload media.");
       return;
     }
     setPhase("preview");
@@ -42,11 +43,15 @@ export default function TextContent() {
           <span className="font-semibold">
             {user.displayName ?? user.username}
           </span>
-          <PrivacySelector />
+          <PrivacySelector privacy={privacy} setPrivacy={setPrivacy} />
         </div>
       </div>
 
-      <Textarea className="px-2 mt-4 h-full sm:h-[200px]" />
+      <Textarea
+        text={text}
+        setText={setText}
+        className="px-2 mt-4 h-full sm:h-[200px]"
+      />
 
       <div
         className={cn(

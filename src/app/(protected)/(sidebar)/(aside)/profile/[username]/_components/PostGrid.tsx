@@ -11,7 +11,6 @@ import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { ROUTE } from "@/constants/route";
 import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
-import { INITIAL_PAGE } from "@/constants/server";
 import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import { cn } from "@/libraries/utils";
@@ -53,7 +52,7 @@ export default function PostGrid() {
       SWRInfiniteOptions
     );
 
-  const { posts, setPosts, addPosts, setCurrentPost } = usePost();
+  const { posts, setPosts, setCurrentPost } = usePost();
 
   const hasNextPage = data?.[data.length - 1].hasNextPage ?? true;
 
@@ -88,13 +87,10 @@ export default function PostGrid() {
   }, [hasNextPage, isValidating, setSize, size]);
 
   useEffect(() => {
-    const lastPage = data?.[data.length - 1];
-    const _posts = lastPage?.items;
-    if (!error && _posts) {
-      if (size === INITIAL_PAGE) setPosts(_posts);
-      else addPosts(_posts);
-    } else setPosts([]);
-  }, [data, error, size, setPosts, addPosts]);
+    const allPosts = data?.flatMap((page) => page.items);
+    if (!error && allPosts) setPosts(allPosts);
+    else setPosts([]);
+  }, [data, error, setPosts]);
 
   useEffect(() => {
     const [lastItem] = [...virtualItems].reverse();

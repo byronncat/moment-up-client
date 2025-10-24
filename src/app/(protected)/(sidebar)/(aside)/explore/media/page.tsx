@@ -9,7 +9,6 @@ import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
-import { INITIAL_PAGE } from "@/constants/server";
 import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import { Skeleton } from "@/components/ui/skeleton";
@@ -42,7 +41,7 @@ export default function MediaPage() {
       SWRInfiniteOptions
     );
 
-  const { posts, setPosts, addPosts, setCurrentPost } = usePost();
+  const { posts, setPosts, setCurrentPost } = usePost();
 
   const hasNextPage = user && (data?.[data.length - 1].hasNextPage ?? true);
 
@@ -77,11 +76,9 @@ export default function MediaPage() {
 
   useEffect(() => {
     const allPosts = data?.flatMap((page) => page.items);
-    if (!error && allPosts) {
-      if (size === INITIAL_PAGE) setPosts(allPosts);
-      else addPosts(allPosts);
-    } else setPosts([]);
-  }, [data, error, size, setPosts, addPosts]);
+    if (!error && allPosts) setPosts(allPosts);
+    else setPosts([]);
+  }, [data, error, setPosts]);
 
   useEffect(() => {
     if (!posts) return;

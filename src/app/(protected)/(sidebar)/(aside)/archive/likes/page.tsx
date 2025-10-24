@@ -8,7 +8,6 @@ import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
 import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
-import { INITIAL_PAGE } from "@/constants/server";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
 import { SWRInfiniteOptions } from "@/helpers/swr";
 
@@ -44,8 +43,8 @@ export default function LikePage() {
   const {
     posts,
     setPosts,
-    addPosts,
     setCurrentPost,
+    deletePost,
     like,
     bookmark,
     share,
@@ -80,12 +79,10 @@ export default function LikePage() {
   }, [hasNextPage, isValidating, setSize, size]);
 
   useEffect(() => {
-    const _posts = data?.flatMap((page) => page.items);
-    if (!error && _posts) {
-      if (size === INITIAL_PAGE) setPosts(_posts);
-      else addPosts(_posts);
-    } else setPosts([]);
-  }, [data, error, size, setPosts, addPosts]);
+    const allPosts = data?.flatMap((page) => page.items);
+    if (!error && allPosts) setPosts(allPosts);
+    else setPosts([]);
+  }, [data, error, setPosts]);
 
   useEffect(() => {
     if (!posts) return;
@@ -163,6 +160,7 @@ export default function LikePage() {
                   <FeedCard
                     data={post}
                     actions={{
+                      delete: deletePost,
                       like: async (postId) => {
                         await like(postId);
                         mutate();

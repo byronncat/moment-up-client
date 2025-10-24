@@ -2,7 +2,7 @@
 
 import type { FeedItemDto } from "api";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CommentProvider, useAuth, usePost } from "@/components/providers";
 import useSWR from "swr";
@@ -32,12 +32,14 @@ export default function PostDetails({ postId }: PostDetailsProps) {
     setPosts,
     getCurrentPost,
     setCurrentPost,
+    deletePost,
     share,
     report,
     bookmark,
     like,
     follow,
   } = usePost();
+  const router = useRouter();
   const { user, token } = useAuth();
   const { data, error, isLoading, mutate } = useSWR(
     [ApiUrl.post.getById(postId), token.accessToken],
@@ -48,6 +50,11 @@ export default function PostDetails({ postId }: PostDetailsProps) {
   const searchParams = useSearchParams();
   const imgIndex = searchParams.get("imgIndex");
   const [initialIndex] = useState(imgIndex ? parseInt(imgIndex) : 0);
+
+  function handleDelete() {
+    deletePost(postId);
+    router.push(ROUTE.HOME);
+  }
 
   useEffect(() => {
     if (data) {
@@ -88,6 +95,7 @@ export default function PostDetails({ postId }: PostDetailsProps) {
       <PostHeader
         data={post}
         actions={{
+          delete: handleDelete,
           follow,
           report,
         }}

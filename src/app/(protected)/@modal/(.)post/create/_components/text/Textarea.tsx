@@ -1,14 +1,15 @@
-import { usePostData } from "../../_provider/PostData";
 import { MAX_TEXT_CONTENT_LENGTH } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { Textarea as TextareaUI } from "@/components/ui/textarea";
 
-export default function Textarea({
-  className,
-}: Readonly<{ className?: string }>) {
-  const { text, setText } = usePostData();
+type TextareaProps = Readonly<{
+  text: string;
+  setText: (text: string) => void;
+  className?: string;
+}>;
 
+export default function Textarea({ text, setText, className }: TextareaProps) {
   return (
     <TextareaUI
       id="text-content"

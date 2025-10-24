@@ -11,7 +11,6 @@ import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { ROUTE } from "@/constants/route";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
-import { INITIAL_PAGE } from "@/constants/server";
 import { SWRInfiniteOptions } from "@/helpers/swr";
 
 import Link from "next/link";
@@ -61,6 +60,7 @@ export default function PostList({ filter }: PostListProps) {
     setPosts,
     addPosts,
     setCurrentPost,
+    deletePost,
     like,
     bookmark,
     share,
@@ -95,13 +95,10 @@ export default function PostList({ filter }: PostListProps) {
   }, [hasNextPage, isValidating, setSize, size]);
 
   useEffect(() => {
-    const lastPage = data?.[data.length - 1];
-    const _posts = lastPage?.items;
-    if (!error && _posts) {
-      if (size === INITIAL_PAGE) setPosts(_posts);
-      else addPosts(_posts);
-    } else setPosts([]);
-  }, [data, error, size, setPosts, addPosts]);
+    const allPosts = data?.flatMap((page) => page.items);
+    if (!error && allPosts) setPosts(allPosts);
+    else setPosts([]);
+  }, [data, error, setPosts, addPosts]);
 
   useEffect(() => {
     if (!posts) return;
@@ -192,7 +189,14 @@ export default function PostList({ filter }: PostListProps) {
               <div className="max-w-[calc(600px+16px)] px-2 mx-auto">
                 <FeedCard
                   data={post}
-                  actions={{ like, bookmark, share, report, follow }}
+                  actions={{
+                    delete: deletePost,
+                    like,
+                    bookmark,
+                    share,
+                    report,
+                    follow,
+                  }}
                   onClick={() => setCurrentPost(post.id)}
                   className="w-full"
                 />
