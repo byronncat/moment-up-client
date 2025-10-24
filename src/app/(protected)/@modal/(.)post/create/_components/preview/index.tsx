@@ -14,7 +14,7 @@ export default function Preview() {
   return (
     <ScrollArea
       className={cn(
-        "w-full sm:max-w-[calc(600px+2*8px)] px-2",
+        "max-w-full w-[calc(600px+2*8px)] px-2",
         "h-[calc(100dvh-48px)] sm:h-fit sm:max-h-[calc(90dvh-48px)]", // Using dvh to ensure full viewport height on mobile devices
         "flex flex-col overflow-y-auto", // For max-height to work
         "bg-background cursor-default relative"
