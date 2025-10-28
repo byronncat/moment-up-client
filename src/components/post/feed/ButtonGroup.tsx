@@ -62,7 +62,7 @@ export default function ButtonGroup({
             buttonStyles.iconSize,
             buttonStyles.transition,
             "fill-muted-foreground group-hover:fill-sky-500",
-            "translate-x-[1px]"
+            "translate-x-px"
           )}
         />
       ),

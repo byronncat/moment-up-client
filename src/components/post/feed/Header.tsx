@@ -2,7 +2,7 @@
 
 import type { FeedItemDto } from "api";
 import type { Actions } from "../../providers/PostStorage";
-import { ContentReportType } from "@/constants/server";
+import { ContentPrivacy, ContentReportType } from "@/constants/server";
 
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -35,7 +35,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../../ui/alert-dialog";
-import { Flag, MoreHorizontal, User } from "@/components/icons";
+import { Earth, Flag, Lock, MoreHorizontal, User } from "@/components/icons";
 import {
   AlertTriangle,
   Angry,
@@ -82,42 +82,61 @@ export default function Header({
       </HoverableComponent>
 
       <div
-        className={cn(
-          "flex flex-col gap-0.5 flex-1",
-          "ml-2.5 mr-3 mt-1",
-          "min-w-0"
-        )}
+        className={cn("flex flex-col flex-1", "ml-2.5 mr-3 mt-1", "min-w-0")}
       >
-        <div className={cn("flex items-center gap-1.5", "min-w-0")}>
-          <HoverableComponent
-            userInfo={user}
-            onFollow={() => actions.follow(postId)}
-            className={cn("min-w-0", "focus:underline outline-none")}
-          >
-            <div className={cn("font-semibold text-base/tight", "truncate")}>
-              {user.displayName ?? user.username}
-            </div>
-          </HoverableComponent>
+        <HoverableComponent
+          userInfo={user}
+          onFollow={() => actions.follow(postId)}
+          align="start"
+          className={cn("min-w-0", "focus:underline outline-none")}
+        >
+          <div className={cn("font-semibold text-base/tight", "truncate")}>
+            {user.displayName ?? user.username}
+          </div>
+        </HoverableComponent>
 
-          <span className="text-base/tight text-muted-foreground">·</span>
+        <div
+          className={cn("flex items-end", "min-w-0", "text-muted-foreground text-sm")}
+        >
+          <div className="truncate">@{user.username}</div>
+
+          <span className="mx-1 ">·</span>
+
+          <Tooltip
+            sideOffset={4}
+            content={
+              post.privacy === ContentPrivacy.PRIVATE
+                ? "Private"
+                : post.privacy === ContentPrivacy.FOLLOWERS
+                  ? "Followers only"
+                  : "Public"
+            }
+          >
+            <span
+              className={cn(
+                "shrink-0",
+                "flex items-center justify-center h-5",
+                "w-4 mr-1"
+              )}
+            >
+              {post.privacy === ContentPrivacy.PRIVATE ? (
+                <Lock className="size-4 " />
+              ) : post.privacy === ContentPrivacy.FOLLOWERS ? (
+                <User type="solid" className="size-3" />
+              ) : (
+                <Earth className="size-4" />
+              )}
+            </span>
+          </Tooltip>
 
           <Tooltip
             sideOffset={4}
             content={dayjs(post.lastModified).format("h:mm A MMM D, YYYY")}
           >
-            <div
-              className={cn(
-                "text-sm/tight text-muted-foreground",
-                "cursor-default shrink-0"
-              )}
-            >
+            <div className={cn("text-sm", "cursor-default shrink-0")}>
               {Format.date(post.lastModified)}
             </div>
           </Tooltip>
-        </div>
-
-        <div className={cn("text-sm text-muted-foreground", "truncate")}>
-          @{user.username}
         </div>
       </div>
 

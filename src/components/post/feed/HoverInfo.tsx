@@ -12,6 +12,7 @@ import { ROUTE } from "@/constants/route";
 type HoverableComponentProps = Readonly<{
   children: React.ReactNode;
   userInfo: UserSummaryDto;
+  align?: "center" | "start" | "end";
   onFollow: (event: React.MouseEvent) => Promise<void>;
   className?: string;
   tabIndex?: number;
@@ -20,6 +21,7 @@ type HoverableComponentProps = Readonly<{
 export default function HoverableComponent({
   children,
   userInfo,
+  align = "center",
   onFollow,
   className,
   ...props
@@ -35,7 +37,7 @@ export default function HoverableComponent({
           {children}
         </Link>
       </HoverCardTrigger>
-      <HoverCardContent className="w-[288px]">
+      <HoverCardContent className="w-[288px]" align={align}>
         <UserInfoCard user={userInfo} onFollow={onFollow} />
       </HoverCardContent>
     </HoverCard>

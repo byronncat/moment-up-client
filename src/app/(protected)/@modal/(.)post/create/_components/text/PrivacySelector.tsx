@@ -12,13 +12,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Chevron, Globe, Lock, User } from "@/components/icons";
+import { Chevron, Earth, Lock, User } from "@/components/icons";
 
 const PrivacyOptions = [
   {
     label: "Public",
     value: ContentPrivacy.PUBLIC,
-    icon: (className: string) => <Globe className={className} />,
+    icon: (className: string) => <Earth className={className} />,
     description: "Anyone can see this",
   },
   {

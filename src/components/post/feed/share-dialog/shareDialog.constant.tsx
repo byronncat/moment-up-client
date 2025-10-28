@@ -1,5 +1,5 @@
 import { ContentPrivacy } from "@/constants/server";
-import { Globe, Lock, User } from "@/components/icons";
+import { Earth, Lock, User } from "@/components/icons";
 
 export type PrivacyOption = {
   label: string;
@@ -12,7 +12,7 @@ export const PRIVACY_OPTIONS: PrivacyOption[] = [
   {
     label: "Public",
     value: ContentPrivacy.PUBLIC,
-    icon: <Globe className="size-4" />,
+    icon: <Earth className="size-4" />,
     description: "Anyone can see this",
   },
   {

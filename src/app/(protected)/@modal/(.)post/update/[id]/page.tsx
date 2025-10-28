@@ -23,7 +23,9 @@ export default function CreatePostPage() {
   );
 
   const [text, setText] = useState(currentPost?.post.text ?? "");
-  const [privacy, setPrivacy] = useState(ContentPrivacy.PUBLIC);
+  const [privacy, setPrivacy] = useState(
+    currentPost?.post.privacy ?? ContentPrivacy.PUBLIC
+  );
 
   function handleClose() {
     router.back();
