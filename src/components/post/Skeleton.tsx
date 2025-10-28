@@ -35,12 +35,12 @@ export default function PostSkeleton({
         <div className="flex gap-2">
           <Skeleton className="size-12 rounded-full" />
           <div className="flex flex-col gap-1.5 mt-1 flex-1">
+            <Skeleton className="w-32 h-4" />
             <div className="flex items-center gap-1">
-              <Skeleton className="w-32 h-4" />
+              <Skeleton className="w-20 h-3" />
               <Skeleton className="w-1 h-3" />
               <Skeleton className="w-16 h-3" />
             </div>
-            <Skeleton className="w-20 h-3" />
           </div>
         </div>
       </CardHeader>
