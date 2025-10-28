@@ -2,7 +2,7 @@ import { __parseUrl } from "@/__mocks__";
 import type { ContentPrivacy } from "@/constants/server";
 
 import { useState } from "react";
-import { useAuth, useRefreshApi } from "@/components/providers";
+import { useAuth, usePost, useRefreshApi } from "@/components/providers";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
 
@@ -35,6 +35,7 @@ export default function TextContent({
   "use no memo";
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const { updatePost } = usePost();
 
   const updateApi = useRefreshApi(CoreApi.updatePost);
   async function handleUpdate() {
@@ -49,8 +50,10 @@ export default function TextContent({
       text,
       privacy,
     });
-    if (success) onClose();
-    else toast.error(message);
+    if (success) {
+      updatePost(postId, { text, privacy });
+      onClose();
+    } else toast.error(message);
 
     setIsLoading(false);
   }

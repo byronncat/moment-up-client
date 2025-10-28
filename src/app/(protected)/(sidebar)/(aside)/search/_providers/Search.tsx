@@ -74,7 +74,8 @@ export default function SearchProvider({
 }>) {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
-  const { setPosts } = usePost();
+  const { setPosts, actionKey } = usePost();
+  const [key] = useState(actionKey.current);
 
   const [rawQuery, setRawQuery] = useState(initialQuery);
   const [query] = useDebounceValue(rawQuery, SEARCH_DEBOUNCE_TIME);
@@ -90,9 +91,9 @@ export default function SearchProvider({
 
       const { filter } = TypeMap[activeCategory];
       const url = ApiUrl.search.search(query, filter, pageIndex + 1);
-      return [url, token.accessToken];
+      return [url, token.accessToken, key] as const;
     },
-    [query, activeCategory, token.accessToken]
+    [query, activeCategory, token.accessToken, key]
   );
 
   const { data, size, setSize, isLoading, isValidating, mutate, error } =

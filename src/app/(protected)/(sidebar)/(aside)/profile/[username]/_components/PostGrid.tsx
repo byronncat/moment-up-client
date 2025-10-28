@@ -2,7 +2,7 @@
 
 import type { FeedItemDto, PaginationDto } from "api";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
@@ -29,6 +29,9 @@ export default function PostGrid() {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
   const { profile, isSelf, registerPostsRefresh } = useProfile();
+  const { posts, setPosts, setCurrentPost, actionKey } = usePost();
+  const [key] = useState(actionKey.current);
+
   const getKey = (
     pageIndex: number,
     previousPageData: PaginationDto<FeedItemDto> | null
@@ -41,7 +44,7 @@ export default function PostGrid() {
       pageIndex + 1,
       ITEMS_EACH_PAGE
     );
-    return [url, token.accessToken];
+    return [url, token.accessToken, key] as const;
   };
 
   const { data, error, size, setSize, isLoading, isValidating, mutate } =
@@ -51,8 +54,6 @@ export default function PostGrid() {
         swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
       SWRInfiniteOptions
     );
-
-  const { posts, setPosts, setCurrentPost } = usePost();
 
   const hasNextPage = data?.[data.length - 1].hasNextPage ?? true;
 

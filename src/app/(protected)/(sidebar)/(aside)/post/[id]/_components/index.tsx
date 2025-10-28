@@ -38,11 +38,13 @@ export default function PostDetails({ postId }: PostDetailsProps) {
     bookmark,
     like,
     follow,
+    actionKey,
   } = usePost();
+  const [key] = useState(actionKey.current);
   const router = useRouter();
   const { user, token } = useAuth();
   const { data, error, isLoading, mutate } = useSWR(
-    [ApiUrl.post.getById(postId), token.accessToken],
+    [ApiUrl.post.getById(postId), token.accessToken, key],
     ([url, token]) => SWRFetcherWithToken<{ post: FeedItemDto }>(url, token)
   );
 

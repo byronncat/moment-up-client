@@ -96,7 +96,11 @@ export default function Header({
         </HoverableComponent>
 
         <div
-          className={cn("flex items-end", "min-w-0", "text-muted-foreground text-sm")}
+          className={cn(
+            "flex items-end",
+            "min-w-0",
+            "text-muted-foreground text-sm"
+          )}
         >
           <div className="truncate">@{user.username}</div>
 

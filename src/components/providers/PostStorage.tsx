@@ -2,14 +2,23 @@
 
 // === Type ===
 import type { FeedItemDto } from "api";
-import type { ContentReportType } from "@/constants/server";
+import type { ContentPrivacy, ContentReportType } from "@/constants/server";
 
 type PostsState = Map<string, FeedItemDto> | undefined;
+
+type UpdatePostPayload = {
+  text: string;
+  privacy: ContentPrivacy;
+};
 
 type PostsAction =
   | { type: "CLEAR_POSTS" }
   | { type: "SET_POSTS"; payload: FeedItemDto[] }
   | { type: "ADD_POSTS"; payload: FeedItemDto[] }
+  | {
+      type: "UPDATE_POST";
+      payload: { postId: string; text: string; privacy: ContentPrivacy };
+    }
   | { type: "REMOVE_POST"; payload: string }
   | { type: "TOGGLE_LIKE"; payload: string }
   | { type: "TOGGLE_BOOKMARK"; payload: string }
@@ -23,9 +32,16 @@ type PostContextType = {
   posts: FeedItemDto[] | undefined;
   setPosts: (posts: FeedItemDto[] | undefined) => void;
   addPosts: (posts: FeedItemDto[]) => void;
+  updatePost: (
+    postId: string,
+    payload: { text: string; privacy: ContentPrivacy }
+  ) => void;
   deletePost: (postId: string) => void;
   setCurrentPost: (postId: string | null) => void;
   getCurrentPost: () => FeedItemDto | undefined;
+
+  actionKey: RefObject<number>;
+  incrementActionKey: () => void;
 
   like: (postId: string) => Promise<void>;
   bookmark: (postId: string) => Promise<void>;
@@ -36,7 +52,15 @@ type PostContextType = {
 };
 
 // === Provider ===
-import { createContext, use, useCallback, useReducer, useState } from "react";
+import {
+  type RefObject,
+  createContext,
+  use,
+  useCallback,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "sonner";
 import { CoreApi, UserApi } from "@/services";
 import { Link } from "@/components/icons";
@@ -69,10 +93,20 @@ function postsReducer(state: PostsState, action: PostsAction): PostsState {
       return state;
     }
 
-    case "REMOVE_POST": {
+    case "UPDATE_POST": {
       if (!state) return state;
       const newMap = new Map(state);
-      newMap.delete(action.payload);
+      const post = newMap.get(action.payload.postId);
+      if (post) {
+        newMap.set(action.payload.postId, {
+          ...post,
+          post: {
+            ...post.post,
+            text: action.payload.text,
+            privacy: action.payload.privacy,
+          },
+        });
+      }
       return newMap;
     }
 
@@ -162,9 +196,13 @@ const MomentDataContext = createContext<PostContextType>({
   posts: undefined,
   setPosts: () => {},
   addPosts: () => {},
+  updatePost: () => {},
   deletePost: () => {},
   setCurrentPost: () => {},
   getCurrentPost: () => undefined,
+
+  actionKey: { current: 0 },
+  incrementActionKey: () => {},
 
   like: async () => {},
   bookmark: async () => {},
@@ -185,6 +223,7 @@ export default function MomentDataProvider({
 }: MomentDataProviderProps) {
   const [posts, dispatch] = useReducer(postsReducer, initialPostsState);
   const [currentPost, setCurrentPost] = useState<string | null>(null);
+  const actionKey = useRef(0);
 
   const likeApi = useRefreshApi(CoreApi.likePost);
   const bookmarkApi = useRefreshApi(CoreApi.bookmarkPost);
@@ -207,8 +246,17 @@ export default function MomentDataProvider({
   }, []);
 
   const removePost = useCallback((postId: string) => {
+    actionKey.current++;
     dispatch({ type: "REMOVE_POST", payload: postId });
   }, []);
+
+  const updatePost = useCallback(
+    (postId: string, payload: UpdatePostPayload) => {
+      actionKey.current++;
+      dispatch({ type: "UPDATE_POST", payload: { postId, ...payload } });
+    },
+    []
+  );
 
   const deletePost = useCallback(
     (postId: string) => {
@@ -240,7 +288,8 @@ export default function MomentDataProvider({
         shouldLike,
       });
 
-      if (!success) {
+      if (success) actionKey.current++;
+      else {
         dispatch({ type: "TOGGLE_LIKE", payload: postId });
         toast.error(message || "Failed to like moment");
       }
@@ -261,7 +310,8 @@ export default function MomentDataProvider({
         shouldBookmark,
       });
 
-      if (!success) {
+      if (success) actionKey.current++;
+      else {
         dispatch({ type: "TOGGLE_BOOKMARK", payload: postId });
         toast.error(message || "Failed to bookmark moment");
       }
@@ -282,7 +332,8 @@ export default function MomentDataProvider({
         shouldFollow,
       });
 
-      if (!success) {
+      if (success) actionKey.current++;
+      else {
         dispatch({ type: "TOGGLE_FOLLOW", payload: postId });
         toast.error(message || "Failed to follow/unfollow user");
       }
@@ -329,9 +380,15 @@ export default function MomentDataProvider({
         posts: posts ? Array.from(posts.values()) : undefined,
         setPosts,
         addPosts,
+        updatePost,
         deletePost,
         getCurrentPost,
         setCurrentPost,
+
+        actionKey,
+        incrementActionKey: () => {
+          actionKey.current++;
+        },
 
         like,
         bookmark,

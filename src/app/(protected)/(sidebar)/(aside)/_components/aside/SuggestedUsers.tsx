@@ -5,7 +5,7 @@ import type { UserSummaryDto } from "api";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useHover } from "usehooks-ts";
-import { useAuth, useRefreshApi } from "@/components/providers";
+import { useAuth, usePost, useRefreshApi } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { toast } from "sonner";
@@ -26,6 +26,7 @@ import SectionHeader from "./SectionHeader";
 
 export default function SuggestedUsers() {
   const { token } = useAuth();
+  const { incrementActionKey } = usePost();
   const { data, isLoading, error, mutate } = useSWRImmutable(
     [ApiUrl.suggestion.users, token.accessToken],
     ([url, token]) =>
@@ -53,7 +54,8 @@ export default function SuggestedUsers() {
       shouldFollow,
     });
 
-    if (!success) {
+    if (success) incrementActionKey();
+    else {
       mutate(prev, { revalidate: false });
       toast.error(
         message ||

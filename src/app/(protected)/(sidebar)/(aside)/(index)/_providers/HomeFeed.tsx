@@ -15,7 +15,14 @@ type HomeFeedContextType = Readonly<{
 }>;
 
 // === Provider ===
-import { createContext, use, useCallback, useEffect, useMemo } from "react";
+import {
+  createContext,
+  use,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import useSWRInfinite from "swr/infinite";
 import useSWRImmutable from "swr/immutable";
 import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
@@ -42,7 +49,9 @@ export function HomeFeedProvider({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const { token } = useAuth();
+  const { actionKey, setPosts } = usePost();
   const swrFetcherWithRefresh = useRefreshSWR();
+  const [key] = useState(actionKey.current);
 
   // === Post data ===
   const getKey = (
@@ -52,7 +61,7 @@ export function HomeFeedProvider({
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
     const url = ApiUrl.post.home(pageIndex + 1);
-    return [url, token.accessToken] as const;
+    return [url, token.accessToken, key] as const;
   };
 
   const { data, error, size, setSize, isLoading, isValidating, mutate } =
@@ -63,7 +72,6 @@ export function HomeFeedProvider({
       SWRInfiniteOptions
     );
 
-  const { setPosts } = usePost();
   const { setStories } = useStory();
 
   const hasNextPage = useMemo(

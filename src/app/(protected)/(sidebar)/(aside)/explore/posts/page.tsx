@@ -2,7 +2,7 @@
 
 import type { FeedItemDto, PaginationDto } from "api";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
@@ -20,25 +20,6 @@ export default function PostPage() {
   "use no memo";
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token, user } = useAuth();
-
-  const getKey = (
-    pageIndex: number,
-    previousPageData: PaginationDto<FeedItemDto> | null
-  ) => {
-    if (previousPageData && !previousPageData.hasNextPage) return null;
-
-    const url = ApiUrl.post.explore("post", pageIndex + 1);
-    return [url, token.accessToken];
-  };
-
-  const { data, error, size, setSize, isLoading, isValidating, mutate } =
-    useSWRInfinite(
-      getKey,
-      ([url, accessToken]) =>
-        swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
-      SWRInfiniteOptions
-    );
-
   const {
     posts,
     setPosts,
@@ -49,7 +30,27 @@ export default function PostPage() {
     share,
     report,
     follow,
+    actionKey,
   } = usePost();
+  const [key] = useState(actionKey.current);
+
+  const getKey = (
+    pageIndex: number,
+    previousPageData: PaginationDto<FeedItemDto> | null
+  ) => {
+    if (previousPageData && !previousPageData.hasNextPage) return null;
+
+    const url = ApiUrl.post.explore("post", pageIndex + 1);
+    return [url, token.accessToken, key] as const;
+  };
+
+  const { data, error, size, setSize, isLoading, isValidating, mutate } =
+    useSWRInfinite(
+      getKey,
+      ([url, accessToken]) =>
+        swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
+      SWRInfiniteOptions
+    );
 
   const hasNextPage = user && (data?.[data.length - 1].hasNextPage ?? true);
 

@@ -5,7 +5,12 @@ import type { PaginationDto, UserSummaryDto } from "api";
 import { useCallback, useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useAuth, useRefreshApi, useRefreshSWR } from "@/components/providers";
+import {
+  useAuth,
+  usePost,
+  useRefreshApi,
+  useRefreshSWR,
+} from "@/components/providers";
 import { useProfile } from "../../_providers/Profile";
 import { ApiUrl } from "@/services/api.constant";
 import { SWRInfiniteOptions } from "@/helpers/swr";
@@ -31,6 +36,7 @@ export default function FollowList({ type }: FollowListProps) {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
   const { profile } = useProfile();
+  const { incrementActionKey } = usePost();
 
   const getKey = (
     pageIndex: number,
@@ -138,7 +144,8 @@ export default function FollowList({ type }: FollowListProps) {
       shouldFollow,
     });
 
-    if (!success) {
+    if (success) incrementActionKey();
+    else {
       mutate(prev, { revalidate: false });
       toast.error(
         message || `Unable to ${shouldFollow ? "follow" : "unfollow"} user.`

@@ -2,7 +2,7 @@
 
 import type { FeedItemDto, PaginationDto } from "api";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
@@ -22,6 +22,8 @@ export default function MediaPage() {
   "use no memo";
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token, user } = useAuth();
+  const { posts, setPosts, setCurrentPost, actionKey } = usePost();
+  const [key] = useState(actionKey.current);
 
   const getKey = (
     pageIndex: number,
@@ -30,7 +32,7 @@ export default function MediaPage() {
     if (previousPageData && !previousPageData.hasNextPage) return null;
 
     const url = ApiUrl.post.explore("media", pageIndex + 1, EXPLORER_LIMIT);
-    return [url, token.accessToken];
+    return [url, token.accessToken, key] as const;
   };
 
   const { data, error, size, setSize, isLoading, isValidating, mutate } =
@@ -40,8 +42,6 @@ export default function MediaPage() {
         swrFetcherWithRefresh<PaginationDto<FeedItemDto>>(url, accessToken),
       SWRInfiniteOptions
     );
-
-  const { posts, setPosts, setCurrentPost } = usePost();
 
   const hasNextPage = user && (data?.[data.length - 1].hasNextPage ?? true);
 
