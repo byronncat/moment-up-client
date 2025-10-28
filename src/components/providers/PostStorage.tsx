@@ -110,6 +110,13 @@ function postsReducer(state: PostsState, action: PostsAction): PostsState {
       return newMap;
     }
 
+    case "REMOVE_POST": {
+      if (!state) return state;
+      const newMap = new Map(state);
+      newMap.delete(action.payload);
+      return newMap;
+    }
+
     case "TOGGLE_LIKE": {
       if (!state) return state;
       const newMap = new Map(state);
