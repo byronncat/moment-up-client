@@ -1,9 +1,6 @@
 "use client";
 
-import { createContext, use, useCallback, useEffect, useState } from "react";
-import { StoryBackground } from "@/constants/server";
-import { Font } from "../_constants";
-
+// === Type ===
 type StoryType = "text" | "image" | "video" | null;
 
 interface UploadedMedia {
@@ -24,6 +21,7 @@ type CreateDataContextType = {
   font: (typeof Font)[number];
   textContent: string;
   selectedBackground: StoryBackground;
+  privacy: ContentPrivacy;
   uploadedMedia: UploadedMedia | null;
   uploadedAudio: UploadedAudio | null;
   hasContent: boolean;
@@ -32,18 +30,29 @@ type CreateDataContextType = {
   setFont: (font: (typeof Font)[number]) => void;
   setTextContent: (content: string) => void;
   setSelectedBackground: (background: StoryBackground) => void;
+  setPrivacy: (privacy: ContentPrivacy) => void;
   uploadMedia: (file: File) => void;
   uploadAudio: (file: File) => void;
   trimAudio: (trimStart: number, trimEnd: number) => void;
   removeAudio: () => void;
+  uploadStory: () => Promise<void>;
   reset: () => void;
 };
+
+// === Provider ===
+import { createContext, use, useEffect, useState } from "react";
+import { useRefreshApi } from "@/components/providers";
+import { toast } from "sonner";
+import { CoreApi } from "@/services";
+import { Font } from "../_constants";
+import { ContentPrivacy, StoryBackground } from "@/constants/server";
 
 const CreateDataContext = createContext<CreateDataContextType>({
   type: null,
   font: Font[0],
   textContent: "",
   selectedBackground: StoryBackground.BLUE_GRADIENT,
+  privacy: ContentPrivacy.FOLLOWERS,
   uploadedMedia: null,
   uploadedAudio: null,
   hasContent: false,
@@ -51,11 +60,13 @@ const CreateDataContext = createContext<CreateDataContextType>({
   setType: () => {},
   setFont: () => {},
   setSelectedBackground: () => {},
+  setPrivacy: () => {},
   uploadMedia: () => {},
   uploadAudio: () => {},
   trimAudio: () => {},
   removeAudio: () => {},
   setTextContent: () => {},
+  uploadStory: async () => {},
   reset: () => {},
 });
 
@@ -74,6 +85,9 @@ export default function CreateDataProvider({
   const [selectedBackground, setSelectedBackground] = useState<StoryBackground>(
     StoryBackground.BLUE_GRADIENT
   );
+  const [privacy, setPrivacy] = useState<ContentPrivacy>(
+    ContentPrivacy.FOLLOWERS
+  );
   const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia | null>(
     null
   );
@@ -87,12 +101,23 @@ export default function CreateDataProvider({
     uploadedMedia !== null ||
     uploadedAudio !== null;
 
-  const uploadMedia = useCallback((file: File) => {
+  const addStoryApi = useRefreshApi(CoreApi.createStory);
+  async function uploadStory() {
+    const { success, message } = await addStoryApi({
+      text: textContent || undefined,
+      privacy,
+    });
+
+    if (success) reset();
+    else toast.error(message ?? "Unable to upload story.");
+  }
+
+  function uploadMedia(file: File) {
     const url = URL.createObjectURL(file);
     setUploadedMedia({ file, preview: url });
-  }, []);
+  }
 
-  const uploadAudio = useCallback((file: File) => {
+  function uploadAudio(file: File) {
     const url = URL.createObjectURL(file);
     const audio = new Audio(url);
 
@@ -108,35 +133,32 @@ export default function CreateDataProvider({
     });
 
     audio.load();
-  }, []);
+  }
 
-  const trimAudio = useCallback(
-    (trimStart: number, trimEnd: number) => {
-      if (uploadedAudio) {
-        setUploadedAudio({
-          ...uploadedAudio,
-          trimStart,
-          trimEnd,
-        });
-      }
-    },
-    [uploadedAudio]
-  );
+  function trimAudio(trimStart: number, trimEnd: number) {
+    if (uploadedAudio) {
+      setUploadedAudio({
+        ...uploadedAudio,
+        trimStart,
+        trimEnd,
+      });
+    }
+  }
 
-  const removeAudio = useCallback(() => {
-    //   if (uploadedAudio?.preview) URL.revokeObjectURL(uploadedAudio.preview);
-    //   setUploadedAudio(null);
-    // }, [uploadedAudio?.preview]);
-  }, []);
+  function removeAudio() {
+    if (uploadedAudio?.preview) URL.revokeObjectURL(uploadedAudio.preview);
+    setUploadedAudio(null);
+  }
 
-  const reset = useCallback(() => {
+  function reset() {
     setType(null);
     setFont(Font[0]);
     setTextContent("");
     setSelectedBackground(StoryBackground.BLUE_GRADIENT);
+    setPrivacy(ContentPrivacy.FOLLOWERS);
     setUploadedMedia(null);
     setUploadedAudio(null);
-  }, []);
+  }
 
   useEffect(() => {
     return () => {
@@ -152,18 +174,21 @@ export default function CreateDataProvider({
         font,
         textContent,
         selectedBackground,
+        privacy,
         uploadedMedia,
         uploadedAudio,
         hasContent,
 
         setType,
         setFont,
+        setTextContent,
         setSelectedBackground,
+        setPrivacy,
         uploadMedia,
         uploadAudio,
         trimAudio,
         removeAudio,
-        setTextContent,
+        uploadStory,
         reset,
       }}
     >

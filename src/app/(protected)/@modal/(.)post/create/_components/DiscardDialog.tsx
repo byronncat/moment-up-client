@@ -19,7 +19,7 @@ export default function DiscardDialog({
   onClose,
 }: DiscardDialogProps) {
   return (
-    <AlertDialogContent portalDisabled>
+    <AlertDialogContent disablePortal>
       <AlertDialogHeader>
         <AlertDialogTitle>Discard post?</AlertDialogTitle>
         <AlertDialogDescription>

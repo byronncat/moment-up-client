@@ -1,75 +1,67 @@
 import { useAuth } from "@/components/providers";
-import { useCanvas, useCreateData } from "../../_providers";
+import { useCreateData } from "../../_providers";
 
 import { cn } from "@/libraries/utils";
 import { Avatar } from "@/components/common";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Header from "./Header";
 import ActionButtons from "./ActionButtons";
 import SoundSelector from "./sound-selector";
 import FontSelector from "./FontSelector";
 import BackgroundSelector from "./BackgroundSelector";
 import MediaControls from "./MediaControls";
-import { Folder, Settings } from "@/components/icons";
+import PrivacyDialog from "./PrivacyDialog";
+import { Folder } from "@/components/icons";
 import { Save } from "lucide-react";
 
-export default function RightNav() {
-  const { type, uploadedMedia } = useCreateData();
+export default function RightNav({
+  className,
+}: Readonly<{ className?: string }>) {
   const { user } = useAuth();
-  const { canvas } = useCanvas();
-
-  function handleShare() {
-    // console.log("share");
-  }
+  const { type, uploadedMedia } = useCreateData();
 
   return (
     <ScrollArea
       className={cn(
-        "w-[360px] h-full",
         "box-content",
-        "bg-card-dark text-card-foreground-dark",
-        "border-l border-border-dark"
+        "bg-background-dark md:bg-card-dark text-card-foreground-dark",
+        "border-t md:border-l border-border-dark",
+        className
       )}
     >
-      <div className={cn("h-screen w-full", "flex flex-col")}>
-        <Header title="Stories" className="mt-7" />
+      <div className={cn("md:h-lvh w-full", "flex flex-col")}>
+        <div className="px-4 mt-7 flex items-center justify-between">
+          <h2 className="text-2xl font-bold">
+            <span className="hidden md:inline">Stories</span>
+            <span className="inline md:hidden">Settings</span>
+          </h2>
+
+          <PrivacyDialog disablePortal className="ml-auto md:hidden" />
+        </div>
+
         <div className="flex items-center gap-3 px-4 mt-5">
           <Avatar
             src={user?.avatar}
-            alt={user?.displayName ?? user?.username}
-            size="14"
+            alt={`${user?.displayName ?? user?.username}'s avatar`}
+            size="12"
           />
           <span className="text-white text-lg font-semibold">
             {user?.username}
           </span>
 
-          <button
-            className={cn(
-              "group ml-auto",
-              "p-2 rounded-full",
-              "bg-accent-dark/12 hover:bg-accent-dark/20",
-              "transition-colors duration-75",
-              "cursor-pointer"
-            )}
-          >
-            <Settings
-              className={cn(
-                "size-5 text-white/70 group-hover:text-white",
-                "transition-colors duration-initial"
-              )}
-            />
-          </button>
+          <PrivacyDialog disablePortal className="ml-auto hidden md:block" />
         </div>
 
-        <Separator className="mt-4 bg-border-dark" />
+        <Separator className="my-4 bg-transparent md:bg-border-dark" />
 
-        <div className="mt-4 space-y-5">
+        <div className="space-y-5">
           {type === "image" && uploadedMedia ? (
             <div>
               <div className={cn("flex items-center gap-1.5", "px-4")}>
-                <h3 className="text-muted-foreground-dark">File controls</h3>
+                <h3 className="text-muted-foreground-dark text-sm">
+                  File controls
+                </h3>
                 <Badge
                   variant="outline"
                   className={cn(
@@ -99,14 +91,16 @@ export default function RightNav() {
           {type === "text" && (
             <>
               <div className="px-4">
-                <h3 className="text-muted-foreground-dark">Fonts</h3>
+                <h3 className="text-muted-foreground-dark text-sm">Fonts</h3>
                 <FontSelector className="mt-2" />
               </div>
 
               <div className="px-4">
-                <h3 className="text-muted-foreground-dark">Backgrounds</h3>
+                <h3 className="text-muted-foreground-dark text-sm">
+                  Backgrounds
+                </h3>
                 <BackgroundSelector
-                  className={cn("mt-2", "h-[calc(36px*3+8px*3+12px)]")}
+                  className={cn("mt-2", "h-[calc(36px*3+8px*2+12px*2)]")}
                 />
               </div>
             </>
@@ -131,11 +125,7 @@ export default function RightNav() {
         {type !== null && (
           // mt-auto need parent to be flex-col
           <div className={cn("grow mt-12", "flex flex-col")}>
-            <ActionButtons
-              onShare={handleShare}
-              canvasRef={{ current: canvas as HTMLCanvasElement | null }}
-              className="mt-auto"
-            />
+            <ActionButtons className="mt-auto" />
           </div>
         )}
       </div>

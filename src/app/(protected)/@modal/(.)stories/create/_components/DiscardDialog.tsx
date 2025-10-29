@@ -10,12 +10,19 @@ import {
 } from "@/components/ui/alert-dialog";
 
 type DiscardDialogProps = {
+  disablePortal?: boolean;
   onClose: () => void;
 };
 
-export default function DiscardDialog({ onClose }: DiscardDialogProps) {
+export default function DiscardDialog({
+  disablePortal = false,
+  onClose,
+}: DiscardDialogProps) {
   return (
-    <AlertDialogContent className="bg-card-dark border-border-dark">
+    <AlertDialogContent
+      className="bg-card-dark border-border-dark"
+      disablePortal={disablePortal}
+    >
       <AlertDialogHeader>
         <AlertDialogTitle className="text-card-foreground-dark">
           Discard story?

@@ -8,6 +8,7 @@ import {
 } from "@/app/(protected)/@modal/(.)stories/create/_providers";
 import { ROUTE } from "@/constants/route";
 
+import { cn } from "@/libraries/utils";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import {
   CloseButton,
@@ -18,7 +19,7 @@ import {
 
 function CreateStoryPage() {
   const router = useRouter();
-  const { hasContent } = useCreateData();
+  const { hasContent, type } = useCreateData();
 
   function handleClose() {
     router.replace(ROUTE.HOME);
@@ -27,14 +28,33 @@ function CreateStoryPage() {
   return (
     <div className="size-full flex">
       <AlertDialog>
-        <ContentSection />
-        <RightNav />
-        <CloseButton
-          onClose={handleClose}
-          haveContent={hasContent}
-          className="absolute top-2 left-2"
-        />
-        <DiscardDialog onClose={handleClose} />
+        <div
+          className={cn(
+            "flex flex-col md:flex-row overflow-y-auto",
+            "size-full"
+          )}
+        >
+          <CloseButton
+            onClose={handleClose}
+            haveContent={hasContent}
+            className={cn(
+              "absolute top-2 left-2",
+              type !== null && "hidden md:flex"
+            )}
+          />
+
+          <ContentSection
+            className={cn(
+              "w-full h-svh md:w-auto md:h-full",
+              "shrink-0 sm:grow"
+            )}
+          />
+
+          <RightNav
+            className={cn("md:w-[360px]", type === null && "hidden lg:block")}
+          />
+          <DiscardDialog onClose={handleClose} />
+        </div>
       </AlertDialog>
     </div>
   );

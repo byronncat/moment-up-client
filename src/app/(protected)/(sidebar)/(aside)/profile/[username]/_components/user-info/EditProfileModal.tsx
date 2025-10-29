@@ -197,7 +197,7 @@ export default function EditProfileModal({
         <ScrollArea className="h-full" thumbClassName="z-30">
           <DialogHeader
             className={cn(
-              "absolute top-0 left-0 z-20",
+              "absolute top-0 left-0 z-20 bg-card",
               "w-full h-12",
               "border-b border-border"
             )}
@@ -223,7 +223,7 @@ export default function EditProfileModal({
             <div className="pt-[48px]">
               <div>
                 <div
-                  className={cn("relative", "-mb-12", "w-full aspect-[3/1]")}
+                  className={cn("relative", "-mb-12", "w-full aspect-3/1")}
                 >
                   <div
                     className={cn("size-full bg-muted", "flex justify-end")}

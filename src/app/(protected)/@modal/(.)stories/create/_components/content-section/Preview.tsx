@@ -1,37 +1,35 @@
+import { useEffect, useRef } from "react";
 import { useCreateData } from "../../_providers";
+
 import { cn } from "@/libraries/utils";
 import { Eye } from "@/components/icons";
 import { TextBackground } from "@/constants/client";
 import FabricCanvas from "./FabricCanvas";
-import { useEffect, useRef } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Preview() {
   return (
     <div className={cn("size-full", "flex items-center justify-center")}>
       <div
         className={cn(
-          "max-w-[80vh] w-full h-fit",
-          "p-4 bg-card-dark rounded-lg"
+          "p-4 bg-card-dark rounded-lg",
+          "max-h-[90svh] max-w-[90svh] size-full mx-2",
+          "flex flex-col"
         )}
       >
-        <Header className="mb-4" />
+        <div
+          className={cn(
+            "text-white text-sm font-semibold",
+            "flex items-center gap-2",
+            "mb-3"
+          )}
+        >
+          <Eye isOpen className="size-4 " />
+          Preview
+        </div>
+
         <PreviewContent />
       </div>
-    </div>
-  );
-}
-
-function Header({ className }: Readonly<{ className?: string }>) {
-  return (
-    <div
-      className={cn(
-        "text-white font-semibold",
-        "flex items-center gap-2",
-        className
-      )}
-    >
-      <Eye isOpen className="size-4 " />
-      <span>Preview</span>
     </div>
   );
 }
@@ -60,32 +58,26 @@ function PreviewContent() {
   }, [uploadedAudio?.trimStart, uploadedAudio?.trimEnd]);
 
   return (
-    <div
-      className={cn(
-        "p-3",
-        "max-w-[80vh] w-full aspect-square",
-        "bg-muted-dark rounded-lg",
-        "flex items-center justify-center"
-      )}
-    >
-      <div
-        className={cn(
-          "size-full max-w-[calc(100%*9/16)]",
-          "flex items-center justify-center relative"
-        )}
-      >
+    <div className={cn("bg-muted-dark rounded-lg", "grow overflow-x-auto p-3")}>
+      <div className="h-full">
         <div
-          className={cn("size-full", "rounded-lg overflow-hidden")}
-          style={type === "text" ? TextBackground[selectedBackground] : {}}
+          className={cn("rounded-lg mx-auto", "aspect-9/16 h-full shrink-0")}
+          style={{
+            ...(type === "text" ? TextBackground[selectedBackground] : {}),
+          }}
         >
           {type === "text" && (
-            <div className="size-full flex items-center justify-center">
+            <ScrollArea
+              className="size-full"
+              viewportClassName="[&>div]:min-h-full [&>div]:!flex [&>div]:items-center [&>div]:justify-center"
+            >
               <textarea
                 className={cn(
-                  "px-5 h-auto w-full",
+                  "px-5 py-3 size-full m-auto",
+                  "flex items-center justify-center",
                   "text-white caret-white placeholder:text-white/70",
                   "focus:outline-none text-center",
-                  "resize-none bg-transparent",
+                  "resize-none",
                   font.className
                 )}
                 style={{ fontFamily: font.family }}
@@ -93,7 +85,7 @@ function PreviewContent() {
                 value={textContent}
                 onChange={handleInputChange}
               />
-            </div>
+            </ScrollArea>
           )}
 
           {type === "image" && uploadedMedia ? (

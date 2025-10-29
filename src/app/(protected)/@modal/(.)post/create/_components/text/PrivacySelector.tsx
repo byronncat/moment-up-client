@@ -77,7 +77,7 @@ export default function PrivacySelector({
         align="start"
         side="right"
         className="w-64"
-        portalDisabled
+        disablePortal
       >
         <DropdownMenuLabel className="text-xs font-medium text-muted-foreground">
           Select privacy

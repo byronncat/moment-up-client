@@ -8,6 +8,7 @@ import {
 } from "./_providers";
 import { ROUTE } from "@/constants/route";
 
+import { cn } from "@/libraries/utils";
 import { Modal } from "@/components/common";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import {
@@ -19,7 +20,7 @@ import {
 
 function CreateStoryModal() {
   const router = useRouter();
-  const { hasContent } = useCreateData();
+  const { hasContent, type } = useCreateData();
 
   function handleClose() {
     if (window.history.length > 1) router.back();
@@ -27,22 +28,42 @@ function CreateStoryModal() {
   }
 
   return (
-    <Modal className="flex">
+    <Modal>
       <AlertDialog>
-        <ContentSection />
-        <RightNav />
-        <CloseButton
-          onClose={handleClose}
-          haveContent={hasContent}
-          className="absolute top-2 left-2"
-        />
-        <DiscardDialog onClose={handleClose} />
+        <div
+          className={cn(
+            "flex flex-col md:flex-row overflow-y-auto",
+            "size-full"
+          )}
+        >
+          <CloseButton
+            onClose={handleClose}
+            haveContent={hasContent}
+            className={cn(
+              "absolute top-2 left-2",
+              type !== null && "hidden md:flex"
+            )}
+          />
+
+          <ContentSection
+            className={cn(
+              "w-full h-svh md:w-auto md:h-full",
+              "shrink-0 sm:grow"
+            )}
+          />
+
+          <RightNav
+            className={cn("md:w-[360px]", type === null && "hidden lg:block")}
+          />
+
+          <DiscardDialog disablePortal onClose={handleClose} />
+        </div>
       </AlertDialog>
     </Modal>
   );
 }
 
-export default function StoryModal() {
+export default function Container() {
   return (
     <CreateDataProvider>
       <CanvasProvider>

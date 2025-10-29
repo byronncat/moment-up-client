@@ -35,10 +35,10 @@ export default function FontSelector({
             className={cn(
               "w-full justify-between",
               "text-white/90 hover:text-white",
-              "bg-transparent hover:bg-accent-dark/7",
+              "bg-input-dark hover:bg-accent-dark/7",
               "border-accent-dark/20 hover:border-accent-dark/30",
               "focus:ring-1 focus:ring-accent-dark/50",
-              "transition-colors duration-100"
+              "transition-colors duration-100 ease-in-out"
             )}
           >
             <div className="flex items-baseline gap-2">
@@ -50,32 +50,33 @@ export default function FontSelector({
               </span>
               <span>{font.label}</span>
             </div>
-            <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <ChevronsUpDownIcon className="ml-2 size-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent
+          disablePortal
           className={cn(
-            "w-[320px] p-0",
-            "bg-card-dark border-border-dark",
+            "w-[328px] p-0",
+            "border-border-dark",
             "shadow-lg shadow-black/20"
           )}
         >
-          <Command className="bg-card-dark">
-            <CommandList className="bg-card-dark">
+          <Command className="bg-input-dark">
+            <CommandList>
               <CommandEmpty className="text-muted-foreground-dark py-6 text-center text-sm">
                 No font found.
               </CommandEmpty>
               <CommandGroup className="p-2">
-                {Font.map((font) => {
-                  const isSelected = font.family === font.family;
+                {Font.map(({ family, label }) => {
+                  const isSelected = font.family === family;
 
                   return (
                     <CommandItem
-                      key={font.family}
-                      value={font.family}
+                      key={family}
+                      value={family}
                       onSelect={(currentValue) => {
                         const selectedFont = Font.find(
-                          (f) => f.family === currentValue
+                          ({ family }) => family === currentValue
                         );
                         if (selectedFont) setFont(selectedFont);
                         setOpen(false);
@@ -84,7 +85,7 @@ export default function FontSelector({
                         "flex items-center gap-3",
                         "p-3 rounded-lg cursor-pointer",
                         "text-white",
-                        "transition-colors duration-75",
+                        "transition-colors duration-75 ease-in-out",
                         "data-[selected=true]:text-white data-[selected=true]:bg-accent-dark/7"
                       )}
                     >
@@ -96,12 +97,12 @@ export default function FontSelector({
                       />
                       <div className="flex items-baseline gap-3 flex-1">
                         <span
-                          style={{ fontFamily: font.family }}
+                          style={{ fontFamily: family }}
                           className="text-xl"
                         >
                           Aa
                         </span>
-                        <span>{font.label}</span>
+                        <span>{label}</span>
                       </div>
                     </CommandItem>
                   );

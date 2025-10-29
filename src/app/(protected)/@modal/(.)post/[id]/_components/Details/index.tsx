@@ -33,7 +33,7 @@ export default function Content({ data, haveMedia, className }: ContentProps) {
   const content = (
     <>
       <PostHeader
-        portalDisabled
+        disablePortal
         data={data}
         actions={{
           delete: handleDelete,

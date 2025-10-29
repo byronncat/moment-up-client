@@ -273,6 +273,40 @@ export async function getPostMetadata(postId: string): API<
     });
 }
 
+interface CreateStoryDto {
+  privacy: ContentPrivacy;
+  text?: string;
+  attachments?: Array<{ id: PublicId; type: ResourceType }>;
+}
+
+export async function createStory(data: CreateStoryDto, token: Token): API {
+  return fetch(ApiUrl.story.create, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Story created successfully",
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorDto) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
 // +++ TODO: Need to change momentId to postId +++
 export async function repost(
   data: {

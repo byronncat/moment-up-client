@@ -154,6 +154,7 @@ export const ApiUrl = {
 
   story: {
     get: `${SERVER_HOST_URL}/v1/stories`,
+    create: `${SERVER_HOST_URL}/v1/stories`,
     getByUsername: (username: string) =>
       buildUrl(`${SERVER_HOST_URL}/v1/stories/user/:username`, {
         pathParams: { username },

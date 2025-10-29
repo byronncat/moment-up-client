@@ -47,12 +47,12 @@ function AlertDialogOverlay({
 
 function AlertDialogContent({
   className,
-  portalDisabled = false,
+  disablePortal = false,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Content> & {
-  portalDisabled?: boolean;
+  disablePortal?: boolean;
 }) {
-  return portalDisabled ? (
+  return disablePortal ? (
     <>
       <AlertDialogOverlay />
       <AlertDialogPrimitive.Content

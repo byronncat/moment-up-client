@@ -63,7 +63,7 @@ export default function Header({
 
       <h1
         className={cn(
-          "text-md font-semibold text-center",
+          "font-semibold text-center",
           "absolute left-1/2 -translate-x-1/2"
         )}
       >

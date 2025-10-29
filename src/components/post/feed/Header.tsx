@@ -54,14 +54,14 @@ type HeaderProps = Readonly<{
   data: FeedItemDto;
   actions: Pick<Actions, "delete" | "follow" | "report">;
   sideElement?: React.ReactNode;
-  portalDisabled?: boolean;
+  disablePortal?: boolean;
   className?: string;
 }>;
 
 export default function Header({
   data,
   actions,
-  portalDisabled,
+  disablePortal,
   className,
 }: HeaderProps) {
   const { id: postId, user, post } = data;
@@ -146,7 +146,7 @@ export default function Header({
 
       {currentUser ? (
         <MoreMenu
-          portalDisabled={portalDisabled}
+          disablePortal={disablePortal}
           user={user}
           postId={postId}
           actions={actions}
@@ -161,7 +161,7 @@ type MoreMenuProps = Readonly<{
   user: FeedItemDto["user"];
   postId: FeedItemDto["id"];
   actions: Pick<Actions, "delete" | "follow" | "report">;
-  portalDisabled?: boolean;
+  disablePortal?: boolean;
   className?: string;
 }>;
 
@@ -169,7 +169,7 @@ function MoreMenu({
   user,
   postId,
   actions,
-  portalDisabled,
+  disablePortal,
   className,
 }: MoreMenuProps) {
   const router = useRouter();
@@ -190,7 +190,7 @@ function MoreMenu({
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
       >
-        <AlertDialogContent portalDisabled={portalDisabled}>
+        <AlertDialogContent disablePortal={disablePortal}>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete post?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -227,7 +227,7 @@ function MoreMenu({
             </Button>
           </DropdownMenuTrigger>
         </Tooltip>
-        <DropdownMenuContent align="end" className="w-48" portalDisabled>
+        <DropdownMenuContent align="end" className="w-48" disablePortal>
           {isSelf ? null : user.isFollowing ? (
             <DropdownMenuItem
               onClick={() => actions.follow(postId)}

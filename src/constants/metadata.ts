@@ -76,7 +76,7 @@ export const Metadata: MetadataMap = {
   },
   story: {
     title: "Story",
-    description: "Story page",
+    description: "Create and share your story.",
   },
   archive: {
     title: "Archive",

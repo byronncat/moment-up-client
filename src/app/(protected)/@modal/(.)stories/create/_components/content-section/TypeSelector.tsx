@@ -24,8 +24,14 @@ export default function TypeSelector() {
   }
 
   return (
-    <div className={cn("size-full", "flex items-center justify-center gap-5")}>
+    <div
+      className={cn(
+        "size-full px-1 md:px-3",
+        "flex items-center justify-center gap-2 mobile:gap-4"
+      )}
+    >
       <input
+        id="media-input"
         ref={fileInputRef}
         type="file"
         accept="image/*,video/*"
@@ -74,12 +80,14 @@ function SelectionCard({
   return (
     <div
       className={cn(
-        "w-[220px] h-[330px]",
+        "w-[220px] h-[330px] max-w-[calc(50%-8px)] max-h-[50dvh]",
         "rounded-lg cursor-pointer",
-        "flex flex-col items-center justify-center gap-2"
+        "flex flex-col items-center justify-center gap-2",
+        "focus-indicator"
       )}
       style={TextBackground[background]}
       onClick={onClick}
+      tabIndex={0}
     >
       <div
         className={cn(
