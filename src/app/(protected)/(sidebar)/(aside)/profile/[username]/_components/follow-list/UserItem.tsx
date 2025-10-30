@@ -45,7 +45,7 @@ export default function UserItem({ data, onFollow }: UserItemProps) {
           size="10"
           ring
           showRing={data.hasStory}
-          className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
+          className="hover:opacity-80 transition-opacity duration-150 ease-in-out shrink-0"
         />
       </UserHoverCard>
 

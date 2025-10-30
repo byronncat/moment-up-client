@@ -24,16 +24,19 @@ export default function StoryItem({
         aria-label={`View story from ${data.displayName ?? data.username}${!data.viewed ? " (unread)" : ""}`}
         aria-describedby={`story-${data.id}-status`}
       >
-        <div className={cn("flex items-center justify-center", "size-18")}>
+        <div
+          className={cn(
+            "flex items-center justify-center",
+            "size-18",
+            "transition-all duration-200",
+            "group-hover:scale-105 group-hover:border-primary/70"
+          )}
+        >
           <Avatar
             src={data.avatar}
             alt={`${data.displayName ?? data.username}'s avatar`}
-            size="14"
+            size="16"
             ring={data.viewed}
-            className={cn(
-              "transition-all duration-200",
-              "group-hover:scale-105 group-hover:border-primary/70"
-            )}
           />
         </div>
         <span
