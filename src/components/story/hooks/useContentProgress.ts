@@ -1,5 +1,5 @@
 import type { StoryInfo } from "api";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const DEFAULT_DURATION = 7000;
 const UPDATE_INTERVAL = 50;
@@ -13,62 +13,60 @@ export function useContentProgress(
 ) {
   const [progress, setProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(initialPlay);
-  const [duration, setDuration] = useState(DEFAULT_DURATION);
+  const [duration] = useState(DEFAULT_DURATION);
+
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const calculateDuration = useCallback(() => {
-    if (
-      typeof content === "object" &&
-      content?.type === "video" &&
-      videoRef.current?.duration &&
-      !isNaN(videoRef.current.duration)
-    ) {
-      return videoRef.current.duration * 1000;
-    }
-    return DEFAULT_DURATION;
-  }, [content]);
+  // const calculateDuration = useCallback(() => {
+  //   if (
+  //     typeof content === "object" &&
+  //     content?.type === "video" &&
+  //     videoRef.current?.duration &&
+  //     !isNaN(videoRef.current.duration)
+  //   ) {
+  //     return videoRef.current.duration * 1000;
+  //   }
+  //   return DEFAULT_DURATION;
+  // }, [content]);
 
-  const handleLoadedMetadata = useCallback(() => {
-    const newDuration = calculateDuration();
-    setDuration(newDuration);
-  }, [calculateDuration]);
+  // const handleLoadedMetadata = useCallback(() => {
+  //   const newDuration = calculateDuration();
+  //   setDuration(newDuration);
+  // }, [calculateDuration]);
 
-  const setVideoRef = useCallback(
-    (video: HTMLVideoElement | null) => {
-      if (videoRef.current)
-        videoRef.current.removeEventListener(
-          "loadedmetadata",
-          handleLoadedMetadata
-        );
+  function setVideoRef(video: HTMLVideoElement | null) {
+    if (videoRef.current)
+      // videoRef.current.removeEventListener(
+      //   "loadedmetadata",
+      //   handleLoadedMetadata
+      // );
 
       videoRef.current = video;
 
-      if (video) {
-        video.addEventListener("loadedmetadata", handleLoadedMetadata);
-        if (video.duration && !isNaN(video.duration))
-          setDuration(video.duration * 1000);
-      }
-    },
-    [handleLoadedMetadata]
-  );
+    // if (video) {
+    //   video.addEventListener("loadedmetadata", handleLoadedMetadata);
+    //   if (video.duration && !isNaN(video.duration))
+    //     setDuration(video.duration * 1000);
+    // }
+  }
 
-  const pause = useCallback(() => {
+  function pause() {
     setIsPlaying(false);
     if (videoRef.current) videoRef.current.pause();
-  }, []);
+  }
 
-  const reset = useCallback(() => {
-    setProgress(0);
-    setIsPlaying(true);
-    if (typeof content === "object" && content?.type === "video")
-      setDuration(DEFAULT_DURATION);
-  }, [content]);
-
-  const play = useCallback(() => {
+  function play() {
     setIsPlaying(true);
     if (videoRef.current) videoRef.current.play();
-  }, []);
+  }
+
+  function reset() {
+    setProgress(0);
+    setIsPlaying(true);
+    // if (typeof content === "object" && content?.type === "video")
+    //   setDuration(DEFAULT_DURATION);
+  }
 
   useEffect(() => {
     if (!isPlaying || !content) return;
@@ -97,28 +95,23 @@ export function useContentProgress(
     };
   }, [isPlaying, duration, content, onComplete]);
 
-  useEffect(() => {
-    return () => {
-      if (videoRef.current)
-        videoRef.current.removeEventListener(
-          "loadedmetadata",
-          handleLoadedMetadata
-        );
-    };
-  }, [handleLoadedMetadata]);
-
   // useEffect(() => {
-  //   if (typeof content === "object" && content?.type === "video")
-  //     setDuration(DEFAULT_DURATION);
-  //   else setDuration(DEFAULT_DURATION);
-  // }, [content]);
+  //   return () => {
+  //     if (videoRef.current)
+  //       videoRef.current.removeEventListener(
+  //         "loadedmetadata",
+  //         handleLoadedMetadata
+  //       );
+  //   };
+  // }, [handleLoadedMetadata]);
 
   return {
     progress,
-    setVideoRef,
-    reset,
     isPlaying,
+    
+    setVideoRef,
     pause,
     play,
+    reset,
   };
 }

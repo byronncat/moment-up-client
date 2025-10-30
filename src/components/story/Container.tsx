@@ -14,11 +14,17 @@ export default function Container({ children, className }: ContainerProps) {
         className
       )}
     >
-      <div className="aspect-[9/16] w-full max-w-[calc((100vh-16px)*9/16)] relative">
+      <div
+        className={cn(
+          "aspect-9/16 w-full max-w-[calc((100vh-16px)*9/16)]",
+          "relative"
+        )}
+      >
         <div
           className={cn(
             "bg-card-dark text-card-foreground-dark",
-            "rounded-lg overflow-hidden shadow-lg size-full"
+            "mobile:rounded-lg overflow-hidden",
+            "size-full shadow-lg"
           )}
         >
           {children}

@@ -1,5 +1,3 @@
-import { __parseUrl } from "@/__mocks__";
-
 import { useAuth } from "@/components/providers";
 import dayjs from "dayjs";
 import Format from "@/utilities/format";
@@ -19,7 +17,7 @@ export default function PostHeader({ className }: PostHeaderProps) {
   return (
     <div className={cn("flex gap-2", className)}>
       <Avatar
-        src={__parseUrl(user.avatar, "image", 120, 120)}
+        src={user.avatar}
         alt={`${user.displayName ?? user.username} avatar`}
         size="12"
       />

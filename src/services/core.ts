@@ -1,7 +1,12 @@
 import type { API, CommentDto, ErrorDto, FeedItemDto } from "api";
 import type { PublicId, ResourceType } from "cloudinary";
 import type { Token } from "@/components/providers/Auth";
-import type { ContentPrivacy, ContentReportType } from "@/constants/server";
+import type {
+  ContentPrivacy,
+  ContentReportType,
+  StoryBackground,
+  StoryFontFamily,
+} from "@/constants/server";
 
 import { ApiUrl } from "./api.constant";
 import { parseErrorMessage } from "./helper";
@@ -276,7 +281,9 @@ export async function getPostMetadata(postId: string): API<
 interface CreateStoryDto {
   privacy: ContentPrivacy;
   text?: string;
-  attachments?: Array<{ id: PublicId; type: ResourceType }>;
+  background?: StoryBackground;
+  font?: StoryFontFamily;
+  attachment?: { id: PublicId; type: ResourceType };
 }
 
 export async function createStory(data: CreateStoryDto, token: Token): API {

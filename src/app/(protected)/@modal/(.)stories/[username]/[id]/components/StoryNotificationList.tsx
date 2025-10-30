@@ -58,13 +58,14 @@ export function StoryItem({ data, isCurrent }: StoryItemProps) {
         <Avatar
           src={data.avatar}
           alt={`${data.displayName}'s avatar`}
-          size="12"
+          size="14"
           ring={data.viewed}
           className="mx-auto"
         />
       </div>
+
       <div className="flex-1">
-        <div className="font-semibold">{data.displayName}</div>
+        <div className="font-semibold">{data.displayName ?? data.username}</div>
         <div className={cn("flex items-center gap-2", "text-sm")}>
           <span className="text-primary-dark">{data.total} new</span>
           <span className="text-muted-foreground-dark">

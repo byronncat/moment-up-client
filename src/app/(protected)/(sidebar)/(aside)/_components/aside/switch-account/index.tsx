@@ -1,6 +1,5 @@
 "use client";
 
-import { __parseUrl } from "@/__mocks__";
 import type { AccountDto } from "api";
 
 import { useState } from "react";
@@ -35,7 +34,7 @@ function Content({
     <div className={cn("flex items-center", className)}>
       <Link href={ROUTE.PROFILE(user.username)} tabIndex={-1}>
         <Avatar
-          src={__parseUrl(user.avatar, "image", 40, 40)}
+          src={user.avatar}
           alt={`${user.displayName ?? user.username}'s avatar`}
           size="10"
           className="hover:opacity-80 transition-opacity duration-150 ease-in-out"

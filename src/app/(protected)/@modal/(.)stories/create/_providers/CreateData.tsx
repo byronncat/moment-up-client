@@ -35,17 +35,19 @@ type CreateDataContextType = {
   uploadAudio: (file: File) => void;
   trimAudio: (trimStart: number, trimEnd: number) => void;
   removeAudio: () => void;
-  uploadStory: () => Promise<void>;
+  uploadStory: (exportCanvas?: () => string | null) => Promise<void>;
   reset: () => void;
 };
 
 // === Provider ===
-import { createContext, use, useEffect, useState } from "react";
-import { useRefreshApi } from "@/components/providers";
+import { useRouter } from "next/navigation";
+import { createContext, use, useState } from "react";
+import { useCloudinary, useRefreshApi } from "@/components/providers";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
 import { Font } from "../_constants";
 import { ContentPrivacy, StoryBackground } from "@/constants/server";
+import { ROUTE } from "@/constants/route";
 
 const CreateDataContext = createContext<CreateDataContextType>({
   type: null,
@@ -101,15 +103,92 @@ export default function CreateDataProvider({
     uploadedMedia !== null ||
     uploadedAudio !== null;
 
+  const { uploadImage } = useCloudinary();
   const addStoryApi = useRefreshApi(CoreApi.createStory);
-  async function uploadStory() {
-    const { success, message } = await addStoryApi({
-      text: textContent || undefined,
-      privacy,
-    });
 
-    if (success) reset();
-    else toast.error(message ?? "Unable to upload story.");
+  async function uploadStory(exportCanvas?: () => string | null) {
+    if (type === "text") {
+      const data = {
+        text: textContent || undefined,
+        background: selectedBackground,
+        font: font.value,
+        privacy,
+      };
+
+      const { success, message } = await addStoryApi(data);
+
+      if (success) back();
+      else toast.error(message ?? "Unable to upload story.");
+    } else if (type === "image") {
+      if (!exportCanvas) {
+        toast.error("Something went wrong. Please try again.");
+        return;
+      }
+
+      try {
+        const dataUrl = exportCanvas();
+        if (!dataUrl) {
+          toast.error("Something went wrong. Please try again.");
+          return;
+        }
+
+        // Convert data URL to File
+        const response = await fetch(dataUrl);
+        const blob = await response.blob();
+        const file = new File([blob], "story-image.png", { type: "image/png" });
+
+        const uploadResult = await uploadImage(file, "stories");
+
+        if (!uploadResult.success || !uploadResult.data) {
+          toast.error("Unable to upload image. Please try again.");
+          return;
+        }
+
+        const data = {
+          attachment: {
+            id: uploadResult.data[0].public_id,
+            type: uploadResult.data[0].type,
+          },
+          privacy,
+        };
+
+        const { success, message } = await addStoryApi(data);
+
+        if (success) back();
+        else toast.error(message ?? "Unable to upload story.");
+      } catch {
+        toast.error("Something went wrong. Please try again.");
+      }
+    } else if (type === "video") {
+      if (!uploadedMedia?.file) {
+        toast.error("No media file to upload.");
+        return;
+      }
+
+      try {
+        const uploadResult = await uploadImage(uploadedMedia.file, "stories");
+
+        if (!uploadResult.success || !uploadResult.data) {
+          toast.error("Unable to upload video. Please try again.");
+          return;
+        }
+
+        const data = {
+          attachment: {
+            id: uploadResult.data[0].public_id,
+            type: uploadResult.data[0].type,
+          },
+          privacy,
+        };
+
+        const { success, message } = await addStoryApi(data);
+
+        if (success) back();
+        else toast.error(message ?? "Unable to upload story.");
+      } catch {
+        toast.error("Something went wrong. Please try again.");
+      }
+    }
   }
 
   function uploadMedia(file: File) {
@@ -160,12 +239,11 @@ export default function CreateDataProvider({
     setUploadedAudio(null);
   }
 
-  useEffect(() => {
-    return () => {
-      if (uploadedAudio?.preview) URL.revokeObjectURL(uploadedAudio.preview);
-      if (uploadedMedia?.preview) URL.revokeObjectURL(uploadedMedia.preview);
-    };
-  }, [uploadedAudio?.preview, uploadedMedia?.preview]);
+  const router = useRouter();
+  function back() {
+    if (window.history.length > 1) router.back();
+    else router.replace(ROUTE.HOME);
+  }
 
   return (
     <CreateDataContext.Provider

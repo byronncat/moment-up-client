@@ -74,7 +74,7 @@ export default function UserInfo() {
       </div>
 
       <Avatar
-        src={__parseUrl(profile.avatar, "image", 120, 120)}
+        src={profile.avatar}
         alt={`${profile.displayName ?? profile.username}'s profile`}
         size="26"
         ring

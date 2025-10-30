@@ -79,7 +79,7 @@ function UserCard({ user }: Readonly<{ user: PopularUserDto }>) {
       <div
         style={{
           backgroundImage: user.backgroundImage
-            ? `url(${user.backgroundImage})`
+            ? `url(${__parseUrl(user.backgroundImage, "image")})`
             : "none",
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -88,7 +88,7 @@ function UserCard({ user }: Readonly<{ user: PopularUserDto }>) {
       />
 
       <Avatar
-        src={__parseUrl(user.avatar, "image", 48)}
+        src={user.avatar}
         size="12"
         className="-mt-6"
       />

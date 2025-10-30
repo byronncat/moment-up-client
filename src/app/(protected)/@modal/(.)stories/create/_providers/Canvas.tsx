@@ -26,6 +26,7 @@ type CanvasContextType = {
   addText: () => void;
   updateSelectedText: (updates: TextStyleUpdate) => void;
   addShape: (shapeType: "circle" | "rectangle") => void;
+  addImage: (file: File) => Promise<void>;
   deleteSelected: () => void;
   exportCanvas: () => string | null;
   setSelectedObject: (object: fabric.FabricObject | null) => void;
@@ -38,6 +39,7 @@ const CanvasContext = createContext<CanvasContextType>({
   addText: () => {},
   updateSelectedText: () => {},
   addShape: () => {},
+  addImage: async () => {},
   deleteSelected: () => {},
   exportCanvas: () => null,
   setSelectedObject: () => {},
@@ -58,7 +60,7 @@ export default function CanvasProvider({ children }: CanvasProviderProps) {
   const addText = useCallback(() => {
     if (!canvas) return;
 
-    const text = new fabric.IText("Add text here", {
+    const text = new fabric.IText("", {
       fontFamily: font.family,
       fontSize: 24,
       fill: TextColors[0],
@@ -71,6 +73,8 @@ export default function CanvasProvider({ children }: CanvasProviderProps) {
 
     canvas.add(text);
     canvas.setActiveObject(text);
+    text.enterEditing();
+    text.selectAll();
     canvas.renderAll();
   }, [canvas, font.family]);
 
@@ -123,6 +127,40 @@ export default function CanvasProvider({ children }: CanvasProviderProps) {
     [canvas]
   );
 
+  const addImage = useCallback(
+    async (file: File) => {
+      if (!canvas) return;
+
+      const url = URL.createObjectURL(file);
+
+      try {
+        const image = await fabric.FabricImage.fromURL(url);
+
+        // Scale image to fit canvas while maintaining aspect ratio
+        const maxWidth = canvas.width * 0.8;
+        const maxHeight = canvas.height * 0.8;
+        const scaleX = maxWidth / image.width;
+        const scaleY = maxHeight / image.height;
+        const scale = Math.min(scaleX, scaleY, 1); // Don't upscale
+
+        image.set({
+          scaleX: scale,
+          scaleY: scale,
+          selectable: true,
+          ...ControlStyles,
+          ...PositionStyles(canvas.width, canvas.height),
+        });
+
+        canvas.add(image);
+        canvas.setActiveObject(image);
+        canvas.renderAll();
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    },
+    [canvas]
+  );
+
   const deleteSelected = useCallback(() => {
     if (!canvas) return;
     const activeObject = canvas.getActiveObject();
@@ -133,21 +171,15 @@ export default function CanvasProvider({ children }: CanvasProviderProps) {
     }
   }, [canvas]);
 
-  const exportCanvas = useCallback(() => {
+  function exportCanvas() {
     if (!canvas) return null;
 
     return canvas.toDataURL({
       format: "png",
       quality: 1,
-      multiplier: 2, // Higher resolution export
+      multiplier: 2,
     });
-
-    // Auto download the image
-    // const link = document.createElement("a");
-    // link.download = "canvas-export.png";
-    // link.href = dataUrl;
-    // link.click();
-  }, [canvas]);
+  }
 
   return (
     <CanvasContext.Provider
@@ -158,6 +190,7 @@ export default function CanvasProvider({ children }: CanvasProviderProps) {
         setSelectedObject,
         addText,
         addShape,
+        addImage,
         deleteSelected,
         exportCanvas,
         updateSelectedText,

@@ -15,27 +15,22 @@ export default function RightNav({ className }: RightNavProps) {
   return (
     <ScrollArea
       className={cn(
-        "relative box-content",
+        "relative",
         "w-[360px] h-full",
         "bg-card-dark text-card-foreground-dark",
         "border-l border-border-dark",
-        "flex flex-col overflow-hidden",
+        "flex flex-col",
         className
       )}
       thumbClassName="bg-accent-dark/30"
     >
-      <Header className="px-4 pt-7" />
+      <div className="px-4 pt-7">
+        <h2 className="text-2xl font-bold">Stories</h2>
+      </div>
+
       <CreateSection className="mt-6" />
       <StoryNotificationList className="mt-4 grow" />
     </ScrollArea>
-  );
-}
-
-function Header({ className }: Readonly<{ className?: string }>) {
-  return (
-    <div className={className}>
-      <h2 className="text-2xl font-bold">Stories</h2>
-    </div>
   );
 }
 
@@ -47,6 +42,7 @@ function CreateSection({ className }: Readonly<{ className?: string }>) {
   return (
     <div className={className}>
       <h3 className={cn("mb-2 px-4", "font-semibold")}>Your stories</h3>
+
       <div>
         <Link href={ROUTE.STORY_CREATE}>
           <div className={cn("px-4 py-2", "flex items-center gap-3")}>
@@ -61,12 +57,13 @@ function CreateSection({ className }: Readonly<{ className?: string }>) {
             </div>
             <div className="flex-1">
               <div className="font-semibold">Create a story</div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-muted-foreground-dark">
                 Add media file or text.
               </div>
             </div>
           </div>
         </Link>
+
         {myStory ? (
           <StoryItem data={myStory} isCurrent={myStory.username === username} />
         ) : null}
@@ -76,8 +73,7 @@ function CreateSection({ className }: Readonly<{ className?: string }>) {
 }
 
 // @deprecated
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function RightNavSkeleton() {
+function _RightNavSkeleton() {
   return (
     <>
       <div className="px-4 mt-6">

@@ -111,8 +111,6 @@ declare module "api" {
     aspectRatio: "square" | "portrait" | "landscape";
   }
 
-  // +++ TODO: Refactor this +++
-
   // === Story ===
   type StoryNotificationInfo = {
     id: string;
@@ -128,12 +126,11 @@ declare module "api" {
   type StoryContent =
     | { type: "text"; text: string; background: StoryBackground }
     | {
-        id: string;
         type: "image" | "video";
-        url: string;
-        aspectRatio: "9:16";
+        id: string;
       };
 
+  // +++ TODO: Refactor this +++
   type StoryInfo = {
     user: Omit<AccountDto, "email">;
     stories: Array<{

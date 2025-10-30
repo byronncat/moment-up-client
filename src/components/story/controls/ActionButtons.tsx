@@ -1,4 +1,6 @@
 import { useAuth, useStory } from "@/components/providers";
+import { usePathname } from "next/navigation";
+
 import { cn } from "@/libraries/utils";
 import {
   DropdownMenu,
@@ -16,7 +18,6 @@ import {
   Trash,
   Volume,
 } from "@/components/icons";
-import { usePathname } from "next/navigation";
 import Tooltip from "@/components/common/Tooltip";
 
 type ActionButtonsProps = Readonly<{
@@ -34,7 +35,11 @@ const buttonStyles = cn(
   "cursor-pointer"
 );
 
-const menuItemStyles = cn("flex items-center gap-2", "cursor-pointer");
+const menuItemStyles = cn(
+  "flex items-center gap-2",
+  "cursor-pointer",
+  "focus:text-foreground-dark! focus:bg-accent-dark/7!"
+);
 
 export default function ActionButtons({
   isPlaying,
@@ -77,6 +82,7 @@ export default function ActionButtons({
           />
         </button>
       </Tooltip>
+
       <Tooltip
         content={isPlaying ? "Pause" : "Play"}
         variant="borderless"
@@ -96,6 +102,7 @@ export default function ActionButtons({
           )}
         </button>
       </Tooltip>
+
       <MoreMenu />
     </div>
   );
@@ -124,21 +131,19 @@ function MoreMenu() {
           </button>
         </DropdownMenuTrigger>
       </Tooltip>
-      {isMe ? (
-        <MyMenuContent storyId={storyId} />
-      ) : (
-        <OtherMenuContent ownBy={ownBy} />
-      )}
+      <MenuContent isMe={isMe} storyId={storyId} ownBy={ownBy} />
     </DropdownMenu>
   );
 }
 
-type MyMenuContentProps = Readonly<{
+type MenuContentProps = Readonly<{
+  isMe: boolean;
   storyId: string;
+  ownBy: string;
 }>;
 
-function MyMenuContent({ storyId }: MyMenuContentProps) {
-  const { deleteStory } = useStory();
+function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
+  const { deleteStory, muteStory } = useStory();
 
   function handleCopyLink() {
     navigator.clipboard.writeText(window.location.href);
@@ -146,38 +151,6 @@ function MyMenuContent({ storyId }: MyMenuContentProps) {
 
   function handleDelete() {
     deleteStory(storyId);
-  }
-
-  function handleBug() {
-    // TODO: Implement this feature
-    console.warn("This feature is not implemented yet");
-  }
-
-  return (
-    <DropdownMenuContent align="end" className="w-64" sideOffset={12}>
-      <DropdownMenuItem onClick={handleCopyLink} className={menuItemStyles}>
-        <Link className="size-4" />
-        <span>Copy link to share this story</span>
-      </DropdownMenuItem>
-      <DropdownMenuItem
-        onClick={handleDelete}
-        className={cn(menuItemStyles, "destructive-item")}
-      >
-        <Trash className="size-4" />
-        <span>Delete story</span>
-      </DropdownMenuItem>
-      <DropdownMenuItem onClick={handleBug} className={menuItemStyles} disabled>
-        <Bug className="size-4" />
-        <span>Something isn&apos;t working</span>
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  );
-}
-
-function OtherMenuContent({ ownBy }: Readonly<{ ownBy: string }>) {
-  const { muteStory } = useStory();
-  function handleCopyLink() {
-    navigator.clipboard.writeText(window.location.href);
   }
 
   function handleMute() {
@@ -195,23 +168,49 @@ function OtherMenuContent({ ownBy }: Readonly<{ ownBy: string }>) {
   }
 
   return (
-    <DropdownMenuContent align="end" className="w-64" sideOffset={12}>
+    <DropdownMenuContent
+      align="end"
+      sideOffset={12}
+      disablePortal
+      className={cn(
+        "w-64 bg-background-dark",
+        "border border-border-dark shadow-xs",
+        "text-foreground-dark"
+      )}
+    >
       <DropdownMenuItem onClick={handleCopyLink} className={menuItemStyles}>
         <Link className="size-4" />
         <span>Copy link to share this story</span>
       </DropdownMenuItem>
-      <DropdownMenuItem onClick={handleMute} className={menuItemStyles}>
-        <Volume className="size-4" />
-        <span>Mute @{ownBy}</span>
-      </DropdownMenuItem>
-      <DropdownMenuItem
-        onClick={handleReport}
-        className={cn(menuItemStyles, "destructive-item")}
-        disabled
-      >
-        <Flag className="size-4" />
-        <span>Report this story</span>
-      </DropdownMenuItem>
+
+      {isMe ? (
+        <DropdownMenuItem
+          onClick={handleDelete}
+          className={cn(menuItemStyles, "destructive-item-dark focus:text-destructive-dark! focus:bg-destructive-dark/10!")}
+        >
+          <Trash className="size-4" />
+          <span>Delete story</span>
+        </DropdownMenuItem>
+      ) : (
+        <>
+          <DropdownMenuItem onClick={handleMute} className={menuItemStyles}>
+            <Volume className="size-4" />
+            <span>Mute @{ownBy}</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleReport}
+            className={cn(
+              menuItemStyles,
+              "destructive-item-dark focus:text-destructive-dark! focus:bg-destructive-dark/10!"
+            )}
+            disabled
+          >
+            <Flag className="size-4" />
+            <span>Report this story</span>
+          </DropdownMenuItem>
+        </>
+      )}
+
       <DropdownMenuItem onClick={handleBug} className={menuItemStyles} disabled>
         <Bug className="size-4" />
         <span>Something isn&apos;t working</span>

@@ -56,12 +56,14 @@ export default function StoryModal() {
       >
         <X className="size-6" />
       </Button>
+
       <StoryView
         loading={isValidating}
         onClose={handleClose}
         confirm
-        className="flex-1"
+        className="flex-1 h-full"
       />
+
       <RightNav className="[@media(max-width:1024px)]:hidden" />
     </Modal>
   );

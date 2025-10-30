@@ -205,6 +205,13 @@
     @apply focus:outline-accent/20 focus:ring-1 focus:ring-ring;
   }
 
+  .focus-indicator-dark {
+    @apply outline-2 outline-offset-1 outline-transparent focus-visible:outline-accent-dark/20;
+    @apply focus-visible:ring-1 focus-visible:ring-ring-dark;
+
+    @apply focus:outline-accent-dark/20 focus:ring-1 focus:ring-ring-dark;
+  }
+
   .focus-within-indicator {
     @apply outline-2 outline-offset-1 outline-transparent focus-visible:outline-accent/20;
     @apply focus-visible:ring-1 focus-visible:ring-ring;
@@ -221,6 +228,10 @@
 
   .destructive-item {
     @apply text-destructive focus:text-destructive focus:bg-destructive/10;
+  }
+
+  .destructive-item-dark {
+    @apply text-destructive-dark focus:text-destructive-dark focus:bg-destructive-dark/10;
   }
 
   .scrollbar-hide {

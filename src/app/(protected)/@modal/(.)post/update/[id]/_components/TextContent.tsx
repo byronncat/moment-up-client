@@ -1,4 +1,3 @@
-import { __parseUrl } from "@/__mocks__";
 import type { ContentPrivacy } from "@/constants/server";
 
 import { useState } from "react";
@@ -69,7 +68,7 @@ export default function TextContent({
     >
       <div className={cn("flex items-center gap-3", "px-2")}>
         <Avatar
-          src={__parseUrl(user.avatar, "image", 120, 120)}
+          src={user.avatar}
           alt={`${user.displayName ?? user.username} avatar`}
           size="12"
         />

@@ -83,7 +83,7 @@ function SelectionCard({
         "w-[220px] h-[330px] max-w-[calc(50%-8px)] max-h-[50dvh]",
         "rounded-lg cursor-pointer",
         "flex flex-col items-center justify-center gap-2",
-        "focus-indicator"
+        "focus-indicator-dark"
       )}
       style={TextBackground[background]}
       onClick={onClick}

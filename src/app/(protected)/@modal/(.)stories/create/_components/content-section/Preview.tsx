@@ -89,7 +89,7 @@ function PreviewContent() {
           )}
 
           {type === "image" && uploadedMedia ? (
-            <FabricCanvas className="size-full bg-white" />
+            <FabricCanvas className="size-full" />
           ) : null}
 
           {type === "video" && uploadedMedia ? (

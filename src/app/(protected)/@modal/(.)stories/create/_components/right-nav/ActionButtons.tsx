@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCreateData } from "../../_providers/CreateData";
+import { useCanvas } from "../../_providers/Canvas";
 
 import { cn } from "@/libraries/utils";
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -10,21 +11,11 @@ export default function ActionButtons({
 }: Readonly<{ className?: string }>) {
   const [isLoading, setIsLoading] = useState(false);
   const { uploadStory } = useCreateData();
-  // const handleShare = () => {
-  // if (canvasRef.current) {
-  // const dataURL = canvasRef.current.toDataURL({
-  //   format: "png",
-  //   quality: 1,
-  //   multiplier: 2,
-  // });
-  // console.log("Sharing story with data:", dataURL);
-  // onShare();
-  // }
-  // };
+  const { exportCanvas } = useCanvas();
 
   async function handleUploadStory() {
     setIsLoading(true);
-    await uploadStory();
+    await uploadStory(exportCanvas);
     setIsLoading(false);
   }
 
@@ -56,7 +47,7 @@ export default function ActionButtons({
         )}
         disabled={isLoading}
       >
-        {isLoading ? <Loader2 className="size-4 animate-spin" /> : "Upload"}
+        {isLoading ? <Loader2 className="size-4 animate-spin mx-auto" /> : "Upload"}
       </button>
     </div>
   );

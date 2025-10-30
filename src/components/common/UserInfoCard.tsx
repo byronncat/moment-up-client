@@ -1,6 +1,5 @@
 "use client";
 
-import { __parseUrl } from "@/__mocks__";
 import type { AccountDto, UserSummaryDto } from "api";
 
 import { useRef } from "react";
@@ -40,7 +39,7 @@ export default function UserInfoCard({ user, onFollow }: UserInfoCardProps) {
           className="hover:opacity-80 transition-opacity duration-150 ease-in-out"
         >
           <Avatar
-            src={__parseUrl(user.avatar, "image", 48)}
+            src={user.avatar}
             alt={`${user.displayName ?? user.username}'s avatar`}
             size="12"
             ring

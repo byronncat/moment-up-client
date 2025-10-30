@@ -1,3 +1,4 @@
+import { __parseUrl } from "@/__mocks__";
 import type { StoryInfo } from "api";
 
 import { cn } from "@/libraries/utils";
@@ -27,7 +28,7 @@ export default function Content({ content, setVideoRef }: ContentProps) {
       ) : content.type === "image" ? (
         <div className="size-full bg-white">
           <Image
-            src={content.url}
+            src={__parseUrl(content.id, "image") as string}
             alt={`Story ${content.id}`}
             fill
             sizes="(max-width: 768px) 100vw, 800px"
@@ -45,7 +46,10 @@ export default function Content({ content, setVideoRef }: ContentProps) {
             setVideoRef?.(ref);
           }}
         >
-          <source src={content.url} type="video/mp4" />
+          <source
+            src={__parseUrl(content.id, "video") as string}
+            type="video/mp4"
+          />
         </video>
       )}
     </AspectRatio>

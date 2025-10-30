@@ -48,7 +48,11 @@ export default function CloudinaryProvider({
       formData.append("upload_preset", cloudinaryPreset);
       formData.append("folder", folder);
 
-      const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudinaryName}/image/upload`;
+      // Determine resource type based on file type
+      const isVideo = file.type.startsWith("video/");
+      const resourceType = isVideo ? "video" : "image";
+      
+      const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudinaryName}/${resourceType}/upload`;
 
       const response = await fetch(cloudinaryUrl, {
         method: "POST",

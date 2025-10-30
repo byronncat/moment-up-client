@@ -5,6 +5,7 @@ import { X } from "@/components/icons";
 
 const defaultClassName = cn(
   "rounded-full",
+  "focus-indicator-dark",
   "hover:bg-accent-dark/20",
   "text-muted-foreground-dark hover:text-accent-foreground-dark"
 );

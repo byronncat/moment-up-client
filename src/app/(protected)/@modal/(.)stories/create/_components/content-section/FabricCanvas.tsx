@@ -7,23 +7,9 @@ import { useCanvas, useCreateData } from "../../_providers";
 import { ControlStyles, CursorStyles, PositionStyles } from "../../_constants";
 import TextEditPopup from "../TextEditPopup";
 
-interface FabricCanvasProps {
-  className?: string;
-}
-
-// WeakMap to generate stable unique IDs for text objects
-const textObjectIdMap = new WeakMap<fabric.FabricObject, number>();
-let nextObjectId = 0;
-
-function getTextObjectId(obj: fabric.FabricObject): number {
-  if (!textObjectIdMap.has(obj)) {
-    textObjectIdMap.set(obj, nextObjectId++);
-  }
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return textObjectIdMap.get(obj)!;
-}
-
-export default function FabricCanvas({ className }: FabricCanvasProps) {
+export default function FabricCanvas({
+  className,
+}: Readonly<{ className?: string }>) {
   const { type, uploadedMedia, setTextContent } = useCreateData();
   const { selectedObject, setCanvas, setSelectedObject, updateSelectedText } =
     useCanvas();
@@ -33,7 +19,6 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const isCanvasReadyRef = useRef(false);
 
-  // Initialize FabricJS canvas
   useEffect(() => {
     if (!canvasRef.current || fabricCanvasRef.current) return;
 
@@ -52,7 +37,7 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
     const canvas = new fabric.Canvas(canvasRef.current, {
       width: canvasWidth,
       height: canvasHeight,
-      backgroundColor: "transparent",
+      backgroundColor: "white",
       preserveObjectStacking: true,
       selection: true,
       ...CursorStyles,
@@ -87,6 +72,34 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
 
     canvas.on("selection:cleared", () => {
       setSelectedObject(null);
+    });
+
+    // Handle double-click/tap on text to open keyboard on mobile
+    canvas.on("mouse:dblclick", (event: { target?: fabric.FabricObject }) => {
+      const { target } = event;
+      if (target instanceof fabric.IText) {
+        target.enterEditing();
+        target.selectAll();
+      }
+    });
+
+    // Move Fabric.js textarea inside the modal to work with FocusTrap
+    canvas.on("text:editing:entered", () => {
+      setTimeout(() => {
+        const textarea = document.querySelector(
+          'body > textarea[data-fabric="textarea"]'
+        ) as HTMLTextAreaElement;
+        if (textarea && container) {
+          const modalContainer = container.closest("[data-modal-container]");
+          if (modalContainer) modalContainer.appendChild(textarea);
+
+          textarea.focus();
+          textarea.click();
+
+          if (/iPhone|iPad|iPod/i.test(navigator.userAgent))
+            textarea.setSelectionRange(0, textarea.value.length);
+        }
+      }, 0);
     });
 
     fabricCanvasRef.current = canvas;
@@ -126,6 +139,7 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
 
     const canvas = fabricCanvasRef.current;
     canvas.clear();
+    canvas.backgroundColor = "white";
 
     if (type === "image") {
       fabric.FabricImage.fromURL(uploadedMedia.preview).then(
@@ -245,13 +259,16 @@ export default function FabricCanvas({ className }: FabricCanvasProps) {
   }, [uploadedMedia, type]);
 
   return (
-    <div className={cn("flex items-center justify-center", className)}>
-      <canvas ref={canvasRef} className="max-w-full max-h-full" />
+    <div className={cn("flex items-center justify-center relative", className)}>
+      <canvas
+        ref={canvasRef}
+        className={cn("max-w-full max-h-full", "rounded-md overflow-hidden")}
+      />
       {selectedObject && selectedObject instanceof fabric.IText ? (
         <TextEditPopup
-          key={`text-popup-${getTextObjectId(selectedObject)}`}
-          selectedObject={selectedObject as fabric.IText}
+          selectedObject={selectedObject}
           onUpdateText={updateSelectedText}
+          className="absolute top-0 z-10"
         />
       ) : null}
     </div>

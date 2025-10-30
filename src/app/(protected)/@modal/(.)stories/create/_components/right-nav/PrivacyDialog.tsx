@@ -72,7 +72,7 @@ export default function PrivacyDialog({
             "p-2 rounded-full",
             "group hover:bg-accent-dark/12",
             "transition-colors duration-150 ease-in-out",
-            "cursor-pointer focus-indicator",
+            "cursor-pointer focus-indicator-dark",
             className
           )}
         >
@@ -112,7 +112,7 @@ export default function PrivacyDialog({
                   "px-6 py-3",
                   "hover:bg-accent-dark/7",
                   "transition-colors duration-75 ease-in-out",
-                  "cursor-pointer group focus-indicator"
+                  "cursor-pointer group focus-indicator-dark"
                 )}
               >
                 <div
@@ -162,7 +162,7 @@ export default function PrivacyDialog({
               "px-6 py-3",
               "hover:bg-accent-dark/7",
               "transition-colors duration-75 ease-in-out",
-              "cursor-pointer group focus-indicator"
+              "cursor-pointer group focus-indicator-dark"
             )}
           >
             <div
@@ -208,7 +208,7 @@ export default function PrivacyDialog({
                 "whitespace-nowrap rounded-md",
                 "text-sm fond-semibold",
                 "transition-colors duration-200 ease-in-out",
-                "focus-indicator",
+                "focus-indicator-dark",
                 "disabled:pointer-events-none disabled:opacity-50",
                 "h-10 w-20 py-2",
                 "hover:bg-accent/10 hover:text-accent-foreground"
@@ -225,7 +225,7 @@ export default function PrivacyDialog({
               "whitespace-nowrap rounded-md",
               "text-sm font-semibold",
               "transition-colors duration-200 ease-in-out",
-              "focus-indicator",
+              "focus-indicator-dark",
               "disabled:pointer-events-none disabled:opacity-50",
               "h-10 w-20 py-2",
               "bg-primary/90 text-primary-foreground shadow-sm hover:bg-primary"

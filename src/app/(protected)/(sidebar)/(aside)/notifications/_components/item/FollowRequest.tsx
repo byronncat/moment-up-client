@@ -1,4 +1,3 @@
-import { __parseUrl } from "@/__mocks__";
 import type { UserSummaryDto } from "api";
 
 import { useRefreshApi } from "@/components/providers";
@@ -46,7 +45,7 @@ export default function FollowRequestContent({
       <UserHoverCard user={user} className="mr-3">
         {/* Outer div to fix ref when using hover card */}
         <div>
-          <Avatar src={__parseUrl(user.avatar, "image", 48)} size="12" />
+          <Avatar src={user.avatar} size="12" />
         </div>
       </UserHoverCard>
       <div className={cn("grow", "min-w-0")}>

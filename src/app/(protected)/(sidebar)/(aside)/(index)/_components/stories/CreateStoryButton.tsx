@@ -14,7 +14,7 @@ export default function CreateStoryButton({
       className={cn(
         "relative group",
         "flex flex-col items-center",
-        "cursor-pointer",
+        "cursor-pointer focus-indicator rounded-sm",
         className
       )}
     >
