@@ -1,11 +1,10 @@
 import { __parseUrl } from "@/__mocks__";
 import type { StoryInfo } from "api";
-import { useEffect, useRef } from "react";
-import { BLUR_DATA_URL, TextBackground } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { BLUR_DATA_URL, TextBackground } from "@/constants/client";
 
 type ContentProps = Readonly<{
   content: StoryInfo["stories"][number]["content"];
@@ -16,19 +15,9 @@ type ContentProps = Readonly<{
 
 export default function Content({
   content,
-  shouldPlay = false,
   setVideoRef,
   onLoadingComplete,
 }: ContentProps) {
-  const localVideoRef = useRef<HTMLVideoElement | null>(null);
-
-  useEffect(() => {
-    if (localVideoRef.current) {
-      if (shouldPlay) localVideoRef.current.play();
-      else localVideoRef.current.pause();
-    }
-  }, [shouldPlay]);
-
   return (
     <AspectRatio ratio={9 / 16}>
       {content.type === "text" ? (
@@ -65,8 +54,8 @@ export default function Content({
       ) : (
         <video
           className="size-full object-contain bg-black"
+          autoPlay
           ref={(element) => {
-            localVideoRef.current = element;
             setVideoRef?.(element);
           }}
           onLoadedData={onLoadingComplete}

@@ -86,12 +86,9 @@ export function useSound(
   }, [soundUrl, isSoundOn, isPlaying, shouldPlay, story, toggleUrlSound]);
 
   useEffect(() => {
-    if (!shouldPlay) return;
-    if (videoRef.current) {
-      videoRef.current.muted = soundUrl ? true : !isSoundOn;
-      onLoadingComplete();
-    }
-  }, [isSoundOn, soundUrl, videoRef, shouldPlay, story, onLoadingComplete]);
+    if (story?.content?.type === "video") onLoadingComplete();
+    if (videoRef.current) videoRef.current.muted = soundUrl ? true : !isSoundOn;
+  }, [isSoundOn, soundUrl, shouldPlay, story, onLoadingComplete]);
 
   return {
     haveSound,

@@ -32,17 +32,22 @@ export default function StoryView({
 }: StoryViewProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const username = pathname.split("/")[2];
+  const storyId = pathname.split("/")[3];
 
   const { viewingStories, otherStories, nextUserStory } = useStory();
-  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(() => {
+    const index = viewingStories?.stories.findIndex(
+      (story) => story.id === storyId
+    );
+    return index !== undefined && index !== -1 ? index : 0;
+  });
   const [_confirm, setConfirm] = useState(confirm);
   const [dataLoaded, setDataLoaded] = useState({
     storyId: "",
     content: false,
     sound: false,
   });
-
-  const username = pathname.split("/")[2];
 
   const currentStoryData = (() => {
     const totalStories = viewingStories?.stories.length ?? 0;
@@ -66,6 +71,12 @@ export default function StoryView({
     const storiesLength = viewingStories?.stories.length ?? 0;
     const isPrev = direction === "prev";
     const isNext = direction === "next";
+
+    setDataLoaded((prev) => ({
+      ...prev,
+      content: false,
+      sound: false,
+    }));
 
     if (isPrev || isNext) {
       const offset = isPrev ? -1 : 1;
@@ -96,6 +107,12 @@ export default function StoryView({
   }
 
   function handleSegmentClick(index: number) {
+    setDataLoaded((prev) => ({
+      ...prev,
+      content: false,
+      sound: false,
+    }));
+
     setCurrentStoryIndex(index);
     changeUrl(
       ROUTE.STORY(username, viewingStories?.stories[index].id),
@@ -204,10 +221,8 @@ export default function StoryView({
       </div>
 
       <Content
-        key={currentStoryData.id} // Force re-render on content change to reset video
         content={currentStoryData.content}
         setVideoRef={handleSetVideoRef}
-        shouldPlay={!!(shouldPlay && isPlaying)}
         onLoadingComplete={() =>
           setDataLoaded((prev) => ({
             ...prev,
