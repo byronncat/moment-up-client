@@ -26,7 +26,7 @@ export default function Content({ content, setVideoRef }: ContentProps) {
           {content.text}
         </div>
       ) : content.type === "image" ? (
-        <div className="size-full bg-white">
+        <div className="size-full bg-white relative">
           <Image
             src={__parseUrl(content.id, "image") as string}
             alt={`Story ${content.id}`}
