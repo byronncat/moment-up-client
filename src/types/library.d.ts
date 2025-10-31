@@ -1,5 +1,5 @@
 declare module "cloudinary" {
-  type ResourceType = "image" | "video" | "raw";
+  type ResourceType = "image" | "video" | "raw" | "audio";
   type PublicId = string;
 
   interface CloudinaryUploadResponse {

@@ -222,9 +222,7 @@ export default function EditProfileModal({
           <div className="h-svh sm:max-h-[640px] flex flex-col">
             <div className="pt-[48px]">
               <div>
-                <div
-                  className={cn("relative", "-mb-12", "w-full aspect-3/1")}
-                >
+                <div className={cn("relative", "-mb-12", "w-full aspect-3/1")}>
                   <div
                     className={cn("size-full bg-muted", "flex justify-end")}
                     style={{

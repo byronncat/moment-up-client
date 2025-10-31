@@ -5,7 +5,7 @@ import type { CloudinaryUploadResponse } from "cloudinary";
 
 type CloudinaryUploadedData = {
   public_id: string;
-  type: "image" | "video" | "raw";
+  type: "image" | "video" | "raw" | "audio";
 };
 
 interface UploadResponse {
@@ -50,8 +50,9 @@ export default function CloudinaryProvider({
 
       // Determine resource type based on file type
       const isVideo = file.type.startsWith("video/");
-      const resourceType = isVideo ? "video" : "image";
-      
+      const isAudio = file.type.startsWith("audio/");
+      const resourceType = isVideo ? "video" : isAudio ? "video" : "image";
+
       const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudinaryName}/${resourceType}/upload`;
 
       const response = await fetch(cloudinaryUrl, {
@@ -66,9 +67,12 @@ export default function CloudinaryProvider({
 
       const data: CloudinaryUploadResponse = await response.json();
 
+      let type: CloudinaryUploadedData["type"] = data.resource_type;
+      if (isAudio) type = "audio";
+
       return {
         success: true,
-        data: [{ public_id: data.public_id, type: data.resource_type }],
+        data: [{ public_id: data.public_id, type }],
       };
     } catch {
       return {

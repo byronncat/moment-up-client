@@ -24,13 +24,12 @@ export default function RightNav({
   return (
     <ScrollArea
       className={cn(
-        "box-content",
         "bg-background-dark md:bg-card-dark text-card-foreground-dark",
-        "border-t md:border-l border-border-dark",
-        className
+        "border-t md:border-l border-border-dark"
       )}
+      viewportClassName="[&>div]:block!"
     >
-      <div className={cn("md:h-lvh w-full", "flex flex-col")}>
+      <div className={cn("md:h-lvh flex flex-col", className)}>
         <div className="px-4 mt-7 flex items-center justify-between">
           <h2 className="text-2xl font-bold">
             <span className="hidden md:inline">Stories</span>
@@ -111,11 +110,11 @@ export default function RightNav({
               <div
                 className={cn(
                   "flex items-baseline gap-1",
-                  "text-muted-foreground-dark"
+                  "text-muted-foreground-dark text-sm"
                 )}
               >
                 <h3>Sound</h3>
-                <span className="text-sm">(optional)</span>
+                (optional)
               </div>
               <SoundSelector className="mt-2" />
             </div>

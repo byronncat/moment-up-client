@@ -47,7 +47,11 @@ export default function ActionButtons({
         )}
         disabled={isLoading}
       >
-        {isLoading ? <Loader2 className="size-4 animate-spin mx-auto" /> : "Upload"}
+        {isLoading ? (
+          <Loader2 className="size-4 animate-spin mx-auto" />
+        ) : (
+          "Upload"
+        )}
       </button>
     </div>
   );

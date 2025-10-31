@@ -84,22 +84,6 @@
     }
   }
 
-  --animate-scroll-text: scroll-text 3s linear infinite;
-  @keyframes scroll-text {
-    0% {
-      transform: translateX(0);
-    }
-    15% {
-      transform: translateX(0);
-    }
-    80% {
-      transform: translateX(var(--scroll-distance, -50%));
-    }
-    100% {
-      transform: translateX(var(--scroll-distance, -50%));
-    }
-  }
-
   /* for px-based sizing */
   --breakpoint-mobile: 601px;
   --breakpoint-sm: 640px;

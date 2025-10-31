@@ -1,4 +1,6 @@
+import { __parseUrl } from "@/__mocks__";
 import type { StoryInfo } from "api";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export function useSound(
@@ -15,7 +17,7 @@ export function useSound(
 
     return !!story.sound;
   })();
-  const soundUrl = story?.sound;
+  const soundUrl = __parseUrl(story?.sound ?? null, "video");
 
   const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);

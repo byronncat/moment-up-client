@@ -48,6 +48,7 @@ import { CoreApi } from "@/services";
 import { Font } from "../_constants";
 import { ContentPrivacy, StoryBackground } from "@/constants/server";
 import { ROUTE } from "@/constants/route";
+import { trimAudioFile } from "../_utilities";
 
 const CreateDataContext = createContext<CreateDataContextType>({
   type: null,
@@ -107,12 +108,42 @@ export default function CreateDataProvider({
   const addStoryApi = useRefreshApi(CoreApi.createStory);
 
   async function uploadStory(exportCanvas?: () => string | null) {
+    let soundAttachment: string | undefined;
+    if (uploadedAudio) {
+      try {
+        const trimmedFile = await trimAudioFile(
+          uploadedAudio.file,
+          uploadedAudio.trimStart,
+          uploadedAudio.trimEnd
+        );
+
+        const uploadResult = await uploadImage(trimmedFile);
+
+        if (!uploadResult.success || !uploadResult.data) {
+          toast.error("Unable to upload audio. Please try again.");
+          return;
+        }
+
+        soundAttachment = uploadResult.data[0].public_id;
+      } catch (error) {
+        console.error("Audio upload error:", error);
+        toast.error("Failed to upload audio. Please try again.");
+        return;
+      }
+    }
+
     if (type === "text") {
+      if (!textContent) {
+        toast.error("Please add text content.");
+        return;
+      }
+
       const data = {
-        text: textContent || undefined,
+        text: textContent,
         background: selectedBackground,
         font: font.value,
         privacy,
+        sound: soundAttachment,
       };
 
       const { success, message } = await addStoryApi(data);
@@ -150,6 +181,7 @@ export default function CreateDataProvider({
             type: uploadResult.data[0].type,
           },
           privacy,
+          sound: soundAttachment,
         };
 
         const { success, message } = await addStoryApi(data);
@@ -179,6 +211,7 @@ export default function CreateDataProvider({
             type: uploadResult.data[0].type,
           },
           privacy,
+          sound: soundAttachment,
         };
 
         const { success, message } = await addStoryApi(data);

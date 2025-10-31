@@ -82,7 +82,7 @@ function SelectionCard({
       className={cn(
         "w-[220px] h-[330px] max-w-[calc(50%-8px)] max-h-[50dvh]",
         "rounded-lg cursor-pointer",
-        "flex flex-col items-center justify-center gap-2",
+        "flex flex-col items-center justify-center gap-2 text-center",
         "focus-indicator-dark"
       )}
       style={TextBackground[background]}

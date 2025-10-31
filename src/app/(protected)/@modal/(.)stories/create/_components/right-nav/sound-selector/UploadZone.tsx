@@ -1,15 +1,16 @@
 import { useRef } from "react";
-import { cn } from "@/libraries/utils";
 import { useCreateData } from "../../../_providers";
+
+import { cn } from "@/libraries/utils";
 import { SquarePlus as Upload } from "@/components/icons";
 
-type UploadZoneProps = Readonly<{
+export default function UploadZone({
+  className,
+}: Readonly<{
   className?: string;
-}>;
-
-export default function UploadZone({ className }: UploadZoneProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+}>) {
   const { uploadAudio } = useCreateData();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function handleUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -23,6 +24,7 @@ export default function UploadZone({ className }: UploadZoneProps) {
   return (
     <div className={className}>
       <input
+        id="audio-upload"
         type="file"
         accept="audio/*"
         onChange={handleUpload}
@@ -35,15 +37,15 @@ export default function UploadZone({ className }: UploadZoneProps) {
           "w-full p-4",
           "flex flex-col items-center",
           "rounded-lg border-2 border-dashed",
-          "bg-card-dark hover:bg-accent-dark/8",
-          "text-muted-foreground-dark hover:text-white",
-          "border-border-dark hover:border-accent-dark/50",
+          "bg-input-dark/50 hover:bg-input-dark/70",
+          "text-muted-foreground-dark hover:text-white/80",
+          "border-border-dark hover:border-muted-foreground-dark/50",
           "transition-colors duration-200",
           "cursor-pointer"
         )}
       >
         <Upload className="size-6" />
-        <span className="text-sm font-medium mt-2">Upload Audio</span>
+        <span className="text-sm font-semibold mt-2">Upload Audio</span>
         <span className="text-xs opacity-70">MP3, WAV, M4A</span>
       </button>
     </div>

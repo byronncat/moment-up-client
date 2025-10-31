@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCreateData } from "../../../_providers";
 import { debounce } from "lodash";
 
+import { cn } from "@/libraries/utils";
 import AudioInfo from "./AudioInfo";
 import PlayControls from "./PlayControls";
 import TrimControls from "./TrimControls";
@@ -20,7 +21,6 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
   const { uploadedAudio, trimAudio, removeAudio } = useCreateData();
 
   // Store the debounced function in a ref to avoid recreating it on every render
-  // Using a ref initialization function to create it only once
   const debouncedUpdateCurrentTimeRef = useRef(
     debounce(
       (
@@ -95,21 +95,7 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
     setCurrentTime(seekTime);
   }
 
-  // Using useMemo to avoid re-creating the debounced function on every render
-  // When a debounced function is recreated, it loses its internal timer state, which means it can't properly debounce the calls.
-  // const debouncedUpdateCurrentTime = useMemo(
-  //   () =>
-  //     debounce((time: number) => {
-  //       const audio = audioRef.current;
-  //       if (!audio) return;
-  //       audio.currentTime = time;
-  //       setCurrentTime(time);
-  //     }, DEBOUNCE_TIME),
-  //   []
-  // );
-
   function handleTrimChange(start: number, end: number) {
-    // if (!uploadedAudio) return;
     if (!uploadedAudio || !audioRef.current) return;
 
     const adjustedStart = Math.max(0, Math.min(start, end - TRIM_TIME_GAP));
@@ -119,7 +105,6 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
     );
 
     trimAudio(adjustedStart, adjustedEnd);
-    // debouncedUpdateCurrentTime(adjustedStart);
     debouncedUpdateCurrentTimeRef.current(
       adjustedStart,
       audioRef.current,
@@ -132,7 +117,7 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
   const trimDuration = uploadedAudio.trimEnd - uploadedAudio.trimStart;
 
   return (
-    <div className={className}>
+    <div>
       <audio
         ref={audioRef}
         src={uploadedAudio.preview}
@@ -146,7 +131,13 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
         }}
       />
 
-      <div className="bg-card-dark rounded-lg p-4 border border-accent-dark/20">
+      <div
+        className={cn(
+          "rounded-lg p-4",
+          "border border-accent-dark/20",
+          className
+        )}
+      >
         <AudioInfo
           name={uploadedAudio.file.name}
           size={uploadedAudio.file.size}

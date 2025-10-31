@@ -284,6 +284,7 @@ interface CreateStoryDto {
   background?: StoryBackground;
   font?: StoryFontFamily;
   attachment?: { id: PublicId; type: ResourceType };
+  sound?: PublicId;
 }
 
 export async function createStory(data: CreateStoryDto, token: Token): API {

@@ -87,11 +87,7 @@ function UserCard({ user }: Readonly<{ user: PopularUserDto }>) {
         className="h-10 w-full"
       />
 
-      <Avatar
-        src={user.avatar}
-        size="12"
-        className="-mt-6"
-      />
+      <Avatar src={user.avatar} size="12" className="-mt-6" />
 
       <div
         className={cn("flex items-center mt-1", "font-semibold", "max-w-32")}

@@ -72,6 +72,7 @@ function PreviewContent() {
               viewportClassName="[&>div]:min-h-full [&>div]:!flex [&>div]:items-center [&>div]:justify-center"
             >
               <textarea
+                id="text-input"
                 className={cn(
                   "px-5 py-3 size-full m-auto",
                   "flex items-center justify-center",

@@ -86,7 +86,7 @@ export default function TextEditPopup({
       <Select value={selectedFontFamily.label} onValueChange={handleFontChange}>
         <SelectTrigger
           className={cn(
-            "w-full bg-input-dark text-foreground-dark",
+            "w-full bg-input-dark! text-foreground-dark",
             "border-accent-dark/10",
             "[&_svg]:text-white!"
           )}

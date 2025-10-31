@@ -26,9 +26,7 @@ export default function TrimControls({
   const sliderValues = [trimStart, trimEnd];
   return (
     <div className={cn("space-y-3", className)}>
-      <div className="text-xs font-medium text-muted-foreground-dark">
-        Trimming
-      </div>
+      <div className="text-xs text-muted-foreground-dark">Trimming</div>
 
       <div className="space-y-4">
         <div>
@@ -98,10 +96,14 @@ type TimeInputProps = Readonly<{
 function TimeInput({ value, label, type, min, max, onChange }: TimeInputProps) {
   return (
     <div className="flex-1">
-      <label className="block text-xs text-muted-foreground-dark mb-1">
+      <label
+        className="block text-xs text-muted-foreground-dark mb-1"
+        htmlFor={label}
+      >
         {label}
       </label>
       <Input
+        id={label}
         type="number"
         value={value.toFixed(1)}
         onChange={(event) => {
@@ -126,9 +128,8 @@ function TimeInput({ value, label, type, min, max, onChange }: TimeInputProps) {
         step={TIME_INPUT_STEP}
         className={cn(
           "text-xs text-foreground-dark",
-          "h-8 bg-muted-dark",
-          "border-border-dark",
-          "focus-visible:ring-accent-dark/50 focus-visible:border-accent-dark/50 focus-visible:ring-0.5"
+          "h-8 bg-input-dark",
+          "border-border-dark"
         )}
       />
     </div>

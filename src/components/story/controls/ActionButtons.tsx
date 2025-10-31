@@ -186,7 +186,10 @@ function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
       {isMe ? (
         <DropdownMenuItem
           onClick={handleDelete}
-          className={cn(menuItemStyles, "destructive-item-dark focus:text-destructive-dark! focus:bg-destructive-dark/10!")}
+          className={cn(
+            menuItemStyles,
+            "destructive-item-dark focus:text-destructive-dark! focus:bg-destructive-dark/10!"
+          )}
         >
           <Trash className="size-4" />
           <span>Delete story</span>
