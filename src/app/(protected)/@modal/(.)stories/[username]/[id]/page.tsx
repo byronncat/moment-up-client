@@ -22,7 +22,7 @@ export default function StoryModal() {
   const params = useParams();
   const username = params.username as string;
 
-  const { setViewingStory } = useStory();
+  const { setViewingStories } = useStory();
   const { data, isValidating } = useSWRImmutable(
     [ApiUrl.story.getByUsername(username), token.accessToken],
     ([url, token]) =>
@@ -38,8 +38,8 @@ export default function StoryModal() {
   }
 
   useEffect(() => {
-    if (data?.story) setViewingStory(data.story);
-  }, [data?.story, setViewingStory]);
+    if (data?.story) setViewingStories(data.story);
+  }, [data?.story, setViewingStories]);
 
   return (
     <Modal className="flex">

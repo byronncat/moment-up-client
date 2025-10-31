@@ -4,10 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export function useSound(
   story: StoryInfo["stories"][number] | undefined,
   isPlaying: boolean,
-  isActive: boolean
+  shouldPlay: boolean,
+  onLoadingComplete: () => void
 ) {
   const haveSound = (() => {
-    if (!story || !isActive) return false;
+    if (!story || !shouldPlay) return false;
 
     if (typeof story.content === "object" && story.content?.type === "video")
       return true;
@@ -49,24 +50,48 @@ export function useSound(
   }
 
   useEffect(() => {
-    if (!isActive) return;
     cleanUpAudio();
-    if (soundUrl) audioRef.current = new Audio(soundUrl);
+
+    if (soundUrl) {
+      const audio = new Audio(soundUrl);
+      audioRef.current = audio;
+
+      function handleCanPlayThrough() {
+        onLoadingComplete();
+      }
+
+      function handleError() {
+        console.error("Failed to load audio:", audio.error);
+      }
+
+      // Listen for when audio can play through without buffering
+      audio.addEventListener("canplaythrough", handleCanPlayThrough);
+      audio.addEventListener("error", handleError);
+
+      return () => {
+        audio.removeEventListener("canplaythrough", handleCanPlayThrough);
+        audio.removeEventListener("error", handleError);
+        cleanUpAudio();
+      };
+    }
 
     return () => {
       cleanUpAudio();
     };
-  }, [soundUrl, isActive, story]);
+  }, [soundUrl, shouldPlay, story, onLoadingComplete]);
 
   useEffect(() => {
-    if (!isActive) return;
+    if (!shouldPlay) return;
     toggleUrlSound();
-  }, [soundUrl, isSoundOn, isPlaying, isActive, story, toggleUrlSound]);
+  }, [soundUrl, isSoundOn, isPlaying, shouldPlay, story, toggleUrlSound]);
 
   useEffect(() => {
-    if (!isActive) return;
-    if (videoRef.current) videoRef.current.muted = soundUrl ? true : !isSoundOn;
-  }, [isSoundOn, soundUrl, videoRef, isActive, story]);
+    if (!shouldPlay) return;
+    if (videoRef.current) {
+      videoRef.current.muted = soundUrl ? true : !isSoundOn;
+      onLoadingComplete();
+    }
+  }, [isSoundOn, soundUrl, videoRef, shouldPlay, story, onLoadingComplete]);
 
   return {
     haveSound,

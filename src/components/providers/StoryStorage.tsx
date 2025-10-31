@@ -6,12 +6,12 @@ import type { StoryInfo, StoryNotificationInfo } from "api";
 interface StoryState {
   myStory: StoryNotificationInfo | null;
   otherStories: StoryNotificationInfo[];
-  viewingStory: StoryInfo | null;
+  viewingStories: StoryInfo | null;
   allStories: StoryNotificationInfo[];
 }
 
 interface StoryAction {
-  setViewingStory: (story: StoryInfo) => void;
+  setViewingStories: (story: StoryInfo) => void;
   setStories: (stories: StoryNotificationInfo[]) => void;
   deleteStory: (storyId: string) => Promise<void>;
   nextUserStory: (direction?: "next" | "prev") => {
@@ -32,10 +32,10 @@ import { ROUTE } from "@/constants/route";
 const StoryDataContext = createContext<StoryState & StoryAction>({
   myStory: null,
   otherStories: [],
-  viewingStory: null,
+  viewingStories: null,
   allStories: [],
 
-  setViewingStory: () => {},
+  setViewingStories: () => {},
   setStories: () => {},
   deleteStory: () => Promise.resolve(),
   nextUserStory: () => null,
@@ -53,7 +53,7 @@ export default function StoryDataProvider({
 }: StoryDataProviderProps) {
   const [myStory, setMyStory] = useState<StoryNotificationInfo | null>(null);
   const [otherStories, setOtherStories] = useState<StoryNotificationInfo[]>([]);
-  const [viewingStory, setViewingStory] = useState<StoryInfo | null>(null);
+  const [viewingStories, setViewingStories] = useState<StoryInfo | null>(null);
 
   const { user, token } = useAuth();
   const router = useRouter();
@@ -131,16 +131,16 @@ export default function StoryDataProvider({
   async function deleteStory(storyId: string) {
     const { success, message } = await CoreApi.deleteStory(storyId, token);
     if (success) {
-      let currentStoryIndex = viewingStory?.stories.findIndex(
+      let currentStoryIndex = viewingStories?.stories.findIndex(
         (story) => story.id === storyId
       );
       if (
         currentStoryIndex === undefined ||
-        currentStoryIndex === (viewingStory?.stories.length ?? 0) - 1
+        currentStoryIndex === (viewingStories?.stories.length ?? 0) - 1
       )
         currentStoryIndex = -1; // last story
 
-      const stories = viewingStory?.stories.filter(
+      const stories = viewingStories?.stories.filter(
         (story) => story.id !== storyId
       );
       if (!stories) {
@@ -149,7 +149,7 @@ export default function StoryDataProvider({
       }
 
       if (stories.length === 0) {
-        // No need to set viewingStory to null here because it rerenders the page (navigateFully)
+        // No need to set viewingStories to null here because it rerenders the page (navigateFully)
         setMyStory(null);
         if (otherStories.length > 0)
           changeUrl(
@@ -160,7 +160,7 @@ export default function StoryDataProvider({
         return;
       }
 
-      setViewingStory((prev) => {
+      setViewingStories((prev) => {
         if (!prev) return null;
         return { ...prev, stories };
       });
@@ -200,10 +200,10 @@ export default function StoryDataProvider({
       value={{
         myStory,
         otherStories,
-        viewingStory,
+        viewingStories,
         allStories,
 
-        setViewingStory,
+        setViewingStories,
         setStories,
         deleteStory,
         nextUserStory,

@@ -12,7 +12,6 @@ import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import StoryView from "@/components/story/StoryView";
 import { X } from "@/components/icons";
@@ -24,7 +23,7 @@ export default function StoryModal() {
   const username = params.username as string;
 
   const { token } = useAuth();
-  const { setViewingStory } = useStory();
+  const { setViewingStories } = useStory();
   const { data, isValidating } = useSWRImmutable(
     [ApiUrl.story.getByUsername(username), token.accessToken],
     ([url, token]) =>
@@ -39,15 +38,15 @@ export default function StoryModal() {
   }
 
   useEffect(() => {
-    if (data?.story) setViewingStory(data.story);
-  }, [data?.story, setViewingStory]);
+    if (data?.story) setViewingStories(data.story);
+  }, [data?.story, setViewingStories]);
 
   return (
-    <Modal>
+    <div className="size-full">
       <Link
         href={ROUTE.HOME}
         className={cn(
-          "text-primary",
+          "text-primary-dark",
           "font-bold text-2xl tracking-wide",
           "absolute top-0 left-0",
           "px-4 py-2",
@@ -71,11 +70,12 @@ export default function StoryModal() {
       >
         <X className="size-6" />
       </Button>
+
       <StoryView
         loading={isValidating}
         onClose={handleClose}
         className="size-full"
       />
-    </Modal>
+    </div>
   );
 }

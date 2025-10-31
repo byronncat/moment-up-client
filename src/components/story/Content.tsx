@@ -1,17 +1,34 @@
 import { __parseUrl } from "@/__mocks__";
 import type { StoryInfo } from "api";
+import { useEffect, useRef } from "react";
+import { BLUR_DATA_URL, TextBackground } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { BLUR_DATA_URL, TextBackground } from "@/constants/client";
 
 type ContentProps = Readonly<{
   content: StoryInfo["stories"][number]["content"];
+  shouldPlay?: boolean;
   setVideoRef?: (video: HTMLVideoElement | null) => void;
+  onLoadingComplete: () => void;
 }>;
 
-export default function Content({ content, setVideoRef }: ContentProps) {
+export default function Content({
+  content,
+  shouldPlay = false,
+  setVideoRef,
+  onLoadingComplete,
+}: ContentProps) {
+  const localVideoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (localVideoRef.current) {
+      if (shouldPlay) localVideoRef.current.play();
+      else localVideoRef.current.pause();
+    }
+  }, [shouldPlay]);
+
   return (
     <AspectRatio ratio={9 / 16}>
       {content.type === "text" ? (
@@ -22,11 +39,17 @@ export default function Content({ content, setVideoRef }: ContentProps) {
             "text-center font-semibold text-2xl"
           )}
           style={TextBackground[content.background]}
+          ref={() => onLoadingComplete()}
         >
           {content.text}
         </div>
       ) : content.type === "image" ? (
-        <div className="size-full bg-white relative">
+        <div
+          className={cn(
+            "size-full relative",
+            "mobile:rounded-lg overflow-hidden"
+          )}
+        >
           <Image
             src={__parseUrl(content.id, "image") as string}
             alt={`Story ${content.id}`}
@@ -36,15 +59,17 @@ export default function Content({ content, setVideoRef }: ContentProps) {
             className="object-cover"
             placeholder="blur"
             blurDataURL={BLUR_DATA_URL}
+            onLoad={onLoadingComplete}
           />
         </div>
       ) : (
         <video
           className="size-full object-contain bg-black"
-          autoPlay
-          ref={(ref) => {
-            setVideoRef?.(ref);
+          ref={(element) => {
+            localVideoRef.current = element;
+            setVideoRef?.(element);
           }}
+          onLoadedData={onLoadingComplete}
         >
           <source
             src={__parseUrl(content.id, "video") as string}

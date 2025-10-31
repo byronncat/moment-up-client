@@ -8,11 +8,11 @@ type ContentType = StoryInfo["stories"][number]["content"];
 
 export function useContentProgress(
   content: ContentType | undefined,
-  onComplete?: () => void,
-  initialPlay = true
+  shouldPlay = false,
+  onComplete?: () => void
 ) {
   const [progress, setProgress] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(initialPlay);
+  const [isPlaying, setIsPlaying] = useState(shouldPlay);
   const [duration] = useState(DEFAULT_DURATION);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -36,13 +36,13 @@ export function useContentProgress(
   // }, [calculateDuration]);
 
   function setVideoRef(video: HTMLVideoElement | null) {
-    if (videoRef.current)
-      // videoRef.current.removeEventListener(
-      //   "loadedmetadata",
-      //   handleLoadedMetadata
-      // );
+    // if (videoRef.current)
+    //   videoRef.current.removeEventListener(
+    //     "loadedmetadata",
+    //     handleLoadedMetadata
+    //   );
 
-      videoRef.current = video;
+    videoRef.current = video;
 
     // if (video) {
     //   video.addEventListener("loadedmetadata", handleLoadedMetadata);
@@ -108,7 +108,6 @@ export function useContentProgress(
   return {
     progress,
     isPlaying,
-    
     setVideoRef,
     pause,
     play,

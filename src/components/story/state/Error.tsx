@@ -13,7 +13,7 @@ export default function ErrorState({ onClose, className }: ErrorStateProps) {
       <div
         className={cn("flex size-full items-center justify-center", "flex-col")}
       >
-        <TriangleAlert className="size-12 mb-3 text-foreground-dark" />
+        <TriangleAlert className="size-12 mb-3 text-foreground-dark/80" />
         <p className="text-lg font-semibold text-foreground-dark">
           Something went wrong!
         </p>
