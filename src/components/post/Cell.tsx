@@ -39,7 +39,7 @@ export default function MediaCell({
         {coverFile.type === "image" ? (
           <Image
             src={__parseUrl(coverFile.id, "image") as string}
-            alt={data.post.text ?? "Moment image"}
+            alt={data.post.text ?? "Post image"}
             fill
             sizes="240px"
             className="size-full object-cover object-top"

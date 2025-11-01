@@ -88,7 +88,7 @@ export default function MediaCarousel({
               <div className="relative w-full aspect-square bg-muted">
                 <Image
                   src={file.id}
-                  alt={`Moment ${index + 1}`}
+                  alt={`Post ${index + 1}`}
                   fill
                   sizes="80vw"
                   className="object-contain select-none"

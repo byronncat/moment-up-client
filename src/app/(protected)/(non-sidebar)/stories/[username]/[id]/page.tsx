@@ -57,6 +57,7 @@ export default function StoryModal() {
       >
         MomentUp
       </Link>
+
       <Button
         onClick={handleClose}
         size="icon"

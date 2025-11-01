@@ -199,7 +199,7 @@ export type Actions = {
   follow: (postId: FeedItemDto["id"]) => Promise<void>;
 };
 
-const MomentDataContext = createContext<PostContextType>({
+const PostStorageContext = createContext<PostContextType>({
   posts: undefined,
   setPosts: () => {},
   addPosts: () => {},
@@ -219,15 +219,15 @@ const MomentDataContext = createContext<PostContextType>({
   updateCommentCount: async () => {},
 });
 
-export const usePost = () => use(MomentDataContext);
+export const usePost = () => use(PostStorageContext);
 
-type MomentDataProviderProps = Readonly<{
+type PostStorageProviderProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-export default function MomentDataProvider({
+export default function PostStorageProvider({
   children,
-}: MomentDataProviderProps) {
+}: PostStorageProviderProps) {
   const [posts, dispatch] = useReducer(postsReducer, initialPostsState);
   const [currentPost, setCurrentPost] = useState<string | null>(null);
   const actionKey = useRef(0);
@@ -298,7 +298,7 @@ export default function MomentDataProvider({
       if (success) actionKey.current++;
       else {
         dispatch({ type: "TOGGLE_LIKE", payload: postId });
-        toast.error(message || "Failed to like moment");
+        toast.error(message || "Unable to like post.");
       }
     },
     [posts, likeApi]
@@ -306,10 +306,10 @@ export default function MomentDataProvider({
 
   const bookmark = useCallback(
     async (postId: string) => {
-      const moment = posts?.get(postId);
-      if (!moment) return;
+      const feed = posts?.get(postId);
+      if (!feed) return;
 
-      const shouldBookmark = !moment.post.isBookmarked;
+      const shouldBookmark = !feed.post.isBookmarked;
       dispatch({ type: "TOGGLE_BOOKMARK", payload: postId });
 
       const { success, message } = await bookmarkApi({
@@ -320,7 +320,7 @@ export default function MomentDataProvider({
       if (success) actionKey.current++;
       else {
         dispatch({ type: "TOGGLE_BOOKMARK", payload: postId });
-        toast.error(message || "Failed to bookmark moment");
+        toast.error(message || "Unable to bookmark post.");
       }
     },
     [posts, bookmarkApi]
@@ -328,21 +328,21 @@ export default function MomentDataProvider({
 
   const follow = useCallback(
     async (postId: string) => {
-      const moment = posts?.get(postId);
-      if (!moment) return;
+      const feed = posts?.get(postId);
+      if (!feed) return;
 
-      const shouldFollow = !moment.user.isFollowing;
+      const shouldFollow = !feed.user.isFollowing;
       dispatch({ type: "TOGGLE_FOLLOW", payload: postId });
 
       const { success, message } = await followApi({
-        targetId: moment.user.id,
+        targetId: feed.user.id,
         shouldFollow,
       });
 
       if (success) actionKey.current++;
       else {
         dispatch({ type: "TOGGLE_FOLLOW", payload: postId });
-        toast.error(message || "Failed to follow/unfollow user");
+        toast.error(message || "Unable to follow/unfollow user.");
       }
     },
     [posts, followApi]
@@ -351,7 +351,7 @@ export default function MomentDataProvider({
   const share = useCallback((postId: string) => {
     const url = window.location.href;
     const { origin } = new URL(url);
-    navigator.clipboard.writeText(`${origin}/moment/${postId}`);
+    navigator.clipboard.writeText(`${origin}/post/${postId}`);
     toast(
       <div className="flex items-center gap-2">
         <Link size={16} />
@@ -382,7 +382,7 @@ export default function MomentDataProvider({
   );
 
   return (
-    <MomentDataContext.Provider
+    <PostStorageContext.Provider
       value={{
         posts: posts ? Array.from(posts.values()) : undefined,
         setPosts,
@@ -406,6 +406,6 @@ export default function MomentDataProvider({
       }}
     >
       {children}
-    </MomentDataContext.Provider>
+    </PostStorageContext.Provider>
   );
 }
