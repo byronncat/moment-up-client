@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { usePostData } from "../_provider/PostData";
 import { ROUTE } from "@/constants/route";
 
-import { cn } from "@/libraries/utils";
+import { canSafelyGoBack, cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
 import { PaperPlane, X } from "@/components/icons";
 
@@ -27,7 +27,7 @@ export default function Header({
   async function handleUpload() {
     const success = await upload();
     if (success) {
-      if (window.history.length > 1) router.back();
+      if (canSafelyGoBack()) router.back();
       else router.replace(ROUTE.HOME);
     }
   }

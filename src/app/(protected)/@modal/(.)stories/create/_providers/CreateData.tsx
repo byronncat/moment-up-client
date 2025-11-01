@@ -45,10 +45,11 @@ import { createContext, use, useState } from "react";
 import { useCloudinary, useRefreshApi } from "@/components/providers";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
-import { Font } from "../_constants";
-import { ContentPrivacy, StoryBackground } from "@/constants/server";
-import { ROUTE } from "@/constants/route";
 import { trimAudioFile } from "../_utilities";
+import { canSafelyGoBack } from "@/libraries/utils";
+import { ROUTE } from "@/constants/route";
+import { ContentPrivacy, StoryBackground } from "@/constants/server";
+import { Font } from "../_constants";
 
 const CreateDataContext = createContext<CreateDataContextType>({
   type: null,
@@ -274,7 +275,7 @@ export default function CreateDataProvider({
 
   const router = useRouter();
   function back() {
-    if (window.history.length > 1) router.back();
+    if (canSafelyGoBack()) router.back();
     else router.replace(ROUTE.HOME);
   }
 

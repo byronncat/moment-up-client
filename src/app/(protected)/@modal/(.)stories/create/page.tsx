@@ -8,7 +8,7 @@ import {
 } from "./_providers";
 import { ROUTE } from "@/constants/route";
 
-import { cn } from "@/libraries/utils";
+import { canSafelyGoBack, cn } from "@/libraries/utils";
 import { Modal } from "@/components/common";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import {
@@ -23,7 +23,7 @@ function CreateStoryModal() {
   const { hasContent, type } = useCreateData();
 
   function handleClose() {
-    if (window.history.length > 1) router.back();
+    if (canSafelyGoBack()) router.back();
     else router.replace(ROUTE.HOME);
   }
 

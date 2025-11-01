@@ -10,7 +10,7 @@ import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
 import { ROUTE } from "@/constants/route";
 
-import { cn } from "@/libraries/utils";
+import { canSafelyGoBack, cn } from "@/libraries/utils";
 import { Modal } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import StoryView from "@/components/story/StoryView";
@@ -33,7 +33,7 @@ export default function StoryModal() {
 
   const router = useRouter();
   function handleClose() {
-    if (window.history.length > 1) router.back();
+    if (canSafelyGoBack()) router.back();
     else router.replace(ROUTE.HOME);
   }
 
