@@ -45,6 +45,7 @@ export default function Content({
             fill
             sizes="(max-width: 768px) 100vw, 800px"
             quality={100}
+            loading="eager"
             className="object-cover"
             placeholder="blur"
             blurDataURL={BLUR_DATA_URL}
