@@ -2,7 +2,8 @@
 
 import type { FeedItemDto } from "api";
 import type { Actions } from "../../providers/PostStorage";
-import { ContentPrivacy, ContentReportType } from "@/constants/server";
+import { CONTENT_REPORT_OPTIONS, ContentPrivacy } from "@/constants/server";
+import { REPORT_ICONS } from "@/constants/client";
 
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -36,19 +37,7 @@ import {
   AlertDialogTitle,
 } from "../../ui/alert-dialog";
 import { Earth, Flag, Lock, MoreHorizontal, User } from "@/components/icons";
-import {
-  AlertTriangle,
-  Angry,
-  CircleHelp,
-  Copy,
-  FilePenLine,
-  FileText,
-  Info,
-  MessageCircleWarning,
-  ShieldAlert,
-  Skull,
-  Trash,
-} from "lucide-react";
+import { FilePenLine, FileText, Trash } from "lucide-react";
 
 type HeaderProps = Readonly<{
   data: FeedItemDto;
@@ -300,74 +289,7 @@ function MoreMenu({
   );
 }
 
-const ReportPostOptions: Array<{
-  label: string;
-  value: ContentReportType;
-  icon: React.ReactNode;
-}> = [
-  {
-    label: "Spam",
-    value: ContentReportType.SPAM,
-    icon: <Copy className="size-4 shrink-0" />,
-  },
-  {
-    label: "Misleading",
-    value: ContentReportType.MISLEADING,
-    icon: <MessageCircleWarning className="size-4 shrink-0" />,
-  },
-  {
-    label: "Inappropriate content",
-    value: ContentReportType.INAPPROPRIATE_CONTENT,
-    icon: <AlertTriangle className="size-4 shrink-0" />,
-  },
-  {
-    label: "Abusive",
-    value: ContentReportType.ABUSIVE,
-    icon: <Angry className="size-4 shrink-0" />,
-  },
-  {
-    label: "Harmful",
-    value: ContentReportType.HARMFUL,
-    icon: <Skull className="size-4 shrink-0" />,
-  },
-  {
-    label: "Sexual content",
-    value: ContentReportType.SEXUAL_CONTENT,
-    icon: <MessageCircleWarning className="size-4 shrink-0" />,
-  },
-  {
-    label: "Child exploitation",
-    value: ContentReportType.CHILD_EXPLOITATION,
-    icon: <ShieldAlert className="size-4 shrink-0" />,
-  },
-  {
-    label: "Copyright violation",
-    value: ContentReportType.COPYRIGHT_VIOLATION,
-    icon: <Info className="size-4 shrink-0" />,
-  },
-  {
-    label: "Violence",
-    value: ContentReportType.VIOLENCE,
-    icon: <AlertTriangle className="size-4 shrink-0" />,
-  },
-  {
-    label: "Hate speech",
-    value: ContentReportType.HATE_SPEECH,
-    icon: <Angry className="size-4 shrink-0" />,
-  },
-  {
-    label: "Fake information",
-    value: ContentReportType.FAKE_INFORMATION,
-    icon: <Info className="size-4 shrink-0" />,
-  },
-  {
-    label: "Duplicate",
-    value: ContentReportType.DUPLICATE,
-    icon: <Copy className="size-4 shrink-0" />,
-  },
-  {
-    label: "Other",
-    value: ContentReportType.OTHER,
-    icon: <CircleHelp className="size-4 shrink-0" />,
-  },
-];
+const ReportPostOptions = CONTENT_REPORT_OPTIONS.map((option) => ({
+  ...option,
+  icon: REPORT_ICONS[option.value],
+}));

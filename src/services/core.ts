@@ -381,6 +381,38 @@ export async function deleteStory(storyId: string, token: Token): API {
     });
 }
 
+export async function reportStory(
+  storyId: string,
+  data: { type: ContentReportType },
+  token: Token
+): API {
+  return fetch(ApiUrl.story.report(storyId), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": token.csrfToken,
+      Authorization: `Bearer ${token.accessToken}`,
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  })
+    .then(async (response) => {
+      if (!response.ok) throw await response.json();
+      return {
+        success: true,
+        message: "Your report has been submitted.",
+        statusCode: response.status,
+      };
+    })
+    .catch((error: ErrorDto) => {
+      return {
+        success: false,
+        message: parseErrorMessage(error),
+        statusCode: error.statusCode,
+      };
+    });
+}
+
 interface CreateCommentDto {
   text: string;
   postId: string;

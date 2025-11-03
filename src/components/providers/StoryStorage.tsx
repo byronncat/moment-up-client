@@ -2,6 +2,7 @@
 
 // === Type ====
 import type { StoryInfo, StoryNotificationInfo } from "api";
+import type { ContentReportType } from "@/constants/server";
 
 interface StoryState {
   myStory: StoryNotificationInfo | null;
@@ -19,12 +20,13 @@ interface StoryAction {
     id: string;
   } | null;
   muteStory: (username: string) => void;
+  reportStory: (storyId: string, type: ContentReportType) => Promise<void>;
 }
 
 // === Provider ====
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, use, useState } from "react";
-import { useAuth } from "@/components/providers";
+import { useAuth, useRefreshApi } from "@/components/providers";
 import { toast } from "sonner";
 import { CoreApi } from "@/services";
 import { ROUTE } from "@/constants/route";
@@ -40,6 +42,7 @@ const StoryDataContext = createContext<StoryState & StoryAction>({
   deleteStory: () => Promise.resolve(),
   nextUserStory: () => null,
   muteStory: () => {},
+  reportStory: () => Promise.resolve(),
 });
 
 export const useStory = () => use(StoryDataContext);
@@ -195,6 +198,13 @@ export default function StoryDataProvider({
     changeUrl(ROUTE.STORY(nextStory.username, nextStory.id), "navigateFully");
   }
 
+  const reportApi = useRefreshApi(CoreApi.reportStory);
+  async function reportStory(storyId: string, type: ContentReportType) {
+    const { success, message } = await reportApi(storyId, { type });
+    if (success) toast.success(message);
+    else toast.error(message ?? "Unexpected error occurred.");
+  } 
+
   return (
     <StoryDataContext.Provider
       value={{
@@ -208,6 +218,7 @@ export default function StoryDataProvider({
         deleteStory,
         nextUserStory,
         muteStory,
+        reportStory,
       }}
     >
       {children}

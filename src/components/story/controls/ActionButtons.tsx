@@ -1,15 +1,19 @@
 import { useAuth, useStory } from "@/components/providers";
 import { usePathname } from "next/navigation";
+import { CONTENT_REPORT_OPTIONS } from "@/constants/server";
+import { REPORT_ICONS } from "@/constants/client";
 
 import { cn } from "@/libraries/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Bug,
   Flag,
   Link,
   MoreHorizontal,
@@ -143,7 +147,7 @@ type MenuContentProps = Readonly<{
 }>;
 
 function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
-  const { deleteStory, muteStory } = useStory();
+  const { deleteStory, muteStory, reportStory } = useStory();
 
   function handleCopyLink() {
     navigator.clipboard.writeText(window.location.href);
@@ -155,16 +159,6 @@ function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
 
   function handleMute() {
     muteStory(ownBy);
-  }
-
-  function handleReport() {
-    // TODO: Implement this feature
-    console.warn("This feature is not implemented yet");
-  }
-
-  function handleBug() {
-    // TODO: Implement this feature
-    console.warn("This feature is not implemented yet");
   }
 
   return (
@@ -200,24 +194,43 @@ function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
             <Volume className="size-4" />
             <span>Mute @{ownBy}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={handleReport}
-            className={cn(
-              menuItemStyles,
-              "destructive-item-dark focus:text-destructive-dark! focus:bg-destructive-dark/10!"
-            )}
-            disabled
-          >
-            <Flag className="size-4" />
-            <span>Report this story</span>
-          </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger
+              className={cn(
+                menuItemStyles,
+                "destructive-item-dark focus:text-destructive-dark! focus:bg-destructive-dark/10!"
+              )}
+            >
+              <Flag className="size-4" />
+              <span>Report this story</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent
+              sideOffset={8}
+              className={cn(
+                "w-60 bg-background-dark",
+                "border border-border-dark shadow-xs",
+                "text-foreground-dark"
+              )}
+            >
+              {ReportStoryOptions.map((option) => (
+                <DropdownMenuItem
+                  key={option.value}
+                  onClick={() => reportStory(storyId, option.value)}
+                  className={menuItemStyles}
+                >
+                  {option.icon}
+                  <span>{option.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
         </>
       )}
-
-      <DropdownMenuItem onClick={handleBug} className={menuItemStyles} disabled>
-        <Bug className="size-4" />
-        <span>Something isn&apos;t working</span>
-      </DropdownMenuItem>
     </DropdownMenuContent>
   );
 }
+
+const ReportStoryOptions = CONTENT_REPORT_OPTIONS.map((option) => ({
+  ...option,
+  icon: REPORT_ICONS[option.value],
+}));

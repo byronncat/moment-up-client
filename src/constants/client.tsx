@@ -1,3 +1,15 @@
+import {
+  AlertTriangle,
+  Angry,
+  CircleHelp,
+  Copy,
+  Info,
+  MessageCircleWarning,
+  ShieldAlert,
+  Skull,
+} from "lucide-react";
+import { ContentReportType } from "./server";
+
 // === Configuration ===
 export const VIDEO_SKIP_DURATION = 5;
 export const PAGE_RELOAD_TIME = 500;
@@ -226,3 +238,23 @@ export const TextBackground = [
     backgroundSize: "contain",
   },
 ];
+
+// === Report Icons ===
+export const REPORT_ICONS: Record<ContentReportType, React.ReactNode> = {
+  [ContentReportType.SPAM]: <Copy className="size-4 shrink-0" />,
+  [ContentReportType.INAPPROPRIATE_CONTENT]: (
+    <AlertTriangle className="size-4 shrink-0" />
+  ),
+  [ContentReportType.ABUSIVE]: <Angry className="size-4 shrink-0" />,
+  [ContentReportType.HARMFUL]: <Skull className="size-4 shrink-0" />,
+  [ContentReportType.SEXUAL_CONTENT]: (
+    <MessageCircleWarning className="size-4 shrink-0" />
+  ),
+  [ContentReportType.CHILD_EXPLOITATION]: (
+    <ShieldAlert className="size-4 shrink-0" />
+  ),
+  [ContentReportType.COPYRIGHT_VIOLATION]: <Info className="size-4 shrink-0" />,
+  [ContentReportType.VIOLENCE]: <AlertTriangle className="size-4 shrink-0" />,
+  [ContentReportType.FAKE_INFORMATION]: <Info className="size-4 shrink-0" />,
+  [ContentReportType.OTHER]: <CircleHelp className="size-4 shrink-0" />,
+};

@@ -30,7 +30,6 @@ export enum UserReportType {
 
 export enum ContentReportType {
   SPAM,
-  MISLEADING,
   INAPPROPRIATE_CONTENT,
   ABUSIVE,
   HARMFUL,
@@ -38,11 +37,22 @@ export enum ContentReportType {
   CHILD_EXPLOITATION,
   COPYRIGHT_VIOLATION,
   VIOLENCE,
-  HATE_SPEECH,
   FAKE_INFORMATION,
-  DUPLICATE,
   OTHER,
 }
+
+export const CONTENT_REPORT_OPTIONS = [
+  { label: "Spam", value: ContentReportType.SPAM },
+  { label: "Inappropriate content", value: ContentReportType.INAPPROPRIATE_CONTENT },
+  { label: "Abusive", value: ContentReportType.ABUSIVE },
+  { label: "Harmful", value: ContentReportType.HARMFUL },
+  { label: "Sexual content", value: ContentReportType.SEXUAL_CONTENT },
+  { label: "Child exploitation", value: ContentReportType.CHILD_EXPLOITATION },
+  { label: "Copyright violation", value: ContentReportType.COPYRIGHT_VIOLATION },
+  { label: "Violence", value: ContentReportType.VIOLENCE },
+  { label: "Fake information", value: ContentReportType.FAKE_INFORMATION },
+  { label: "Other", value: ContentReportType.OTHER },
+] as const;
 
 export enum TrendingReportType {
   NOT_RELEVANT,

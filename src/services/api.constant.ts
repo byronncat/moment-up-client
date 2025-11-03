@@ -161,6 +161,10 @@ export const ApiUrl = {
       }),
     delete: (id: string) =>
       buildUrl(`${SERVER_HOST_URL}/v1/stories/:id`, { pathParams: { id } }),
+    report: (id: string) =>
+      buildUrl(`${SERVER_HOST_URL}/v1/stories/:id/report`, {
+        pathParams: { id },
+      }),
   },
 
   comment: {
