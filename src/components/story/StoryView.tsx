@@ -205,7 +205,7 @@ export default function StoryView({
           onSegmentClick={(index) => handleSegmentClick(index)}
         />
 
-        <div className={cn("flex justify-between items-start", "mt-3")}>
+        <div className={cn("flex justify-between items-start gap-3", "mt-3")}>
           <UserInfo
             data={viewingStories.user}
             timestamp={currentStoryData.createdAt}

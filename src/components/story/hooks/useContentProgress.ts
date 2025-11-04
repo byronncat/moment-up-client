@@ -1,7 +1,7 @@
 import type { StoryInfo } from "api";
 import { useEffect, useRef, useState } from "react";
 
-const DEFAULT_DURATION = 7000;
+const DEFAULT_DURATION = 12000;
 const UPDATE_INTERVAL = 50;
 
 type ContentType = StoryInfo["stories"][number]["content"];

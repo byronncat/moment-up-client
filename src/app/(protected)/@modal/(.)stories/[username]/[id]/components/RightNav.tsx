@@ -28,8 +28,8 @@ export default function RightNav({ className }: RightNavProps) {
         <h2 className="text-2xl font-bold">Stories</h2>
       </div>
 
-      <CreateSection className="mt-6" />
-      <StoryNotificationList className="mt-4 grow" />
+      <CreateSection className="mt-6 w-[360px]" />
+      <StoryNotificationList className="mt-4 grow w-[360px]" />
     </ScrollArea>
   );
 }

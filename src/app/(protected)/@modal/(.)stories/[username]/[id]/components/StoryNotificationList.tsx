@@ -64,8 +64,11 @@ export function StoryItem({ data, isCurrent }: StoryItemProps) {
         />
       </div>
 
-      <div className="flex-1">
-        <div className="font-semibold">{data.displayName ?? data.username}</div>
+      <div className="flex-1 min-w-0">
+        <div className="font-semibold truncate">
+          {data.displayName ?? data.username}
+        </div>
+
         <div className={cn("flex items-center gap-2", "text-sm")}>
           <span className="text-primary-dark">{data.total} new</span>
           <span className="text-muted-foreground-dark">

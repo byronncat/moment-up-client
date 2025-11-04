@@ -192,7 +192,10 @@ function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
         <>
           <DropdownMenuItem onClick={handleMute} className={menuItemStyles}>
             <Volume className="size-4" />
-            <span>Mute @{ownBy}</span>
+            <div className={cn("min-w-0", "flex items-center gap-1")}>
+              Mute
+              <span className={cn("font-medium", "truncate")}>@{ownBy}</span>
+            </div>
           </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger
