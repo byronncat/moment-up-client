@@ -13,7 +13,13 @@ export const ROUTE = {
     type ? buildUrl("/explore/:type", { pathParams: { type } }) : "/explore",
   PROFILE: (
     username?: string,
-    type?: "media" | "tagged" | "following" | "followers"
+    type?:
+      | "media"
+      | "tagged"
+      | "following"
+      | "followers"
+      | "avatar"
+      | "header_photo"
   ) => {
     let path = "/profile";
     if (username)

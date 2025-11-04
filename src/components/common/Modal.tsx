@@ -7,11 +7,13 @@ import { FocusTrap } from "focus-trap-react";
 
 export default function Modal({
   children,
-  className,
   onClose,
+  disableFocusTrap,
+  className,
 }: Readonly<{
   children: React.ReactNode;
   onClose?: () => void;
+  disableFocusTrap?: boolean;
   className?: string;
 }>) {
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
@@ -27,22 +29,24 @@ export default function Modal({
     };
   }, []);
 
+  const content = (
+    <div
+      data-modal-container
+      className={cn(
+        "fixed top-0 left-0 z-50",
+        "h-svh w-screen",
+        "flex items-center justify-center",
+        "bg-black/50",
+        className
+      )}
+      onClick={handleClick}
+    >
+      {children}
+    </div>
+  );
+
   return createPortal(
-    <FocusTrap>
-      <div
-        data-modal-container
-        className={cn(
-          "fixed top-0 left-0 z-50",
-          "h-svh w-screen",
-          "flex items-center justify-center",
-          "bg-black/50",
-          className
-        )}
-        onClick={handleClick}
-      >
-        {children}
-      </div>
-    </FocusTrap>,
+    disableFocusTrap ? content : <FocusTrap>{content}</FocusTrap>,
     document.body
   );
 }

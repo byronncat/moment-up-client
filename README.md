@@ -316,53 +316,53 @@ Ensure you have the following installed and configured:
 
 ```
 moment-up/
-├── backend/                 # NestJS backend application
+├── backend/                        # NestJS backend application
 │   ├── src/
-│   │   ├── modules/        # Feature modules
-│   │   │   ├── auth/       # Authentication & authorization
-│   │   │   ├── core/       # Posts, comments, stories
-│   │   │   ├── user/       # User profiles & relationships
-│   │   │   ├── search/     # Search functionality
-│   │   │   ├── suggestion/ # User & content suggestions
-│   │   │   ├── notification/ # Notification system
-│   │   │   └── database/   # Database configuration
-│   │   ├── common/         # Shared utilities
-│   │   │   ├── decorators/ # Custom decorators
-│   │   │   ├── guards/     # Auth guards
-│   │   │   ├── filters/    # Exception filters
-│   │   │   └── interceptors/ # Response interceptors
-│   │   └── configurations/ # App configuration
-│   └── API.md             # API documentation
+│   │   ├── modules/                # Feature modules
+│   │   │   ├── auth/               # Authentication & authorization
+│   │   │   ├── core/               # Posts, comments, stories
+│   │   │   ├── user/               # User profiles & relationships
+│   │   │   ├── search/             # Search functionality
+│   │   │   ├── suggestion/         # User & content suggestions
+│   │   │   ├── notification/       # Notification system
+│   │   │   └── database/           # Database configuration
+│   │   ├── common/                 # Shared utilities
+│   │   │   ├── decorators/         # Custom decorators
+│   │   │   ├── guards/             # Auth guards
+│   │   │   ├── filters/            # Exception filters
+│   │   │   └── interceptors/       # Response interceptors
+│   │   └── configurations/         # App configuration
+│   └── API.md                      # API documentation
 │
-└── frontend/               # Next.js frontend application
+└── frontend/                       # Next.js frontend application
     ├── src/
-    │   ├── app/           # App router pages
-    │   │   ├── (auth)/    # Auth pages (login, signup)
-    │   │   ├── (protected)/ # Protected routes
-    │   │   │   ├── (sidebar)/ # Main app with sidebar
-    │   │   │   │   ├── (aside)/ # Pages with aside
-    │   │   │   │   │   ├── (index)/ # Home feed
-    │   │   │   │   │   ├── explore/  # Explore page
-    │   │   │   │   │   ├── search/   # Search page
-    │   │   │   │   │   ├── profile/  # User profiles
-    │   │   │   │   │   ├── post/     # Post detail
-    │   │   │   │   │   ├── archive/  # Bookmarks & likes
-    │   │   │   │   │   └── notifications/ # Notifications
-    │   │   │   │   └── (non-aside)/ # Pages without aside
-    │   │   │   │       └── settings/  # Settings page
-    │   │   │   └── @modal/  # Parallel route modals
-    │   │   └── (social-auth)/ # OAuth callbacks
-    │   ├── components/    # Reusable components
-    │   │   ├── common/    # Common UI components
-    │   │   ├── icons/     # Icon components
-    │   │   ├── post/      # Post-related components
-    │   │   ├── story/     # Story components
-    │   │   └── ui/        # Shadcn UI components
-    │   ├── services/      # API services
-    │   ├── hooks/         # Custom React hooks
-    │   ├── libraries/     # Utility libraries
-    │   └── styles/        # Global styles
-    └── public/           # Static assets
+    │   ├── app/                            # App router pages
+    │   │   ├── (auth)/                     # Auth pages (login, signup)
+    │   │   ├── (protected)/                # Protected routes
+    │   │   │   ├── (sidebar)/              # Main app with sidebar
+    │   │   │   │   ├── (aside)/            # Pages with aside
+    │   │   │   │   │   ├── (index)/        # Home feed
+    │   │   │   │   │   ├── explore/        # Explore page
+    │   │   │   │   │   ├── search/         # Search page
+    │   │   │   │   │   ├── profile/        # User profiles
+    │   │   │   │   │   ├── post/           # Post detail
+    │   │   │   │   │   ├── archive/        # Bookmarks & likes
+    │   │   │   │   │   └── notifications/  # Notifications
+    │   │   │   │   └── (non-aside)/        # Pages without aside
+    │   │   │   │       └── settings/       # Settings page
+    │   │   │   └── @modal/                 # Parallel route modals
+    │   │   └── (social-auth)/              # OAuth callbacks
+    │   ├── components/                     # Reusable components
+    │   │   ├── common/                     # Common UI components
+    │   │   ├── icons/                      # Icon components
+    │   │   ├── post/                       # Post-related components
+    │   │   ├── story/                      # Story components
+    │   │   └── ui/                         # Shadcn UI components
+    │   ├── services/                       # API services
+    │   ├── hooks/                          # Custom React hooks
+    │   ├── libraries/                      # Utility libraries
+    │   └── styles/                         # Global styles
+    └── public/                             # Static assets
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

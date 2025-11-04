@@ -10,13 +10,30 @@ import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
-import { Avatar, NumberTooltip, Tooltip } from "@/components/common";
+import { useRouter } from "next/navigation";
+import {
+  Avatar as AvatarUI,
+  NumberTooltip,
+  Tooltip,
+} from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import MoreButton from "./MoreButton";
 import FollowButton from "./FollowButton";
 import EditProfileModal from "./EditProfileModal";
-import { Edit, Lock, Settings } from "@/components/icons";
+import {
+  Edit,
+  Image as ImageIcon,
+  Lock,
+  Settings,
+  Video,
+} from "@/components/icons";
 
 export default function UserInfo() {
   const { user } = useAuth();
@@ -26,16 +43,26 @@ export default function UserInfo() {
   return (
     <div className={cn("w-full relative", "flex flex-col items-center")}>
       <div className={cn("relative", "-mb-15", "w-full aspect-3/1")}>
-        <div
-          className={cn("size-full", "bg-muted")}
-          style={{
-            ...(profile.backgroundImage && {
-              backgroundImage: `url(${__parseUrl(profile.backgroundImage, "image", 640, 640 / 3)})`,
-              backgroundSize: "cover",
-              backgroundPosition: "start",
-            }),
-          }}
-        />
+        <Link
+          href={ROUTE.PROFILE(profile.username, "header_photo")}
+          className={cn(
+            "block size-full",
+            profile.backgroundImage ? "cursor-pointer" : "cursor-default"
+          )}
+          tabIndex={profile.backgroundImage ? 0 : -1}
+          onClick={(e) => !profile.backgroundImage && e.preventDefault()}
+        >
+          <div
+            className={cn("size-full", "bg-muted")}
+            style={{
+              ...(profile.backgroundImage && {
+                backgroundImage: `url(${__parseUrl(profile.backgroundImage, "image", 640, 640 / 3)})`,
+                backgroundSize: "cover",
+                backgroundPosition: "start",
+              }),
+            }}
+          />
+        </Link>
 
         <div
           className={cn("flex gap-2", "absolute top-[calc(100%+8px)] right-2")}
@@ -73,14 +100,7 @@ export default function UserInfo() {
         </div>
       </div>
 
-      <Avatar
-        src={profile.avatar}
-        alt={`${profile.displayName ?? profile.username}'s profile`}
-        size="26"
-        ring
-        showRing={profile.hasStory}
-        className="z-10"
-      />
+      <Avatar />
 
       <div
         className={cn(
@@ -183,6 +203,108 @@ export default function UserInfo() {
       />
     </div>
   );
+}
+
+function Avatar() {
+  const router = useRouter();
+  const { profile, canView } = useProfile();
+
+  function handleStoryClick() {
+    router.push(ROUTE.STORY(profile.username));
+  }
+
+  function handleAvatarClick() {
+    router.push(ROUTE.PROFILE(profile.username, "avatar"));
+  }
+
+  const content = {
+    default: (
+      <AvatarUI
+        src={profile.avatar}
+        alt={`${profile.displayName ?? profile.username}'s profile`}
+        size="26"
+      />
+    ),
+    story: (
+      <Link href={ROUTE.STORY(profile.username)} className="cursor-pointer">
+        <AvatarUI
+          src={profile.avatar}
+          alt={`${profile.displayName ?? profile.username}'s profile`}
+          size="26"
+          ring
+          showRing={profile.hasStory}
+        />
+      </Link>
+    ),
+    avatar: (
+      <Link
+        href={ROUTE.PROFILE(profile.username, "avatar")}
+        className="cursor-pointer"
+      >
+        <AvatarUI
+          src={profile.avatar}
+          alt={`${profile.displayName ?? profile.username}'s profile`}
+          size="26"
+        />
+      </Link>
+    ),
+    both: (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            className={cn(
+              "z-10 rounded-full",
+              "cursor-pointer hover:opacity-95 transition-opacity",
+              "focus-within-indicator"
+            )}
+          >
+            <AvatarUI
+              src={profile.avatar}
+              alt={`${profile.displayName ?? profile.username}'s profile`}
+              size="26"
+              ring
+              showRing={profile.hasStory}
+            />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="center" className="w-[180px]">
+          <DropdownMenuItem
+            onClick={handleStoryClick}
+            className="cursor-pointer"
+          >
+            <Video className="size-4 text-muted-foreground" />
+            View story
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleAvatarClick}
+            className="cursor-pointer"
+          >
+            <ImageIcon className="size-4 text-muted-foreground" />
+            View avatar
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
+  };
+
+  const key =
+    (profile.hasStory ? 1 : 0) * 2 +  // bit 1
+    (profile.avatar ? 1 : 0) * 1;     // bit 0
+
+  switch (key) {
+    // 0b00 = 0 → none
+    case 0:
+      return content.default;
+    // 0b01 = 1 → avatar only
+    case 1:
+      return content.avatar;
+    // 0b10 = 2 → story only
+    case 2:
+      return canView ? content.story : content.default;
+    // 0b11 = 3 → both
+    case 3:
+      return canView ? content.both : content.avatar;
+  }
 }
 
 export function UserInfoSkeleton() {
