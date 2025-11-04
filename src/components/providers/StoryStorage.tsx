@@ -203,7 +203,7 @@ export default function StoryDataProvider({
     const { success, message } = await reportApi(storyId, { type });
     if (success) toast.success(message);
     else toast.error(message ?? "Unexpected error occurred.");
-  } 
+  }
 
   return (
     <StoryDataContext.Provider

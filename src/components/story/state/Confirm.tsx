@@ -1,4 +1,5 @@
 import { useParams } from "next/navigation";
+import { useState } from "react";
 import { useAuth } from "@/components/providers/Auth";
 import { cn } from "@/libraries/utils";
 import Container from "../Container";
@@ -16,6 +17,10 @@ export default function ConfirmState({
   const { user } = useAuth();
   const params = useParams();
   const username = params.username as string;
+
+  const [textClamped, setTextClamped] = useState<boolean | undefined>(
+    undefined
+  );
 
   const isMe = user?.username === username;
   return (
@@ -36,16 +41,45 @@ export default function ConfirmState({
         <div
           className={cn(
             "size-full",
-            "flex flex-col items-center justify-center"
+            "flex flex-col items-center justify-center",
+            "min-w-0"
           )}
         >
           <Avatar src={user?.avatar} alt={`Avatar of ${username}`} size="20" />
-          <div className="mt-4 text-lg font-bold">
-            View as {user?.username}?
+          <div
+            className={cn(
+              "mt-4",
+              "text-lg font-bold",
+              "max-w-[80%] flex items-center"
+            )}
+          >
+            <span className="shrink-0 mr-1.5">View as</span>
+            <span className="truncate">@{user?.username}</span>?
           </div>
-          <p className={cn("mt-1 px-3", "text-sm text-center")}>
-            {username} will be able to see that you are viewing their story.
-          </p>
+
+          <div
+            className={cn(
+              "mt-1 px-3",
+              "text-sm text-center text-muted-foreground-dark",
+              "w-full"
+            )}
+          >
+            <span
+              className={cn(
+                "font-semibold",
+                textClamped === undefined
+                  ? "block overflow-x-scroll whitespace-nowrap max-w-full"
+                  : textClamped && "line-clamp-1"
+              )}
+              ref={(element) => {
+                if (element && textClamped === undefined)
+                  setTextClamped(element.clientWidth < element.scrollWidth);
+              }}
+            >
+              @{username}
+            </span>{" "}
+            will be able to see that you are viewing their story.
+          </div>
           <button
             onClick={onConfirm}
             className={cn(

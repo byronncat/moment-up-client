@@ -288,8 +288,8 @@ function Avatar() {
   };
 
   const key =
-    (profile.hasStory ? 1 : 0) * 2 +  // bit 1
-    (profile.avatar ? 1 : 0) * 1;     // bit 0
+    (profile.hasStory ? 1 : 0) * 2 + // bit 1
+    (profile.avatar ? 1 : 0) * 1; // bit 0
 
   switch (key) {
     // 0b00 = 0 → none

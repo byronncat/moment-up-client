@@ -43,12 +43,18 @@ export enum ContentReportType {
 
 export const CONTENT_REPORT_OPTIONS = [
   { label: "Spam", value: ContentReportType.SPAM },
-  { label: "Inappropriate content", value: ContentReportType.INAPPROPRIATE_CONTENT },
+  {
+    label: "Inappropriate content",
+    value: ContentReportType.INAPPROPRIATE_CONTENT,
+  },
   { label: "Abusive", value: ContentReportType.ABUSIVE },
   { label: "Harmful", value: ContentReportType.HARMFUL },
   { label: "Sexual content", value: ContentReportType.SEXUAL_CONTENT },
   { label: "Child exploitation", value: ContentReportType.CHILD_EXPLOITATION },
-  { label: "Copyright violation", value: ContentReportType.COPYRIGHT_VIOLATION },
+  {
+    label: "Copyright violation",
+    value: ContentReportType.COPYRIGHT_VIOLATION,
+  },
   { label: "Violence", value: ContentReportType.VIOLENCE },
   { label: "Fake information", value: ContentReportType.FAKE_INFORMATION },
   { label: "Other", value: ContentReportType.OTHER },

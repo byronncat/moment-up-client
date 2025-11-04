@@ -29,7 +29,7 @@ export async function trimAudioFile(
     for (let channel = 0; channel < numberOfChannels; channel++) {
       const originalData = audioBuffer.getChannelData(channel);
       const trimmedData = trimmedBuffer.getChannelData(channel);
-      
+
       for (let i = 0; i < newLength; i++) {
         trimmedData[i] = originalData[startSample + i];
       }
@@ -37,12 +37,13 @@ export async function trimAudioFile(
 
     // Convert the trimmed buffer to a WAV file
     const wavBlob = await audioBufferToWav(trimmedBuffer);
-    
+
     // Create a new File object
     const originalName = file.name;
-    const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
+    const nameWithoutExt =
+      originalName.substring(0, originalName.lastIndexOf(".")) || originalName;
     const trimmedFile = new File([wavBlob], `${nameWithoutExt}-trimmed.wav`, {
-      type: 'audio/wav',
+      type: "audio/wav",
     });
 
     return trimmedFile;
@@ -67,10 +68,10 @@ function audioBufferToWav(buffer: AudioBuffer): Promise<Blob> {
   const view = new DataView(arrayBuffer);
 
   // Write WAV header
-  writeString(view, 0, 'RIFF');
+  writeString(view, 0, "RIFF");
   view.setUint32(4, 36 + dataLength, true);
-  writeString(view, 8, 'WAVE');
-  writeString(view, 12, 'fmt ');
+  writeString(view, 8, "WAVE");
+  writeString(view, 12, "fmt ");
   view.setUint32(16, 16, true); // fmt chunk size
   view.setUint16(20, format, true); // audio format
   view.setUint16(22, numberOfChannels, true);
@@ -78,7 +79,7 @@ function audioBufferToWav(buffer: AudioBuffer): Promise<Blob> {
   view.setUint32(28, sampleRate * blockAlign, true); // byte rate
   view.setUint16(32, blockAlign, true);
   view.setUint16(34, bitDepth, true);
-  writeString(view, 36, 'data');
+  writeString(view, 36, "data");
   view.setUint32(40, dataLength, true);
 
   // Write audio data
@@ -90,7 +91,7 @@ function audioBufferToWav(buffer: AudioBuffer): Promise<Blob> {
     offset += 2;
   }
 
-  return Promise.resolve(new Blob([arrayBuffer], { type: 'audio/wav' }));
+  return Promise.resolve(new Blob([arrayBuffer], { type: "audio/wav" }));
 }
 
 function interleave(buffer: AudioBuffer): Float32Array {
@@ -113,4 +114,3 @@ function writeString(view: DataView, offset: number, string: string): void {
     view.setUint8(offset + i, string.charCodeAt(i));
   }
 }
-
