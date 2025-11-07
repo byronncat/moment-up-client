@@ -216,7 +216,11 @@ function MoreMenu({
             </Button>
           </DropdownMenuTrigger>
         </Tooltip>
-        <DropdownMenuContent align="end" className="w-48" disablePortal={disablePortal}>
+        <DropdownMenuContent
+          align="end"
+          className="w-48"
+          disablePortal={disablePortal}
+        >
           {isSelf ? null : user.isFollowing ? (
             <DropdownMenuItem
               onClick={() => actions.follow(postId)}
@@ -270,7 +274,11 @@ function MoreMenu({
                 <Flag className="size-4 shrink-0" />
                 <span className="truncate">Report post</span>
               </DropdownMenuSubTrigger>
-              <DropdownMenuSubContent submenuId="report-post" sideOffset={8} className="w-60">
+              <DropdownMenuSubContent
+                submenuId="report-post"
+                sideOffset={8}
+                className="w-60"
+              >
                 {ReportPostOptions.map((option) => (
                   <DropdownMenuItem
                     key={option.value}

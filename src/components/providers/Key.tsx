@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  type RefObject,
-  createContext,
-  use,
-  useRef,
-} from "react";
+import { type RefObject, createContext, use, useRef } from "react";
 
 type KeyContextType = {
   postKey: RefObject<number>;
@@ -39,4 +34,3 @@ export default function KeyProvider({ children }: KeyProviderProps) {
     </KeyContext.Provider>
   );
 }
-

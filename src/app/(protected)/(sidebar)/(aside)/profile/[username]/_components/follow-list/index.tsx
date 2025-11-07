@@ -7,7 +7,7 @@ import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import {
   useAuth,
-  usePost,
+  useKey,
   useRefreshApi,
   useRefreshSWR,
 } from "@/components/providers";
@@ -36,7 +36,7 @@ export default function FollowList({ type }: FollowListProps) {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
   const { profile } = useProfile();
-  const { incrementActionKey } = usePost();
+  const { incrementPostKey } = useKey();
 
   const getKey = (
     pageIndex: number,
@@ -144,7 +144,7 @@ export default function FollowList({ type }: FollowListProps) {
       shouldFollow,
     });
 
-    if (success) incrementActionKey();
+    if (success) incrementPostKey();
     else {
       mutate(prev, { revalidate: false });
       toast.error(

@@ -139,7 +139,10 @@ export default function MoreButton() {
           </span>
         </DropdownMenuItem>
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger submenuId="report-user" className="destructive-item cursor-pointer">
+          <DropdownMenuSubTrigger
+            submenuId="report-user"
+            className="destructive-item cursor-pointer"
+          >
             <Flag className="size-4" />
             <span className="truncate">Report @{profile.username}</span>
           </DropdownMenuSubTrigger>

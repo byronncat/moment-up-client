@@ -22,7 +22,7 @@ type ProfileContextType = {
 
 // === Provider ===
 import { createContext, use, useCallback, useRef } from "react";
-import { useAuth, usePost, useRefreshApi } from "@/components/providers";
+import { useAuth, useKey, useRefreshApi } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { toast } from "sonner";
@@ -74,7 +74,7 @@ export default function ProfileProvider({
   children,
 }: ProfileProviderProps) {
   const { user, token, setUser } = useAuth();
-  const { incrementActionKey } = usePost();
+  const { incrementPostKey } = useKey();
   const { data, error, isLoading, mutate } = useSWRImmutable(
     [ApiUrl.user.getProfile(username), token.accessToken],
     ([url, token]) => SWRFetcherWithToken<{ profile: ProfileDto }>(url, token)
@@ -125,7 +125,7 @@ export default function ProfileProvider({
     });
 
     if (success) {
-      incrementActionKey();
+      incrementPostKey();
       refreshPostsRef.current?.();
     } else {
       mutate({ profile: _prev }, { revalidate: false });

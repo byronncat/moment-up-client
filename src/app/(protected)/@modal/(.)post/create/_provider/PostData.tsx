@@ -35,7 +35,7 @@ import {
   useState,
 } from "react";
 import { nanoid } from "nanoid";
-import { useCloudinary, usePost, useRefreshApi } from "@/components/providers";
+import { useCloudinary, useKey, useRefreshApi } from "@/components/providers";
 import { CoreApi } from "@/services";
 import { toast } from "sonner";
 import { ContentPrivacy } from "@/constants/server";
@@ -69,7 +69,7 @@ export default function PostDataProvider({
   children,
 }: CreateDataProviderProps) {
   const { uploadMultipleImages } = useCloudinary();
-  const { incrementActionKey } = usePost();
+  const { incrementPostKey } = useKey();
 
   const [files, setFiles] = useState<UploadMediaFile[]>([]);
   const [text, setText] = useState("");
@@ -108,21 +108,14 @@ export default function PostDataProvider({
 
     if (success) {
       setIsUploading(false);
-      incrementActionKey();
+      incrementPostKey();
       return true;
     }
 
     toast.error("Failed to upload post, please try again!");
     setIsUploading(false);
     return false;
-  }, [
-    text,
-    privacy,
-    files,
-    uploadApi,
-    uploadMultipleImages,
-    incrementActionKey,
-  ]);
+  }, [text, privacy, files, uploadApi, uploadMultipleImages, incrementPostKey]);
 
   const addFiles = useCallback(
     async (newFiles: File[]) => {

@@ -5,7 +5,7 @@ import type { PopularUserDto } from "api";
 
 import { useRef, useState } from "react";
 import { useHover } from "usehooks-ts";
-import { usePost, useRefreshApi } from "@/components/providers";
+import { useKey, useRefreshApi } from "@/components/providers";
 import { useSearch } from "../../_providers/Search";
 import { UserApi } from "@/services";
 import { toast } from "sonner";
@@ -49,7 +49,7 @@ function UserCard({ user }: Readonly<{ user: PopularUserDto }>) {
   const [isFollowing, setIsFollowing] = useState(false);
   const hoverRef = useRef<HTMLButtonElement>(null);
   const isHover = useHover(hoverRef as React.RefObject<HTMLElement>);
-  const { incrementActionKey } = usePost();
+  const { incrementPostKey } = useKey();
 
   const follow = useRefreshApi(UserApi.follow);
   async function handleFollow(event: React.MouseEvent) {
@@ -60,7 +60,7 @@ function UserCard({ user }: Readonly<{ user: PopularUserDto }>) {
       targetId: user.id,
       shouldFollow: !isFollowing,
     });
-    if (success) incrementActionKey();
+    if (success) incrementPostKey();
     else {
       setIsFollowing(isFollowing);
       toast.error(message || "Failed to follow/unfollow user");

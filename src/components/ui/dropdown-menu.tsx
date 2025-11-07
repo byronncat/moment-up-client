@@ -169,7 +169,14 @@ const DropdownMenuContent = React.forwardRef<
   }
 >(
   (
-    { className, sideOffset = 4, disablePortal = false, darkBackButton = false, children, ...props },
+    {
+      className,
+      sideOffset = 4,
+      disablePortal = false,
+      darkBackButton = false,
+      children,
+      ...props
+    },
     ref
   ) => {
     const { isMobile, activeSubmenu, setActiveSubmenu, submenuTitle } =

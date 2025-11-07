@@ -49,13 +49,7 @@ type PostContextType = {
 };
 
 // === Provider ===
-import {
-  createContext,
-  use,
-  useCallback,
-  useReducer,
-  useState,
-} from "react";
+import { createContext, use, useCallback, useReducer, useState } from "react";
 import { useKey } from "./Key";
 import { useRefreshApi } from "./hooks/useRefreshApi";
 import { CoreApi, UserApi } from "@/services";
@@ -245,10 +239,13 @@ export default function PostStorageProvider({
     dispatch({ type: "ADD_POSTS", payload: moments });
   }, []);
 
-  const removePost = useCallback((postId: string) => {
-    incrementPostKey();
-    dispatch({ type: "REMOVE_POST", payload: postId });
-  }, [incrementPostKey]);
+  const removePost = useCallback(
+    (postId: string) => {
+      incrementPostKey();
+      dispatch({ type: "REMOVE_POST", payload: postId });
+    },
+    [incrementPostKey]
+  );
 
   const updatePost = useCallback(
     (postId: string, payload: UpdatePostPayload) => {
