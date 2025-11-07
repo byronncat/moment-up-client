@@ -4,7 +4,12 @@ import type { FeedItemDto } from "api";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { CommentProvider, useAuth, usePost } from "@/components/providers";
+import {
+  CommentProvider,
+  useAuth,
+  useKey,
+  usePost,
+} from "@/components/providers";
 import useSWR from "swr";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
@@ -38,9 +43,9 @@ export default function PostDetails({ postId }: PostDetailsProps) {
     bookmark,
     like,
     follow,
-    actionKey,
   } = usePost();
-  const [key] = useState(actionKey.current);
+  const { postKey } = useKey();
+  const [key] = useState(postKey.current);
   const router = useRouter();
   const { user, token } = useAuth();
   const { data, error, isLoading, mutate } = useSWR(

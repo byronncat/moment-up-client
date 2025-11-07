@@ -5,7 +5,12 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
+import {
+  useAuth,
+  useKey,
+  usePost,
+  useRefreshSWR,
+} from "@/components/providers";
 import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { POST_GRID_COLUMN_COUNT, POST_GRID_GAP } from "@/constants/client";
@@ -22,8 +27,9 @@ export default function MediaPage() {
   "use no memo";
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token, user } = useAuth();
-  const { posts, setPosts, setCurrentPost, actionKey } = usePost();
-  const [key] = useState(actionKey.current);
+  const { posts, setPosts, setCurrentPost } = usePost();
+  const { postKey } = useKey();
+  const [key] = useState(postKey.current);
 
   const getKey = (
     pageIndex: number,

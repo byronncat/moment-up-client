@@ -5,7 +5,12 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
+import {
+  useAuth,
+  useKey,
+  usePost,
+  useRefreshSWR,
+} from "@/components/providers";
 import { useProfile } from "../_providers/Profile";
 import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
@@ -43,9 +48,9 @@ export default function PostList({ filter }: PostListProps) {
     share,
     report,
     follow,
-    actionKey,
   } = usePost();
-  const [key] = useState(actionKey.current);
+  const { postKey } = useKey();
+  const [key] = useState(postKey.current);
 
   const getKey = (
     pageIndex: number,

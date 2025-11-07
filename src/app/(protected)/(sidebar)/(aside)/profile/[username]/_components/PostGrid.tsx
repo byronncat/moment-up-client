@@ -5,7 +5,12 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
+import {
+  useAuth,
+  useKey,
+  usePost,
+  useRefreshSWR,
+} from "@/components/providers";
 import { useProfile } from "../_providers/Profile";
 import { getMediaHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
@@ -29,8 +34,9 @@ export default function PostGrid() {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
   const { profile, isSelf, registerPostsRefresh } = useProfile();
-  const { posts, setPosts, setCurrentPost, actionKey } = usePost();
-  const [key] = useState(actionKey.current);
+  const { posts, setPosts, setCurrentPost } = usePost();
+  const { postKey } = useKey();
+  const [key] = useState(postKey.current);
 
   const getKey = (
     pageIndex: number,

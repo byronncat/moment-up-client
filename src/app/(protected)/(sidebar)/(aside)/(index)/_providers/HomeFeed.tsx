@@ -25,9 +25,13 @@ import {
 } from "react";
 import useSWRInfinite from "swr/infinite";
 import useSWRImmutable from "swr/immutable";
-import { useAuth, useRefreshSWR } from "@/components/providers/Auth";
-import { usePost } from "@/components/providers/PostStorage";
-import { useStory } from "@/components/providers/StoryStorage";
+import {
+  useAuth,
+  useKey,
+  usePost,
+  useRefreshSWR,
+  useStory,
+} from "@/components/providers";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
 import { SWRInfiniteOptions } from "@/helpers/swr";
@@ -49,9 +53,10 @@ export function HomeFeedProvider({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const { token } = useAuth();
-  const { actionKey, setPosts } = usePost();
+  const { setPosts } = usePost();
+  const { postKey } = useKey();
   const swrFetcherWithRefresh = useRefreshSWR();
-  const [key] = useState(actionKey.current);
+  const [key] = useState(postKey.current);
 
   // === Post data ===
   const getKey = (

@@ -1,5 +1,6 @@
 import {
   CloudinaryProvider,
+  KeyProvider,
   PostProvider,
   StoryProvider,
 } from "@/components/providers";
@@ -12,12 +13,14 @@ type LayoutProps = Readonly<{
 export default function Layout({ children, modal }: LayoutProps) {
   return (
     <CloudinaryProvider>
-      <PostProvider>
-        <StoryProvider>
-          {children}
-          {modal}
-        </StoryProvider>
-      </PostProvider>
+      <KeyProvider>
+        <PostProvider>
+          <StoryProvider>
+            {children}
+            {modal}
+          </StoryProvider>
+        </PostProvider>
+      </KeyProvider>
     </CloudinaryProvider>
   );
 }

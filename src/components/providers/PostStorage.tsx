@@ -40,9 +40,6 @@ type PostContextType = {
   setCurrentPost: (postId: string | null) => void;
   getCurrentPost: () => FeedItemDto | undefined;
 
-  actionKey: RefObject<number>;
-  incrementActionKey: () => void;
-
   like: (postId: string) => Promise<void>;
   bookmark: (postId: string) => Promise<void>;
   share: (postId: string) => void;
@@ -53,18 +50,17 @@ type PostContextType = {
 
 // === Provider ===
 import {
-  type RefObject,
   createContext,
   use,
   useCallback,
   useReducer,
-  useRef,
   useState,
 } from "react";
-import { toast } from "sonner";
-import { CoreApi, UserApi } from "@/services";
-import { Link } from "@/components/icons";
+import { useKey } from "./Key";
 import { useRefreshApi } from "./hooks/useRefreshApi";
+import { CoreApi, UserApi } from "@/services";
+import { toast } from "sonner";
+import { Link } from "@/components/icons";
 
 const initialPostsState: PostsState = undefined;
 
@@ -208,9 +204,6 @@ const PostStorageContext = createContext<PostContextType>({
   setCurrentPost: () => {},
   getCurrentPost: () => undefined,
 
-  actionKey: { current: 0 },
-  incrementActionKey: () => {},
-
   like: async () => {},
   bookmark: async () => {},
   share: () => {},
@@ -230,7 +223,7 @@ export default function PostStorageProvider({
 }: PostStorageProviderProps) {
   const [posts, dispatch] = useReducer(postsReducer, initialPostsState);
   const [currentPost, setCurrentPost] = useState<string | null>(null);
-  const actionKey = useRef(0);
+  const { incrementPostKey } = useKey();
 
   const likeApi = useRefreshApi(CoreApi.likePost);
   const bookmarkApi = useRefreshApi(CoreApi.bookmarkPost);
@@ -253,16 +246,16 @@ export default function PostStorageProvider({
   }, []);
 
   const removePost = useCallback((postId: string) => {
-    actionKey.current++;
+    incrementPostKey();
     dispatch({ type: "REMOVE_POST", payload: postId });
-  }, []);
+  }, [incrementPostKey]);
 
   const updatePost = useCallback(
     (postId: string, payload: UpdatePostPayload) => {
-      actionKey.current++;
+      incrementPostKey();
       dispatch({ type: "UPDATE_POST", payload: { postId, ...payload } });
     },
-    []
+    [incrementPostKey]
   );
 
   const deletePost = useCallback(
@@ -295,13 +288,13 @@ export default function PostStorageProvider({
         shouldLike,
       });
 
-      if (success) actionKey.current++;
+      if (success) incrementPostKey();
       else {
         dispatch({ type: "TOGGLE_LIKE", payload: postId });
         toast.error(message || "Unable to like post.");
       }
     },
-    [posts, likeApi]
+    [posts, likeApi, incrementPostKey]
   );
 
   const bookmark = useCallback(
@@ -317,13 +310,13 @@ export default function PostStorageProvider({
         shouldBookmark,
       });
 
-      if (success) actionKey.current++;
+      if (success) incrementPostKey();
       else {
         dispatch({ type: "TOGGLE_BOOKMARK", payload: postId });
         toast.error(message || "Unable to bookmark post.");
       }
     },
-    [posts, bookmarkApi]
+    [posts, bookmarkApi, incrementPostKey]
   );
 
   const follow = useCallback(
@@ -339,13 +332,13 @@ export default function PostStorageProvider({
         shouldFollow,
       });
 
-      if (success) actionKey.current++;
+      if (success) incrementPostKey();
       else {
         dispatch({ type: "TOGGLE_FOLLOW", payload: postId });
         toast.error(message || "Unable to follow/unfollow user.");
       }
     },
-    [posts, followApi]
+    [posts, followApi, incrementPostKey]
   );
 
   const share = useCallback((postId: string) => {
@@ -391,11 +384,6 @@ export default function PostStorageProvider({
         deletePost,
         getCurrentPost,
         setCurrentPost,
-
-        actionKey,
-        incrementActionKey: () => {
-          actionKey.current++;
-        },
 
         like,
         bookmark,

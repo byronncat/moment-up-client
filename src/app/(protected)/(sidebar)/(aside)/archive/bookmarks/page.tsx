@@ -5,7 +5,12 @@ import type { FeedItemDto, PaginationDto } from "api";
 import { useCallback, useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
+import {
+  useAuth,
+  useKey,
+  usePost,
+  useRefreshSWR,
+} from "@/components/providers";
 import { getPostHeight } from "@/helpers/ui";
 import { ApiUrl } from "@/services/api.constant";
 import { POST_CARD_LIST_GAP } from "@/constants/client";
@@ -30,9 +35,9 @@ export default function BookmarkPage() {
     share,
     report,
     follow,
-    actionKey,
   } = usePost();
-  const [key] = useState(actionKey.current);
+  const { postKey } = useKey();
+  const [key] = useState(postKey.current);
 
   const getKey = (
     pageIndex: number,

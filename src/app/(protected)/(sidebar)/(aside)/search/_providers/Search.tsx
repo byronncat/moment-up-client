@@ -13,7 +13,12 @@ import { useDebounceValue } from "usehooks-ts";
 import useSWRInfinite from "swr/infinite";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcherWithToken } from "@/libraries/swr";
-import { useAuth, usePost, useRefreshSWR } from "@/components/providers";
+import {
+  useAuth,
+  useKey,
+  usePost,
+  useRefreshSWR,
+} from "@/components/providers";
 import { ApiUrl } from "@/services";
 import { SWRInfiniteOptions } from "@/helpers/swr";
 import { SEARCH_DEBOUNCE_TIME, SearchCategory } from "@/constants/client";
@@ -74,8 +79,9 @@ export default function SearchProvider({
 }>) {
   const swrFetcherWithRefresh = useRefreshSWR();
   const { token } = useAuth();
-  const { setPosts, actionKey } = usePost();
-  const [key] = useState(actionKey.current);
+  const { setPosts } = usePost();
+  const { postKey } = useKey();
+  const [key] = useState(postKey.current);
 
   const [rawQuery, setRawQuery] = useState(initialQuery);
   const [query] = useDebounceValue(rawQuery, SEARCH_DEBOUNCE_TIME);
