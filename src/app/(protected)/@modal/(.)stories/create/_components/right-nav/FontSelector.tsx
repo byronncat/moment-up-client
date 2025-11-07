@@ -58,7 +58,8 @@ export default function FontSelector({
           className={cn(
             "w-[328px] p-0",
             "border-border-dark",
-            "shadow-lg shadow-black/20"
+            "shadow-lg shadow-black/20",
+            "bg-input-dark"
           )}
         >
           <Command className="bg-input-dark">
