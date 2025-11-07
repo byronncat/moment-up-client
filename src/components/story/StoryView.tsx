@@ -178,9 +178,9 @@ export default function StoryView({
     if (_confirm) reset();
   }, [currentStoryData, _confirm, reset]);
 
+  if (loading) return <LoadingState className={className} />;
   if (!_confirm)
     return <ConfirmState onConfirm={handleConfirm} className={className} />;
-  if (loading) return <LoadingState className={className} />;
   if (!currentStoryData || !viewingStories)
     return <ErrorState onClose={onClose} className={className} />;
   return (

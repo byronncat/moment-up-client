@@ -2,7 +2,7 @@
 
 import type { StoryInfo } from "api";
 
-import { useParams, useRouter } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuth, useStory } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
@@ -24,7 +24,7 @@ export default function StoryModal() {
 
   const { token } = useAuth();
   const { setViewingStories } = useStory();
-  const { data, isValidating } = useSWRImmutable(
+  const { data, error, isValidating } = useSWRImmutable(
     [ApiUrl.story.getByUsername(username), token.accessToken],
     ([url, token]) =>
       SWRFetcherWithToken<{
@@ -41,6 +41,7 @@ export default function StoryModal() {
     if (data?.story) setViewingStories(data.story);
   }, [data?.story, setViewingStories]);
 
+  if (error?.statusCode === 404) return notFound();
   return (
     <div className="size-full">
       <Link
