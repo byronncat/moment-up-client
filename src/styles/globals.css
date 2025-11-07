@@ -211,11 +211,13 @@
   }
 
   .destructive-item {
-    @apply text-destructive focus:text-destructive focus:bg-destructive/10;
+    @apply data-[state=open]:bg-destructive/10;
+    @apply text-destructive hover:text-destructive hover:bg-destructive/10 focus:text-destructive focus:bg-destructive/10;
   }
 
   .destructive-item-dark {
-    @apply text-destructive-dark focus:text-destructive-dark focus:bg-destructive-dark/10;
+    @apply data-[state=open]:bg-destructive-dark/10;
+    @apply text-destructive-dark hover:text-destructive-dark hover:bg-destructive-dark/10 focus:text-destructive-dark focus:bg-destructive-dark/10;
   }
 
   .scrollbar-hide {

@@ -50,7 +50,7 @@ type HeaderProps = Readonly<{
 export default function Header({
   data,
   actions,
-  disablePortal,
+  disablePortal = false,
   className,
 }: HeaderProps) {
   const { id: postId, user, post } = data;
@@ -216,7 +216,7 @@ function MoreMenu({
             </Button>
           </DropdownMenuTrigger>
         </Tooltip>
-        <DropdownMenuContent align="end" className="w-48" disablePortal>
+        <DropdownMenuContent align="end" className="w-48" disablePortal={disablePortal}>
           {isSelf ? null : user.isFollowing ? (
             <DropdownMenuItem
               onClick={() => actions.follow(postId)}
@@ -264,12 +264,13 @@ function MoreMenu({
           ) : (
             <DropdownMenuSub>
               <DropdownMenuSubTrigger
+                submenuId="report-post"
                 className={cn("cursor-pointer", "destructive-item")}
               >
                 <Flag className="size-4 shrink-0" />
                 <span className="truncate">Report post</span>
               </DropdownMenuSubTrigger>
-              <DropdownMenuSubContent sideOffset={8} className="w-60">
+              <DropdownMenuSubContent submenuId="report-post" sideOffset={8} className="w-60">
                 {ReportPostOptions.map((option) => (
                   <DropdownMenuItem
                     key={option.value}

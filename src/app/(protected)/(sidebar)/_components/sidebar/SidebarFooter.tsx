@@ -2,7 +2,6 @@ import { useAuth } from "@/components/providers";
 import { useState } from "react";
 import { ROUTE } from "@/constants/route";
 import { useTheme } from "next-themes";
-import { useIsClient } from "usehooks-ts";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -124,58 +123,7 @@ function SidebarTrigger({ isOpen, onLogout }: FooterProps) {
 }
 
 function MoreDropdownContent({ isOpen, onLogout }: FooterProps) {
-  return (
-    <DropdownMenuContent
-      align="end"
-      side={isOpen ? "top" : "right"}
-      className="w-56"
-    >
-      <DropdownMenuGroup>
-        <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href={ROUTE.ARCHIVE("bookmarks")}>
-            <div className="flex items-center gap-2">
-              <Archive className="size-4" />
-              <span>Archive</span>
-            </div>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger className="cursor-pointer">
-            <div className="flex items-center gap-2">
-              <Palette className="size-4" />
-              <span>Appearance</span>
-            </div>
-          </DropdownMenuSubTrigger>
-          <ThemeSubmenu />
-        </DropdownMenuSub>
-        <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href={ROUTE.SETTINGS}>
-            <div className="flex items-center gap-2">
-              <Settings className="size-4" />
-              <span>Settings</span>
-            </div>
-          </Link>
-        </DropdownMenuItem>
-      </DropdownMenuGroup>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem
-        className={cn("cursor-pointer", "destructive-item")}
-        onClick={onLogout}
-      >
-        <div className="flex items-center gap-2">
-          <LogOut className="size-4" />
-          <span>Logout</span>
-        </div>
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  );
-}
-
-function ThemeSubmenu() {
   const { theme, setTheme } = useTheme();
-  const isClient = useIsClient();
-
-  if (!isClient) return null;
 
   const themeOptions = [
     {
@@ -199,23 +147,56 @@ function ThemeSubmenu() {
   ];
 
   return (
-    <DropdownMenuSubContent sideOffset={6}>
-      {themeOptions.map((option) => (
-        <DropdownMenuItem
-          key={option.label}
-          disabled={option.selected}
-          onClick={option.onClick}
-          className={cn(
-            "cursor-pointer",
-            option.selected && "animate-pulse bg-accent/10"
-          )}
-        >
-          <div className="flex items-center gap-2">
-            {option.icon}
-            <span>{option.label}</span>
-          </div>
+    <DropdownMenuContent
+      align="end"
+      side={isOpen ? "top" : "right"}
+      className="w-56"
+    >
+      <DropdownMenuGroup>
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href={ROUTE.ARCHIVE("bookmarks")}>
+            <Archive className="size-4" />
+            <span>Archive</span>
+          </Link>
         </DropdownMenuItem>
-      ))}
-    </DropdownMenuSubContent>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger
+            submenuId="appearance"
+            submenuTitle="Appearance"
+            className="cursor-pointer"
+          >
+            <Palette className="size-4" />
+            <span>Appearance</span>
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent submenuId="appearance" sideOffset={6}>
+            {themeOptions.map((option) => (
+              <DropdownMenuItem
+                key={option.label}
+                onClick={option.onClick}
+                className="cursor-pointer"
+                disabled={option.selected}
+              >
+                {option.icon}
+                <span>{option.label}</span>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href={ROUTE.SETTINGS}>
+            <Settings className="size-4" />
+            <span>Settings</span>
+          </Link>
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        className={cn("cursor-pointer", "destructive-item")}
+        onClick={onLogout}
+      >
+        <LogOut className="size-4" />
+        <span>Logout</span>
+      </DropdownMenuItem>
+    </DropdownMenuContent>
   );
 }

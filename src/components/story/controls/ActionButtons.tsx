@@ -166,6 +166,7 @@ function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
       align="end"
       sideOffset={12}
       disablePortal
+      darkBackButton
       className={cn(
         "w-64 bg-background-dark",
         "border border-border-dark shadow-xs",
@@ -192,13 +193,11 @@ function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
         <>
           <DropdownMenuItem onClick={handleMute} className={menuItemStyles}>
             <Volume className="size-4" />
-            <div className={cn("min-w-0", "flex items-center gap-1")}>
-              Mute
-              <span className={cn("font-medium", "truncate")}>@{ownBy}</span>
-            </div>
+            <div className="min-w-0 truncate">Mute @{ownBy}</div>
           </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger
+              submenuId="report-story"
               className={cn(
                 menuItemStyles,
                 "destructive-item-dark focus:text-destructive-dark! focus:bg-destructive-dark/10!"
@@ -208,6 +207,7 @@ function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
               <span>Report this story</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent
+              submenuId="report-story"
               sideOffset={8}
               className={cn(
                 "w-60 bg-background-dark",

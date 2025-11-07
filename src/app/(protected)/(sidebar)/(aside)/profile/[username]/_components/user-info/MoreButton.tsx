@@ -139,11 +139,11 @@ export default function MoreButton() {
           </span>
         </DropdownMenuItem>
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger className="destructive-item cursor-pointer">
+          <DropdownMenuSubTrigger submenuId="report-user" className="destructive-item cursor-pointer">
             <Flag className="size-4" />
             <span className="truncate">Report @{profile.username}</span>
           </DropdownMenuSubTrigger>
-          <DropdownMenuSubContent sideOffset={8}>
+          <DropdownMenuSubContent submenuId="report-user" sideOffset={8}>
             {ReportOptions.map((option) => (
               <DropdownMenuItem
                 key={option.value}
