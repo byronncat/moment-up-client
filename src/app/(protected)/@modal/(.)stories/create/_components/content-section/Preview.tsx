@@ -59,53 +59,51 @@ function PreviewContent() {
 
   return (
     <div className={cn("bg-muted-dark rounded-lg", "grow overflow-x-auto p-3")}>
-      <div className="h-full">
-        <div
-          className={cn("rounded-lg mx-auto", "aspect-9/16 h-full shrink-0")}
-          style={{
-            ...(type === "text" ? TextBackground[selectedBackground] : {}),
-          }}
-        >
-          {type === "text" && (
-            <ScrollArea
-              className="size-full"
-              viewportClassName="[&>div]:min-h-full [&>div]:!flex [&>div]:items-center [&>div]:justify-center"
-            >
-              <textarea
-                id="text-input"
-                className={cn(
-                  "px-5 py-3 size-full m-auto",
-                  "flex items-center justify-center",
-                  "text-white caret-white placeholder:text-white/70",
-                  "focus:outline-none text-center",
-                  "resize-none",
-                  font.className
-                )}
-                style={{ fontFamily: font.family }}
-                placeholder="Start typing"
-                value={textContent}
-                onChange={handleInputChange}
-              />
-            </ScrollArea>
-          )}
-
-          {type === "image" && uploadedMedia ? (
-            <FabricCanvas className="size-full" />
-          ) : null}
-
-          {type === "video" && uploadedMedia ? (
-            <video
-              src={uploadedMedia.preview}
-              className="size-full object-contain bg-black"
-              muted={!!uploadedAudio}
-              autoPlay
-              loop
-              ref={(ref) => {
-                if (ref) videoRef.current = ref;
-              }}
+      <div
+        className={cn("rounded-lg mx-auto", "aspect-9/16 h-full shrink-0")}
+        style={{
+          ...(type === "text" ? TextBackground[selectedBackground] : {}),
+        }}
+      >
+        {type === "text" && (
+          <ScrollArea
+            className="size-full"
+            viewportClassName="[&>div]:min-h-full [&>div]:!flex [&>div]:items-center [&>div]:justify-center"
+          >
+            <textarea
+              id="text-input"
+              className={cn(
+                "px-5 py-3 size-full m-auto",
+                "flex items-center justify-center",
+                "text-white caret-white placeholder:text-white/70",
+                "focus:outline-none text-center",
+                "resize-none",
+                font.className
+              )}
+              style={{ fontFamily: font.family }}
+              placeholder="Start typing"
+              value={textContent}
+              onChange={handleInputChange}
             />
-          ) : null}
-        </div>
+          </ScrollArea>
+        )}
+
+        {type === "image" && uploadedMedia ? (
+          <FabricCanvas className="size-full" />
+        ) : null}
+
+        {type === "video" && uploadedMedia ? (
+          <video
+            src={uploadedMedia.preview}
+            className="size-full object-contain bg-black"
+            muted={!!uploadedAudio}
+            autoPlay
+            loop
+            ref={(ref) => {
+              if (ref) videoRef.current = ref;
+            }}
+          />
+        ) : null}
       </div>
     </div>
   );
