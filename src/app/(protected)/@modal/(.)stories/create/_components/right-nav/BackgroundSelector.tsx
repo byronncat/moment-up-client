@@ -10,8 +10,7 @@ export default function BackgroundSelector({
 }: Readonly<{
   className?: string;
 }>) {
-  const { selectedBackground, setSelectedBackground: onSelectBackground } =
-    useCreateData();
+  const { selectedBackground, setSelectedBackground } = useCreateData();
 
   return (
     <div
@@ -30,19 +29,13 @@ export default function BackgroundSelector({
               <div
                 key={index}
                 className={cn(
-                  "bg-white aspect-square",
-                  "rounded-full flex items-center justify-center"
+                  "grow aspect-square rounded-full",
+                  "cursor-pointer",
+                  "border-2 border-white"
                 )}
-              >
-                <div
-                  className={cn(
-                    "w-[90%] aspect-square rounded-full",
-                    "cursor-pointer"
-                  )}
-                  style={background}
-                  onClick={() => onSelectBackground(index)}
-                />
-              </div>
+                style={background}
+                onClick={() => setSelectedBackground(index)}
+              />
             ) : (
               <div
                 key={index}
@@ -51,7 +44,7 @@ export default function BackgroundSelector({
                   "cursor-pointer"
                 )}
                 style={background}
-                onClick={() => onSelectBackground(index)}
+                onClick={() => setSelectedBackground(index)}
               />
             )
           )}

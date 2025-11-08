@@ -37,7 +37,7 @@ export default function Content({
                 ...TextBackground[content.background],
                 fontFamily: fontFamily.family,
               }}
-              ref={() => onLoadingComplete()}
+              ref={onLoadingComplete}
             >
               {content.text}
             </div>
