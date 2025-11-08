@@ -90,13 +90,10 @@ export default function MediaGrid({ files, postId }: MediaGridProps) {
               firstImageHorizontal ? "grid-cols-2" : "grid-rows-2"
             )}
           >
-            <div className="relative">
-              <MediaItem file={files[0]} index={0} postId={postId} />
-            </div>
-            <div className="relative">
-              <MediaItem file={files[1]} index={1} postId={postId} />
-            </div>
+            <MediaItem file={files[0]} index={0} postId={postId} />
+            <MediaItem file={files[1]} index={1} postId={postId} />
           </div>
+
           <div
             className={cn(
               "grid gap-1",
@@ -124,7 +121,8 @@ function MoreItemsOverlay({ count }: Readonly<{ count: number }>) {
     <div
       className={cn(
         "absolute inset-0 bg-black/50",
-        "flex items-center justify-center"
+        "flex items-center justify-center",
+        "pointer-events-none"
       )}
     >
       <span className="text-white text-2xl font-semibold">+{count}</span>
