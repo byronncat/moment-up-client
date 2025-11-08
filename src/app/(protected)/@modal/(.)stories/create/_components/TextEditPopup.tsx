@@ -4,7 +4,7 @@ import type { TextStyleUpdate } from "../_providers/Canvas";
 import type * as fabric from "fabric";
 
 import { useMemo, useState } from "react";
-import { Font, FontSize, TextColors } from "../_constants";
+import { FontFamilies, FontSize, TextColors } from "../_constants";
 
 import { cn } from "@/libraries/utils";
 import { Input } from "@/components/ui/input";
@@ -30,13 +30,15 @@ export default function TextEditPopup({
   const initialValues = useMemo(() => {
     if (!selectedObject) {
       return {
-        font: Font[0],
+        font: FontFamilies[0],
         color: TextColors[0],
         fontSize: 24,
       };
     }
     return {
-      font: Font.find((f) => f.family === selectedObject.fontFamily) ?? Font[0],
+      font:
+        FontFamilies.find((f) => f.family === selectedObject.fontFamily) ??
+        FontFamilies[0],
       color: (selectedObject.fill as string) || TextColors[0],
       fontSize: selectedObject.fontSize || 24,
     };
@@ -51,7 +53,7 @@ export default function TextEditPopup({
   const [selectedColor, setSelectedColor] = useState(initialValues.color);
 
   function handleFontChange(fontLabel: string) {
-    const font = Font.find((f) => f.label === fontLabel);
+    const font = FontFamilies.find((f) => f.label === fontLabel);
     if (font) {
       setSelectedFontFamily(font);
       onUpdateText({ fontFamily: font.family });
@@ -102,7 +104,7 @@ export default function TextEditPopup({
         </SelectTrigger>
 
         <SelectContent className="bg-input-dark border-border-dark">
-          {Font.map((font) => (
+          {FontFamilies.map((font) => (
             <SelectItem
               key={font.value}
               value={font.label}

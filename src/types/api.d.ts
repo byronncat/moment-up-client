@@ -4,6 +4,7 @@ declare module "api" {
     NotificationType,
     SearchItemType,
     StoryBackground,
+    StoryFontFamily,
   } from "@/constants/server";
   import type { PublicId } from "cloudinary";
 
@@ -124,13 +125,17 @@ declare module "api" {
   };
 
   type StoryContent =
-    | { type: "text"; text: string; background: StoryBackground }
+    | {
+        type: "text";
+        text: string;
+        background: StoryBackground;
+        font: StoryFontFamily;
+      }
     | {
         type: "image" | "video";
         id: string;
       };
 
-  // +++ TODO: Refactor this +++
   type StoryInfo = {
     user: Omit<AccountDto, "email">;
     stories: Array<{

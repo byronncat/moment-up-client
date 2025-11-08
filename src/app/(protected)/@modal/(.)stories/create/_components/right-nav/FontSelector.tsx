@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCreateData } from "../../_providers";
-import { Font } from "../../_constants";
+import { FontFamilies } from "../../_constants";
 
 import { cn } from "@/libraries/utils";
 import { Button } from "@/components/ui/button";
@@ -68,7 +68,7 @@ export default function FontSelector({
                 No font found.
               </CommandEmpty>
               <CommandGroup className="p-2">
-                {Font.map(({ family, label }) => {
+                {FontFamilies.map(({ family, label }) => {
                   const isSelected = font.family === family;
 
                   return (
@@ -76,7 +76,7 @@ export default function FontSelector({
                       key={family}
                       value={family}
                       onSelect={(currentValue) => {
-                        const selectedFont = Font.find(
+                        const selectedFont = FontFamilies.find(
                           ({ family }) => family === currentValue
                         );
                         if (selectedFont) setFont(selectedFont);

@@ -18,7 +18,7 @@ interface UploadedAudio {
 
 type CreateDataContextType = {
   type: StoryType;
-  font: (typeof Font)[number];
+  font: (typeof FontFamilies)[number];
   textContent: string;
   selectedBackground: StoryBackground;
   privacy: ContentPrivacy;
@@ -27,7 +27,7 @@ type CreateDataContextType = {
   hasContent: boolean;
 
   setType: (type: StoryType) => void;
-  setFont: (font: (typeof Font)[number]) => void;
+  setFont: (font: (typeof FontFamilies)[number]) => void;
   setTextContent: (content: string) => void;
   setSelectedBackground: (background: StoryBackground) => void;
   setPrivacy: (privacy: ContentPrivacy) => void;
@@ -42,18 +42,24 @@ type CreateDataContextType = {
 // === Provider ===
 import { useRouter } from "next/navigation";
 import { createContext, use, useState } from "react";
-import { useCloudinary, useRefreshApi } from "@/components/providers";
+import {
+  useAuth,
+  useCloudinary,
+  useKey,
+  useRefreshApi,
+} from "@/components/providers";
+import { mutate } from "swr";
+import { ApiUrl, CoreApi } from "@/services";
 import { toast } from "sonner";
-import { CoreApi } from "@/services";
 import { trimAudioFile } from "../_utilities";
 import { canSafelyGoBack } from "@/libraries/utils";
 import { ROUTE } from "@/constants/route";
 import { ContentPrivacy, StoryBackground } from "@/constants/server";
-import { Font } from "../_constants";
+import { FontFamilies } from "../_constants";
 
 const CreateDataContext = createContext<CreateDataContextType>({
   type: null,
-  font: Font[0],
+  font: FontFamilies[0],
   textContent: "",
   selectedBackground: StoryBackground.BLUE_GRADIENT,
   privacy: ContentPrivacy.FOLLOWERS,
@@ -84,7 +90,9 @@ export default function CreateDataProvider({
   children,
 }: CreateDataProviderProps) {
   const [type, setType] = useState<StoryType>(null);
-  const [font, setFont] = useState<(typeof Font)[number]>(Font[0]);
+  const [font, setFont] = useState<(typeof FontFamilies)[number]>(
+    FontFamilies[0]
+  );
   const [textContent, setTextContent] = useState("");
   const [selectedBackground, setSelectedBackground] = useState<StoryBackground>(
     StoryBackground.BLUE_GRADIENT
@@ -107,7 +115,7 @@ export default function CreateDataProvider({
 
   const { uploadImage } = useCloudinary();
   const addStoryApi = useRefreshApi(CoreApi.createStory);
-
+  const { token } = useAuth();
   async function uploadStory(exportCanvas?: () => string | null) {
     let soundAttachment: string | undefined;
     if (uploadedAudio) {
@@ -149,7 +157,7 @@ export default function CreateDataProvider({
 
       const { success, message } = await addStoryApi(data);
 
-      if (success) back();
+      if (success) handleSuccess();
       else toast.error(message ?? "Unable to upload story.");
     } else if (type === "image") {
       if (!exportCanvas) {
@@ -187,7 +195,7 @@ export default function CreateDataProvider({
 
         const { success, message } = await addStoryApi(data);
 
-        if (success) back();
+        if (success) handleSuccess();
         else toast.error(message ?? "Unable to upload story.");
       } catch {
         toast.error("Something went wrong. Please try again.");
@@ -217,12 +225,19 @@ export default function CreateDataProvider({
 
         const { success, message } = await addStoryApi(data);
 
-        if (success) back();
+        if (success) handleSuccess();
         else toast.error(message ?? "Unable to upload story.");
       } catch {
         toast.error("Something went wrong. Please try again.");
       }
     }
+  }
+
+  const { incrementStoryKey } = useKey();
+  function handleSuccess() {
+    mutate([ApiUrl.story.get, token.accessToken]);
+    incrementStoryKey();
+    back();
   }
 
   function uploadMedia(file: File) {
@@ -265,7 +280,7 @@ export default function CreateDataProvider({
 
   function reset() {
     setType(null);
-    setFont(Font[0]);
+    setFont(FontFamilies[0]);
     setTextContent("");
     setSelectedBackground(StoryBackground.BLUE_GRADIENT);
     setPrivacy(ContentPrivacy.FOLLOWERS);

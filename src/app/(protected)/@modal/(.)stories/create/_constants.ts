@@ -29,7 +29,7 @@ export const PositionStyles = (width: number, height: number) => ({
   originY: "center" as const,
 });
 
-export const Font = [
+export const FontFamilies = [
   {
     label: "Roboto",
     family: roboto.style.fontFamily,

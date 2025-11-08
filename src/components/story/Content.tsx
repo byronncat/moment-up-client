@@ -5,6 +5,7 @@ import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { BLUR_DATA_URL, TextBackground } from "@/constants/client";
+import { FontFamilies } from "@/app/(protected)/@modal/(.)stories/create/_constants";
 
 type ContentProps = Readonly<{
   content: StoryInfo["stories"][number]["content"];
@@ -21,17 +22,27 @@ export default function Content({
   return (
     <AspectRatio ratio={9 / 16}>
       {content.type === "text" ? (
-        <div
-          className={cn(
-            "size-full p-5",
-            "flex items-center justify-center",
-            "text-center font-semibold text-2xl"
-          )}
-          style={TextBackground[content.background]}
-          ref={() => onLoadingComplete()}
-        >
-          {content.text}
-        </div>
+        (() => {
+          const fontFamily = FontFamilies[content.font];
+
+          return (
+            <div
+              className={cn(
+                "size-full p-5",
+                "flex items-center justify-center",
+                "text-center",
+                fontFamily.className
+              )}
+              style={{
+                ...TextBackground[content.background],
+                fontFamily: fontFamily.family,
+              }}
+              ref={() => onLoadingComplete()}
+            >
+              {content.text}
+            </div>
+          );
+        })()
       ) : content.type === "image" ? (
         <div
           className={cn(

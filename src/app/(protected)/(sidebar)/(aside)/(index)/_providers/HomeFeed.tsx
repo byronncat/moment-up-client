@@ -24,7 +24,7 @@ import {
   useState,
 } from "react";
 import useSWRInfinite from "swr/infinite";
-import useSWRImmutable from "swr/immutable";
+import useSWR from "swr";
 import {
   useAuth,
   useKey,
@@ -99,7 +99,7 @@ export function HomeFeedProvider({
     data: storiesData,
     isLoading: isStoriesLoading,
     error: storiesError,
-  } = useSWRImmutable([ApiUrl.story.get, token.accessToken], ([url, token]) =>
+  } = useSWR([ApiUrl.story.get, token.accessToken], ([url, token]) =>
     SWRFetcherWithToken<{ stories: StoryNotificationInfo[] }>(url, token)
   );
 

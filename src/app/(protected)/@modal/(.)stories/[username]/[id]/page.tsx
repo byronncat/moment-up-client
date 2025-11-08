@@ -3,8 +3,8 @@
 import type { StoryInfo } from "api";
 
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useAuth, useStory } from "@/components/providers";
+import { useEffect, useState } from "react";
+import { useAuth, useKey, useStory } from "@/components/providers";
 import useSWRImmutable from "swr/immutable";
 import { SWRFetcherWithToken } from "@/libraries/swr";
 import { ApiUrl } from "@/services";
@@ -18,17 +18,29 @@ import RightNav from "./components/RightNav";
 import { X } from "@/components/icons";
 
 export default function StoryModal() {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const params = useParams();
   const username = params.username as string;
 
   const { setViewingStories } = useStory();
-  const { data, isValidating } = useSWRImmutable(
-    [ApiUrl.story.getByUsername(username), token.accessToken],
-    ([url, token]) =>
-      SWRFetcherWithToken<{
-        story: StoryInfo;
-      }>(url, token)
+  const { storyKey } = useKey();
+  const [key] = useState(storyKey.current);
+
+  function getKey() {
+    if (user?.username === username)
+      return [
+        ApiUrl.story.getByUsername(username),
+        token.accessToken,
+        key,
+      ] as const;
+
+    return [ApiUrl.story.getByUsername(username), token.accessToken] as const;
+  }
+
+  const { data, isValidating } = useSWRImmutable(getKey, ([url, token]) =>
+    SWRFetcherWithToken<{
+      story: StoryInfo;
+    }>(url, token)
   );
 
   const router = useRouter();
