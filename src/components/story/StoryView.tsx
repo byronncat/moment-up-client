@@ -7,11 +7,13 @@ import { useContentProgress, useSound } from "./hooks";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
+import { AlertDialog } from "@/components/ui/alert-dialog";
 import Container from "./Container";
 import Content from "./Content";
 import { ConfirmState, ErrorState, LoadingState } from "./state";
 import {
   ActionButtons,
+  DeleteDialog,
   NavigateButtons,
   ProgressBar,
   UserInfo,
@@ -35,7 +37,8 @@ export default function StoryView({
   const username = pathname.split("/")[2];
   const storyId = pathname.split("/")[3];
 
-  const { viewingStories, otherStories, nextUserStory } = useStory();
+  const { viewingStories, otherStories, nextUserStory, deleteStory } =
+    useStory();
   const [currentStoryIndex, setCurrentStoryIndex] = useState(() => {
     const index = viewingStories?.stories.findIndex(
       (story) => story.id === storyId
@@ -174,6 +177,10 @@ export default function StoryView({
     play();
   }
 
+  function handleDelete() {
+    if (currentStoryData?.id) deleteStory(currentStoryData.id);
+  }
+
   useEffect(() => {
     if (_confirm) reset();
   }, [currentStoryData, _confirm, reset]);
@@ -184,58 +191,66 @@ export default function StoryView({
   if (!currentStoryData || !viewingStories)
     return <ErrorState onClose={onClose} className={className} />;
   return (
-    <Container className={className}>
-      <div className={cn("absolute top-0 left-0 z-10", "px-2 pt-2 w-full")}>
-        <span
-          className={cn(
-            "absolute top-0 left-0 -z-10",
-            "h-[calc(100%+24px)] w-full",
-            "mobile:rounded-t-lg overflow-hidden"
-          )}
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 100%)",
-          }}
-        />
-
-        <ProgressBar
-          total={viewingStories?.stories.length ?? 0}
-          current={currentStoryIndex}
-          progress={progress}
-          onSegmentClick={(index) => handleSegmentClick(index)}
-        />
-
-        <div className={cn("flex justify-between items-start gap-3", "mt-3")}>
-          <UserInfo
-            data={viewingStories.user}
-            timestamp={currentStoryData.createdAt}
+    <AlertDialog>
+      <Container className={className}>
+        <div className={cn("absolute top-0 left-0 z-10", "px-2 pt-2 w-full")}>
+          <span
+            className={cn(
+              "absolute top-0 left-0 -z-10",
+              "h-[calc(100%+24px)] w-full",
+              "mobile:rounded-t-lg overflow-hidden"
+            )}
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 100%)",
+            }}
           />
-          <ActionButtons
-            isPlaying={isPlaying}
-            isSoundOn={haveSound ? isSoundOn : null}
-            onPlay={play}
-            onPause={pause}
-            onSoundToggle={toggleSoundOn}
+
+          <ProgressBar
+            total={viewingStories?.stories.length ?? 0}
+            current={currentStoryIndex}
+            progress={progress}
+            onSegmentClick={(index) => handleSegmentClick(index)}
           />
+
+          <div className={cn("flex justify-between items-start gap-3", "mt-3")}>
+            <UserInfo
+              data={viewingStories.user}
+              timestamp={currentStoryData.createdAt}
+            />
+            <ActionButtons
+              isPlaying={isPlaying}
+              isSoundOn={haveSound ? isSoundOn : null}
+              onPlay={play}
+              onPause={pause}
+              onSoundToggle={toggleSoundOn}
+            />
+          </div>
         </div>
-      </div>
 
-      <Content
-        content={currentStoryData.content}
-        setVideoRef={handleSetVideoRef}
-        onLoadingComplete={() =>
-          setDataLoaded((prev) => ({
-            ...prev,
-            storyId: currentStoryData.id,
-            content: true,
-          }))
-        }
+        <Content
+          content={currentStoryData.content}
+          setVideoRef={handleSetVideoRef}
+          onLoadingComplete={() =>
+            setDataLoaded((prev) => ({
+              ...prev,
+              storyId: currentStoryData.id,
+              content: true,
+            }))
+          }
+        />
+
+        {((viewingStories?.stories.length ?? 0) > 1 ||
+          otherStories.length > 1) && (
+          <NavigateButtons onNavigate={handleNavigate} />
+        )}
+      </Container>
+      <DeleteDialog
+        isPlaying={isPlaying}
+        onPause={pause}
+        onPlay={play}
+        onDelete={handleDelete}
       />
-
-      {((viewingStories?.stories.length ?? 0) > 1 ||
-        otherStories.length > 1) && (
-        <NavigateButtons onNavigate={handleNavigate} />
-      )}
-    </Container>
+    </AlertDialog>
   );
 }

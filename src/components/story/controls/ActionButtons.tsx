@@ -13,6 +13,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import {
   Flag,
   Link,
@@ -147,14 +148,10 @@ type MenuContentProps = Readonly<{
 }>;
 
 function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
-  const { deleteStory, muteStory, reportStory } = useStory();
+  const { muteStory, reportStory } = useStory();
 
   function handleCopyLink() {
     navigator.clipboard.writeText(window.location.href);
-  }
-
-  function handleDelete() {
-    deleteStory(storyId);
   }
 
   function handleMute() {
@@ -179,16 +176,17 @@ function MenuContent({ isMe, storyId, ownBy }: MenuContentProps) {
       </DropdownMenuItem>
 
       {isMe ? (
-        <DropdownMenuItem
-          onClick={handleDelete}
-          className={cn(
-            menuItemStyles,
-            "destructive-item-dark focus:text-destructive-dark! focus:bg-destructive-dark/10!"
-          )}
-        >
-          <Trash className="size-4" />
-          <span>Delete story</span>
-        </DropdownMenuItem>
+        <AlertDialogTrigger asChild>
+          <DropdownMenuItem
+            className={cn(
+              menuItemStyles,
+              "destructive-item-dark focus:text-destructive-dark! focus:bg-destructive-dark/10!"
+            )}
+          >
+            <Trash className="size-4" />
+            <span>Delete story</span>
+          </DropdownMenuItem>
+        </AlertDialogTrigger>
       ) : (
         <>
           <DropdownMenuItem onClick={handleMute} className={menuItemStyles}>

@@ -26,9 +26,10 @@ interface StoryAction {
 // === Provider ====
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, use, useState } from "react";
-import { useAuth, useRefreshApi } from "@/components/providers";
+import { useAuth, useKey, useRefreshApi } from "@/components/providers";
+import { mutate } from "swr";
 import { toast } from "sonner";
-import { CoreApi } from "@/services";
+import { ApiUrl, CoreApi } from "@/services";
 import { ROUTE } from "@/constants/route";
 
 const StoryDataContext = createContext<StoryState & StoryAction>({
@@ -131,9 +132,13 @@ export default function StoryDataProvider({
     return null;
   }
 
+  const { incrementStoryKey } = useKey();
   async function deleteStory(storyId: string) {
     const { success, message } = await CoreApi.deleteStory(storyId, token);
     if (success) {
+      incrementStoryKey();
+      mutate(ApiUrl.story.get, token.accessToken);
+
       let currentStoryIndex = viewingStories?.stories.findIndex(
         (story) => story.id === storyId
       );
