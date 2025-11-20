@@ -75,7 +75,7 @@ export default function PrivacySelector({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="start"
-        side="right"
+        side="bottom"
         className="w-64"
         disablePortal
       >
