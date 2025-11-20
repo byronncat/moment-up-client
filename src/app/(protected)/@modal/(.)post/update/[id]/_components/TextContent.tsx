@@ -88,7 +88,7 @@ export default function TextContent({
 
       <Button
         onClick={handleUpdate}
-        className="mt-0 sm:mt-3 w-24 ml-auto"
+        className="mt-3 w-24 ml-auto"
         disabled={isLoading}
       >
         {isLoading ? <Loader2 className="size-4 animate-spin" /> : "Update"}

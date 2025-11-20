@@ -47,7 +47,7 @@ function CreateStoryModal() {
 
           <ContentSection
             className={cn(
-              "w-full h-svh md:w-auto md:h-full",
+              "w-full h-full md:w-auto",
               "shrink-0 sm:grow"
             )}
           />

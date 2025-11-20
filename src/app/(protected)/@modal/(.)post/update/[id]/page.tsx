@@ -3,14 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { usePost } from "@/components/providers";
+import { ContentPrivacy } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import { Modal } from "@/components/common";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import { DiscardDialog, Header } from "../../create/_components";
 import TextContent from "./_components/TextContent";
-
-import { ContentPrivacy } from "@/constants/server";
 
 export default function CreatePostPage() {
   const router = useRouter();
@@ -49,7 +48,7 @@ export default function CreatePostPage() {
         className={cn(
           "flex flex-col",
           "bg-background sm:rounded-lg overflow-hidden",
-          "w-full sm:w-fit",
+          "size-full sm:size-fit",
           isDiscardDialogOpen && "hidden"
         )}
       >

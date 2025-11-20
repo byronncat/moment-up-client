@@ -10,7 +10,7 @@
   <h3 align="center">MomentUp</h3>
 
   <p align="center">
-    A modern full-stack social platform to share posts and connect with the world!
+    A modern social platform to share posts and connect with your friends!
     <br />
     <a href="https://youtu.be/0YJ7lPvjlAo"><strong>Watch Demo »</strong></a>
     <br />

@@ -27,14 +27,16 @@ export default function MomentModal() {
   return (
     <Modal
       onClose={haveMedia ? undefined : handleClose}
-      className={cn(!haveMedia && "flex justify-center items-center")}
+      className={cn(
+        !haveMedia && "flex justify-center items-center"
+      )}
     >
       <div
         className={cn(
           "relative",
           "flex flex-col",
           haveMedia
-            ? "h-svh overflow-y-auto md:flex-row w-full"
+            ? "h-full overflow-y-auto md:flex-row w-full"
             : "size-full sm:w-fit sm:h-[80vh] sm:rounded-lg overflow-hidden sm:border border-border"
         )}
       >
@@ -68,7 +70,7 @@ export default function MomentModal() {
             "w-full min-h-[50vh]",
             haveMedia
               ? "md:h-screen md:w-[360px] md:overflow-y-auto dark:border-t dark:sm:border-t-0 dark:sm:border-l dark:border-border"
-              : "sm:max-w-[600px] h-[calc(100svh-48px)] sm:h-[calc(80svh-48px-2*1px)]"
+              : "sm:max-w-[600px] h-[calc(100%-48px)] sm:h-[calc(80%-48px-2*1px)]"
           )}
         />
         <CloseButton

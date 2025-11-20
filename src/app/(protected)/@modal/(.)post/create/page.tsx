@@ -79,7 +79,7 @@ function CreatePostPage() {
         className={cn(
           "flex flex-col",
           "bg-background sm:rounded-lg overflow-hidden",
-          "w-full sm:w-fit",
+          "size-full sm:size-fit",
           isDiscardDialogOpen && "hidden"
         )}
       >

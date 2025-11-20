@@ -34,7 +34,7 @@ export default function Modal({
       data-modal-container
       className={cn(
         "fixed top-0 left-0 z-50",
-        "h-svh w-screen",
+        "h-dvh w-screen",
         "flex items-center justify-center",
         "bg-black/50",
         className
