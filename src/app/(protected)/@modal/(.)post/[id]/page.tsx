@@ -27,9 +27,7 @@ export default function MomentModal() {
   return (
     <Modal
       onClose={haveMedia ? undefined : handleClose}
-      className={cn(
-        !haveMedia && "flex justify-center items-center"
-      )}
+      className={cn(!haveMedia && "flex justify-center items-center")}
     >
       <div
         className={cn(

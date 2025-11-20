@@ -46,10 +46,7 @@ function CreateStoryModal() {
           />
 
           <ContentSection
-            className={cn(
-              "w-full h-full md:w-auto",
-              "shrink-0 sm:grow"
-            )}
+            className={cn("w-full h-full md:w-auto", "shrink-0 sm:grow")}
           />
 
           <RightNav

@@ -165,10 +165,17 @@ export default function CanvasProvider({ children }: CanvasProviderProps) {
     if (!canvas) return;
     const activeObject = canvas.getActiveObject();
 
-    if (activeObject && !(activeObject instanceof fabric.FabricImage)) {
-      canvas.remove(activeObject);
-      canvas.renderAll();
+    if (!activeObject) return;
+
+    if (activeObject instanceof fabric.FabricImage) {
+      const images = canvas
+        .getObjects()
+        .filter((obj) => obj instanceof fabric.FabricImage);
+      if (images.length <= 1) return;
     }
+
+    canvas.remove(activeObject);
+    canvas.renderAll();
   }, [canvas]);
 
   function exportCanvas() {

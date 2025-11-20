@@ -2,9 +2,9 @@ import { useRef } from "react";
 import { useCanvas } from "../../_providers";
 import { cn } from "@/libraries/utils";
 
-const ButtonStyles = cn(
+const btnClassName = cn(
   "flex-1 h-10",
-  "text-sm text-white font-medium",
+  "text-xs text-white font-medium",
   "bg-accent-dark/12 rounded-lg",
   "hover:bg-accent-dark/20",
   "border border-border-dark",
@@ -30,16 +30,21 @@ export default function MediaControls({ className }: MediaControlsProps) {
   };
 
   return (
-    <div className={cn("flex gap-2", className)}>
-      <button className={ButtonStyles} onClick={addText}>
-        Add text
-      </button>
-      <button
-        className={ButtonStyles}
-        onClick={() => fileInputRef.current?.click()}
-      >
-        Add image
-      </button>
+    <div>
+      <div className={cn("flex gap-2", className)}>
+        <button className={btnClassName} onClick={addText}>
+          Add text
+        </button>
+        <button
+          className={btnClassName}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          Add image
+        </button>
+        <button className={btnClassName} onClick={deleteSelected}>
+          Delete
+        </button>
+      </div>
       <input
         ref={fileInputRef}
         type="file"
@@ -47,9 +52,6 @@ export default function MediaControls({ className }: MediaControlsProps) {
         onChange={handleImageUpload}
         className="hidden"
       />
-      <button className={ButtonStyles} onClick={deleteSelected}>
-        Delete selected
-      </button>
     </div>
   );
 }
