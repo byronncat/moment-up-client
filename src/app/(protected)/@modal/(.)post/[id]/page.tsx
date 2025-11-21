@@ -68,7 +68,7 @@ export default function MomentModal() {
             "w-full min-h-[50vh]",
             haveMedia
               ? "md:h-screen md:w-[360px] md:overflow-y-auto dark:border-t dark:sm:border-t-0 dark:sm:border-l dark:border-border"
-              : "sm:max-w-[600px] h-[calc(100%-48px)] sm:h-[calc(80%-48px-2*1px)]"
+              : "sm:max-w-[600px] h-[calc(100%-48px)] sm:h-[calc(80dvh-48px-2*1px)]"
           )}
         />
         <CloseButton

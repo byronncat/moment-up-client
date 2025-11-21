@@ -169,6 +169,7 @@ function TextContent({
         style={{
           ...TextBackground[content.background],
           fontFamily: fontFamily.family,
+          whiteSpace: "pre-line",
         }}
       >
         {content.text}

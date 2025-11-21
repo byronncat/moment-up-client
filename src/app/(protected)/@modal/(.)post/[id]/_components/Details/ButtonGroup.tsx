@@ -58,7 +58,7 @@ function FirstGroup({
             buttonStyles.iconSize,
             buttonStyles.transition,
             "fill-muted-foreground group-hover:fill-sky-500 dark:group-hover:fill-sky-400 group-focus:fill-sky-500 dark:group-focus:fill-sky-400",
-            "translate-x-[1px]"
+            "translate-x-px"
           )}
         />
       ),

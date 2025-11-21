@@ -7,7 +7,7 @@ export default function TextContent({
   data,
 }: Readonly<{ data: FeedItemDto["post"]["text"] }>) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [canExpand, setCanExpand] = useState(false);
+  const [canExpand, setCanExpand] = useState<boolean | undefined>(undefined);
 
   function handleToggleExpand() {
     setIsExpanded(!isExpanded);
@@ -23,7 +23,7 @@ export default function TextContent({
             setCanExpand(isTextClamped);
           }
         }}
-        className={cn(!isExpanded && "line-clamp-5", "space-y-2")}
+        className={cn(!isExpanded && "line-clamp-5", "whitespace-pre-line")}
       >
         {parseText(data)}
       </div>

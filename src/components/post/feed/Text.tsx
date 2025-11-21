@@ -10,8 +10,9 @@ type TextProps = Readonly<{
 export default function Text({ text, hasFiles }: TextProps) {
   const textRef = useRef<HTMLParagraphElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [firstTextClamped, setFirstTextClamped] = useState(false);
-  const counter = useRef(0);
+  const [firstTextClamped, setFirstTextClamped] = useState<boolean | undefined>(
+    undefined
+  );
 
   if (!text) return null;
   return (
@@ -27,15 +28,13 @@ export default function Text({ text, hasFiles }: TextProps) {
       )}
     >
       <div
-        ref={(ref) => {
-          textRef.current = ref;
-          if (ref && counter.current === 0) {
-            setFirstTextClamped(ref.scrollHeight > ref.clientHeight);
-            counter.current++;
-          }
+        ref={(element) => {
+          textRef.current = element;
+          if (element && firstTextClamped === undefined)
+            setFirstTextClamped(element.scrollHeight > element.clientHeight);
         }}
         className={cn(
-          "wrap-break-word",
+          "wrap-break-word whitespace-pre-line",
           !isExpanded && (hasFiles ? "line-clamp-1" : "line-clamp-2")
         )}
       >

@@ -32,7 +32,7 @@ export default function TextContent({ className }: TextContentProps) {
           }
         }}
         className={cn(
-          "wrap-break-word",
+          "wrap-break-word whitespace-pre-line",
           hasFiles ? "line-clamp-1" : "line-clamp-2"
         )}
       >
