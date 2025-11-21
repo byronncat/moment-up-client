@@ -230,6 +230,7 @@ export default function StoryView({
 
         <Content
           content={currentStoryData.content}
+          shouldPlay={isPlaying}
           setVideoRef={handleSetVideoRef}
           onLoadingComplete={() =>
             setDataLoaded((prev) => ({

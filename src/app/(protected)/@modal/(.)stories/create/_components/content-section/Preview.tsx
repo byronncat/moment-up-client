@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useCreateData } from "../../_providers";
+import { debounce } from "lodash";
 
 import { cn } from "@/libraries/utils";
 import { Eye } from "@/components/icons";
@@ -37,7 +38,6 @@ export default function Preview() {
 function PreviewContent() {
   const {
     type,
-    textContent,
     font,
     selectedBackground,
     uploadedMedia,
@@ -46,11 +46,15 @@ function PreviewContent() {
   } = useCreateData();
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const changeContent = debounce((text: string) => {
+    setTextContent(text);
+  }, 500);
+
   function handleInputChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     const element = event.target;
     element.style.height = "auto";
     element.style.height = `${element.scrollHeight}px`;
-    setTextContent(element.value);
+    changeContent(element.value);
   }
 
   useEffect(() => {
@@ -75,14 +79,13 @@ function PreviewContent() {
               className={cn(
                 "px-5 py-3 size-full m-auto",
                 "flex items-center justify-center",
-                "text-white caret-white placeholder:text-white/70",
+                "text-white caret-white placeholder:text-white/70 text-shadow-lg/20",
                 "focus:outline-none text-center",
                 "resize-none",
                 font.className
               )}
               style={{ fontFamily: font.family }}
               placeholder="Start typing"
-              value={textContent}
               onChange={handleInputChange}
             />
           </ScrollArea>
