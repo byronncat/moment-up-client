@@ -1,4 +1,5 @@
 import type { PostDto } from "api";
+import { __parseUrl } from "@/__mocks__";
 
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/libraries/utils";
@@ -87,7 +88,7 @@ export default function MediaCarousel({
             {file.type === "image" ? (
               <div className="relative w-full aspect-square bg-muted">
                 <Image
-                  src={file.id}
+                  src={__parseUrl(file.id, "image") as string}
                   alt={`Post ${index + 1}`}
                   fill
                   sizes="80vw"
@@ -104,7 +105,7 @@ export default function MediaCarousel({
                   ref={(el) => {
                     videoRefs.current[index] = el;
                   }}
-                  src={file.id}
+                  src={__parseUrl(file.id, "video") as string}
                   className="size-full object-contain"
                   controls
                   playsInline

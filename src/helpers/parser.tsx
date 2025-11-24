@@ -4,7 +4,6 @@ import Link from "next/link";
 
 export function parseText(text: string) {
   const normalizedText = text.replace(/\\n/g, "\n");
-  
   // Split by URLs, hashtags, and mentions while preserving them
   // Username format: letters, numbers, dots, underscores (from zodSchema)
   const parts = normalizedText.split(
