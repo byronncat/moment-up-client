@@ -98,7 +98,9 @@ export default function PostDetails({ postId }: PostDetailsProps) {
 
   if (!post) return null;
   return (
-    <div className="relative size-full">
+    // Use h-min to prevent the div from taking up the full height of the page
+    // This causes overflow issues since the public layout header is sticky
+    <div className={cn("relative w-full", user ? "h-full" : "h-min")}>
       <PostHeader
         data={post}
         actions={{
