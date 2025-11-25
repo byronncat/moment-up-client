@@ -27,7 +27,7 @@ export default function MobileHeader({ items, className }: MobileHeaderProps) {
       <Link
         href="/"
         className={cn(
-          "text-primary font-semibold text-lg",
+          "text-primary font-bold text-lg",
           "focus-within-indicator rounded-sm"
         )}
       >

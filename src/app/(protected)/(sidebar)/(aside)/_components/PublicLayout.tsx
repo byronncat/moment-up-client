@@ -62,12 +62,16 @@ export function Header({
 export function AuthenticatedButtons() {
   return (
     <div className={cn("flex items-center gap-2", "lg:hidden")}>
-      <Button variant="default" size="sm" className="font-semibold w-18">
-        Login
-      </Button>
-      <Button variant="outline" size="sm" className="w-18">
-        Sign up
-      </Button>
+      <Link href={ROUTE.LOGIN}>
+        <Button variant="default" size="sm" className="font-semibold w-18">
+          Login
+        </Button>
+      </Link>
+      <Link href={ROUTE.SIGNUP}>
+        <Button variant="outline" size="sm" className="w-18">
+          Sign up
+        </Button>
+      </Link>
     </div>
   );
 }
