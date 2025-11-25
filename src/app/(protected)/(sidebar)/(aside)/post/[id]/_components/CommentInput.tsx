@@ -60,7 +60,7 @@ export default function CommentInput({ ref, className }: CommentInputProps) {
           ) : (
             <PaperPlane
               className={cn(
-                "size-5 translate-y-[1px] translate-x-[-1px]",
+                "size-5 translate-y-px -translate-x-px",
                 isEmpty(text) && "opacity-50"
               )}
             />

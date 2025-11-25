@@ -13,6 +13,7 @@ import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Tooltip } from "@/components/common";
+import { AuthenticatedButtons } from "../../../_components";
 import { Arrow, Lock } from "@/components/icons";
 import { sourceCodePro } from "@/styles/fonts";
 
@@ -55,7 +56,7 @@ export function Header({ profile, isSelf, className }: HeaderProps) {
       className={cn(
         "flex items-center",
         "px-4 h-15",
-        !user && "xl:hidden",
+        !user && "xl:hidden justify-between",
         className
       )}
     >
@@ -101,17 +102,20 @@ export function Header({ profile, isSelf, className }: HeaderProps) {
           ) : null}
         </>
       ) : (
-        <Link
-          href={ROUTE.LOGIN}
-          className={cn(
-            "text-primary",
-            "font-bold text-2xl tracking-wide",
-            "select-none",
-            sourceCodePro.className
-          )}
-        >
-          MomentUp
-        </Link>
+        <>
+          <Link
+            href={ROUTE.LOGIN}
+            className={cn(
+              "text-primary",
+              "font-bold text-2xl tracking-wide",
+              "select-none",
+              sourceCodePro.className
+            )}
+          >
+            MomentUp
+          </Link>
+          <AuthenticatedButtons />
+        </>
       )}
     </div>
   );

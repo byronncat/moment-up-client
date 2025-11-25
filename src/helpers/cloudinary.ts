@@ -37,7 +37,15 @@ interface CloudinaryUrlOptions {
    * Gravity for cropping (center, face, auto, etc.)
    * @default "auto"
    */
-  gravity?: "auto" | "center" | "face" | "faces" | "north" | "south" | "east" | "west";
+  gravity?:
+    | "auto"
+    | "center"
+    | "face"
+    | "faces"
+    | "north"
+    | "south"
+    | "east"
+    | "west";
 }
 
 interface VideoThumbnailOptions extends CloudinaryUrlOptions {
@@ -96,7 +104,7 @@ export function getCloudinaryImageUrl(options: CloudinaryUrlOptions): string {
   transformations.push(`f_${format}`);
 
   const transformationString = transformations.join("/");
-  
+
   return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${transformationString}/${publicId}`;
 }
 
@@ -144,14 +152,14 @@ export function getCloudinaryVideoUrl(options: CloudinaryUrlOptions): string {
   transformations.push(`f_${format}`);
 
   const transformationString = transformations.join("/");
-  
+
   return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/${transformationString}/${publicId}`;
 }
 
 /**
  * Extract a video thumbnail (specific frame) from a video
  * This generates a static image URL from a video at a specific time or percentage
- * 
+ *
  * @example
  * // Extract frame at 2.5 seconds
  * const thumbnailUrl = getVideoThumbnailUrl({
@@ -159,7 +167,7 @@ export function getCloudinaryVideoUrl(options: CloudinaryUrlOptions): string {
  *   width: 640,
  *   startOffset: 2.5
  * });
- * 
+ *
  * @example
  * // Extract frame at 50% of video duration
  * const thumbnailUrl = getVideoThumbnailUrl({
@@ -212,7 +220,7 @@ export function getVideoThumbnailUrl(options: VideoThumbnailOptions): string {
   transformations.push(`f_${format}`);
 
   const transformationString = transformations.join("/");
-  
+
   // Note: We use video/upload to extract from video, but output will be an image
   return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/${transformationString}/${publicId}`;
 }
@@ -271,28 +279,31 @@ export function getVideoToGifUrl(
   transformations.push(`f_gif`);
 
   const transformationString = transformations.join("/");
-  
+
   return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/${transformationString}/${publicId}`;
 }
 
 /**
  * Helper to parse any URL - checks if it's already a full URL or needs to be converted
  * This is a replacement/enhancement for the existing __parseUrl function
- * 
+ *
  * @example
  * // Returns full URL as-is
  * parseMediaUrl("https://example.com/image.jpg") // => "https://example.com/image.jpg"
- * 
+ *
  * // Converts public_id to Cloudinary URL
  * parseMediaUrl("moment-up/post123", "image", { width: 640 }) // => Cloudinary URL
  */
 export function parseMediaUrl(
   data: string | null,
   assetType: "image" | "video" | "video-thumbnail" = "image",
-  options?: Omit<CloudinaryUrlOptions, "publicId"> & { startOffset?: number; percentage?: number }
+  options?: Omit<CloudinaryUrlOptions, "publicId"> & {
+    startOffset?: number;
+    percentage?: number;
+  }
 ): string | null {
   if (!data) return null;
-  
+
   // If already a full URL (http/https/blob), return as-is
   if (data.startsWith("http") || data.startsWith("blob:")) return data;
 
@@ -307,11 +318,10 @@ export function parseMediaUrl(
       publicId: data,
       ...options,
     });
-  } else {
-    return getCloudinaryImageUrl({
-      publicId: data,
-      ...options,
-    });
   }
-}
 
+  return getCloudinaryImageUrl({
+    publicId: data,
+    ...options,
+  });
+}

@@ -1,5 +1,6 @@
 import { CoreApi } from "@/services";
 import { Metadata } from "@/constants/metadata";
+import { PublicLayout } from "../../_components";
 import PostDetails from "./_components";
 
 const MAX_TEXT_LENGTH = 20;
@@ -23,5 +24,9 @@ export default async function PostDetailsPage({
   params,
 }: Readonly<{ params: Promise<{ id: string }> }>) {
   const { id } = await params;
-  return <PostDetails postId={id} />;
+  return (
+    <PublicLayout borderBottom>
+      <PostDetails postId={id} />
+    </PublicLayout>
+  );
 }

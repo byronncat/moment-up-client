@@ -89,9 +89,7 @@ function OptimizedVideoItem({
   );
 }
 
-function DefaultVideoItem({
-  fileId,
-}: Readonly<{ fileId: string }>) {
+function DefaultVideoItem({ fileId }: Readonly<{ fileId: string }>) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
