@@ -123,10 +123,6 @@ export default function StoryView({
     );
   }
 
-  function handleViewComplete() {
-    handleNavigate("next");
-  }
-
   const allDataLoaded =
     dataLoaded.storyId === currentStoryData?.id &&
     dataLoaded.content &&
@@ -142,10 +138,8 @@ export default function StoryView({
     play,
     reset,
     setVideoRef: setContentVideoRef,
-  } = useContentProgress(
-    currentStoryData?.content,
-    shouldPlay,
-    handleViewComplete
+  } = useContentProgress(currentStoryData?.content, shouldPlay, () =>
+    handleNavigate("next")
   );
 
   const {

@@ -63,7 +63,7 @@ export function useContentProgress(
 
   function reset() {
     setProgress(0);
-    setIsPlaying(true);
+    setIsPlaying(shouldPlay);
     // if (typeof content === "object" && content?.type === "video")
     //   setDuration(DEFAULT_DURATION);
   }
