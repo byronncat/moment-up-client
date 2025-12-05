@@ -1,5 +1,8 @@
-import { cn } from "@/libraries/utils";
+import { useState } from "react";
 import { formatTime } from "./utilities";
+import { debounce } from "lodash";
+
+import { cn } from "@/libraries/utils";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 
@@ -18,12 +21,23 @@ export default function TrimControls({
   onTrimChange,
   className,
 }: TrimControlsProps) {
-  const handleSliderChange = (values: number[]) => {
+  const [sliderValue, setSliderValue] = useState([trimStart, trimEnd]);
+
+  function handleSliderCommit(values: number[]) {
     const [start, end] = values;
     onTrimChange(start, end);
-  };
+  }
 
-  const sliderValues = [trimStart, trimEnd];
+  const debouncedOnTrimChange = debounce((start: number, end: number) => {
+    onTrimChange(start, end);
+  }, 500);
+
+  function handleTimeInputChange(start: number, end: number) {
+    debouncedOnTrimChange(start, end);
+    setSliderValue([Math.max(0, start), Math.min(duration, end)]);
+  }
+
+  const [startTime, endTime] = sliderValue;
   return (
     <div className={cn("space-y-3", className)}>
       <div className="text-xs text-muted-foreground-dark">Trimming</div>
@@ -31,8 +45,9 @@ export default function TrimControls({
       <div className="space-y-4">
         <div>
           <Slider
-            value={sliderValues}
-            onValueChange={handleSliderChange}
+            value={sliderValue}
+            onValueChange={setSliderValue}
+            onValueCommit={handleSliderCommit}
             min={0}
             max={duration}
             step={0.1}
@@ -49,32 +64,28 @@ export default function TrimControls({
               "text-xs text-muted-foreground-dark"
             )}
           >
-            <span>Start: {formatTime(trimStart)}</span>
-            <span>End: {formatTime(trimEnd)}</span>
+            <span>Start: {formatTime(startTime)}</span>
+            <span>End: {formatTime(endTime)}</span>
           </div>
         </div>
 
         <div className="flex justify-between gap-4">
           <TimeInput
-            value={trimStart}
+            value={startTime}
             label="Start (s)"
             type="increment"
             min={0}
-            max={trimEnd}
-            onChange={(value) => {
-              onTrimChange(value, trimEnd);
-            }}
+            max={endTime}
+            onChange={(value) => handleTimeInputChange(value, trimEnd)}
           />
 
           <TimeInput
-            value={trimEnd}
+            value={endTime}
             label="End (s)"
             type="decrement"
-            min={trimStart}
+            min={startTime}
             max={duration}
-            onChange={(value) => {
-              onTrimChange(trimStart, value);
-            }}
+            onChange={(value) => handleTimeInputChange(trimStart, value)}
           />
         </div>
       </div>
@@ -82,7 +93,7 @@ export default function TrimControls({
   );
 }
 
-const TIME_INPUT_STEP = 0.1;
+const TIME_INPUT_STEP = 0.01;
 
 type TimeInputProps = Readonly<{
   value: number;
@@ -105,7 +116,7 @@ function TimeInput({ value, label, type, min, max, onChange }: TimeInputProps) {
       <Input
         id={label}
         type="number"
-        value={value.toFixed(1)}
+        value={value.toFixed(2)}
         onChange={(event) => {
           const newValue = parseFloat(event.target.value) || 0;
 

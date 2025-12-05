@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useCreateData } from "../../../_providers";
-import { debounce } from "lodash";
 
 import { cn } from "@/libraries/utils";
 import AudioInfo from "./AudioInfo";
@@ -8,7 +7,6 @@ import PlayControls from "./PlayControls";
 import TrimControls from "./TrimControls";
 
 const TRIM_TIME_GAP = 1;
-const DEBOUNCE_TIME = 500;
 
 type AudioSettingsProps = Readonly<{
   className?: string;
@@ -19,21 +17,6 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const { uploadedAudio, trimAudio, removeAudio } = useCreateData();
-
-  // Store the debounced function in a ref to avoid recreating it on every render
-  const debouncedUpdateCurrentTimeRef = useRef(
-    debounce(
-      (
-        time: number,
-        audioEl: HTMLAudioElement,
-        setTime: (time: number) => void
-      ) => {
-        audioEl.currentTime = time;
-        setTime(time);
-      },
-      DEBOUNCE_TIME
-    )
-  );
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -55,14 +38,6 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
       audio.removeEventListener("ended", handleEnded);
     };
   }, [uploadedAudio, isPlaying]);
-
-  // Cleanup debounced function on unmount
-  useEffect(() => {
-    const debouncedFn = debouncedUpdateCurrentTimeRef.current;
-    return () => {
-      debouncedFn.cancel();
-    };
-  }, []);
 
   function handleRemoveAudio() {
     setIsPlaying(false);
@@ -105,11 +80,8 @@ export default function AudioSettings({ className }: AudioSettingsProps) {
     );
 
     trimAudio(adjustedStart, adjustedEnd);
-    debouncedUpdateCurrentTimeRef.current(
-      adjustedStart,
-      audioRef.current,
-      setCurrentTime
-    );
+    setCurrentTime(adjustedStart);
+    audioRef.current.currentTime = adjustedStart;
   }
 
   if (!uploadedAudio) return null;

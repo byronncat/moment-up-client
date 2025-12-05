@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { formatTime } from "./utilities";
 import { cn } from "@/libraries/utils";
 import { Pause, Play } from "@/components/icons";
@@ -22,14 +23,25 @@ export default function PlayControls({
   handleSeek,
   className,
 }: PlayControlsProps) {
-  const handleSliderChange = (values: number[]) => {
+  const [sliderValue, setSliderValue] = useState<number[] | null>(null);
+
+  function handleSliderCommit(values: number[]) {
     const newTime = values[0];
     const actualTime = trimStart + (newTime / 100) * trimDuration;
     handleSeek(actualTime);
-  };
+    setSliderValue(null);
+  }
 
-  const sliderValue =
-    trimDuration > 0 ? [((currentTime - trimStart) / trimDuration) * 100] : [0];
+  const displayValue =
+    sliderValue ??
+    (trimDuration > 0
+      ? [((currentTime - trimStart) / trimDuration) * 100]
+      : [0]);
+
+  const displayTime =
+    sliderValue !== null
+      ? trimStart + (sliderValue[0] / 100) * trimDuration
+      : currentTime;
 
   return (
     <div className={cn("flex items-center gap-3", className)}>
@@ -45,11 +57,13 @@ export default function PlayControls({
 
       <div className="flex-1">
         <div className="text-xs text-muted-foreground-dark mb-1">
-          {formatTime(currentTime)} / {formatTime(trimDuration)}
+          {formatTime(Math.max(0, displayTime - trimStart))} /{" "}
+          {formatTime(trimDuration)}
         </div>
         <Slider
-          value={sliderValue}
-          onValueChange={handleSliderChange}
+          value={displayValue}
+          onValueChange={setSliderValue}
+          onValueCommit={handleSliderCommit}
           max={100}
           min={0}
           step={0.1}
