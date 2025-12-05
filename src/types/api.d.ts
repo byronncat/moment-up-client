@@ -132,8 +132,8 @@ declare module "api" {
         font: StoryFontFamily;
       }
     | {
-        type: "image" | "video";
         id: string;
+        type: "image" | "video";
       };
 
   type StoryInfo = {
