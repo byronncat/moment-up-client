@@ -5,7 +5,7 @@ import {
   CanvasProvider,
   CreateDataProvider,
   useCreateData,
-} from "@/app/(protected)/@modal/(.)stories/create/_providers";
+} from "@/app/[locale]/(protected)/@modal/(.)stories/create/_providers";
 import { ROUTE } from "@/constants/route";
 
 import { cn } from "@/libraries/utils";
@@ -15,7 +15,7 @@ import {
   ContentSection,
   DiscardDialog,
   RightNav,
-} from "@/app/(protected)/@modal/(.)stories/create/_components";
+} from "@/app/[locale]/(protected)/@modal/(.)stories/create/_components";
 
 function CreateStoryPage() {
   const router = useRouter();

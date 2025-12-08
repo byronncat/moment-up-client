@@ -3,7 +3,7 @@
 import type { NotificationDto } from "api";
 import { useEffect } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useNotification } from "../../../../../../components/providers/NotificationStorage";
+import { useNotification } from "../../../../../../../components/providers/NotificationStorage";
 import { NotificationType } from "@/constants/server";
 
 import { ErrorContent, NoContent } from "@/components/common";

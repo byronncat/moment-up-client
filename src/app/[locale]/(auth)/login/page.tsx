@@ -12,10 +12,14 @@ import LoginForm from "./_components/LoginForm";
 import { ROUTE } from "@/constants/route";
 import styles from "../_constants/styles";
 
+import { useTranslations } from "next-intl";
+
 export default function LoginPage() {
+  const t = useTranslations("LoginPage");
+
   return (
     <main className={styles.form}>
-      <PageTitle title="Login" />
+      <PageTitle title={t("title")} />
       <LoginForm />
       <Divider text="OR" className={cn("my-2", "text-xs")} />
       <div>

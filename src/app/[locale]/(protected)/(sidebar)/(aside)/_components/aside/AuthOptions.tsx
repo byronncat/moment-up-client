@@ -1,7 +1,7 @@
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { GoogleButton } from "@/app/(auth)/_components";
+import { GoogleButton } from "@/app/[locale]/(auth)/_components";
 import { ROUTE } from "@/constants/route";
 
 export default function AuthOptions() {

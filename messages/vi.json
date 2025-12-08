@@ -1,0 +1,14 @@
+{
+  "LoginPage": {
+    "title": "Đăng nhập",
+    "description": "Đăng nhập vào hệ thống",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "forgotPassword": "Quên mật khẩu",
+    "rememberMe": "Nhớ tôi",
+    "dontHaveAccount": "Bạn chưa có tài khoản?",
+    "haveAccount": "Bạn đã có tài khoản?"
+  }
+}

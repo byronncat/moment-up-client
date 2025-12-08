@@ -37,6 +37,7 @@ export enum SearchCategory {
 export enum CookieName {
   AUTH_GUARD = "_guard",
   SIDEBAR = "sidebar-state",
+  LOCALE = "locale",
 }
 
 export enum LocalStorageKey {

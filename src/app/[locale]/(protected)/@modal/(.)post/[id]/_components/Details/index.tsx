@@ -7,7 +7,7 @@ import { CommentProvider, usePost } from "@/components/providers";
 import { CommentZone, PostHeader } from "@/components/post";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ButtonGroup from "./ButtonGroup";
-import TextContent from "@/app/(protected)/(sidebar)/(aside)/post/[id]/_components/TextContent";
+import TextContent from "@/app/[locale]/(protected)/(sidebar)/(aside)/post/[id]/_components/TextContent";
 import CommentInput from "./CommentInput";
 
 type ContentProps = Readonly<{

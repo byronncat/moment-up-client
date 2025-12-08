@@ -12,7 +12,7 @@ import { SERVER_HOST_URL } from "@/constants/server";
 import { cn } from "@/libraries/utils";
 import { Tooltip } from "@/components/common";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/app/(auth)/_components";
+import { PasswordInput } from "@/app/[locale]/(auth)/_components";
 import {
   Dialog,
   DialogClose,
@@ -30,7 +30,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Loader } from "@/components/icons";
-import styles from "@/app/(auth)/_constants/styles";
+import styles from "@/app/[locale]/(auth)/_constants/styles";
 
 type LoginDialogProps = {
   open: boolean;

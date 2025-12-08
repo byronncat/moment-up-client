@@ -8,7 +8,7 @@ import { DEFAULT_DURATION } from "./hooks/useContentProgress";
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { FontFamilies } from "@/app/(protected)/@modal/(.)stories/create/_constants";
+import { FontFamilies } from "@/app/[locale]/(protected)/@modal/(.)stories/create/_constants";
 
 type ContentProps = Readonly<{
   content: StoryInfo["stories"][number]["content"];

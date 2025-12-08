@@ -2,7 +2,7 @@ import { Metadata } from "@/constants/metadata";
 export const metadata = Metadata.notifications;
 
 import { cn } from "@/libraries/utils";
-import NotificationStorageProvider from "../../../../../components/providers/NotificationStorage";
+import NotificationStorageProvider from "../../../../../../components/providers/NotificationStorage";
 import { PageHeader } from "../_components";
 
 export default function Layout({
