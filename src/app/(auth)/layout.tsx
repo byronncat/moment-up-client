@@ -16,11 +16,11 @@ export default function Layout({
         <div
           className={cn(
             "flex justify-between items-center",
-            "h-14 px-3",
+            "h-15 px-3",
             "absolute top-0 left-0 right-0"
           )}
         >
-          <Brand className="h-9 select-none" />
+          <Brand className="select-none" />
           <ThemeSelection />
         </div>
         <div className={cn("h-full", "flex justify-center items-center")}>

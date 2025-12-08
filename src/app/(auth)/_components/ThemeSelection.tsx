@@ -68,7 +68,7 @@ export default function ThemeSelection({
             <Button
               variant="ghost"
               size="icon"
-              className={cn("size-9 rounded-full relative", className)}
+              className={cn("size-9 relative", className)}
               aria-label="Toggle theme"
             >
               <Sun

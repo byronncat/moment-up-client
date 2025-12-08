@@ -9,6 +9,14 @@ type ActionableTextProps = Readonly<{
   className?: string;
 }>;
 
+const styles = cn(
+  "cursor-pointer",
+  "text-primary",
+  "font-semibold",
+  "hover:opacity-60 transition-opacity duration-75 ease-in-out",
+  "focus-indicator rounded-sm"
+);
+
 export default function ActionableText({
   path,
   mutedText,
@@ -22,30 +30,11 @@ export default function ActionableText({
         <span className="text-muted-foreground">{mutedText} </span>
       ) : null}
       {path ? (
-        <Link
-          href={path}
-          className={cn(
-            "cursor-pointer",
-            "text-primary",
-            "font-semibold",
-            "hover:opacity-60 transition-opacity duration-150 ease-in-out",
-            "focus-within-indicator rounded-sm"
-          )}
-        >
+        <Link href={path} className={styles}>
           {highlightedText}
         </Link>
       ) : (
-        <button
-          type="button"
-          className={cn(
-            "cursor-pointer",
-            "text-primary",
-            "font-semibold",
-            "hover:opacity-60 transition-opacity duration-150 ease-in-out",
-            "focus-within-indicator rounded-sm"
-          )}
-          onClick={onClick}
-        >
+        <button type="button" className={styles} onClick={onClick}>
           {highlightedText}
         </button>
       )}
