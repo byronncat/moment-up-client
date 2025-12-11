@@ -8,12 +8,14 @@ type BrandProps = Readonly<{
   hyperlink?: boolean;
   logo?: boolean;
   className?: string;
+  logoClassName?: string;
 }>;
 
 export default function Brand({
   hyperlink = false,
   logo = false,
   className,
+  logoClassName,
 }: BrandProps) {
   if (hyperlink)
     return (
@@ -25,16 +27,26 @@ export default function Brand({
           className
         )}
       >
-        <Content logo={logo} />
+        <Content logo={logo} logoClassName={logoClassName} />
       </Link>
     );
-  return <Content logo={logo} className={cn("cursor-default", className)} />;
+  return (
+    <Content
+      logo={logo}
+      className={cn("cursor-default", className)}
+      logoClassName={logoClassName}
+    />
+  );
 }
 
-function Content({ logo, className }: Omit<BrandProps, "hyperlink">) {
+function Content({
+  logo,
+  className,
+  logoClassName,
+}: Omit<BrandProps, "hyperlink">) {
   return (
     <div className={cn("flex items-center", className)}>
-      {logo ? <Logo className="h-full mr-2" /> : null}
+      {logo ? <Logo className={cn("mr-2", logoClassName)} /> : null}
       <span
         className={cn(
           "inline-block",

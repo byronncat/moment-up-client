@@ -13,7 +13,7 @@ const styles = cn(
   "cursor-pointer",
   "text-primary",
   "font-semibold",
-  "hover:opacity-60 transition-opacity duration-75 ease-in-out",
+  "hover:underline",
   "focus-indicator rounded-sm"
 );
 
