@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
 import { useIsClient } from "usehooks-ts";
 
 import { cn } from "@/libraries/utils";
@@ -33,22 +34,23 @@ export default function ThemeSelection({
 }: ThemeSelectionProps) {
   const { theme, setTheme } = useTheme();
   const isClient = useIsClient();
+  const t = useTranslations("ThemeSelection");
 
   const Options = [
     {
-      label: "Light",
+      label: t("light"),
       icon: <Sun type="regular" className="size-5" />,
       selected: theme === "light",
       onClick: () => setTheme("light"),
     },
     {
-      label: "Dark",
+      label: t("dark"),
       icon: <Moon type="regular" className="size-5" />,
       selected: theme === "dark",
       onClick: () => setTheme("dark"),
     },
     {
-      label: "System",
+      label: t("system"),
       icon: <LaptopMinimal className="size-5" />,
       selected: theme === "system",
       onClick: () => setTheme("system"),
@@ -60,7 +62,7 @@ export default function ThemeSelection({
   if (!isClient) return null;
   return (
     <DropdownMenu>
-      <ShowTooltip showTooltip={showTooltip}>
+      <ShowTooltip showTooltip={showTooltip} tooltipText={t("tooltip")}>
         <DropdownMenuTrigger asChild>
           {asChild ? (
             children
@@ -120,13 +122,15 @@ export default function ThemeSelection({
 
 function ShowTooltip({
   showTooltip,
+  tooltipText,
   children,
 }: {
   showTooltip: boolean;
+  tooltipText: string;
   children: React.ReactNode;
 }) {
   return showTooltip ? (
-    <Tooltip content="Theme" variant="borderless" sideOffset={6}>
+    <Tooltip content={tooltipText} variant="borderless" sideOffset={6}>
       {children}
     </Tooltip>
   ) : (

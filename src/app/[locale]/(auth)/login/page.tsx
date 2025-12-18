@@ -1,5 +1,5 @@
-import { Metadata } from "@/constants/metadata";
-export const metadata = Metadata.login;
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { cn } from "@/libraries/utils";
 import {
@@ -12,22 +12,36 @@ import LoginForm from "./_components/LoginForm";
 import { ROUTE } from "@/constants/route";
 import styles from "../_constants/styles";
 
-import { useTranslations } from "next-intl";
+type Props = {
+  params: Promise<{ locale: string }>;
+};
 
-export default function LoginPage() {
-  const t = useTranslations("LoginPage");
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "LoginPage" });
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
+
+export default async function LoginPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("LoginPage");
 
   return (
     <main className={styles.form}>
       <PageTitle title={t("title")} />
       <LoginForm />
-      <Divider text="OR" className={cn("my-2", "text-xs")} />
+      <Divider text={t("orDivider")} className={cn("my-2", "text-xs")} />
       <div>
-        <GoogleButton />
+        <GoogleButton label={t("googleLoginButton")} />
         <ActionableText
           path={ROUTE.SIGNUP}
-          mutedText="Don't have an account?"
-          highlightedText="Sign up"
+          mutedText={t("dontHaveAccountText")}
+          highlightedText={t("signUpLink")}
           className={cn("w-full mt-3", "text-center")}
         />
       </div>

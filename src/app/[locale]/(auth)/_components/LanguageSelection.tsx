@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
 import { cn } from "@/libraries/utils";
@@ -19,11 +19,6 @@ type LanguageSelectionProps = Readonly<{
   className?: string;
 }>;
 
-const languages = [
-  { code: "en", label: "English", labal: "English" },
-  { code: "vi", label: "Tiếng Việt", labal: "Tiếng Việt" },
-] as const;
-
 export default function LanguageSelection({
   showTooltip = true,
   className,
@@ -31,6 +26,12 @@ export default function LanguageSelection({
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("LanguageSelection");
+
+  const languages = [
+    { code: "en", label: t("english") },
+    { code: "vi", label: t("vietnamese") },
+  ] as const;
 
   function handleLanguageChange(newLocale: "en" | "vi") {
     router.replace(pathname, { locale: newLocale });

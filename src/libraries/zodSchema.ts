@@ -5,6 +5,11 @@ import {
   MIN_USERNAME_LENGTH,
 } from "@/constants/server";
 
+type LoginMessages = {
+  identityRequired: string;
+  passwordRequired: string;
+};
+
 const login = z.object({
   identity: z.string().min(1, {
     error: "Username or email is required",
@@ -13,6 +18,16 @@ const login = z.object({
     error: "Password is required",
   }),
 });
+
+const createLoginSchema = (messages: LoginMessages) =>
+  z.object({
+    identity: z.string().min(1, {
+      error: messages.identityRequired,
+    }),
+    password: z.string().min(1, {
+      error: messages.passwordRequired,
+    }),
+  });
 
 const signup = z.object({
   email: z.email({
@@ -126,6 +141,7 @@ const search = z.object({
 const zodSchema = {
   auth: {
     login,
+    createLoginSchema,
     signup,
     sendOtp,
     recoverPassword,

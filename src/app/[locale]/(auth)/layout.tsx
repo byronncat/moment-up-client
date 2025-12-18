@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { cn } from "@/libraries/utils";
 import { Brand } from "@/components/common";
 import {
@@ -43,6 +44,8 @@ function RightLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 }
 
 function Footer() {
+  const t = useTranslations("AuthFooter");
+
   return (
     <div
       className={cn(
@@ -53,15 +56,15 @@ function Footer() {
       )}
     >
       <div className="flex items-center gap-2">
-        <FooterLink>Conditions of Use</FooterLink>
+        <FooterLink>{t("conditionsOfUse")}</FooterLink>
         <span className="text-muted-foreground">|</span>
-        <FooterLink>Privacy Notice</FooterLink>
+        <FooterLink>{t("privacyNotice")}</FooterLink>
         <span className="text-muted-foreground">|</span>
-        <FooterLink>Help</FooterLink>
+        <FooterLink>{t("help")}</FooterLink>
       </div>
 
       <div className="flex items-center gap-2">
-        <span>© 2025 MomentUp from Byron</span>
+        <span>{t("copyright")}</span>
         <span className="text-border">•</span>
         <LanguageSelection showTooltip={false} />
       </div>

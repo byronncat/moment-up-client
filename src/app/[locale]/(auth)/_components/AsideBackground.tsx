@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { cn } from "@/libraries/utils";
 import Image from "next/image";
 
@@ -6,6 +7,8 @@ export default function AsideBackground({
 }: Readonly<{
   className?: string;
 }>) {
+  const t = useTranslations("AuthAside");
+
   return (
     <div className={cn("relative select-none", className)}>
       <Image
@@ -37,7 +40,7 @@ export default function AsideBackground({
               } as React.CSSProperties
             }
           >
-            welcome back
+            {t("welcomeTitle")}
           </h1>
           <p
             className={cn("glowing", "font-abel text-lg font-medium tracking")}
@@ -47,8 +50,7 @@ export default function AsideBackground({
               } as React.CSSProperties
             }
           >
-            The ultimate platform designed to bring people together through the
-            power of media.
+            {t("welcomeDescription")}
           </p>
         </div>
       </div>

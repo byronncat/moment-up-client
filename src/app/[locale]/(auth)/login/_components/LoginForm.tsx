@@ -4,7 +4,8 @@ import type { z } from "zod";
 
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/components/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import zodSchema from "@/libraries/zodSchema";
@@ -24,9 +25,19 @@ import { ActionableText, PasswordInput, SubmitButton } from "../../_components";
 import styles from "../../_constants/styles";
 
 export default function LoginForm() {
+  const t = useTranslations("LoginPage");
   const searchParams = useSearchParams();
   const emailParam = searchParams.get("email");
   const errorParam = searchParams.get("error") as keyof typeof SocialAuthError;
+
+  const loginSchema = useMemo(
+    () =>
+      zodSchema.auth.createLoginSchema({
+        identityRequired: t("validation.identityRequired"),
+        passwordRequired: t("validation.passwordRequired"),
+      }),
+    [t]
+  );
 
   useEffect(() => {
     if (errorParam) {
@@ -45,8 +56,8 @@ export default function LoginForm() {
     }
   }, [errorParam]);
 
-  const form = useForm<z.infer<typeof zodSchema.auth.login>>({
-    resolver: zodResolver(zodSchema.auth.login),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       identity: emailParam ?? "",
       password: "",
@@ -54,7 +65,7 @@ export default function LoginForm() {
   });
 
   const { login } = useAuth();
-  async function handleLogin(values: z.infer<typeof zodSchema.auth.login>) {
+  async function handleLogin(values: z.infer<typeof loginSchema>) {
     const { success, message, code } = await login(values);
     if (!success) {
       if (code === ErrorCode.EMAIL_NOT_VERIFIED)
@@ -78,7 +89,7 @@ export default function LoginForm() {
               <FormItem className="space-y-1">
                 <FormControl>
                   <Input
-                    placeholder="Username or Email"
+                    placeholder={t("identityInput")}
                     className={styles.input}
                     autoComplete="username"
                     {...field}
@@ -95,7 +106,7 @@ export default function LoginForm() {
               <FormItem>
                 <FormControl>
                   <PasswordInput
-                    placeholder="Pasword"
+                    placeholder={t("passwordInput")}
                     className={styles.input}
                     autoComplete="current-password"
                     {...field}
@@ -110,11 +121,11 @@ export default function LoginForm() {
         <div className="mt-5">
           <ActionableText
             path={ROUTE.FORGOT_PASSWORD}
-            highlightedText="Forgot your password?"
+            highlightedText={t("forgotPasswordLink")}
             className="text-right mb-2"
           />
           <SubmitButton loading={form.formState.isSubmitting}>
-            Login
+            {t("loginButton")}
           </SubmitButton>
         </div>
       </form>

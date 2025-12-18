@@ -1,14 +1,38 @@
 {
   "LoginPage": {
     "title": "Đăng nhập",
-    "description": "Đăng nhập vào hệ thống",
-    "email": "Email",
-    "password": "Mật khẩu",
-    "login": "Đăng nhập",
-    "register": "Đăng ký",
-    "forgotPassword": "Quên mật khẩu",
-    "rememberMe": "Nhớ tôi",
-    "dontHaveAccount": "Bạn chưa có tài khoản?",
-    "haveAccount": "Bạn đã có tài khoản?"
+    "description": "Đăng nhập vào tài khoản của bạn và kết nối với mọi người.",
+    "identityInput": "Tên đăng nhập hoặc Email",
+    "passwordInput": "Mật khẩu",
+    "loginButton": "Đăng nhập",
+    "forgotPasswordLink": "Quên mật khẩu?",
+    "orDivider": "HOẶC",
+    "googleLoginButton": "Đăng nhập với Google",
+    "dontHaveAccountText": "Chưa có tài khoản?",
+    "signUpLink": "Đăng ký",
+    "validation": {
+      "identityRequired": "Vui lòng nhập tên đăng nhập hoặc email",
+      "passwordRequired": "Vui lòng nhập mật khẩu"
+    }
+  },
+  "AuthAside": {
+    "welcomeTitle": "Welcome back",
+    "welcomeDescription": "Connect to your friends."
+  },
+  "AuthFooter": {
+    "conditionsOfUse": "Điều khoản sử dụng",
+    "privacyNotice": "Chính sách bảo mật",
+    "help": "Trợ giúp",
+    "copyright": "© 2025 MomentUp từ Byron"
+  },
+  "ThemeSelection": {
+    "tooltip": "Giao diện",
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Tự động"
+  },
+  "LanguageSelection": {
+    "english": "English",
+    "vietnamese": "Tiếng Việt"
   }
 }

@@ -1,14 +1,38 @@
 {
   "LoginPage": {
     "title": "Login",
-    "description": "Login to your account",
-    "email": "Email",
-    "password": "Password",
-    "login": "Login",
-    "register": "Register",
-    "forgotPassword": "Forgot Password",
-    "rememberMe": "Remember Me",
-    "dontHaveAccount": "Don't have an account?",
-    "haveAccount": "Have an account?"
+    "description": "Sign in to your account and join the world.",
+    "identityInput": "Username or Email",
+    "passwordInput": "Password",
+    "loginButton": "Login",
+    "forgotPasswordLink": "Forgot your password?",
+    "orDivider": "OR",
+    "googleLoginButton": "Sign in with Google",
+    "dontHaveAccountText": "Don't have an account?",
+    "signUpLink": "Sign up",
+    "validation": {
+      "identityRequired": "Username or email is required",
+      "passwordRequired": "Password is required"
+    }
+  },
+  "AuthAside": {
+    "welcomeTitle": "Welcome back",
+    "welcomeDescription": "Connect to your friends."
+  },
+  "AuthFooter": {
+    "conditionsOfUse": "Conditions of Use",
+    "privacyNotice": "Privacy Notice",
+    "help": "Help",
+    "copyright": "© 2025 MomentUp from Byron"
+  },
+  "ThemeSelection": {
+    "tooltip": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "LanguageSelection": {
+    "english": "English",
+    "vietnamese": "Tiếng Việt"
   }
 }
