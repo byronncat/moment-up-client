@@ -74,7 +74,13 @@ function Footer() {
 
 function FooterLink({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <button type="button" className="hover:underline cursor-pointer">
+    <button
+      type="button"
+      className={cn(
+        "hover:underline cursor-pointer",
+        "focus-indicator rounded-sm"
+      )}
+    >
       {children}
     </button>
   );
