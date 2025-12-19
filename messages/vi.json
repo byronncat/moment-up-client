@@ -41,6 +41,9 @@
     "and": "và",
     "privacyPolicy": "Chính sách Bảo mật"
   },
+  "PasswordInput": {
+    "capsLock": "Caps Lock đang bật"
+  },
   "TermsPage": {
     "title": "Điều khoản Dịch vụ",
     "subtitle": "Vui lòng đọc kỹ các điều khoản này trước khi sử dụng MomentUp. Bằng việc truy cập nền tảng của chúng tôi, bạn đồng ý tuân theo các điều khoản này.",

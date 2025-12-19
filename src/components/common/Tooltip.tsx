@@ -31,6 +31,7 @@ const tooltipStyles = (forceDark: boolean) => ({
 type TooltipProps = Readonly<{
   children: React.ReactNode;
   content: React.ReactNode;
+  open?: boolean;
   sideOffset?: number;
   side?: "top" | "right" | "bottom" | "left";
   variant?: "default" | "borderless";
@@ -42,6 +43,7 @@ type TooltipProps = Readonly<{
 export default function Tooltip({
   children,
   content,
+  open,
   sideOffset = 0,
   side,
   variant = "default",
@@ -50,7 +52,7 @@ export default function Tooltip({
   className,
 }: TooltipProps) {
   return (
-    <TooltipUI>
+    <TooltipUI open={open}>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipContent
         className={cn(tooltipStyles(forceDark)[variant], className)}

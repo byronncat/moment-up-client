@@ -41,6 +41,9 @@
     "and": "and",
     "privacyPolicy": "Privacy Policy"
   },
+  "PasswordInput": {
+    "capsLock": "Caps Lock is on"
+  },
   "TermsPage": {
     "title": "Terms of Service",
     "subtitle": "Please read these terms carefully before using MomentUp. By accessing our platform, you agree to be bound by these terms.",
