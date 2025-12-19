@@ -23,7 +23,7 @@
     "conditionsOfUse": "Điều khoản sử dụng",
     "privacyNotice": "Chính sách bảo mật",
     "help": "Trợ giúp",
-    "copyright": "© 2025 MomentUp từ Byron"
+    "copyright": "© 2025 MomentUp"
   },
   "ThemeSelection": {
     "tooltip": "Giao diện",
@@ -34,5 +34,263 @@
   "LanguageSelection": {
     "english": "English",
     "vietnamese": "Tiếng Việt"
+  },
+  "AgreementText": {
+    "byContinuing": "Bằng việc tiếp tục, bạn đồng ý với",
+    "termsOfService": "Điều khoản Dịch vụ",
+    "and": "và",
+    "privacyPolicy": "Chính sách Bảo mật"
+  },
+  "TermsPage": {
+    "title": "Điều khoản Dịch vụ",
+    "subtitle": "Vui lòng đọc kỹ các điều khoản này trước khi sử dụng MomentUp. Bằng việc truy cập nền tảng của chúng tôi, bạn đồng ý tuân theo các điều khoản này.",
+    "lastUpdated": "Cập nhật lần cuối",
+    "sections": {
+      "introduction": {
+        "title": "Giới thiệu",
+        "content1": "Chào mừng bạn đến với MomentUp! Điều khoản Dịch vụ này điều chỉnh việc sử dụng nền tảng mạng xã hội và dịch vụ của chúng tôi. Bằng việc tạo tài khoản hoặc sử dụng MomentUp, bạn đồng ý với các điều khoản này.",
+        "content2": "MomentUp là một nền tảng xã hội được thiết kế để giúp bạn chia sẻ khoảnh khắc, kết nối với bạn bè và khám phá nội dung từ khắp nơi trên thế giới."
+      },
+      "eligibility": {
+        "title": "Điều kiện Sử dụng",
+        "content1": "Để sử dụng MomentUp, bạn phải đáp ứng các yêu cầu sau:",
+        "item1": "Ít nhất 13 tuổi (hoặc độ tuổi tối thiểu theo quy định của quốc gia bạn)",
+        "item2": "Có năng lực pháp lý để tham gia hợp đồng ràng buộc",
+        "item3": "Không bị cấm sử dụng dịch vụ của chúng tôi theo luật pháp hiện hành"
+      },
+      "account": {
+        "title": "Tài khoản của Bạn",
+        "content1": "Bạn chịu trách nhiệm về tài khoản và mọi hoạt động diễn ra thông qua tài khoản đó:",
+        "item1": "Giữ mật khẩu an toàn và bảo mật",
+        "item2": "Cung cấp thông tin chính xác và đầy đủ",
+        "item3": "Thông báo cho chúng tôi ngay lập tức về bất kỳ truy cập trái phép nào",
+        "item4": "Bạn không thể bán, chuyển nhượng hoặc giao tài khoản cho người khác"
+      },
+      "content": {
+        "title": "Hướng dẫn Nội dung",
+        "content1": "Bạn giữ quyền sở hữu nội dung bạn đăng tải trên MomentUp. Tuy nhiên, bằng việc đăng nội dung, bạn cấp cho chúng tôi giấy phép không độc quyền, toàn cầu để sử dụng, hiển thị và phân phối nội dung của bạn trên nền tảng.",
+        "content2": "Bạn chịu trách nhiệm về nội dung bạn đăng tải. Nội dung không được:",
+        "item1": "Vi phạm bất kỳ luật pháp hoặc quy định nào",
+        "item2": "Xâm phạm quyền sở hữu trí tuệ",
+        "item3": "Chứa ngôn ngữ thù địch, quấy rối hoặc đe dọa",
+        "item4": "Bao gồm thông tin sai lệch hoặc gian dối"
+      },
+      "prohibited": {
+        "title": "Hoạt động Bị cấm",
+        "content1": "Các hoạt động sau đây bị nghiêm cấm trên MomentUp:",
+        "item1": "Tạo tài khoản giả hoặc mạo danh người khác",
+        "item2": "Spam, lừa đảo hoặc phát tán phần mềm độc hại",
+        "item3": "Cố gắng truy cập tài khoản của người dùng khác mà không có sự cho phép",
+        "item4": "Sử dụng công cụ tự động để thu thập nội dung hoặc tạo tài khoản",
+        "item5": "Tham gia vào bất kỳ hình thức quấy rối hoặc bắt nạt nào",
+        "item6": "Đăng nội dung bất hợp pháp hoặc quảng bá các hoạt động bất hợp pháp"
+      },
+      "intellectual": {
+        "title": "Sở hữu Trí tuệ",
+        "content1": "MomentUp và nội dung gốc, tính năng và chức năng của nó thuộc sở hữu của MomentUp và được bảo vệ bởi luật bản quyền, thương hiệu và sở hữu trí tuệ quốc tế.",
+        "content2": "Nếu bạn tin rằng quyền sở hữu trí tuệ của mình đã bị vi phạm, vui lòng liên hệ với chúng tôi kèm chi tiết về vi phạm được cho là đã xảy ra."
+      },
+      "termination": {
+        "title": "Chấm dứt Tài khoản",
+        "content1": "Chúng tôi có thể đình chỉ hoặc chấm dứt tài khoản của bạn nếu bạn vi phạm các điều khoản này hoặc tham gia các hoạt động gây hại cho cộng đồng hoặc nền tảng của chúng tôi.",
+        "content2": "Bạn có thể xóa tài khoản của mình bất cứ lúc nào thông qua cài đặt tài khoản. Sau khi xóa, dữ liệu của bạn sẽ được xóa theo Chính sách Bảo mật của chúng tôi."
+      },
+      "changes": {
+        "title": "Thay đổi Điều khoản",
+        "content1": "Chúng tôi có thể cập nhật các điều khoản này theo thời gian. Chúng tôi sẽ thông báo cho bạn về những thay đổi quan trọng qua email hoặc thông báo trong ứng dụng.",
+        "content2": "Việc tiếp tục sử dụng MomentUp sau khi các thay đổi được đăng tải đồng nghĩa với việc bạn chấp nhận các điều khoản cập nhật."
+      }
+    },
+    "contact": {
+      "title": "Có thắc mắc?",
+      "content": "Nếu bạn có bất kỳ câu hỏi nào về Điều khoản Dịch vụ này, vui lòng liên hệ:"
+    }
+  },
+  "PrivacyPage": {
+    "title": "Chính sách Bảo mật",
+    "subtitle": "Quyền riêng tư của bạn rất quan trọng với chúng tôi. Chính sách này giải thích cách chúng tôi thu thập, sử dụng và bảo vệ thông tin cá nhân của bạn.",
+    "lastUpdated": "Cập nhật lần cuối",
+    "summary": {
+      "title": "Tóm tắt Bảo mật",
+      "item1": "Chúng tôi chỉ thu thập dữ liệu cần thiết để cung cấp dịch vụ",
+      "item2": "Chúng tôi không bao giờ bán thông tin cá nhân của bạn cho bên thứ ba",
+      "item3": "Bạn có toàn quyền kiểm soát dữ liệu và cài đặt quyền riêng tư của mình",
+      "item4": "Chúng tôi sử dụng bảo mật tiêu chuẩn ngành để bảo vệ thông tin của bạn"
+    },
+    "sections": {
+      "collect": {
+        "title": "Thông tin Chúng tôi Thu thập",
+        "content1": "Chúng tôi thu thập thông tin để cung cấp và cải thiện dịch vụ:",
+        "provided": {
+          "title": "Thông tin Bạn Cung cấp",
+          "item1": "Chi tiết tài khoản (tên, email, tên đăng nhập, mật khẩu)",
+          "item2": "Thông tin hồ sơ (tiểu sử, ảnh đại diện, vị trí)",
+          "item3": "Nội dung bạn tạo (bài đăng, stories, bình luận, tin nhắn)",
+          "item4": "Giao tiếp với chúng tôi (yêu cầu hỗ trợ, phản hồi)"
+        },
+        "automatic": {
+          "title": "Thông tin Thu thập Tự động",
+          "item1": "Thông tin thiết bị (loại, hệ điều hành, trình duyệt)",
+          "item2": "Dữ liệu sử dụng (tính năng sử dụng, nội dung xem, tương tác)",
+          "item3": "Dữ liệu log (địa chỉ IP, thời gian truy cập, URL giới thiệu)"
+        }
+      },
+      "usage": {
+        "title": "Cách Chúng tôi Sử dụng Thông tin của Bạn",
+        "content1": "Chúng tôi sử dụng thông tin của bạn để:",
+        "item1": "Cung cấp, duy trì và cải thiện dịch vụ",
+        "item2": "Cá nhân hóa trải nghiệm và hiển thị nội dung phù hợp",
+        "item3": "Gửi thông báo và cập nhật về tài khoản của bạn",
+        "item4": "Bảo vệ chống gian lận, lạm dụng và mối đe dọa bảo mật",
+        "item5": "Phân tích mô hình sử dụng để cải thiện nền tảng"
+      },
+      "sharing": {
+        "title": "Chia sẻ Thông tin",
+        "content1": "Chúng tôi có thể chia sẻ thông tin của bạn trong các trường hợp sau:",
+        "item1": "Với sự đồng ý hoặc theo chỉ dẫn của bạn",
+        "item2": "Với các nhà cung cấp dịch vụ giúp chúng tôi vận hành nền tảng",
+        "item3": "Để tuân thủ nghĩa vụ pháp lý hoặc bảo vệ quyền lợi của chúng tôi",
+        "item4": "Liên quan đến việc sáp nhập, mua lại hoặc bán tài sản",
+        "noSale": "Chúng tôi không bán thông tin cá nhân của bạn cho các nhà quảng cáo hoặc bên thứ ba."
+      },
+      "cookies": {
+        "title": "Cookie và Theo dõi",
+        "content1": "Chúng tôi sử dụng cookie và các công nghệ tương tự để:",
+        "item1": "Giữ bạn đăng nhập và ghi nhớ tùy chọn của bạn",
+        "item2": "Hiểu cách bạn sử dụng nền tảng của chúng tôi",
+        "item3": "Cung cấp nội dung và tính năng được cá nhân hóa"
+      },
+      "security": {
+        "title": "Bảo mật Dữ liệu",
+        "content1": "Chúng tôi triển khai các biện pháp bảo mật mạnh mẽ để bảo vệ dữ liệu của bạn:",
+        "item1": "Mã hóa dữ liệu khi truyền và khi lưu trữ",
+        "item2": "Kiểm tra bảo mật và đánh giá lỗ hổng thường xuyên",
+        "item3": "Kiểm soát truy cập và cơ chế xác thực"
+      },
+      "rights": {
+        "title": "Quyền Bảo mật của Bạn",
+        "content1": "Bạn có các quyền sau đối với dữ liệu cá nhân của mình:",
+        "item1": "Truy cập: Yêu cầu bản sao dữ liệu cá nhân của bạn",
+        "item2": "Sửa đổi: Cập nhật hoặc sửa thông tin không chính xác",
+        "item3": "Xóa: Yêu cầu xóa tài khoản và dữ liệu của bạn",
+        "item4": "Di chuyển: Xuất dữ liệu của bạn ở định dạng máy có thể đọc được",
+        "item5": "Phản đối: Từ chối một số hoạt động xử lý dữ liệu"
+      },
+      "retention": {
+        "title": "Lưu giữ Dữ liệu",
+        "content1": "Chúng tôi giữ dữ liệu của bạn miễn là tài khoản của bạn còn hoạt động hoặc cần thiết để cung cấp dịch vụ. Sau khi xóa tài khoản, chúng tôi có thể giữ lại một số thông tin nhất định theo yêu cầu của pháp luật hoặc cho mục đích kinh doanh hợp pháp.",
+        "content2": "Bạn có thể yêu cầu xóa dữ liệu của mình bất cứ lúc nào thông qua cài đặt tài khoản hoặc bằng cách liên hệ với chúng tôi."
+      },
+      "updates": {
+        "title": "Cập nhật Chính sách",
+        "content1": "Chúng tôi có thể cập nhật Chính sách Bảo mật này định kỳ. Chúng tôi sẽ thông báo cho bạn về những thay đổi quan trọng qua email hoặc thông qua nền tảng của chúng tôi. Chúng tôi khuyến khích bạn xem xét chính sách này thường xuyên."
+      }
+    },
+    "contact": {
+      "title": "Câu hỏi về Bảo mật?",
+      "content": "Nếu bạn có câu hỏi về các phương pháp bảo mật của chúng tôi hoặc muốn thực hiện các quyền của mình, hãy liên hệ với nhóm bảo mật:"
+    }
+  },
+  "HelpPage": {
+    "title": "Trung tâm Trợ giúp",
+    "subtitle": "Tìm câu trả lời cho các câu hỏi thường gặp và tìm hiểu cách tận dụng tối đa MomentUp.",
+    "searchPlaceholder": "Tìm kiếm chủ đề trợ giúp...",
+    "faqTitle": "Câu hỏi Thường gặp",
+    "categories": {
+      "account": {
+        "title": "Tài khoản",
+        "description": "Quản lý cài đặt tài khoản và hồ sơ của bạn",
+        "q1": {
+          "question": "Làm thế nào để tạo tài khoản?",
+          "answer": "Bạn có thể tạo tài khoản bằng cách nhấp vào 'Đăng ký' trên trang đăng nhập. Bạn có thể đăng ký bằng địa chỉ email hoặc đăng nhập bằng Google để thiết lập nhanh hơn."
+        },
+        "q2": {
+          "question": "Làm thế nào để thay đổi tên đăng nhập?",
+          "answer": "Vào Cài đặt > Tài khoản > Chỉnh sửa Hồ sơ. Bạn có thể thay đổi tên đăng nhập ở đó. Lưu ý rằng tên đăng nhập phải là duy nhất và chỉ có thể thay đổi 14 ngày một lần."
+        },
+        "q3": {
+          "question": "Làm thế nào để xóa tài khoản?",
+          "answer": "Vào Cài đặt > Tài khoản > Xóa Tài khoản. Xin lưu ý rằng hành động này là vĩnh viễn và sẽ xóa tất cả bài đăng, stories và dữ liệu của bạn. Bạn có 30 ngày để kích hoạt lại trước khi xóa hoàn toàn."
+        }
+      },
+      "security": {
+        "title": "Bảo mật",
+        "description": "Giữ tài khoản của bạn an toàn và bảo mật",
+        "q1": {
+          "question": "Làm thế nào để đặt lại mật khẩu?",
+          "answer": "Nhấp vào 'Quên mật khẩu' trên trang đăng nhập và nhập địa chỉ email của bạn. Chúng tôi sẽ gửi cho bạn mã xác minh để đặt lại mật khẩu."
+        },
+        "q2": {
+          "question": "Làm thế nào để bật xác thực hai yếu tố?",
+          "answer": "Vào Cài đặt > Bảo mật > Xác thực Hai yếu tố. Bạn có thể thiết lập 2FA bằng ứng dụng xác thực hoặc xác minh SMS để tăng cường bảo mật."
+        },
+        "q3": {
+          "question": "Tôi nên làm gì nếu tài khoản bị hack?",
+          "answer": "Ngay lập tức cố gắng đặt lại mật khẩu. Nếu bạn không thể truy cập tài khoản, hãy liên hệ với đội hỗ trợ của chúng tôi kèm thông tin tài khoản. Chúng tôi sẽ giúp bạn lấy lại quyền truy cập và bảo mật tài khoản."
+        }
+      },
+      "content": {
+        "title": "Bài đăng & Stories",
+        "description": "Tạo và quản lý nội dung của bạn",
+        "q1": {
+          "question": "Làm thế nào để tạo bài đăng?",
+          "answer": "Nhấn vào nút + trong thanh điều hướng hoặc trên hồ sơ của bạn. Bạn có thể thêm ảnh, video và văn bản. Áp dụng bộ lọc, gắn thẻ bạn bè, thêm vị trí và viết chú thích trước khi chia sẻ."
+        },
+        "q2": {
+          "question": "Làm thế nào để tạo story?",
+          "answer": "Nhấn vào ảnh đại diện hoặc nút + và chọn 'Story'. Thêm ảnh, video, văn bản, sticker và nhạc. Stories sẽ biến mất sau 24 giờ trừ khi bạn thêm vào phần nổi bật."
+        },
+        "q3": {
+          "question": "Tôi có thể chỉnh sửa hoặc xóa bài đăng không?",
+          "answer": "Có! Nhấn vào menu ba chấm trên bất kỳ bài đăng nào của bạn. Bạn có thể chỉnh sửa chú thích, thay đổi ai có thể xem bài đăng hoặc xóa hoàn toàn."
+        }
+      },
+      "messages": {
+        "title": "Tin nhắn",
+        "description": "Trò chuyện và kết nối với bạn bè",
+        "q1": {
+          "question": "Làm thế nào để gửi tin nhắn trực tiếp?",
+          "answer": "Vào phần Tin nhắn từ thanh điều hướng. Nhấn nút soạn thảo để bắt đầu cuộc trò chuyện mới. Bạn có thể tìm kiếm người dùng theo tên đăng nhập hoặc chọn từ danh sách người theo dõi."
+        },
+        "q2": {
+          "question": "Tôi có thể gửi ảnh và video trong tin nhắn không?",
+          "answer": "Có! Trong bất kỳ cuộc trò chuyện nào, nhấn vào biểu tượng máy ảnh hoặc thư viện để chia sẻ ảnh và video. Bạn cũng có thể gửi tin nhắn thoại bằng cách giữ nút micro."
+        }
+      },
+      "notifications": {
+        "title": "Thông báo",
+        "description": "Quản lý cảnh báo và cập nhật của bạn",
+        "q1": {
+          "question": "Làm thế nào để quản lý thông báo?",
+          "answer": "Vào Cài đặt > Thông báo. Bạn có thể tùy chỉnh hoạt động nào kích hoạt thông báo, bao gồm lượt thích, bình luận, theo dõi và tin nhắn."
+        },
+        "q2": {
+          "question": "Tại sao tôi không nhận được thông báo?",
+          "answer": "Kiểm tra xem thông báo đã được bật trong cả cài đặt ứng dụng và cài đặt thiết bị chưa. Đảm bảo 'Không làm phiền' đã tắt và MomentUp có quyền gửi thông báo."
+        }
+      },
+      "privacy": {
+        "title": "Quyền riêng tư",
+        "description": "Kiểm soát ai có thể xem nội dung của bạn",
+        "q1": {
+          "question": "Làm thế nào để đặt tài khoản ở chế độ riêng tư?",
+          "answer": "Vào Cài đặt > Quyền riêng tư > Quyền riêng tư Tài khoản và bật 'Tài khoản Riêng tư'. Chỉ những người theo dõi được phê duyệt mới có thể xem bài đăng và stories của bạn."
+        },
+        "q2": {
+          "question": "Làm thế nào để chặn ai đó?",
+          "answer": "Vào hồ sơ của họ, nhấn menu ba chấm và chọn 'Chặn'. Họ sẽ không thể tìm thấy hồ sơ, bài đăng của bạn hoặc gửi tin nhắn cho bạn."
+        },
+        "q3": {
+          "question": "Làm thế nào để kiểm soát ai có thể bình luận bài đăng của tôi?",
+          "answer": "Vào Cài đặt > Quyền riêng tư > Bình luận. Bạn có thể giới hạn bình luận chỉ cho người theo dõi, tắt hoàn toàn bình luận hoặc lọc các từ cụ thể."
+        }
+      }
+    },
+    "contact": {
+      "title": "Vẫn Cần Trợ giúp?",
+      "description": "Không tìm thấy những gì bạn đang tìm kiếm? Đội ngũ hỗ trợ của chúng tôi sẵn sàng giúp đỡ bạn.",
+      "emailButton": "Email Hỗ trợ",
+      "twitterButton": "Nhắn tin trên X"
+    }
   }
 }

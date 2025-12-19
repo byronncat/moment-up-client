@@ -1,4 +1,5 @@
 export { default as ActionableText } from "./ActionableText";
+export { default as AgreementText } from "./AgreementText";
 export { default as AsideBackground } from "./AsideBackground";
 export { default as Divider } from "./Divider";
 export { default as GoogleButton } from "./GoogleButton";

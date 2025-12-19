@@ -8,6 +8,11 @@ export const ROUTE = {
   SIGNUP: "/signup",
   FORGOT_PASSWORD: "/forgot-password",
 
+  // === Legal ===
+  TERMS: "/terms",
+  PRIVACY: "/privacy",
+  HELP: "/help",
+
   // === Public ===
   EXPLORE: (type?: ExploreType) =>
     type ? buildUrl("/explore/:type", { pathParams: { type } }) : "/explore",

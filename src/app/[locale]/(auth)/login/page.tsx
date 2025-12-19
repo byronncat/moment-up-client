@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { cn } from "@/libraries/utils";
 import {
   ActionableText,
+  AgreementText,
   Divider,
   GoogleButton,
   PageTitle,
@@ -45,6 +46,7 @@ export default async function LoginPage({ params }: Props) {
           className={cn("w-full mt-3", "text-center")}
         />
       </div>
+      <AgreementText className="mt-4" />
     </main>
   );
 }

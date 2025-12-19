@@ -23,7 +23,7 @@
     "conditionsOfUse": "Conditions of Use",
     "privacyNotice": "Privacy Notice",
     "help": "Help",
-    "copyright": "© 2025 MomentUp from Byron"
+    "copyright": "© 2025 MomentUp"
   },
   "ThemeSelection": {
     "tooltip": "Theme",
@@ -34,5 +34,263 @@
   "LanguageSelection": {
     "english": "English",
     "vietnamese": "Tiếng Việt"
+  },
+  "AgreementText": {
+    "byContinuing": "By continuing, you agree to our",
+    "termsOfService": "Terms of Service",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy"
+  },
+  "TermsPage": {
+    "title": "Terms of Service",
+    "subtitle": "Please read these terms carefully before using MomentUp. By accessing our platform, you agree to be bound by these terms.",
+    "lastUpdated": "Last Updated",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "content1": "Welcome to MomentUp! These Terms of Service govern your use of our social media platform and services. By creating an account or using MomentUp, you agree to these terms.",
+        "content2": "MomentUp is a social platform designed to help you share moments, connect with friends, and discover content from around the world."
+      },
+      "eligibility": {
+        "title": "Eligibility",
+        "content1": "To use MomentUp, you must meet the following requirements:",
+        "item1": "Be at least 13 years old (or the minimum age in your country)",
+        "item2": "Have the legal capacity to enter into a binding agreement",
+        "item3": "Not be prohibited from using our services under applicable laws"
+      },
+      "account": {
+        "title": "Your Account",
+        "content1": "You are responsible for your account and everything that happens through it:",
+        "item1": "Keep your password secure and confidential",
+        "item2": "Provide accurate and complete information",
+        "item3": "Notify us immediately of any unauthorized access",
+        "item4": "You cannot sell, transfer, or assign your account to anyone else"
+      },
+      "content": {
+        "title": "Content Guidelines",
+        "content1": "You retain ownership of the content you post on MomentUp. However, by posting content, you grant us a non-exclusive, worldwide license to use, display, and distribute your content on our platform.",
+        "content2": "You are responsible for the content you post. Content must not:",
+        "item1": "Violate any laws or regulations",
+        "item2": "Infringe on intellectual property rights",
+        "item3": "Contain hate speech, harassment, or threats",
+        "item4": "Include misleading or false information"
+      },
+      "prohibited": {
+        "title": "Prohibited Activities",
+        "content1": "The following activities are strictly prohibited on MomentUp:",
+        "item1": "Creating fake accounts or impersonating others",
+        "item2": "Spamming, phishing, or distributing malware",
+        "item3": "Attempting to access other users' accounts without permission",
+        "item4": "Using automated tools to scrape content or create accounts",
+        "item5": "Engaging in any form of harassment or bullying",
+        "item6": "Posting illegal content or promoting illegal activities"
+      },
+      "intellectual": {
+        "title": "Intellectual Property",
+        "content1": "MomentUp and its original content, features, and functionality are owned by MomentUp and are protected by international copyright, trademark, and other intellectual property laws.",
+        "content2": "If you believe your intellectual property rights have been violated, please contact us with details about the alleged infringement."
+      },
+      "termination": {
+        "title": "Account Termination",
+        "content1": "We may suspend or terminate your account if you violate these terms or engage in activities that harm our community or platform.",
+        "content2": "You may delete your account at any time through your account settings. Upon deletion, your data will be removed according to our Privacy Policy."
+      },
+      "changes": {
+        "title": "Changes to Terms",
+        "content1": "We may update these terms from time to time. We will notify you of significant changes through email or in-app notifications.",
+        "content2": "Your continued use of MomentUp after changes are posted constitutes your acceptance of the updated terms."
+      }
+    },
+    "contact": {
+      "title": "Questions?",
+      "content": "If you have any questions about these Terms of Service, please contact us at:"
+    }
+  },
+  "PrivacyPage": {
+    "title": "Privacy Policy",
+    "subtitle": "Your privacy matters to us. This policy explains how we collect, use, and protect your personal information.",
+    "lastUpdated": "Last Updated",
+    "summary": {
+      "title": "Privacy at a Glance",
+      "item1": "We collect only the data necessary to provide our services",
+      "item2": "We never sell your personal information to third parties",
+      "item3": "You have full control over your data and privacy settings",
+      "item4": "We use industry-standard security to protect your information"
+    },
+    "sections": {
+      "collect": {
+        "title": "Information We Collect",
+        "content1": "We collect information to provide and improve our services:",
+        "provided": {
+          "title": "Information You Provide",
+          "item1": "Account details (name, email, username, password)",
+          "item2": "Profile information (bio, profile picture, location)",
+          "item3": "Content you create (posts, stories, comments, messages)",
+          "item4": "Communications with us (support requests, feedback)"
+        },
+        "automatic": {
+          "title": "Information Collected Automatically",
+          "item1": "Device information (type, operating system, browser)",
+          "item2": "Usage data (features used, content viewed, interactions)",
+          "item3": "Log data (IP address, access times, referring URLs)"
+        }
+      },
+      "usage": {
+        "title": "How We Use Your Information",
+        "content1": "We use your information to:",
+        "item1": "Provide, maintain, and improve our services",
+        "item2": "Personalize your experience and show relevant content",
+        "item3": "Send notifications and updates about your account",
+        "item4": "Protect against fraud, abuse, and security threats",
+        "item5": "Analyze usage patterns to improve our platform"
+      },
+      "sharing": {
+        "title": "Information Sharing",
+        "content1": "We may share your information in the following situations:",
+        "item1": "With your consent or at your direction",
+        "item2": "With service providers who help us operate our platform",
+        "item3": "To comply with legal obligations or protect our rights",
+        "item4": "In connection with a merger, acquisition, or sale of assets",
+        "noSale": "We do not sell your personal information to advertisers or third parties."
+      },
+      "cookies": {
+        "title": "Cookies and Tracking",
+        "content1": "We use cookies and similar technologies to:",
+        "item1": "Keep you logged in and remember your preferences",
+        "item2": "Understand how you use our platform",
+        "item3": "Provide personalized content and features"
+      },
+      "security": {
+        "title": "Data Security",
+        "content1": "We implement robust security measures to protect your data:",
+        "item1": "Encryption of data in transit and at rest",
+        "item2": "Regular security audits and vulnerability assessments",
+        "item3": "Access controls and authentication mechanisms"
+      },
+      "rights": {
+        "title": "Your Privacy Rights",
+        "content1": "You have the following rights regarding your personal data:",
+        "item1": "Access: Request a copy of your personal data",
+        "item2": "Correction: Update or correct inaccurate information",
+        "item3": "Deletion: Request deletion of your account and data",
+        "item4": "Portability: Export your data in a machine-readable format",
+        "item5": "Objection: Opt out of certain data processing activities"
+      },
+      "retention": {
+        "title": "Data Retention",
+        "content1": "We retain your data for as long as your account is active or as needed to provide services. After account deletion, we may retain certain information as required by law or for legitimate business purposes.",
+        "content2": "You can request deletion of your data at any time through your account settings or by contacting us."
+      },
+      "updates": {
+        "title": "Policy Updates",
+        "content1": "We may update this Privacy Policy periodically. We will notify you of significant changes via email or through our platform. We encourage you to review this policy regularly."
+      }
+    },
+    "contact": {
+      "title": "Privacy Questions?",
+      "content": "If you have questions about our privacy practices or want to exercise your rights, contact our privacy team:"
+    }
+  },
+  "HelpPage": {
+    "title": "Help Center",
+    "subtitle": "Find answers to common questions and learn how to get the most out of MomentUp.",
+    "searchPlaceholder": "Search for help topics...",
+    "faqTitle": "Frequently Asked Questions",
+    "categories": {
+      "account": {
+        "title": "Account",
+        "description": "Manage your account settings and profile",
+        "q1": {
+          "question": "How do I create an account?",
+          "answer": "You can create an account by clicking 'Sign Up' on the login page. You can register using your email address or sign in with Google for a quicker setup."
+        },
+        "q2": {
+          "question": "How do I change my username?",
+          "answer": "Go to Settings > Account > Edit Profile. You can change your username there. Note that usernames must be unique and can only be changed once every 14 days."
+        },
+        "q3": {
+          "question": "How do I delete my account?",
+          "answer": "Go to Settings > Account > Delete Account. Please note that this action is permanent and will remove all your posts, stories, and data. You have 30 days to reactivate before deletion is final."
+        }
+      },
+      "security": {
+        "title": "Security",
+        "description": "Keep your account safe and secure",
+        "q1": {
+          "question": "How do I reset my password?",
+          "answer": "Click 'Forgot Password' on the login page and enter your email address. We'll send you a verification code to reset your password."
+        },
+        "q2": {
+          "question": "How do I enable two-factor authentication?",
+          "answer": "Go to Settings > Security > Two-Factor Authentication. You can set up 2FA using an authenticator app or SMS verification for added security."
+        },
+        "q3": {
+          "question": "What should I do if my account is hacked?",
+          "answer": "Immediately try to reset your password. If you can't access your account, contact our support team with your account details. We'll help you regain access and secure your account."
+        }
+      },
+      "content": {
+        "title": "Posts & Stories",
+        "description": "Create and manage your content",
+        "q1": {
+          "question": "How do I create a post?",
+          "answer": "Tap the + button in the navigation bar or on your profile. You can add photos, videos, and text. Apply filters, tag friends, add location, and write a caption before sharing."
+        },
+        "q2": {
+          "question": "How do I create a story?",
+          "answer": "Tap your profile picture or the + button and select 'Story'. Add photos, videos, text, stickers, and music. Stories disappear after 24 hours unless you add them to your highlights."
+        },
+        "q3": {
+          "question": "Can I edit or delete my posts?",
+          "answer": "Yes! Tap the three dots menu on any of your posts. You can edit captions, change who can see the post, or delete it entirely."
+        }
+      },
+      "messages": {
+        "title": "Messages",
+        "description": "Chat and connect with friends",
+        "q1": {
+          "question": "How do I send a direct message?",
+          "answer": "Go to the Messages section from the navigation. Tap the compose button to start a new conversation. You can search for users by username or select from your followers."
+        },
+        "q2": {
+          "question": "Can I send photos and videos in messages?",
+          "answer": "Yes! In any conversation, tap the camera or gallery icon to share photos and videos. You can also send voice messages by holding the microphone button."
+        }
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Manage your alerts and updates",
+        "q1": {
+          "question": "How do I manage my notifications?",
+          "answer": "Go to Settings > Notifications. You can customize which activities trigger notifications, including likes, comments, follows, and messages."
+        },
+        "q2": {
+          "question": "Why am I not receiving notifications?",
+          "answer": "Check that notifications are enabled in both the app settings and your device settings. Make sure 'Do Not Disturb' is off and that MomentUp has permission to send notifications."
+        }
+      },
+      "privacy": {
+        "title": "Privacy",
+        "description": "Control who sees your content",
+        "q1": {
+          "question": "How do I make my account private?",
+          "answer": "Go to Settings > Privacy > Account Privacy and toggle on 'Private Account'. Only approved followers will be able to see your posts and stories."
+        },
+        "q2": {
+          "question": "How do I block someone?",
+          "answer": "Go to their profile, tap the three dots menu, and select 'Block'. They won't be able to find your profile, posts, or send you messages."
+        },
+        "q3": {
+          "question": "How do I control who can comment on my posts?",
+          "answer": "Go to Settings > Privacy > Comments. You can limit comments to followers only, disable comments entirely, or filter out specific words."
+        }
+      }
+    },
+    "contact": {
+      "title": "Still Need Help?",
+      "description": "Can't find what you're looking for? Our support team is here to help you.",
+      "emailButton": "Email Support",
+      "twitterButton": "Message on X"
+    }
   }
 }

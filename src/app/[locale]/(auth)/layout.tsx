@@ -1,5 +1,8 @@
 import { useTranslations } from "next-intl";
+import { ROUTE } from "@/constants/route";
+
 import { cn } from "@/libraries/utils";
+import Link from "next/link";
 import { Brand } from "@/components/common";
 import {
   AsideBackground,
@@ -56,11 +59,11 @@ function Footer() {
       )}
     >
       <div className="flex items-center gap-2">
-        <FooterLink>{t("conditionsOfUse")}</FooterLink>
+        <FooterLink href={ROUTE.TERMS}>{t("conditionsOfUse")}</FooterLink>
         <span className="text-muted-foreground">|</span>
-        <FooterLink>{t("privacyNotice")}</FooterLink>
+        <FooterLink href={ROUTE.PRIVACY}>{t("privacyNotice")}</FooterLink>
         <span className="text-muted-foreground">|</span>
-        <FooterLink>{t("help")}</FooterLink>
+        <FooterLink href={ROUTE.HELP}>{t("help")}</FooterLink>
       </div>
 
       <div className="flex items-center gap-2">
@@ -72,16 +75,19 @@ function Footer() {
   );
 }
 
-function FooterLink({ children }: Readonly<{ children: React.ReactNode }>) {
+function FooterLink({
+  href,
+  children,
+}: Readonly<{ href: string; children: React.ReactNode }>) {
   return (
-    <button
-      type="button"
+    <Link
+      href={href}
       className={cn(
         "hover:underline cursor-pointer",
         "focus-indicator rounded-sm"
       )}
     >
       {children}
-    </button>
+    </Link>
   );
 }

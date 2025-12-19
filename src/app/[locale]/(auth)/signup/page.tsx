@@ -4,6 +4,7 @@ export const metadata = Metadata.signup;
 import { cn } from "@/libraries/utils";
 import {
   ActionableText,
+  AgreementText,
   Divider,
   GoogleButton,
   PageTitle,
@@ -27,6 +28,7 @@ export default function SignUpPage() {
           className={cn("w-full mt-3", "text-center")}
         />
       </div>
+      <AgreementText className="mt-4" />
     </main>
   );
 }
