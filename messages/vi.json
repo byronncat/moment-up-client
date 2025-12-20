@@ -15,6 +15,37 @@
       "passwordRequired": "Vui lòng nhập mật khẩu"
     }
   },
+  "SignupPage": {
+    "title": "Đăng ký",
+    "description": "Tạo tài khoản và bắt đầu kết nối ngay hôm nay.",
+    "emailInput": "Email",
+    "usernameInput": "Tên đăng nhập",
+    "passwordInput": "Mật khẩu",
+    "signupButton": "Đăng ký",
+    "orDivider": "HOẶC",
+    "googleSignupButton": "Đăng nhập với Google",
+    "alreadyHaveAccountText": "Đã có tài khoản?",
+    "loginLink": "Đăng nhập",
+    "showDetailsTooltip": "Hiển thị chi tiết",
+    "usernameDescription": "Chỉ cho phép chữ cái, số, dấu chấm, dấu gạch dưới và phải có ít nhất 2 ký tự.",
+    "passwordDescription": "Mật khẩu phải có ít nhất 8 ký tự và bao gồm ít nhất ba trong số: chữ hoa (A-Z), chữ thường (a-z), số (0-9)",
+    "successToastTitle": "🎉 Bạn sắp hoàn thành!",
+    "successToastDescription": "Chúng tôi đã gửi liên kết xác minh đến email của bạn. Nhấp vào đó để kích hoạt tài khoản và đăng nhập.",
+    "validation": {
+      "emailRequired": "Vui lòng nhập email",
+      "emailInvalid": "Địa chỉ email không hợp lệ",
+      "usernameRequired": "Vui lòng nhập tên đăng nhập",
+      "usernameMinLength": "Tên đăng nhập phải có ít nhất {min} ký tự",
+      "usernameMaxLength": "Tên đăng nhập phải ít hơn {max} ký tự",
+      "usernameNoStartDot": "Tên đăng nhập không được bắt đầu bằng dấu chấm",
+      "usernameNoEndDot": "Tên đăng nhập không được kết thúc bằng dấu chấm",
+      "usernameNoConsecutiveDots": "Tên đăng nhập không được chứa các dấu chấm liên tiếp",
+      "usernameInvalidChars": "Chỉ cho phép chữ cái, số, dấu gạch dưới và dấu chấm",
+      "passwordRequired": "Vui lòng nhập mật khẩu",
+      "passwordMinLength": "Mật khẩu phải có ít nhất {min} ký tự",
+      "passwordComplexity": "Mật khẩu phải bao gồm ít nhất ba trong số: chữ hoa (A-Z), chữ thường (a-z), số (0-9)"
+    }
+  },
   "AuthAside": {
     "welcomeTitle": "Welcome back",
     "welcomeDescription": "Connect to your friends."

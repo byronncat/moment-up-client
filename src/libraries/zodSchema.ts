@@ -10,6 +10,21 @@ type LoginMessages = {
   passwordRequired: string;
 };
 
+type SignupMessages = {
+  emailRequired: string;
+  emailInvalid: string;
+  usernameRequired: string;
+  usernameMinLength: string;
+  usernameMaxLength: string;
+  usernameNoStartDot: string;
+  usernameNoEndDot: string;
+  usernameNoConsecutiveDots: string;
+  usernameInvalidChars: string;
+  passwordRequired: string;
+  passwordMinLength: string;
+  passwordComplexity: string;
+};
+
 const login = z.object({
   identity: z.string().min(1, {
     error: "Username or email is required",
@@ -83,6 +98,60 @@ const signup = z.object({
     ),
 });
 
+const createSignupSchema = (messages: SignupMessages) =>
+  z.object({
+    email: z.email({
+      error: (issue) => {
+        if (issue.input === "" || issue.input === undefined)
+          return messages.emailRequired;
+        return messages.emailInvalid;
+      },
+    }),
+    username: z
+      .string()
+      .min(1, {
+        error: messages.usernameRequired,
+      })
+      .min(MIN_USERNAME_LENGTH, {
+        error: messages.usernameMinLength,
+      })
+      .max(MAX_NAME_LENGTH, {
+        error: messages.usernameMaxLength,
+      })
+      .refine((value) => !value.startsWith("."), {
+        error: messages.usernameNoStartDot,
+      })
+      .refine((value) => !value.endsWith("."), {
+        error: messages.usernameNoEndDot,
+      })
+      .refine((value) => !value.includes(".."), {
+        error: messages.usernameNoConsecutiveDots,
+      })
+      .regex(/^[a-zA-Z0-9._]+$/, {
+        error: messages.usernameInvalidChars,
+      }),
+    password: z
+      .string()
+      .min(1, {
+        error: messages.passwordRequired,
+      })
+      .min(MIN_PASSWORD_LENGTH, {
+        error: messages.passwordMinLength,
+      })
+      .refine(
+        (password) => {
+          let conditionsMet = 0;
+          if (/[A-Z]/.test(password)) conditionsMet++;
+          if (/[a-z]/.test(password)) conditionsMet++;
+          if (/[0-9]/.test(password)) conditionsMet++;
+          return conditionsMet >= 3;
+        },
+        {
+          error: messages.passwordComplexity,
+        }
+      ),
+  });
+
 const sendOtp = z.object({
   identity: z.string().min(1, {
     error: "Username or email is required",
@@ -143,6 +212,7 @@ const zodSchema = {
     login,
     createLoginSchema,
     signup,
+    createSignupSchema,
     sendOtp,
     recoverPassword,
   },

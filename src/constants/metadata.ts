@@ -4,7 +4,6 @@ export interface MetadataMap {
   root: NextMetadata;
 
   // === Auth ===
-  signup: NextMetadata;
   forgotPassword: NextMetadata;
 
   // === Public ===
@@ -35,10 +34,6 @@ export const Metadata: MetadataMap = {
   },
 
   // === Auth ===
-  signup: {
-    title: "Sign Up",
-    description: "Create your account and start connecting today.",
-  },
   forgotPassword: {
     title: "Recover",
     description: "Find your account and reset your password.",
