@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/libraries/utils";
 
 const RESEND_TIME = 60; // seconds
 export default function ResendText({
   onClick,
 }: Readonly<{ onClick?: () => void }>) {
+  const t = useTranslations("ForgotPasswordPage");
   const [resendTime, setResendTime] = useState(0);
   const isDisabled = resendTime > 0;
 
@@ -25,9 +27,7 @@ export default function ResendText({
 
   return (
     <div className={cn("text-sm text-center", "w-full", isDisabled && "-ml-3")}>
-      <span className="text-muted-foreground">
-        Didn&apos;t receive the code?{" "}
-      </span>
+      <span className="text-muted-foreground">{t("didntReceiveCode")} </span>
       <button
         disabled={isDisabled}
         className={cn(
@@ -40,7 +40,7 @@ export default function ResendText({
         )}
         onClick={handleResend}
       >
-        Resend
+        {t("resendButton")}
         {isDisabled ? (
           <span
             className={cn("inline-block", "absolute left-[calc(100%+4px)]")}

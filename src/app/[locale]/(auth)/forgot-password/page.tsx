@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/libraries/utils";
 import Link from "next/link";
@@ -10,16 +11,17 @@ import { ROUTE } from "@/constants/route";
 import styles from "../_constants/styles";
 
 export default function VerifyRecoveryPage() {
+  const t = useTranslations("ForgotPasswordPage");
   const [user, setUser] = useState<string>("");
 
   return (
     <main className={styles.form}>
       {user ? (
         <>
-          <PageTitle title="Change Password" variant="secondary" />
+          <PageTitle title={t("changePasswordTitle")} variant="secondary" />
           <ChangePasswordForm className="mt-4" defaultValue={user} />
           <Link
-            href="/login"
+            href={ROUTE.LOGIN}
             className={cn(
               "mt-5 float-right",
               "text-muted-foreground text-sm",
@@ -27,14 +29,14 @@ export default function VerifyRecoveryPage() {
               "focus-within-indicator rounded-sm"
             )}
           >
-            Back to Login
+            {t("backToLogin")}
           </Link>
         </>
       ) : (
         <>
-          <PageTitle title="Trouble logging in?" variant="secondary" />
+          <PageTitle title={t("troubleTitle")} variant="secondary" />
           <p className="text-sm text-muted-foreground text-center mb-6">
-            Please enter your email address to search for your account.
+            {t("troubleDescription")}
           </p>
           <SendOtpForm
             onSuccess={(data) => {
@@ -43,9 +45,9 @@ export default function VerifyRecoveryPage() {
           />
           <div className="mt-4">
             <ActionableText
-              mutedText="Remember your password?"
+              mutedText={t("rememberPasswordText")}
               path={ROUTE.LOGIN}
-              highlightedText="Login"
+              highlightedText={t("loginLink")}
               className={cn("w-full", "text-center")}
             />
           </div>

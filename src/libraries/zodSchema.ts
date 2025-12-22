@@ -25,6 +25,21 @@ type SignupMessages = {
   passwordComplexity: string;
 };
 
+type SendOtpMessages = {
+  identityRequired: string;
+};
+
+type RecoverPasswordMessages = {
+  otpRequired: string;
+  otpLength: string;
+  otpInvalidChars: string;
+  newPasswordRequired: string;
+  passwordMinLength: string;
+  passwordComplexity: string;
+  confirmPasswordRequired: string;
+  passwordsDoNotMatch: string;
+};
+
 const login = z.object({
   identity: z.string().min(1, {
     error: "Username or email is required",
@@ -158,6 +173,13 @@ const sendOtp = z.object({
   }),
 });
 
+const createSendOtpSchema = (messages: SendOtpMessages) =>
+  z.object({
+    identity: z.string().min(1, {
+      error: messages.identityRequired,
+    }),
+  });
+
 const recoverPassword = z
   .object({
     otp: z
@@ -201,6 +223,49 @@ const recoverPassword = z
     path: ["confirmPassword"],
   });
 
+const createRecoverPasswordSchema = (messages: RecoverPasswordMessages) =>
+  z
+    .object({
+      otp: z
+        .string()
+        .min(1, {
+          error: messages.otpRequired,
+        })
+        .length(6, {
+          error: messages.otpLength,
+        })
+        .regex(/^[A-Za-z0-9]+$/, {
+          error: messages.otpInvalidChars,
+        }),
+      newPassword: z
+        .string()
+        .min(1, {
+          error: messages.newPasswordRequired,
+        })
+        .min(MIN_PASSWORD_LENGTH, {
+          error: messages.passwordMinLength,
+        })
+        .refine(
+          (password) => {
+            let conditionsMet = 0;
+            if (/[A-Z]/.test(password)) conditionsMet++;
+            if (/[a-z]/.test(password)) conditionsMet++;
+            if (/[0-9]/.test(password)) conditionsMet++;
+            return conditionsMet >= 3;
+          },
+          {
+            error: messages.passwordComplexity,
+          }
+        ),
+      confirmPassword: z.string().min(1, {
+        error: messages.confirmPasswordRequired,
+      }),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      error: messages.passwordsDoNotMatch,
+      path: ["confirmPassword"],
+    });
+
 const search = z.object({
   query: z.string().min(1, {
     error: "Search query is required",
@@ -214,7 +279,9 @@ const zodSchema = {
     signup,
     createSignupSchema,
     sendOtp,
+    createSendOtpSchema,
     recoverPassword,
+    createRecoverPasswordSchema,
   },
   core: {
     search,

@@ -3,9 +3,6 @@ import type { Metadata as NextMetadata } from "next";
 export interface MetadataMap {
   root: NextMetadata;
 
-  // === Auth ===
-  forgotPassword: NextMetadata;
-
   // === Public ===
   explore: NextMetadata;
   profile: (username: string) => NextMetadata;
@@ -31,12 +28,6 @@ export const Metadata: MetadataMap = {
     },
     description:
       "A platform for creating, sharing, and discovering engaging moments.",
-  },
-
-  // === Auth ===
-  forgotPassword: {
-    title: "Recover",
-    description: "Find your account and reset your password.",
   },
 
   // === Public ===

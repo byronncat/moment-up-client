@@ -2,11 +2,14 @@
 
 import type { z } from "zod";
 
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/components/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import zodSchema from "@/libraries/zodSchema";
 import { toast } from "sonner";
+import { MIN_PASSWORD_LENGTH } from "@/constants/server";
 
 import { cn } from "@/libraries/utils";
 import {
@@ -31,8 +34,27 @@ export default function ChangePasswordForm({
   defaultValue,
   className,
 }: ChangePasswordFormProps) {
-  const form = useForm<z.infer<typeof zodSchema.auth.recoverPassword>>({
-    resolver: zodResolver(zodSchema.auth.recoverPassword),
+  const t = useTranslations("ForgotPasswordPage");
+
+  const recoverPasswordSchema = useMemo(
+    () =>
+      zodSchema.auth.createRecoverPasswordSchema({
+        otpRequired: t("validation.otpRequired"),
+        otpLength: t("validation.otpLength"),
+        otpInvalidChars: t("validation.otpInvalidChars"),
+        newPasswordRequired: t("validation.newPasswordRequired"),
+        passwordMinLength: t("validation.passwordMinLength", {
+          min: MIN_PASSWORD_LENGTH,
+        }),
+        passwordComplexity: t("validation.passwordComplexity"),
+        confirmPasswordRequired: t("validation.confirmPasswordRequired"),
+        passwordsDoNotMatch: t("validation.passwordsDoNotMatch"),
+      }),
+    [t]
+  );
+
+  const form = useForm<z.infer<typeof recoverPasswordSchema>>({
+    resolver: zodResolver(recoverPasswordSchema),
     defaultValues: {
       otp: "",
       newPassword: "",
@@ -41,23 +63,21 @@ export default function ChangePasswordForm({
   });
 
   const { recoverPassword: changePassword, sendOtp } = useAuth();
-  async function handleVerify(
-    values: z.infer<typeof zodSchema.auth.recoverPassword>
-  ) {
+  async function handleVerify(values: z.infer<typeof recoverPasswordSchema>) {
     const { success, message } = await changePassword(values);
     if (success)
-      toast("🎉 Password changed successfully!", {
+      toast(t("successToastTitle"), {
         duration: 12000,
-        description: "You can now log in with your new password.",
+        description: t("successToastDescription"),
       });
     else toast.error(message || "Failed to change password");
   }
 
   function handleResend() {
     toast.promise(sendOtp({ identity: defaultValue }), {
-      loading: "Sending recovery email...",
+      loading: t("resendLoading"),
       success: ({ success, message }) => {
-        if (success) return "Recovery email sent!";
+        if (success) return t("resendSuccess");
         throw new Error(message);
       },
       error: ({ message }) => message,
@@ -74,7 +94,7 @@ export default function ChangePasswordForm({
             render={({ field }) => (
               <FormItem>
                 <FormDescription className="text-center">
-                  Enter the OTP sent to your email
+                  {t("otpDescription")}
                 </FormDescription>
                 <FormControl>
                   <InputOTPPattern
@@ -94,7 +114,7 @@ export default function ChangePasswordForm({
                 <FormItem>
                   <FormControl>
                     <PasswordInput
-                      placeholder="New password"
+                      placeholder={t("newPasswordInput")}
                       className={styles.input}
                       autoComplete="new-password"
                       {...field}
@@ -112,7 +132,7 @@ export default function ChangePasswordForm({
                 <FormItem>
                   <FormControl>
                     <PasswordInput
-                      placeholder="Confirm new password"
+                      placeholder={t("confirmPasswordInput")}
                       className={styles.input}
                       autoComplete="new-password"
                       {...field}
@@ -125,7 +145,7 @@ export default function ChangePasswordForm({
           </div>
 
           <SubmitButton loading={form.formState.isSubmitting} className="mt-8">
-            Reset Password
+            {t("resetPasswordButton")}
           </SubmitButton>
         </form>
       </Form>

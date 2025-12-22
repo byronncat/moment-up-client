@@ -30,7 +30,7 @@
     "usernameDescription": "Only letters, numbers, dots, underscores, and hyphens are allowed and must be at least 2 characters.",
     "passwordDescription": "Password must be at least 8 characters and include at least three of: uppercase letter (A-Z), lowercase letter (a-z), number (0-9)",
     "successToastTitle": "🎉 You're almost there!",
-    "successToastDescription": "We've sent a verification link to your email. Click it to activate your account and log in.",
+    "successToastDescription": "We've sent a verification link to your email. Confirm it to activate your account and log in.",
     "validation": {
       "emailRequired": "Email is required",
       "emailInvalid": "Invalid email address",
@@ -44,6 +44,39 @@
       "passwordRequired": "Password is required",
       "passwordMinLength": "Password must be at least {min} characters",
       "passwordComplexity": "Password must include at least three of the following: uppercase letter (A-Z), lowercase letter (a-z), number (0-9)"
+    }
+  },
+  "ForgotPasswordPage": {
+    "title": "Recover",
+    "description": "Find your account and reset your password.",
+    "troubleTitle": "Forgot your password?",
+    "troubleDescription": "Please enter your email address to find your account.",
+    "identityInput": "Username or Email",
+    "sendEmailButton": "Send Recovery Email",
+    "rememberPasswordText": "Remember your password?",
+    "loginLink": "Login",
+    "changePasswordTitle": "Change Password",
+    "otpDescription": "Enter the OTP sent to your email",
+    "newPasswordInput": "New password",
+    "confirmPasswordInput": "Confirm new password",
+    "resetPasswordButton": "Reset Password",
+    "backToLogin": "Back to Login",
+    "didntReceiveCode": "Didn't receive the code?",
+    "resendButton": "Resend",
+    "resendLoading": "Sending recovery email...",
+    "resendSuccess": "Recovery email sent!",
+    "successToastTitle": "🎉 Password changed successfully!",
+    "successToastDescription": "You can now log in with your new password.",
+    "validation": {
+      "identityRequired": "Username or email is required",
+      "otpRequired": "OTP is required",
+      "otpLength": "OTP must be 6 characters",
+      "otpInvalidChars": "OTP must contain only numbers and alphabetic characters",
+      "newPasswordRequired": "New password is required",
+      "passwordMinLength": "Password must be at least {min} characters",
+      "passwordComplexity": "Password must include at least three of the following: uppercase letter (A-Z), lowercase letter (a-z), number (0-9)",
+      "confirmPasswordRequired": "Please confirm your password",
+      "passwordsDoNotMatch": "Passwords do not match"
     }
   },
   "AuthAside": {

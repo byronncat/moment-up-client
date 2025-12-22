@@ -1,6 +1,10 @@
+"use client";
+
 import type { z } from "zod";
 
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/components/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import zodSchema from "@/libraries/zodSchema";
@@ -22,17 +26,25 @@ export default function SendOtpForm({
 }: Readonly<{
   onSuccess: (data: string) => void;
 }>) {
-  const form = useForm<z.infer<typeof zodSchema.auth.sendOtp>>({
-    resolver: zodResolver(zodSchema.auth.sendOtp),
+  const t = useTranslations("ForgotPasswordPage");
+
+  const sendOtpSchema = useMemo(
+    () =>
+      zodSchema.auth.createSendOtpSchema({
+        identityRequired: t("validation.identityRequired"),
+      }),
+    [t]
+  );
+
+  const form = useForm<z.infer<typeof sendOtpSchema>>({
+    resolver: zodResolver(sendOtpSchema),
     defaultValues: {
       identity: "",
     },
   });
 
   const { sendOtp } = useAuth();
-  async function handleSendEmail(
-    values: z.infer<typeof zodSchema.auth.sendOtp>
-  ) {
+  async function handleSendEmail(values: z.infer<typeof sendOtpSchema>) {
     const { success, message } = await sendOtp(values);
     if (success) onSuccess(values.identity);
     else toast.error(message || "Failed to send recovery email");
@@ -49,7 +61,7 @@ export default function SendOtpForm({
               <FormItem className="space-y-1">
                 <FormControl>
                   <Input
-                    placeholder="Username or Email"
+                    placeholder={t("identityInput")}
                     className={styles.input}
                     autoComplete="username"
                     {...field}
@@ -63,7 +75,7 @@ export default function SendOtpForm({
 
         <div className="mt-5">
           <SubmitButton loading={form.formState.isSubmitting}>
-            Send Recovery Email
+            {t("sendEmailButton")}
           </SubmitButton>
         </div>
       </form>
